@@ -1,6 +1,6 @@
 # CS-230
 
-## Simple to follow ground rules for this project:
+## Ground rules for this project:
 
 * Use your own branch, **DO NOT** push to master
     * to do this you can:
@@ -15,7 +15,7 @@
         * `Added <x>`
         * `Removed <x>`
 * When you want something pulled to the master branch open a pull request
-    * the easiest way to do this is online bu hitting pull up above ^
+    * the easiest way to do this is online by hitting pull up above ^
     * from here any changes can be checked and verified before they are merged
 * Communication will be handled via Discord and Email, no other means.
     * I recommend you all join https://discord.swanhack.co.uk/ because 3/4 of this years Committee, myself included, are Year 2 CompSci students
