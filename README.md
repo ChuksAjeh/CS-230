@@ -22,6 +22,7 @@ UNKNOWN       -  Angelo Balistoy
         * `git add *`
         * `git commit -m <message>`
         * `git push`
+    * Aditionally most major text editors and IDEs will have GitHub integration through a GUI
 * All commit messages should be useful and meaningful
     * For example:
         * `Added <x>`
