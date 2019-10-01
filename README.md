@@ -1,6 +1,18 @@
 # CS-230
 
-## Ground rules for this project:
+## Our Group:
+
+```
+Gnomeball     -  George Carpenter
+UNKNOWN       -  Ed Perry
+mazurcaionut  -  Ioan Mazurka
+UNKNOWN       -  Blake Davies
+Samuel-Roach  -  Samuel Roach
+ChucksAjeh    -  Chukwuka Ajeh
+UNKNOWN       -  Angelo Balistoy
+```
+
+## Ground Rules for this project:
 
 * Use your own branch, **DO NOT** push to master
     * to do this you can:
@@ -17,7 +29,9 @@
 * When you want something pulled to the master branch open a pull request
     * the easiest way to do this is online by hitting pull up above ^
     * from here any changes can be checked and verified before they are merged
-* Communication will be handled via Discord and Email, no other means.
-    * I recommend you all join https://discord.swanhack.co.uk/ because 3/4 of this years Committee, myself included, are Year 2 CompSci students
-    * Through this we can also have both private and public discussion about both this project and CompSci in general
-    * It is also possible to use a fake name and your Uni email adress if you are at all insecure about using your personal email
+* Communication will be handled via Discord, Email and GitHub, no other online means.
+    * Whilst face to face meetings are enforced by the brief there are no rules for online communication however:
+        * No posting of code or sending of code via any platform aside from GitHub
+        * I recommend you all join https://discord.swanhack.co.uk/ because 3/4 of this years Committee, myself included, are Year 2 CompSci students
+        * Through this we can also have both private and public discussion about both this project and CompSci in general
+        * It is possible, and encouraged, to use a fake name and your Uni email address
