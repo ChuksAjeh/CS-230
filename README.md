@@ -3,13 +3,13 @@
 ## Our Group:
 
 ```
-Gnomeball       -  George Carpenter
-UNKNOWN         -  Ed Perry
-mazurcaionut    -  Ioan Mazurka
-UNKNOWN         -  Blake Davies
-Samuel-Roach    -  Samuel Roach
-ChucksAjeh      -  Chukwuka Ajeh
-AngeloBalistoy  -  Angelo Balistoy
+Gnomeball        -  George Carpenter
+UNKNOWN          -  Ed Perry
+mazurcaionut     -  Ioan Mazurka
+blakedavies6899  -  Blake Davies
+Samuel-Roach     -  Samuel Roach
+ChucksAjeh       -  Chukwuka Ajeh
+AngeloBalistoy   -  Angelo Balistoy
 ```
 
 ## Ground Rules for this project:
