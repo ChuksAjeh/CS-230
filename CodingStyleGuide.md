@@ -29,7 +29,7 @@ Class methods will be in the following order:
 
 ## Whitespace
 
-The only whitespace character allowed will be `Ox20', also known as a horizontal space character.
+The only whitespace character allowed will be `0x20', also known as a horizontal space character.
 
 Tabs will not be used for indentation and should not be used in string literals.
 
