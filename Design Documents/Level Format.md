@@ -16,8 +16,16 @@
   * Key and token locations
     * Key, x, y, colour
     * Token, x, y
-  * Enemy locations and their types
-    * EnemyType, x, y
+  * Teleporter locations, from and to
+    * Teleporter, xFrom, yFrom, xTo, yTo
+  * Special terrain locations
+    * Fire, x, y
+    * Water, x, y
+  * Equipment locations
+    * FireBoots, x, y
+    * Flippers, x, y
+  * Enemy locations, types and direction
+    * EnemyType, x, y, direction
 
 # Example
 
