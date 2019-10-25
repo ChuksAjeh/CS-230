@@ -14,7 +14,7 @@
     * Goal, x, y
   * Door locations and their values
     * KeyDoor, x, y, colour
-    * TokenDOor, x, y, requirement
+    * TokenDoor, x, y, requirement
   * Key and token locations
     * Key, x, y, colour
     * Token, x, y
