@@ -8,6 +8,8 @@
 * List all entities available in the level and their locations
   * Player start location
     * `Player, x, y
+  * Enemy locations, types and direction
+    * EnemyType, x, y, direction
   * Goal location
     * Goal, x, y
   * Door locations and their values
@@ -16,16 +18,14 @@
   * Key and token locations
     * Key, x, y, colour
     * Token, x, y
-  * Teleporter locations, from and to
-    * Teleporter, xFrom, yFrom, xTo, yTo
   * Special terrain locations
     * Fire, x, y
     * Water, x, y
   * Equipment locations
     * FireBoots, x, y
     * Flippers, x, y
-  * Enemy locations, types and direction
-    * EnemyType, x, y, direction
+  * Teleporter locations, from and to
+    * Teleporter, xFrom, yFrom, xTo, yTo
 
 # Example
 
