@@ -127,7 +127,7 @@ void (doNothing) {}
 
 ## Break;
 
-W`break;` and `continue;` statements will not be permitted.
+`break;` and `continue;` statements will not be permitted.
 
 ## Magic Numbers
 
