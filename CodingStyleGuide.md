@@ -2,6 +2,10 @@
 
 This document will serve as this groups definition for Java code styling.
 
+## Language
+
+British English wil be used throughout, "colour" is spelt with a u.
+
 ## Source files
 
 All source files will contain a single single top-level class, no sub classes.
@@ -20,12 +24,33 @@ No wildcard imports are permitted.
 
 ## Class structure
 
-Class methods will be in the following order:
+All Classes will be structured in the following order:
 
+* Javadoc for class
+* Class declaration
+* Class constant variables
+* All other class variables
+* Instance variables
 * Constructors, in a logical order
 * Set methods, in the same order as class variable declaration
 * Get methods, in the same order as class variable declaration
 * Everything else, in a logical order
+
+Modifiers will be in the following order:
+
+* `public`
+* `protected`
+* `package-private`
+* `private`
+
+## Modifiers
+
+Modifiers will be in the following order:
+
+* public / protected / private
+* abstract
+* static
+* final
 
 ## Whitespace
 
@@ -33,18 +58,23 @@ The only whitespace character allowed will be `0x20', also known as a horizontal
 
 Tabs will not be used for indentation and should not be used in string literals.
 
+* Binary operators will have spaces between them with the excpetion of `.`.
+* Unary operators will never have a leading space.
+
 ## Declarations
 
 Only one declaration per line, no doubling up.
 
-Horizontal alignment of class variables will not be required.
+Horizontal alignment of variables will not be permitted.
+
+Declarations should be somewhat near where the variable is being used to minimse their scope.
 
 ```java
 private int x; // this is ok
-private Color color; // this is also ok
+private Color colour; // this is also ok
 
 private int   x;      // this is not ok
-private Color color;  // do not do this
+private Color colour;  // do not do this
 ```
 
 Arrays should be declared thusly:
@@ -57,6 +87,17 @@ int[] grid {
 ```
 
 No C style declarations.
+
+## Yoda Conditions
+
+Conditional Statements will use Yoda Declarations.
+
+```java
+if (42 == value) {
+    // Some Magical Stuff
+}
+// Reads like: "If 42 equals the value..."
+```
 
 ## Brackets
 
@@ -84,23 +125,31 @@ Empty blocks may be simplified:
 void (doNothing) {}
 ```
 
+## Break;
+
+W`break;` and `continue;` statements will not be permitted.
+
+## Magic Numbers
+
+Magic numbers will not be permitted.
+
 ## Indentation
 
 4 spaces for indentation will be used throughout, no exceptions.
 
 ## Indent levels
 
-No more than 5 indent levels will be permitted, this is to keep code as clear and as easy to read as possible.
-
-This includes forced indents by class and method declaration.
+No more than 4 indent levels will be permitted inside class methods.
 
 ## Column Limit
 
-100 characters.
+80 character limits are fucking stupid.
+
+Just keep stuff short I guess.. 100 is nicer.
 
 ## Comments
 
-All classes, variables and methods should be JavaDoc commented.
+JavaDoc all of the things.
 
 ## Class, Variable and Method naming
 
@@ -108,7 +157,7 @@ Class names will be in UpperCamelCase.
 
 Variable names will be in lowerCamelCase.
 
-Static variables will be in UpperCamelCase, not block capitals.
+Constant variables will be in FULL_BLOCK_CAPTIALS.
 
 Method names will be lowerCamelCase and start with a logical identifier.
 
