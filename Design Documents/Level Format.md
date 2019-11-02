@@ -7,7 +7,7 @@
   * " " will be an empty spot / entity
 * List all entities available in the level and their locations
   * Player start location
-    * `Player, x, y
+    * Player, x, y
   * Enemy locations, types and direction
     * EnemyType, x, y, direction
   * Goal location
