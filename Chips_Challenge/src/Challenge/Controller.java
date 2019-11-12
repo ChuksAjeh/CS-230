@@ -1,4 +1,4 @@
-package sample;
+package Challenge;
 
 public class Controller {
 }
