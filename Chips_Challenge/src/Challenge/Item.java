@@ -1,4 +1,5 @@
 package Challenge;
 
-public class Item {
+abstract class Item extends Entity {
+
 }

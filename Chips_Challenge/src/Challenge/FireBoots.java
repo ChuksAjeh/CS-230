@@ -1,4 +1,9 @@
 package Challenge;
 
-public class FireBoots {
+public class FireBoots extends Equipment {
+
+    public FireBoots() {
+
+    }
+
 }

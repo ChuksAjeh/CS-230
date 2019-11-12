@@ -1,4 +1,5 @@
 package Challenge;
 
-public class Obstacle {
+abstract class Obstacle extends Cell {
+
 }

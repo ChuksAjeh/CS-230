@@ -1,4 +1,9 @@
 package Challenge;
 
-public class Goal {
+public class Goal extends Cell {
+
+    public Goal() {
+
+    }
+
 }

@@ -1,4 +1,5 @@
 package Challenge;
 
-public class Equipment {
+abstract class Equipment extends Item {
+
 }

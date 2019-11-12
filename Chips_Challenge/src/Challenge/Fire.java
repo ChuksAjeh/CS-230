@@ -1,4 +1,9 @@
 package Challenge;
 
-public class Fire {
+public class Fire extends Obstacle {
+
+    public Fire() {
+
+    }
+
 }

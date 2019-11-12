@@ -1,4 +1,9 @@
 package Challenge;
 
-public class Water {
+public class Water extends Obstacle {
+
+    public Water() {
+
+    }
+
 }

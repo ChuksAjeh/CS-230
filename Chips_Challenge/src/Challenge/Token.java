@@ -1,4 +1,9 @@
 package Challenge;
 
-public class Token {
+public class Token extends Item {
+
+    public Token() {
+
+    }
+
 }

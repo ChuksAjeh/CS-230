@@ -1,4 +1,9 @@
 package Challenge;
 
-public class Flippers {
+public class Flippers extends Equipment{
+
+    public Flippers() {
+
+    }
+
 }

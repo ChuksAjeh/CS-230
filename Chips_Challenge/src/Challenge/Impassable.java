@@ -1,4 +1,9 @@
 package Challenge;
 
-public class Impassable {
+abstract class Impassable extends Cell {
+
+    public Impassable() {
+        this.passable = false;
+    }
+
 }

@@ -1,4 +1,5 @@
 package Challenge;
 
-public class Door {
+abstract class Door extends Obstacle {
+
 }

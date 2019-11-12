@@ -1,4 +1,10 @@
 package Challenge;
 
-public class Entity {
+abstract class Entity {
+
+    private Object type;
+
+    public Object getType() {
+        return this.type;
+    }
 }
