@@ -1,5 +1,8 @@
 package Challenge;
-
+/**
+ * @author ..
+ * @version 1.0
+ */
 abstract class Entity {
 
     private Object type;
