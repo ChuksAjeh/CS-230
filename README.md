@@ -5,7 +5,7 @@
 ```
 Gnomeball        -  George Carpenter
 Samuel-Roach     -  Samuel Roach
-ChucksAjeh       -  Chukwuka Ajeh
+ChuksAjeh       -  Chukwuka Ajeh
 AngeloBalistoy   -  Angelo Balistoy
 mazurcaionut     -  Ioan Mazurka
 blakedavies6899  -  Blake Davies
