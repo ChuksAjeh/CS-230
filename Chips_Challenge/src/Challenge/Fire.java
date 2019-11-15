@@ -4,6 +4,8 @@ public class Fire extends Obstacle {
 
     public Fire() {
 
+        // Test
+
     }
 
 }
