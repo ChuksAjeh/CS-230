@@ -1,0 +1,9 @@
+5, 5,
+#####
+#####
+#####
+#####
+#####
+PLAYER, 2, 2
+
+This file won't run, it is merely a visual aide
