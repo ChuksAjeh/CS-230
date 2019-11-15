@@ -1,5 +1,8 @@
 package Challenge;
-
+/**
+ * @author ..
+ * @version 1.0
+ */
 public class StraightLineEnemy extends Enemy {
 
     public StraightLineEnemy() {

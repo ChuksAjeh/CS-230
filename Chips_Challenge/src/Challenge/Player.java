@@ -1,7 +1,10 @@
 package Challenge;
 
 import java.util.ArrayList;
-
+/**
+ * @author ..
+ * @version 1.0
+ */
 public class Player extends Entity {
 
     private ArrayList<Item> inventory;
