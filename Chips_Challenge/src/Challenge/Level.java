@@ -66,11 +66,11 @@ public class Level {
         setEntityGrid(entityGrid);
     }
 
-    public void setCellGrid(Object[][] cellGrid) {
+    private void setCellGrid(Object[][] cellGrid) {
         this.cellGrid = cellGrid;
     }
 
-    public void setEntityGrid(Object[][] entityGrid) {
+    private void setEntityGrid(Object[][] entityGrid) {
         this.entityGrid = entityGrid;
     }
 
