@@ -7,6 +7,7 @@ public class DumbEnemy extends Enemy {
 
     public DumbEnemy(int direction) {
         super(direction);
+        //This is a dumbenemy
     }
 
     private int nextDirection() {
