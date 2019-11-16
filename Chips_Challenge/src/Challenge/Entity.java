@@ -5,9 +5,17 @@ package Challenge;
  */
 abstract class Entity {
 
-    private Object type;
+    private Type type;
 
-    public Object getType() {
+    public enum Type {
+        PLAYER, ENEMY, ITEM
+    }
+
+    public Type getType() {
         return this.type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

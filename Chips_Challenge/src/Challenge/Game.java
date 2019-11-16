@@ -30,7 +30,7 @@ public class Game {
                 User tempUser = new User();
                 tempUser.setUserName(line.split(",")[0]);
 
-
+                // TODO : Read scores
 
                 users.add(tempUser);
 

@@ -5,8 +5,8 @@ package Challenge;
  */
 public class SmartEnemy extends Enemy {
 
-    public SmartEnemy() {
-
+    public SmartEnemy(int direction) {
+        super(direction);
     }
 
     private int nextDirection() {

@@ -17,8 +17,25 @@ public class Player extends Entity {
         return null;
     }
 
-    public int[] getLocation() {
+    public int[] getLocation(Entity[][] entityGrid) {
+
+        // find player in entity grid
+
+        for (int x = 0 ; x < entityGrid.length ; x++ ) {
+            for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
+
+                if (entityGrid[x][y].getType() == Type.PLAYER) {
+
+                    // Player is found
+                    return new int[] {x, y};
+
+                }
+
+            }
+        }
+
         return null;
+
     }
 
     public void addItem(Item item) {

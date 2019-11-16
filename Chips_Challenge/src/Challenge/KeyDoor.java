@@ -9,8 +9,10 @@ public class KeyDoor extends Door {
 
     private Color colour;
 
-    public KeyDoor(Color colour) {
-        this.colour = colour;
+    public KeyDoor(String colour) {
+
+        // TODO : This thing
+
     }
 
     public Color getColour() {

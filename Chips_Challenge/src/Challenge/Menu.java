@@ -1,17 +1,16 @@
 package Challenge;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
 
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
@@ -24,16 +23,22 @@ import javafx.stage.Stage;
  */
 public class Menu extends Application {
     // The dimensions of the window
-    private static final int WINDOW_WIDTH = 640;
-    private static final int WINDOW_HEIGHT = 480;
+    private static final int WINDOW_WIDTH = 700;
+    private static final int WINDOW_HEIGHT = 500;
 
     // The dimensions of the canvas
-    private static final int CANVAS_WIDTH = 600;
-    private static final int CANVAS_HEIGHT = 400;
+    private static final int CANVAS_WIDTH = 700;
+    private static final int CANVAS_HEIGHT = 500;
 
     // The size of each cell
     private static int GRID_CELL_WIDTH = 50;
     private static int GRID_CELL_HEIGHT = 50;
+
+    private enum Type {
+        GAME, HELP
+    }
+
+    private Type type = Type.GAME;
 
     // The canvas in the GUI. This needs to be a global variable
     // (in this setup) as we need to access it in different methods.
@@ -42,7 +47,9 @@ public class Menu extends Application {
 
     // Loaded images
     Image player;
-    Image dirt;
+    Image ground;
+    Image wall;
+    Image help;
 
     // X and Y coordinate of player
     int playerX = 0;
@@ -57,10 +64,12 @@ public class Menu extends Application {
 
         // Load images
         player = new Image("images/player.png");
-        dirt = new Image("images/dirt.png");
+        ground = new Image("images/dirt.png");
+        wall = new Image("images/brick.png");
+        help = new Image("images/HELP_PAGE.png");
 
         // Register an event handler for key presses
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event));
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this :: processKeyEvent);
 
         // Display the scene on the stage
         drawGame();
@@ -74,50 +83,113 @@ public class Menu extends Application {
      * @param event The key event that was pressed.
      */
     public void processKeyEvent(KeyEvent event) {
-        switch (event.getCode()) {
 
-            case RIGHT:
-                // Right key was pressed. So move the player right by one cell.
-                playerX += 1;
-                break;
-            case LEFT:
-                // Left pls
-                playerX -= 1;
-                break;
-            case UP:
-                playerY -= 1;
-                break;
-            case DOWN:
-                playerY += 1;
-                break;
-            default:
-                // Do nothing
-                break;
+        if (this.type == Type.GAME) {
+
+            switch (event.getCode()) {
+
+                case RIGHT:
+                    // Right key was pressed. So move the player right by one cell.
+                    playerX += 1;
+                    break;
+                case LEFT:
+                    playerX -= 1;
+                    break;
+                case UP:
+                    playerY -= 1;
+                    break;
+                case DOWN:
+                    playerY += 1;
+                    break;
+                case R:
+                    restartGame();
+                    break;
+                case H:
+                    drawHelp();
+                    break;
+                case ESCAPE:
+                    System.out.println("Adios Amigo!");
+                    System.exit(0);
+                default:
+                    // Do nothing
+                    break;
+            }
+
+            if (event.getCode().isArrowKey()) {
+                drawGame();
+            }
+
+        } else if (this.type == Type.HELP) {
+
+            switch (event.getCode()) {
+
+                case ESCAPE:
+                    drawGame();
+                    break;
+
+            }
+
         }
-
-        // Redraw game as the player may have moved.
-        drawGame();
 
         // Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
         event.consume();
     }
 
     /**
+     * Draw some kind of help on screen .. Arrows + R + H etc
+     */
+    public void drawHelp() {
+
+        this.type = Type.HELP;
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        //gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        gc.drawImage(help, 0, 0);
+
+    }
+
+    /**
      * Draw the game on the canvas.
      */
     public void drawGame() {
+
+        this.type = Type.GAME;
+
+        // Build a Level thing
+
+        Level level = new Level();
+
+        try {
+            level.buildLevel("Test_File");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Get the Graphic Context of the canvas. This is what we draw on.
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // Draw row of dirt images
-        // We multiply by the cell width and height to turn a coordinate in our grid into a pixel coordinate.
-        // We draw the row at y value 2.
-        for (int y = 0 ; y < 8 ; y++ ) {
-            for (int x = 0 ; x < 12 ; x++ ) {
-                gc.drawImage(dirt, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+        // Draw Level thing
+        Cell[][] cellGrid = level.getCellGrid();
+
+        for (int x = 0 ; x < cellGrid.length ; x++ ) {
+            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
+
+                switch (cellGrid[y][x].getType()) {
+                    case GROUND:
+                        gc.drawImage(ground, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+                        break;
+                    case WALL:
+                        gc.drawImage(wall, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }
 
@@ -136,16 +208,6 @@ public class Menu extends Application {
     }
 
     /**
-     * Move the player to roughly the center of the grid.
-     */
-    public void movePlayerToCenter() {
-        // We just move the player to cell (2, 2)
-        playerX = 2;
-        playerY = 2;
-        drawGame();
-    }
-
-    /**
      * Create the GUI.
      * @return The panel that contains the created GUI.
      */
@@ -157,27 +219,20 @@ public class Menu extends Application {
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         root.setCenter(canvas);
 
-        // Create a toolbar with some nice padding and spacing
-        HBox toolbar = new HBox();
-        toolbar.setSpacing(10);
-        toolbar.setPadding(new Insets(10, 10, 10, 10));
-        root.setTop(toolbar);
-
-        // Create toolbar content
-        Button restartButton = new Button("Restart");
-        toolbar.getChildren().add(restartButton);
-
-        Button movePlayerToCenterButton = new Button("Center");
-        toolbar.getChildren().add(movePlayerToCenterButton);
-
-        // Add button event handlers
-        restartButton.setOnAction(e -> {
-            restartGame();
-        });
-
-        movePlayerToCenterButton.setOnAction(e -> {
-            movePlayerToCenter();
-        });
+//        Create a toolbar with some nice padding and spacing
+//        HBox toolbar = new HBox();
+//        toolbar.setSpacing(10);
+//        toolbar.setPadding(new Insets(10, 10, 10, 10));
+//        root.setTop(toolbar);
+//
+//        Create toolbar content
+//        Button restartButton = new Button("Restart");
+//        toolbar.getChildren().add(restartButton);
+//
+//        Add button event handlers
+//        restartButton.setOnAction(e -> {
+//            restartGame();
+//        });
 
         return root;
     }

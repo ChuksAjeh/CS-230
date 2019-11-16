@@ -9,7 +9,9 @@ public class Key extends Item {
 
     private Color colour;
 
-    public Key() {
+    public Key(String colour) {
+
+        // TODO : This thing
 
     }
 

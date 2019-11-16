@@ -3,10 +3,10 @@ package Challenge;
  * @author ..
  * @version 1.0
  */
-public class StraightLineEnemy extends Enemy {
+public class LineEnemy extends Enemy {
 
-    public StraightLineEnemy() {
-
+    public LineEnemy(int direction) {
+        super(direction);
     }
 
     private int changeDirection() {
