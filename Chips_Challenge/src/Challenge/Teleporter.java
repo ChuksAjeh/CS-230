@@ -9,6 +9,14 @@ public class Teleporter extends Impassable {
 
     public Teleporter() {
 
+        // Nothing
+
+    }
+
+    public Teleporter(Teleporter pair) {
+
+        this.setPair(pair);
+
     }
 
     public void setPair(Teleporter pair) {

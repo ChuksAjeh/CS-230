@@ -8,15 +8,19 @@ package Challenge;
  */
 abstract class Cell {
 
-    private Object type;
+    private Type type;
     protected boolean passable;
 
-    private void setType() {
-
+    public enum Type {
+        GROUND, WALL
     }
 
-    private Object getType() {
+    public Type getType() {
         return this.type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     private void setPassable() {

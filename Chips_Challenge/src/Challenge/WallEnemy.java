@@ -5,8 +5,8 @@ package Challenge;
  */
 public class WallEnemy extends Enemy {
 
-    public WallEnemy() {
-
+    public WallEnemy(int direction) {
+        super(direction);
     }
 
     private int nextDirection() {
