@@ -1,4 +1,7 @@
 package Challenge;
+
+import javafx.scene.image.Image;
+
 /**
  * @author ..
  * @version 1.0
@@ -6,7 +9,7 @@ package Challenge;
 public class Token extends Item {
 
     public Token() {
-        super(EntityType.TOKEN);
+        super(EntityType.TOKEN, new Image("images/ENTITY_TOKEN.png"));
     }
 
 }

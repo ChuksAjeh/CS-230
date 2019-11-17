@@ -1,4 +1,7 @@
 package Challenge;
+
+import javafx.scene.image.Image;
+
 /**
  * @author ..
  * @version 1.0
@@ -8,11 +11,11 @@ public class Teleporter extends Impassable {
     private Teleporter pair;
 
     public Teleporter() {
-        super(CellType.TELEPORTER);
+        super(CellType.TELEPORTER, new Image(""));
     }
 
     public Teleporter(Teleporter pair) {
-        super(CellType.TELEPORTER);
+        super(CellType.TELEPORTER, new Image(""));
         this.pair = pair;
     }
 

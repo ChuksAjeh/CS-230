@@ -1,4 +1,7 @@
 package Challenge;
+
+import javafx.scene.image.Image;
+
 /**
  * @author ..
  * @version 1.0
@@ -6,6 +9,6 @@ package Challenge;
 public class Wall extends Impassable {
 
     public Wall() {
-        super(CellType.WALL);
+        super(CellType.WALL, new Image("images/CELL_WALL.png"));
     }
 }

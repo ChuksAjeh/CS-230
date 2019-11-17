@@ -2,9 +2,12 @@ package Challenge;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -23,16 +26,16 @@ public class Game extends Application {
     private String userFile = "users.txt";
 
     // The dimensions of the window
-    private static final int WINDOW_WIDTH = 700;
-    private static final int WINDOW_HEIGHT = 500;
+    private static final int WINDOW_WIDTH = 1920;
+    private static final int WINDOW_HEIGHT = 1080;
 
     // The dimensions of the canvas
-    private static final int CANVAS_WIDTH = 700;
-    private static final int CANVAS_HEIGHT = 500;
+    private static final int CANVAS_WIDTH = 1920;
+    private static final int CANVAS_HEIGHT = 1080;
 
     // The size of each cell
-    private static int GRID_CELL_WIDTH = 50;
-    private static int GRID_CELL_HEIGHT = 50;
+    private static int GRID_CELL_WIDTH = 120;
+    private static int GRID_CELL_HEIGHT = 120;
 
     private enum Type {
         GAME, HELP
@@ -45,22 +48,15 @@ public class Game extends Application {
     // We could use FXML to place code in the controller instead.
     private Canvas canvas;
 
-    // Loaded images
-    Image entityPlayer;
+    private Image help;
 
-    Image cellGround;
-    Image cellWall;
-    Image cellGoal;
-    Image cellWater;
-    Image cellFire;
-    Image cellKeyDoor;
-    Image cellTokenDoor;
+    private Cell[][] cellGrid;
+    private Entity[][] entityGrid;
 
-    Image help;
 
     // For testing ONLY
-    Player player = new Player();
-    Entity[][] entityGrid;
+    Player player = new Player(0);
+    Lumberjack jack = new Lumberjack();
 
     public Level makeLevel(String levelName) {
 
@@ -84,18 +80,7 @@ public class Game extends Application {
         // Create a scene from the GUI
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        // Load images
-        entityPlayer = new Image("images/ENTITY_PLAYER.png");
-
-        cellGround = new Image("images/CELL_GROUND.png");
-        cellWall = new Image("images/CELL_WALL.png");
-        cellGoal = new Image("images/CELL_GOAL.png");
-        cellFire = new Image("images/CELL_FIRE.png");
-        cellWater = new Image("images/CELL_WATER.png");
-        cellKeyDoor = new Image("images/CELL_KEYDOOR.png");
-        cellTokenDoor = new Image("images/CELL_TOKENDOOR.png");
-
-        help = new Image("images/HELP_PAGE.png");
+        help = new Image("images/HELP_PAGE.png", CANVAS_WIDTH, CANVAS_HEIGHT, true, false);
 
         Level level = makeLevel("Test_File");
 
@@ -109,52 +94,29 @@ public class Game extends Application {
         primaryStage.show();
     }
 
-    public void processKeyEvent(KeyEvent event, Level level, Player player, Entity[][] entityGrid) {
+    private void processKeyEvent(KeyEvent event, Level level, Player player, Entity[][] entityGrid) {
 
         if (this.type == Game.Type.GAME) {
 
             Entity[][] newGrid;
 
-            switch (event.getCode()) {
-
-                case UP:
-
-                    newGrid = player.move(0, entityGrid);
-                    level.setEntityGrid(newGrid);
-
-                    break;
-
-                case RIGHT:
-                    // Right key was pressed. So move the player right by one cell.
-
-                    newGrid = player.move(1, entityGrid);
-                    level.setEntityGrid(newGrid);
-
-                    break;
-
-                case DOWN:
-
-                    newGrid = player.move(2, entityGrid);
-                    level.setEntityGrid(newGrid);
-
-                    break;
-
-                case LEFT:
-
-                    newGrid = player.move(3, entityGrid);
-                    level.setEntityGrid(newGrid);
-
-                    break;
-
-                case H:
-                    drawHelp();
-                    break;
-                case ESCAPE:
-                    System.out.println("Adios Amigo!");
-                    System.exit(0);
-                default:
-                    // Do nothing
-                    break;
+            if (KeyCode.UP == event.getCode()) {
+                newGrid = player.move(0, entityGrid);
+                level.setEntityGrid(newGrid);
+            } else if (KeyCode.RIGHT == event.getCode()) {
+                newGrid = player.move(1, entityGrid);
+                level.setEntityGrid(newGrid);
+            } else if (KeyCode.DOWN == event.getCode()) {
+                newGrid = player.move(2, entityGrid);
+                level.setEntityGrid(newGrid);
+            } else if (KeyCode.LEFT == event.getCode()) {
+                newGrid = player.move(3, entityGrid);
+                level.setEntityGrid(newGrid);
+            } else if (KeyCode.H == event.getCode()) {
+                drawHelp();
+            } else if (KeyCode.ESCAPE == event.getCode()) {
+                System.out.println("Adios Amigo!");
+                System.exit(0);
             }
 
             if (event.getCode().isArrowKey()) {
@@ -163,12 +125,8 @@ public class Game extends Application {
 
         } else if (this.type == Game.Type.HELP) {
 
-            switch (event.getCode()) {
-
-                case ESCAPE:
-                    drawGame(level);
-                    break;
-
+            if (KeyCode.ESCAPE == event.getCode()) {
+                drawGame(level);
             }
 
         }
@@ -177,7 +135,7 @@ public class Game extends Application {
         event.consume();
     }
 
-    public void drawHelp() {
+    private void drawHelp() {
 
         this.type = Game.Type.HELP;
 
@@ -189,13 +147,12 @@ public class Game extends Application {
 
     }
 
-    public void drawGame(Level level) {
+    private void drawGame(Level level) {
 
         this.type = Game.Type.GAME;
 
-        // Draw Level thing
-        assert level != null;
-        Cell[][] cellGrid = level.getCellGrid();
+        // Because it's logical
+        assert null != level;
 
         // Get the Graphic Context of the canvas. This is what we draw on.
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -203,62 +160,58 @@ public class Game extends Application {
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+        // Get, Render and Log Cells
+        cellGrid = level.getCellGrid();
+        this.renderCellGrid(gc, cellGrid);
+//        jack.logCellGrid(cellGrid);
+
+        // Get, Render and Log Entitys
+        entityGrid = level.getEntityGrid();
+        this.renderEntityGrid(gc, entityGrid);
+//        jack.logEntityGrid(entityGrid);
+
+        // Log Player
+        jack.logPlayerLoc(player, entityGrid);
+
+    }
+
+    private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid) {
+
         for (int x = 0 ; x < cellGrid.length ; x++ ) {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
-//                System.out.println(cellGrid[y][x].getCellType());
+                Cell cell = cellGrid[x][y];
+                Image sprite = resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
-                switch (cellGrid[y][x].getCellType()) {
-                    case GROUND:
-                        gc.drawImage(cellGround, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                        break;
-                    case WALL:
-                        gc.drawImage(cellWall, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                        break;
-                    case GOAL:
-                        gc.drawImage(cellGoal, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                        break;
-                    case FIRE:
-                        gc.drawImage(cellFire, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                        break;
-                    case WATER:
-                        gc.drawImage(cellWater, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                        break;
-                    case KEY_DOOR:
-                        gc.drawImage(cellKeyDoor, x * GRID_CELL_WIDTH, y * GRID_CELL_WIDTH);
-                        break;
-                    case TOKEN_DOOR:
-                        gc.drawImage(cellTokenDoor, x * GRID_CELL_WIDTH, y * GRID_CELL_WIDTH);
-                        break;
-                    default:
-                        break;
-                }
+                gc.drawImage(sprite, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
 
             }
         }
 
-        entityGrid = level.getEntityGrid();
+    }
 
-//        for (Entity[] row : entityGrid) {
-//            for (Entity e : row) {
-//
-//                if (null == e) {
-//                    System.out.println("NULL");
-//                } else {
-//                    System.out.println(e.toString());
-//                }
-//            }
-//        }
+    private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid) {
 
-        // TODO : RENDER ALL ENTITIES - GNOME
+        for (int x = 0 ; x < entityGrid.length ; x++ ) {
+            for (int y = 0; y < entityGrid[x].length; y++) {
 
-        int[] playerLoc = player.getLocation(entityGrid);
+                if (null != entityGrid[x][y]) {
 
-        System.out.println("Player x : " + playerLoc[0]);
-        System.out.println("Player y : " + playerLoc[1]);
+                    Entity entity = entityGrid[x][y];
+                    Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
-        // Draw player at current location
-        gc.drawImage(entityPlayer, playerLoc[0] * GRID_CELL_WIDTH, playerLoc[1] * GRID_CELL_HEIGHT);
+                    // TODO : Enemy rotation - Gnome
+
+                    if (Entity.EntityType.PLAYER == entity.getEntityType()) {
+                        gc.drawImage(rotate(sprite, player.getDirection()), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+                    } else {
+                        gc.drawImage(sprite, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+                    }
+
+                }
+
+            }
+        }
     }
 
 //    public void restartGame() {
@@ -294,13 +247,38 @@ public class Game extends Application {
         return root;
     }
 
+    private Image resize(Image image, int height, int width) {
+
+        // Read Image
+        ImageView imageView = new ImageView(image);
+
+        // Resize
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
+
+        // Capture it? I think
+        SnapshotParameters param = new SnapshotParameters();
+
+        return imageView.snapshot(param, null);
+
+    }
+
+    private Image rotate(Image image, int direction) {
+
+        // Read Image
+        ImageView imageView = new ImageView(image);
+
+        // Rotate
+        imageView.setRotate(90 * direction);
+
+        // Capture it? I think
+        SnapshotParameters param = new SnapshotParameters();
+
+        return imageView.snapshot(param, null);
+    }
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public Game() {
-
     }
 
     public ArrayList<User> loadUsers() {

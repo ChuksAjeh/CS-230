@@ -1,5 +1,8 @@
 package Challenge;
 //#TODO Link enemy x and y to the actual grid. i.e. enemyX = 1 and enemy Y = 1 corresponds to cellGrid[1][1]
+
+import javafx.scene.image.Image;
+
 /**
  * Enemies are movable hazards designed to end the level upon contact with the player. Each enemy has its own unique
  * way of moving to the player. Again this class shouldn't be instantiated, instead, its sub-classes should be.
@@ -32,8 +35,8 @@ abstract class Enemy extends Entity {
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
-    public Enemy(EntityType entityType, int direction) {
-        super(entityType);
+    public Enemy(EntityType entityType, Image image, int direction) {
+        super(entityType, image);
         this.direction = direction;
     }
 
