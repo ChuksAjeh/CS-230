@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class Flippers extends Equipment {
 
     public Flippers() {
-        super(EntityType.FLIPPERS, new Image("images/ENTITY_FLIPPERS.png"));
+        super(EntityType.FLIPPERS, true, new Image("images/ENTITY_FLIPPERS.png"));
     }
 
 }

@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
  */
 abstract class Item extends Entity {
 
-    public Item(EntityType entityType, Image image) {
-        super(entityType, image);
+    public Item(EntityType entityType, boolean collectible, Image image) {
+        super(entityType, collectible, image);
     }
 }
