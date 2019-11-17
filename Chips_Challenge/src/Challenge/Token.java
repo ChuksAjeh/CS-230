@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class Token extends Item {
 
     public Token() {
-        super(EntityType.TOKEN, new Image("images/ENTITY_TOKEN.png"));
+        super(EntityType.TOKEN, true, new Image("images/ENTITY_TOKEN.png"));
     }
 
 }

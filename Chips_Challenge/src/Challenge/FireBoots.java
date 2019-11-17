@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class FireBoots extends Equipment {
 
     public FireBoots() {
-        super(EntityType.FIRE_BOOTS, new Image("images/ENTITY_FIRE_BOOTS.png"));
+        super(EntityType.FIRE_BOOTS, true, new Image("images/ENTITY_FIRE_BOOTS.png"));
     }
 
 }

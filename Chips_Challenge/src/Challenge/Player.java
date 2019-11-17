@@ -17,97 +17,71 @@ public class Player extends Entity {
     private int direction;
 
     public Player(int direction) {
-        super(EntityType.PLAYER, new Image("images/ENTITY_PLAYER.png"));
+        super(EntityType.PLAYER, false, new Image("images/ENTITY_PLAYER.png"));
         this.inventory = new ArrayList<>();
         this.direction = direction;
     }
 
-    public Entity[][] move(int direction, Entity[][] entityGrid) {
+    private Entity[][] movePlayerEntity(int x, int y, int newX, int newY, Entity[][] entityGrid) {
 
         int height = entityGrid.length - 1;
         int width = entityGrid[0].length - 1;
 
-        // TODO : Error checking on moving out of the grid
+        if (newX < 0 || newY < 0 || newX > width || newY > height) {
+            jack.log(1, "Player out of bounds");
+            return entityGrid;
+        } else {
+
+            Entity entity = entityGrid[newX][newY];
+
+            if (null != entity && entity.isCollectible()) {
+
+                jack.log("FOUND COLLECTIBLE");
+
+                this.addItem((Item) entityGrid[newX][newY]);
+                jack.log(this.getInventory().toString());
+
+            } else {
+
+                // Pretty sure this is an Enemy => Death!
+
+            }
+
+            // Move player entity
+            entityGrid[newX][newY] = this;
+            entityGrid[x][y] = null;
+
+            return entityGrid;
+        }
+
+    }
+
+    public Entity[][] move(int direction, Entity[][] entityGrid) {
 
         int[] currentLoc = this.getLocation(entityGrid);
 
         int x = currentLoc[0];
         int y = currentLoc[1];
 
-        int newX = x;
-        int newY = y;
-
         if (0 == direction) {
 
-            newY = y - 1;
-
-            if (0 > newY) {
-                jack.log(1, "Player out of bounds");
-                return entityGrid;
-            } else {
-
-                this.direction = direction;
-
-                // Move player entity
-                entityGrid[x][newY] = this;
-                entityGrid[x][y] = null;
-
-                return entityGrid;
-            }
+            this.direction = direction;
+            return movePlayerEntity(x, y, x, y-1, entityGrid);
 
         } else if (1 == direction) {
 
-            newX = x + 1;
-
-            if (width < newX) {
-                jack.log(1, "Player out of bounds");
-                return entityGrid;
-            } else {
-
-                this.direction = direction;
-
-                // Move player entity
-                entityGrid[newX][y] = this;
-                entityGrid[x][y] = null;
-
-                return entityGrid;
-            }
+            this.direction = direction;
+            return movePlayerEntity(x, y, x+1, y, entityGrid);
 
         } else if (2 == direction) {
 
-            newY = y + 1;
-
-            if (height < newY) {
-                jack.log(1, "Player out of bounds");
-                return entityGrid;
-            } else {
-
-                this.direction = direction;
-
-                // Move player entity
-                entityGrid[x][newY] = this;
-                entityGrid[x][y] = null;
-
-                return entityGrid;
-            }
+            this.direction = direction;
+            return movePlayerEntity(x, y, x, y+1, entityGrid);
 
         } else if (3 == direction) {
 
-            newX = x - 1;
-
-            if (0 > newX) {
-                jack.log(1, "Player out of bounds");
-                return entityGrid;
-            } else {
-
-                this.direction = direction;
-
-                // Move player entity
-                entityGrid[newX][y] = this;
-                entityGrid[x][y] = null;
-
-                return entityGrid;
-            }
+            this.direction = direction;
+            return movePlayerEntity(x, y, x-1, y, entityGrid);
 
         }
 
@@ -125,12 +99,11 @@ public class Player extends Entity {
 
                 if (entity != null) {
 
-//                    System.out.println(entity);
-
                     if (entity.getEntityType() == EntityType.PLAYER) {
                         // Player is found
                         return new int[] {x, y};
                     }
+
                 }
             }
         }
@@ -141,6 +114,10 @@ public class Player extends Entity {
 
     public int getDirection() {
         return direction;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventory;
     }
 
     public void addItem(Item item) {
