@@ -6,7 +6,6 @@ package Challenge;
 public class Goal extends Cell {
 
     public Goal() {
-
+        super(CellType.GOAL);
     }
-
 }

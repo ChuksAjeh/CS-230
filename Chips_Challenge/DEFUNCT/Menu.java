@@ -46,7 +46,7 @@ public class Menu extends Application {
     private Canvas canvas;
 
     // Loaded images
-    Image player;
+    Image playerSprite;
     Image ground;
     Image wall;
     Image help;
@@ -54,6 +54,10 @@ public class Menu extends Application {
     // X and Y coordinate of player
     int playerX = 0;
     int playerY = 0;
+
+    // For testing ONLY
+    Player player = new Player();
+    Entity[][] entityGrid;
 
     public void start(Stage primaryStage) {
         // Build the GUI
@@ -63,13 +67,13 @@ public class Menu extends Application {
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         // Load images
-        player = new Image("images/player.png");
-        ground = new Image("images/dirt.png");
-        wall = new Image("images/brick.png");
+        playerSprite = new Image("images/ENTITY_PLAYER.png");
+        ground = new Image("images/CELL_GROUND.png");
+        wall = new Image("images/CELL_WALL.png");
         help = new Image("images/HELP_PAGE.png");
 
         // Register an event handler for key presses
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, this :: processKeyEvent);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event, player, entityGrid));
 
         // Display the scene on the stage
         drawGame();
@@ -82,7 +86,7 @@ public class Menu extends Application {
      * Process a key event due to a key being pressed, e.g., to the player.
      * @param event The key event that was pressed.
      */
-    public void processKeyEvent(KeyEvent event) {
+    public void processKeyEvent(KeyEvent event, Player player, Entity[][] entityGrid) {
 
         if (this.type == Type.GAME) {
 
@@ -90,6 +94,9 @@ public class Menu extends Application {
 
                 case RIGHT:
                     // Right key was pressed. So move the player right by one cell.
+
+                    player.move(1, entityGrid);
+
                     playerX += 1;
                     break;
                 case LEFT:
@@ -158,11 +165,10 @@ public class Menu extends Application {
         this.type = Type.GAME;
 
         // Build a Level thing
-
-        Level level = new Level();
+        Level level = null;
 
         try {
-            level.buildLevel("Test_File");
+            level = new Level("Test_File");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -193,8 +199,26 @@ public class Menu extends Application {
             }
         }
 
+        entityGrid = level.getEntityGrid();
+
+//        for (Entity[] row : entityGrid) {
+//            for (Entity e : row) {
+//
+//                if (null == e) {
+//                    System.out.println("NULL");
+//                } else {
+//                    System.out.println(e.toString());
+//                }
+//            }
+//        }
+
+        int[] playerLoc = player.getLocation(entityGrid);
+
+        System.out.println("Player x : " + playerLoc[0]);
+        System.out.println("Player y : " + playerLoc[1]);
+
         // Draw player at current location
-        gc.drawImage(player, playerX * GRID_CELL_WIDTH, playerY * GRID_CELL_HEIGHT);
+        gc.drawImage(playerSprite, playerLoc[0] * GRID_CELL_WIDTH, playerLoc[1] * GRID_CELL_HEIGHT);
     }
 
     /**

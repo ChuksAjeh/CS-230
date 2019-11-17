@@ -6,7 +6,7 @@ package Challenge;
 public class WallEnemy extends Enemy {
 
     public WallEnemy(int direction) {
-        super(direction);
+        super(EntityType.WALL_ENEMY, direction);
     }
 
     private int nextDirection() {

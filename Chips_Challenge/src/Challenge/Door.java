@@ -6,4 +6,8 @@ package Challenge;
  */
 abstract class Door extends Obstacle {
 
+    public Door(CellType cellType) {
+        super(cellType);
+    }
+
 }

@@ -9,10 +9,9 @@ public class KeyDoor extends Door {
 
     private Color colour;
 
-    public KeyDoor(String colour) {
-
-        // TODO : This thing
-
+    public KeyDoor(Color colour) {
+        super(CellType.KEY_DOOR);
+        this.colour = colour;
     }
 
     public Color getColour() {

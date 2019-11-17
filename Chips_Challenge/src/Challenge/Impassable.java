@@ -5,8 +5,7 @@ package Challenge;
  */
 abstract class Impassable extends Cell {
 
-    public Impassable() {
-        this.passable = false;
+    public Impassable(CellType cellType) {
+        super(cellType);
     }
-
 }

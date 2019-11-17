@@ -6,7 +6,7 @@ package Challenge;
 public class DumbEnemy extends Enemy {
 
     public DumbEnemy(int direction) {
-        super(direction);
+        super(EntityType.DUMB_ENEMY, direction);
         //This is a dumbenemy
     }
 

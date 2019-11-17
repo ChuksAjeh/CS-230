@@ -8,15 +8,12 @@ public class Teleporter extends Impassable {
     private Teleporter pair;
 
     public Teleporter() {
-
-        // Nothing
-
+        super(CellType.TELEPORTER);
     }
 
     public Teleporter(Teleporter pair) {
-
-        this.setPair(pair);
-
+        super(CellType.TELEPORTER);
+        this.pair = pair;
     }
 
     public void setPair(Teleporter pair) {

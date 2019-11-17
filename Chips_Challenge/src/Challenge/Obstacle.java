@@ -5,4 +5,8 @@ package Challenge;
  */
 abstract class Obstacle extends Cell {
 
+    public Obstacle(CellType cellType) {
+        super(cellType);
+    }
+
 }

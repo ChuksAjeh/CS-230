@@ -6,7 +6,7 @@ package Challenge;
 public class LineEnemy extends Enemy {
 
     public LineEnemy(int direction) {
-        super(direction);
+        super(EntityType.LINE_ENEMY, direction);
     }
 
     private int changeDirection() {
