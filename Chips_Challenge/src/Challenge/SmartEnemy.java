@@ -6,7 +6,7 @@ package Challenge;
 public class SmartEnemy extends Enemy {
 
     public SmartEnemy(int direction) {
-        super(direction);
+        super(EntityType.SMART_ENEMY, direction);
     }
 
     private int nextDirection() {

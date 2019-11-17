@@ -13,7 +13,9 @@ public class Level {
 
     Scanner reader;
 
-    public Level() {
+    public Level(String levelName) throws FileNotFoundException {
+
+        buildLevel(levelName);
 
     }
 
@@ -22,6 +24,7 @@ public class Level {
     }
 
     public void buildLevel(String level) throws FileNotFoundException {
+        // This WILL be private in the final version
 
         reader = new Scanner(new File("Level_Files/" + level + ".txt"));
         reader.useDelimiter(",");
@@ -29,8 +32,10 @@ public class Level {
         int x = reader.nextInt();
         int y = reader.nextInt();
 
-        Cell[][] cellGrid = new Cell[x][y];
-        Entity[][] entityGrid = new Entity[x][y];
+        // The thing we return
+        Cell[][] cellGrid;
+
+        cellGrid = new Cell[x][y];
 
         reader.nextLine();
 
@@ -53,137 +58,112 @@ public class Level {
             }
         }
 
-        setCellGrid(cellGrid);
+        Entity[][] entityGrid;
 
-        int dir;
-        String colour;
-        int req;
-        int xTo;
-        int yTo;
+        int dir; // Direction used for Enemies only
+        int req; // Requirement value used for TokenDoors
+
+        // Red, Green and Blue components for Keys and KeyDoors
+        int red;
+        int green;
+        int blue;
+
+        entityGrid = new Entity[x][y];
 
         while (reader.hasNextLine()) {
 
-            // This code is incredibly bad, I will refactor it
+            String[] line = reader.nextLine().toUpperCase().split(",");
 
-            String thingName = reader.next();
+            String name = line[0];
 
-            if ("PLAYER".equalsIgnoreCase(thingName)) {
+            x = Integer.parseInt(line[1]);
+            y = Integer.parseInt(line[2]);
 
-                x = reader.nextInt();
-                y = reader.nextInt();
-                entityGrid[x][y] = new Player();
+            if (name.contains("ENEMY")) {
 
-            } else if ("SMART_ENEMY".equalsIgnoreCase(thingName)) {
+                dir = Integer.parseInt(line[3]);
 
-                x = reader.nextInt();
-                y = reader.nextInt();
-                dir = reader.nextInt();
-                entityGrid[x][y] = new SmartEnemy(dir);
+                switch (name) {
+                    case "SMART_ENEMY":
+                        entityGrid[x][y] = new SmartEnemy(dir);
+                        break;
+                    case "DUMB_ENEMY":
+                        entityGrid[x][y] = new DumbEnemy(dir);
+                        break;
+                    case "WALL_ENEMY":
+                        entityGrid[x][y] = new WallEnemy(dir);
+                        break;
+                    case "LINE_ENEMY":
+                        entityGrid[x][y] = new LineEnemy(dir);
+                        break;
+                }
+            }
 
-            } else if ("DUMB_ENEMY".equalsIgnoreCase(thingName)) {
+            if (name.contains("KEY")) {
 
-                x = reader.nextInt();
-                y = reader.nextInt();
-                dir = reader.nextInt();
-                entityGrid[x][y] = new DumbEnemy(dir);
+                red = Integer.parseInt(line[3]);
+                green = Integer.parseInt(line[4]);
+                blue = Integer.parseInt(line[5]);
 
-            } else if ("WALL_ENEMY".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                dir = reader.nextInt();
-                entityGrid[x][y] = new WallEnemy(dir);
-
-            } else if ("LINE_ENEMY".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                dir = reader.nextInt();
-                entityGrid[x][y] = new LineEnemy(dir);
-
-            } else if ("GOAL".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                cellGrid[x][y] = new Goal();
-
-            } else if ("KEY_DOOR".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                colour = reader.next();
-                cellGrid[x][y] = new KeyDoor(colour);
-
-            } else if ("TOKEN_DOOR".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                req = reader.nextInt();
-                cellGrid[x][y] = new TokenDoor(req);
-
-            } else if ("KEY".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                colour = reader.next();
-                entityGrid[x][y] = new Key(colour);
-
-            } else if ("TOKEN".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                entityGrid[x][y] = new Token();
-
-            } else if ("FIRE".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                cellGrid[x][y] = new Fire();
-
-            } else if ("WATER".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                cellGrid[x][y] = new Water();
-
-            } else if ("FIRE_BOOTS".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                entityGrid[x][y] = new FireBoots();
-
-            } else if ("FLIPPERS".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                entityGrid[x][y] = new Flippers();
-
-            } else if ("TELEPORTER".equalsIgnoreCase(thingName)) {
-
-                x = reader.nextInt();
-                y = reader.nextInt();
-                xTo = reader.nextInt();
-                yTo = reader.nextInt();
-
-                // This might not work, I have not tested it yet
-
-                cellGrid[x][y] = new Teleporter();
-                cellGrid[xTo][yTo] = new Teleporter((Teleporter) cellGrid[x][y]);
+                if ("KEY_DOOR".equals(name)) {
+                    cellGrid[x][y] = new KeyDoor(Color.rgb(red, green, blue));
+                } else if ("KEY".equals(name)) {
+                    entityGrid[x][y] = new Key(Color.rgb(red, green, blue));
+                }
 
             }
 
-            // Todo : the rest of these
+            if ("TOKEN".equals(name)) {
+                entityGrid[x][y] = new Token();
+            } else if ("TOKEN_DOOR".equals(name)) {
+                req = Integer.parseInt(line[3]);
+                cellGrid[x][y] = new TokenDoor(req);
+            }
+
+
+            if ("PLAYER".equals(name)) {
+                entityGrid[x][y] = new Player();
+            } else if ("GOAL".equals(name)) {
+                cellGrid[x][y] = new Goal();
+            } else if ("FIRE".equals(name)) {
+                cellGrid[x][y] = new Fire();
+            } else if ("WATER".equals(name)) {
+                cellGrid[x][y] = new Water();
+            } else if ("FIRE_BOOTS".equals(name)) {
+                entityGrid[x][y] = new FireBoots();
+            } else if ("FLIPPERS".equals(name)) {
+                entityGrid[x][y] = new Flippers();
+            } else if ("TELEPORTER".equals(name)) {
+
+                // This might not work, I have not tested it yet
+                Teleporter temp = new Teleporter();
+                cellGrid[x][y] = temp;
+
+                x = Integer.parseInt(line[3]);
+                y = Integer.parseInt(line[4]);
+
+                cellGrid[x][y] = new Teleporter(temp);
+            }
 
         }
 
-        setEntityGrid(entityGrid);
+        this.setCellGrid(cellGrid);
+        this.setEntityGrid(entityGrid);
     }
 
-    private void setCellGrid(Cell[][] cellGrid) {
+    public void updateCellGrid(Cell[][] cellGrid) {
         this.cellGrid = cellGrid;
     }
 
-    private void setEntityGrid(Entity[][] entityGrid) {
+    public void updateEntityGrid(Entity[][] entityGrid) {
+        this.entityGrid = entityGrid;
+    }
+
+    public void setCellGrid(Cell[][] cellGrid) {
+        this.cellGrid = cellGrid;
+    }
+
+    public void setEntityGrid(Entity[][] entityGrid) {
         this.entityGrid = entityGrid;
     }
 

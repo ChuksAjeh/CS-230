@@ -9,7 +9,8 @@ public class Key extends Item {
 
     private Color colour;
 
-    public Key(String colour) {
+    public Key(Color colour) {
+        super(EntityType.KEY);
 
         // TODO : This thing
 

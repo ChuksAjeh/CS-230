@@ -6,7 +6,6 @@ package Challenge;
 public class Water extends Obstacle {
 
     public Water() {
-
+        super(CellType.WATER);
     }
-
 }

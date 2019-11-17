@@ -6,7 +6,7 @@ package Challenge;
 public class Token extends Item {
 
     public Token() {
-
+        super(EntityType.TOKEN);
     }
 
 }

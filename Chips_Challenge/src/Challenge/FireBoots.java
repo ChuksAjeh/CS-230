@@ -6,7 +6,7 @@ package Challenge;
 public class FireBoots extends Equipment {
 
     public FireBoots() {
-
+        super(EntityType.FIRE_BOOTS);
     }
 
 }

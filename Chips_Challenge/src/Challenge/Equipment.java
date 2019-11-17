@@ -6,4 +6,7 @@ package Challenge;
  */
 abstract class Equipment extends Item {
 
+    public Equipment(EntityType entityType) {
+        super(entityType);
+    }
 }

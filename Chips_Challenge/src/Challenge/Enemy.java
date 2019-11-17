@@ -17,10 +17,12 @@ abstract class Enemy extends Entity {
      * The enemy X's position relative to top left cell == 0
      */
     private int enemyX;
+
     /**
      * The enemy Y's position relative to top left cell == 0
      */
     private int enemyY;
+
     /**
      * The cell grid the enemy uses
      */
@@ -30,7 +32,8 @@ abstract class Enemy extends Entity {
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
-    public Enemy(int direction) {
+    public Enemy(EntityType entityType, int direction) {
+        super(entityType);
         this.direction = direction;
     }
 
@@ -39,25 +42,26 @@ abstract class Enemy extends Entity {
      * @param direction
      * @return
      */
-    protected int[] move(int direction) {
-        if (direction == 0) {
+    protected int[] move(int direction) throws Exception {
+
+        if (0 == direction) {
+            // UP
             this.enemyY += 1;
-        }
-
-        else if (direction == 1) {
+        } else if (1 == direction) {
+            // RIGHT
             this.enemyX += 1;
-        }
-
-        else if (direction == 2) {
+        } else if (2 == direction) {
+            // DOWN
             this.enemyY -= 1;
+        } else if (3 == direction) {
+            // LEFT
+            this.enemyX -= 1;
+
+        } else {
+            //throw exception (custom one like OutOfDirectionRange?
+            throw new Exception("Direction out of range!");
         }
 
-        else if (direction == 3) {
-            this.enemyX -= 1;
-        }
-        else {
-            //throw exception (custom one like OutOfDirectionRange?
-        }
         return null;
     }
 
@@ -70,7 +74,7 @@ abstract class Enemy extends Entity {
     }
 
     /**
-     * Gets the player postion.
+     * Gets the player position.
      * @return player position.
      */
     public int[] getPlayerPosition() {

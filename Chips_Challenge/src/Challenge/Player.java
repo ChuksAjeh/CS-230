@@ -10,10 +10,51 @@ public class Player extends Entity {
     private ArrayList<Item> inventory;
 
     public Player() {
+        super(EntityType.PLAYER);
         this.inventory = new ArrayList<>();
     }
 
-    public int[] move() {
+    public Entity[][] move(int direction, Entity[][] entityGrid) {
+
+        int[] currentLoc = this.getLocation(entityGrid);
+
+        int x = currentLoc[0];
+        int y = currentLoc[1];
+
+        if (0 == direction) {
+
+            // Move player entity
+            entityGrid[x][y-1] = this;
+            entityGrid[x][y] = null;
+
+            return entityGrid;
+
+        } else if (1 == direction) {
+
+            // Move player entity
+            entityGrid[x+1][y] = this;
+            entityGrid[x][y] = null;
+
+            return entityGrid;
+
+        } else if (2 == direction) {
+
+            // Move player entity
+            entityGrid[x][y+1] = this;
+            entityGrid[x][y] = null;
+
+            return entityGrid;
+
+        } else if (3 == direction) {
+
+            // Move player entity
+            entityGrid[x-1][y] = this;
+            entityGrid[x][y] = null;
+
+            return entityGrid;
+
+        }
+
         return null;
     }
 
@@ -24,17 +65,21 @@ public class Player extends Entity {
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
 
-                if (entityGrid[x][y].getType() == Type.PLAYER) {
+                Entity entity = entityGrid[x][y];
 
-                    // Player is found
-                    return new int[] {x, y};
+                if (entity != null) {
 
+//                    System.out.println(entity);
+
+                    if (entity.getEntityType() == EntityType.PLAYER) {
+                        // Player is found
+                        return new int[] {x, y};
+                    }
                 }
-
             }
         }
 
-        return null;
+        return new int[] {0, 0};
 
     }
 

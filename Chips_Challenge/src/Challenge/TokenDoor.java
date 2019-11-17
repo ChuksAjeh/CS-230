@@ -8,6 +8,7 @@ public class TokenDoor extends Door {
     private int requirement;
 
     public TokenDoor(int requirement) {
+        super(CellType.TOKEN_DOOR);
         this.requirement = requirement;
     }
 

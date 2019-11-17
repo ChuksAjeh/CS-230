@@ -6,7 +6,6 @@ package Challenge;
 public class Wall extends Impassable {
 
     public Wall() {
-        this.setType(Type.WALL);
+        super(CellType.WALL);
     }
-
 }
