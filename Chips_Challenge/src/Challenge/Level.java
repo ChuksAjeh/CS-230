@@ -39,13 +39,13 @@ public class Level {
 
         reader.nextLine();
 
-        for (int i = 0 ; i < y ; i++) {
+        for (int i = 0 ; i < x ; i++) {
 
             char[] row = reader.nextLine().toCharArray();
 
 //            System.out.println(row);
 
-            for (int j = 0 ; j < x ; j++) {
+            for (int j = 0 ; j < y ; j++) {
 
                 if ('#' == row[j]) {
                     // This is a wall
@@ -122,7 +122,8 @@ public class Level {
 
 
             if ("PLAYER".equals(name)) {
-                entityGrid[x][y] = new Player();
+                dir = Integer.parseInt(line[3]);
+                entityGrid[x][y] = new Player(dir);
             } else if ("GOAL".equals(name)) {
                 cellGrid[x][y] = new Goal();
             } else if ("FIRE".equals(name)) {

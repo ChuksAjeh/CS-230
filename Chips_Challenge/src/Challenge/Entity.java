@@ -5,7 +5,7 @@ package Challenge;
  */
 abstract class Entity {
 
-    protected EntityType entityType;
+    private EntityType entityType;
 
     public enum EntityType {
         PLAYER, SMART_ENEMY, DUMB_ENEMY, WALL_ENEMY, LINE_ENEMY, KEY, TOKEN, FIRE_BOOTS, FLIPPERS
