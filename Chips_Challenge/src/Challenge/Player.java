@@ -1,5 +1,7 @@
 package Challenge;
 
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 /**
  * @author ..
@@ -15,7 +17,7 @@ public class Player extends Entity {
     private int direction;
 
     public Player(int direction) {
-        super(EntityType.PLAYER);
+        super(EntityType.PLAYER, new Image("images/ENTITY_PLAYER.png"));
         this.inventory = new ArrayList<>();
         this.direction = direction;
     }

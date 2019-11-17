@@ -1,4 +1,7 @@
 package Challenge;
+
+import javafx.scene.image.Image;
+
 /**
  * @author ..
  * @version 1.0
@@ -6,7 +9,7 @@ package Challenge;
 public class Flippers extends Equipment {
 
     public Flippers() {
-        super(EntityType.FLIPPERS);
+        super(EntityType.FLIPPERS, new Image("images/ENTITY_FLIPPERS.png"));
     }
 
 }

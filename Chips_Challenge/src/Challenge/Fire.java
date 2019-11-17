@@ -1,4 +1,7 @@
 package Challenge;
+
+import javafx.scene.image.Image;
+
 /**
  * @author ..
  * @version 1.0
@@ -6,6 +9,6 @@ package Challenge;
 public class Fire extends Obstacle {
 
     public Fire() {
-        super(CellType.FIRE);
+        super(CellType.FIRE, new Image("images/CELL_FIRE.png"));
     }
 }
