@@ -62,26 +62,35 @@ public class Game {
     private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
-            for (int y = 0; y < entityGrid[x].length; y++) {
+            for (int y = 0; y < entityGrid[x].length; y++ ) {
 
                 if (null != entityGrid[x][y]) {
-
-                    Entity entity = entityGrid[x][y];
-                    Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
-
-                    // TODO : Enemy rotation - Gnome
-
-                    if (Entity.EntityType.PLAYER == entity.getEntityType()) {
-                        this.player = (Player) entity;
-                        gc.drawImage(rotate(sprite, player.getDirection()), x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                    } else {
-                        gc.drawImage(sprite, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
-                    }
-
+                    renderEntity(gc, x, y);
                 }
 
             }
         }
+    }
+
+    private void renderEntity(GraphicsContext gc, int x, int y) {
+
+        Entity entity = entityGrid[x][y];
+
+        int xOnScreen = x * GRID_CELL_WIDTH;
+        int yOnScreen = y * GRID_CELL_HEIGHT;
+
+        Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+
+        if (Entity.EntityType.PLAYER == entity.getEntityType()) {
+            this.player = (Player) entity;
+            gc.drawImage(rotate(sprite, player.getDirection()), xOnScreen, yOnScreen);
+        } else if (entity.getEntityType().toString().contains("ENEMY")) {
+            Enemy enemy = (Enemy) entityGrid[x][y];
+            gc.drawImage(rotate(sprite, enemy.getDirection()), xOnScreen, yOnScreen);
+        } else {
+            gc.drawImage(sprite, xOnScreen, yOnScreen);
+        }
+
     }
 
     private Image resize(Image image, int height, int width) {

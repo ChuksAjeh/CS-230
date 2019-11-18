@@ -9,6 +9,6 @@ import javafx.scene.image.Image;
 public class Goal extends Cell {
 
     public Goal() {
-        super(CellType.GOAL, new Image("images/CELL_GOAL.png"));
+        super(CellType.GOAL,true, new Image("images/CELL_GOAL.png"));
     }
 }

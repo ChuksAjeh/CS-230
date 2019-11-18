@@ -9,6 +9,6 @@ import javafx.scene.image.Image;
 public class Water extends Obstacle {
 
     public Water() {
-        super(CellType.WATER, new Image("images/CELL_WATER.png"));
+        super(CellType.WATER, false, new Image("images/CELL_WATER.png"));
     }
 }

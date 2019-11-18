@@ -9,6 +9,6 @@ import javafx.scene.image.Image;
 public class Ground extends Cell {
 
     public Ground() {
-        super(CellType.GROUND, new Image("images/CELL_GROUND.png"));
+        super(CellType.GROUND, true, new Image("images/CELL_GROUND.png"));
     }
 }

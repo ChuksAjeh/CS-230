@@ -91,20 +91,19 @@ public class Menu extends Application {
 
     private void processKeyEvent(KeyEvent event, Level level, Player player) {
 
-        Entity[][] currentGrid = level.getEntityGrid();
         Entity[][] newGrid;
 
         if (KeyCode.UP == event.getCode()) {
-            newGrid = player.move(0, currentGrid);
+            newGrid = player.move(0, level);
             level.setEntityGrid(newGrid);
         } else if (KeyCode.RIGHT == event.getCode()) {
-            newGrid = player.move(1, currentGrid);
+            newGrid = player.move(1, level);
             level.setEntityGrid(newGrid);
         } else if (KeyCode.DOWN == event.getCode()) {
-            newGrid = player.move(2, currentGrid);
+            newGrid = player.move(2, level);
             level.setEntityGrid(newGrid);
         } else if (KeyCode.LEFT == event.getCode()) {
-            newGrid = player.move(3, currentGrid);
+            newGrid = player.move(3, level);
             level.setEntityGrid(newGrid);
         } else if (KeyCode.ESCAPE == event.getCode()) {
             System.out.println("Adios Amigo!");
