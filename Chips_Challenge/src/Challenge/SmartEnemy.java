@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class SmartEnemy extends Enemy {
 
     public SmartEnemy(int direction) {
-        super(EntityType.SMART_ENEMY, new Image("images/ENTITY_ENEMY.png"), direction);
+        super(EntityType.SMART_ENEMY, new Image("images/ENTITY_SMART_ENEMY.png"), direction);
     }
 
     private int nextDirection() {

@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class LineEnemy extends Enemy {
 
     public LineEnemy(int direction) {
-        super(EntityType.LINE_ENEMY, new Image("images/ENTITY_ENEMY.png"), direction);
+        super(EntityType.LINE_ENEMY, new Image("images/ENTITY_LINE_ENEMY.png"), direction);
     }
 
     private int changeDirection() throws Exception {

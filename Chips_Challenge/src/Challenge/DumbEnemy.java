@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class DumbEnemy extends Enemy {
 
     public DumbEnemy(int direction) {
-        super(EntityType.DUMB_ENEMY, new Image("images/ENTITY_ENEMY.png"), direction);
+        super(EntityType.DUMB_ENEMY, new Image("images/ENTITY_DUMB_ENEMY.png"), direction);
         //This is a dumbenemy
     }
 
