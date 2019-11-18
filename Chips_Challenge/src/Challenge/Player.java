@@ -22,7 +22,15 @@ public class Player extends Entity {
         this.direction = direction;
     }
 
-    private Entity[][] movePlayerEntity(int x, int y, int newX, int newY, Entity[][] entityGrid) {
+    private Entity[][] movePlayerEntity(int[] locations, Level level) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+        Entity[][] entityGrid = level.getEntityGrid();
+
+        int x = locations[0];
+        int y = locations[1];
+        int newX = locations[2];
+        int newY = locations[3];
 
         int height = entityGrid.length - 1;
         int width = entityGrid[0].length - 1;
@@ -32,56 +40,81 @@ public class Player extends Entity {
             return entityGrid;
         } else {
 
+            Cell cell = cellGrid[newX][newY];
             Entity entity = entityGrid[newX][newY];
 
-            if (null != entity && entity.isCollectible()) {
+            if (null != entity) {
 
-                jack.log("FOUND COLLECTIBLE");
+                if (entity.isCollectible()) {
 
-                this.addItem((Item) entityGrid[newX][newY]);
-                jack.log(this.getInventory().toString());
+                    jack.log("FOUND COLLECTIBLE");
 
-            } else {
+                    this.addItem((Item) entityGrid[newX][newY]);
+                    jack.log(this.getInventory().toString());
 
-                // Pretty sure this is an Enemy => Death!
+                } else if (entity.getEntityType().toString().contains("ENEMY")) {
+
+                    // DEATH .. also #reset
+
+                    jack.log(1, "Kill me");
+
+                }
+
+            } else if (!cell.isPassable()) {
+
+                jack.log(1, "Oof, you walked into a wall");
+
+                newX = x;
+                newY = y;
 
             }
 
             // Move player entity
-            entityGrid[newX][newY] = this;
+
+            // Make temp reference
+            Player temp = (Player) entityGrid[x][y];
+
+            // Remove the player from the grid
             entityGrid[x][y] = null;
+
+            // Add the player at new location
+            entityGrid[newX][newY] = this;
 
             return entityGrid;
         }
 
     }
 
-    public Entity[][] move(int direction, Entity[][] entityGrid) {
+    public Entity[][] move(int direction, Level level) {
+
+        Entity[][] entityGrid = level.getEntityGrid();
 
         int[] currentLoc = this.getLocation(entityGrid);
 
         int x = currentLoc[0];
         int y = currentLoc[1];
 
+        int[] location = new int[] {x, y, 0, 0};
+
         if (0 == direction) {
 
             this.direction = direction;
-            return movePlayerEntity(x, y, x, y-1, entityGrid);
+            return movePlayerEntity(new int[] {x, y, x, y-1}, level);
 
         } else if (1 == direction) {
 
             this.direction = direction;
-            return movePlayerEntity(x, y, x+1, y, entityGrid);
+            return movePlayerEntity(new int[] {x, y, x+1, y}, level);
 
         } else if (2 == direction) {
 
             this.direction = direction;
-            return movePlayerEntity(x, y, x, y+1, entityGrid);
+            return movePlayerEntity(new int[] {x, y, x, y+1}, level);
 
         } else if (3 == direction) {
 
             this.direction = direction;
-            return movePlayerEntity(x, y, x-1, y, entityGrid);
+            return movePlayerEntity(new int[] {x, y, x-1, y}, level);
 
         }
 

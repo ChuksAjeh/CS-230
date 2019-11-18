@@ -11,7 +11,7 @@ public class KeyDoor extends Door {
     private Color colour;
 
     public KeyDoor(Color colour) {
-        super(CellType.KEY_DOOR, new Image("images/CELL_KEY_DOOR.png"));
+        super(CellType.KEY_DOOR, false, new Image("images/CELL_KEY_DOOR.png"));
         this.colour = colour;
     }
 
