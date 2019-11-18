@@ -32,27 +32,31 @@ public class Level {
         int x = reader.nextInt();
         int y = reader.nextInt();
 
+        // Throw away the rest of the line
+        reader.nextLine();
+
         // The thing we return
         Cell[][] cellGrid;
 
+        // Make an empty grid
         cellGrid = new Cell[x][y];
 
-        reader.nextLine();
-
-        for (int i = 0 ; i < x ; i++) {
+        for (int i = 0 ; i < y ; i++) {
 
             char[] row = reader.nextLine().toCharArray();
 
-//            System.out.println(row);
+            System.out.println(row);
 
-            for (int j = 0 ; j < y ; j++) {
+            for (int j = 0 ; j < x ; j++) {
+
+                // cellGrid[j][i] = new Ground();
 
                 if ('#' == row[j]) {
                     // This is a wall
-                    cellGrid[i][j] = new Wall();
+                    cellGrid[j][i] = new Wall();
                 } else {
                     // This is a ground
-                    cellGrid[i][j] = new Ground();
+                    cellGrid[j][i] = new Ground();
                 }
 
             }

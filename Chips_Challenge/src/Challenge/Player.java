@@ -32,8 +32,8 @@ public class Player extends Entity {
         int newX = locations[2];
         int newY = locations[3];
 
-        int height = entityGrid.length - 1;
-        int width = entityGrid[0].length - 1;
+        int width = entityGrid.length - 1;
+        int height = entityGrid[0].length - 1;
 
         if (newX < 0 || newY < 0 || newX > width || newY > height) {
             jack.log(1, "Player out of bounds");

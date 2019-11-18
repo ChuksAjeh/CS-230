@@ -28,6 +28,9 @@ public class Menu extends Application {
     private static final int CANVAS_WIDTH = 960;
     private static final int CANVAS_HEIGHT = 720;
 
+    // Level
+    private static Level level;
+
     // Make a canvas
     private Canvas canvas;
 
@@ -45,7 +48,8 @@ public class Menu extends Application {
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        Level level = makeLevel("Test_File");
+//        Level level = makeLevel("Test_File");
+        level = makeLevel("TEST_NUMERO_DOS");
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event, level, player));
 
@@ -78,8 +82,6 @@ public class Menu extends Application {
             GraphicsContext gc = canvas.getGraphicsContext2D();
 
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-            Level level = makeLevel("Test_File");
 
             game.drawGame(level, canvas);
 
