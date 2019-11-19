@@ -23,8 +23,7 @@ public class Level {
 
     }
 
-    public void buildLevel(String level) throws FileNotFoundException {
-        // This WILL be private in the final version
+    private void buildLevel(String level) throws FileNotFoundException {
 
         reader = new Scanner(new File("Level_Files/" + level + ".txt"));
         reader.useDelimiter(",");
@@ -35,47 +34,52 @@ public class Level {
         // Throw away the rest of the line
         reader.nextLine();
 
-        // The thing we return
-        Cell[][] cellGrid;
+        // Build basic grids
+        setCellGrid(new Cell[x][y]);
+        setEntityGrid(new Entity[x][y]);
 
-        // Make an empty grid
-        cellGrid = new Cell[x][y];
+        // Build basic cell grid
+        buildBasicCellGrid(reader, x, y);
+
+        // Populate grids
+        buildCompleteGrids(reader);
+
+    }
+
+    private void buildBasicCellGrid(Scanner reader, int x, int y) {
 
         for (int i = 0 ; i < y ; i++) {
 
             char[] row = reader.nextLine().toCharArray();
 
-//            System.out.println(row);
-
             for (int j = 0 ; j < x ; j++) {
 
                 if ('#' == row[j]) {
                     // This is a wall
-                    cellGrid[j][i] = new Wall();
+                    this.cellGrid[j][i] = new Wall();
                 } else {
                     // This is a ground
-                    cellGrid[j][i] = new Ground();
+                    this.cellGrid[j][i] = new Ground();
                 }
 
             }
         }
 
-        Entity[][] entityGrid;
+    }
 
-        int dir; // Direction used for Enemies only
-        int req; // Requirement value used for TokenDoors
+    private void buildCompleteGrids(Scanner reader) {
 
-        // Red, Green and Blue components for Keys and KeyDoors
-        int red;
-        int green;
-        int blue;
+        int x; // X component of a thing
+        int y; // Y component of a thing
 
-        entityGrid = new Entity[x][y];
+        int dir; // Direction used for Enemy and Player
+        int req; // Requirement value used for TokenDoor
+
+        Color colour; // Colour used for Key and KeyDoor
 
         while (reader.hasNextLine()) {
 
             String[] line = reader.nextLine().toUpperCase().split(",");
-
             String name = line[0];
 
             x = Integer.parseInt(line[1]);
@@ -85,81 +89,62 @@ public class Level {
 
                 dir = Integer.parseInt(line[3]);
 
-                switch (name) {
-                    case "SMART_ENEMY":
-                        entityGrid[x][y] = new SmartEnemy(dir);
-                        break;
-                    case "DUMB_ENEMY":
-                        entityGrid[x][y] = new DumbEnemy(dir);
-                        break;
-                    case "WALL_ENEMY":
-                        entityGrid[x][y] = new WallEnemy(dir);
-                        break;
-                    case "LINE_ENEMY":
-                        entityGrid[x][y] = new LineEnemy(dir);
-                        break;
+                if ("SMART_ENEMY".equals(name)) {
+                    this.entityGrid[x][y] = new SmartEnemy(dir);
+                } else if ("DUMB_ENEMY".equals(name)) {
+                    this.entityGrid[x][y] = new DumbEnemy(dir);
+                } else if ("WALL_ENEMY".equals(name)) {
+                    this.entityGrid[x][y] = new WallEnemy(dir);
+                } else if ("LINE_ENEMY".equals(name)) {
+                    this.entityGrid[x][y] = new LineEnemy(dir);
                 }
-            }
 
-            if (name.contains("KEY")) {
+            } else if (name.contains("KEY")) {
 
-                red = Integer.parseInt(line[3]);
-                green = Integer.parseInt(line[4]);
-                blue = Integer.parseInt(line[5]);
+                colour = Color.rgb(Integer.parseInt(line[3]), Integer.parseInt(line[4]), Integer.parseInt(line[5]));
 
                 if ("KEY_DOOR".equals(name)) {
-                    cellGrid[x][y] = new KeyDoor(Color.rgb(red, green, blue));
+                    this.cellGrid[x][y] = new KeyDoor(colour);
                 } else if ("KEY".equals(name)) {
-                    entityGrid[x][y] = new Key(Color.rgb(red, green, blue));
+                    this.entityGrid[x][y] = new Key(colour);
                 }
 
-            }
-
-            if ("TOKEN".equals(name)) {
-                entityGrid[x][y] = new Token();
+            } else if ("TOKEN".equals(name)) {
+                this.entityGrid[x][y] = new Token();
             } else if ("TOKEN_DOOR".equals(name)) {
                 req = Integer.parseInt(line[3]);
-                cellGrid[x][y] = new TokenDoor(req);
-            }
-
-
-            if ("PLAYER".equals(name)) {
+                this.cellGrid[x][y] = new TokenDoor(req);
+            } else if ("PLAYER".equals(name)) {
                 dir = Integer.parseInt(line[3]);
-                entityGrid[x][y] = new Player(dir);
+                this.entityGrid[x][y] = new Player(dir);
             } else if ("GOAL".equals(name)) {
-                cellGrid[x][y] = new Goal();
+                this.cellGrid[x][y] = new Goal();
             } else if ("FIRE".equals(name)) {
-                cellGrid[x][y] = new Fire();
+                this.cellGrid[x][y] = new Fire();
             } else if ("WATER".equals(name)) {
-                cellGrid[x][y] = new Water();
+                this. cellGrid[x][y] = new Water();
             } else if ("FIRE_BOOTS".equals(name)) {
-                entityGrid[x][y] = new FireBoots();
+                this.entityGrid[x][y] = new FireBoots();
             } else if ("FLIPPERS".equals(name)) {
-                entityGrid[x][y] = new Flippers();
+                this.entityGrid[x][y] = new Flippers();
             } else if ("TELEPORTER".equals(name)) {
 
                 // This might not work, I have not tested it yet
                 Teleporter temp = new Teleporter();
-                cellGrid[x][y] = temp;
+                this.cellGrid[x][y] = temp;
 
                 x = Integer.parseInt(line[3]);
                 y = Integer.parseInt(line[4]);
 
-                cellGrid[x][y] = new Teleporter(temp);
+                this.cellGrid[x][y] = new Teleporter(temp);
             }
 
         }
 
-        this.setCellGrid(cellGrid);
-        this.setEntityGrid(entityGrid);
     }
 
-    public void updateCellGrid(Cell[][] cellGrid) {
-        this.cellGrid = cellGrid;
-    }
+    private void buildEnemy() {
 
-    public void updateEntityGrid(Entity[][] entityGrid) {
-        this.entityGrid = entityGrid;
     }
 
     public void setCellGrid(Cell[][] cellGrid) {
