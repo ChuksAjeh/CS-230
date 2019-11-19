@@ -96,8 +96,6 @@ public class Player extends Entity {
         int x = currentLoc[0];
         int y = currentLoc[1];
 
-        int[] location = new int[] {x, y, 0, 0};
-
         if (0 == direction) {
 
             this.direction = direction;
