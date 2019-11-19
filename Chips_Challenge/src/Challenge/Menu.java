@@ -1,15 +1,10 @@
 package Challenge;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -43,8 +38,6 @@ public class Menu extends Application {
 
     public void start(Stage primaryStage) {
 
-        //new mainMenu(); -- Opens a secondary window
-
         Pane root = mainMenu();
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -67,7 +60,6 @@ public class Menu extends Application {
         HBox bottomBar = new HBox();
 
         Button startButton = new Button("Start!");
-
 
 //        bottomBar.setSpacing(10);
 //        bottomBar.setPadding(new Insets(10, 10, 10, 10));

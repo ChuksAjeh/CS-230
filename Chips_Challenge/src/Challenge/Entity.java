@@ -8,22 +8,12 @@ import javafx.scene.image.Image;
  */
 abstract class Entity {
 
-    private EntityType entityType;
     private Image sprite;
     private boolean collectible;
 
-    public enum EntityType {
-        PLAYER, SMART_ENEMY, DUMB_ENEMY, WALL_ENEMY, LINE_ENEMY, KEY, TOKEN, FIRE_BOOTS, FLIPPERS
-    }
-
-    public Entity(EntityType entityType, Image sprite, boolean collectible) {
-        this.entityType = entityType;
+    public Entity(Image sprite, boolean collectible) {
         this.sprite = sprite;
         this.collectible = collectible;
-    }
-
-    public EntityType getEntityType() {
-        return this.entityType;
     }
 
     public boolean isCollectible() {

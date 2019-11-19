@@ -11,17 +11,15 @@ import java.util.Random;
  */
 public class WallEnemy extends Enemy {
 
-    private static final EntityType entityType;
     private static final Image sprite;
     private Random random;
 
     static {
-        entityType = EntityType.WALL_ENEMY;
         sprite = new Image("images/ENTITY_WALL_ENEMY.png");
     }
 
     public WallEnemy(int direction) {
-        super(entityType, sprite, direction);
+        super(sprite, direction);
         random = new Random();
     }
 
@@ -40,38 +38,40 @@ public class WallEnemy extends Enemy {
 
         int direction = this.getDirection();
 
-        Cell.CellType up = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1].getCellType();
-        Cell.CellType right = this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()].getCellType();
-        Cell.CellType down = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1].getCellType();
-        Cell.CellType left = this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()].getCellType();
+        // TODO : extract this as "getSurroundingCells"
+
+        String up = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1].getClass().getSimpleName();
+        String right = this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()].getClass().getSimpleName();
+        String down = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1].getClass().getSimpleName();
+        String left = this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()].getClass().getSimpleName();
 
         if (0 == direction || 2 == direction) {
 
             // Up + Down
 
-            if (Cell.CellType.WALL == left && Cell.CellType.WALL == right) {
-
-                if (Cell.CellType.WALL == up) {
+            if ("Wall".equals(left) && "Wall".equals(right)) {
+                
+                if ("Wall".equals(up)) {
                     return 2;
-                } else if (Cell.CellType.WALL == down) {
+                } else if ("Wall".equals(down)) {
                     return 0;
                 } else {
                     return direction;
                 }
 
-            } else if (0 == direction && Cell.CellType.WALL == up) {
+            } else if (0 == direction && "Wall".equals(up)) {
 
-                if (Cell.CellType.WALL == left) {
+                if ("Wall".equals(left)) {
                     return 1;
-                } else if (Cell.CellType.WALL == right) {
+                } else if ("Wall".equals(right)) {
                     return 3;
                 }
 
-            } else if (2 == direction && Cell.CellType.WALL == down) {
+            } else if (2 == direction && "Wall".equals(down)) {
 
-                if (Cell.CellType.WALL == left) {
+                if ("Wall".equals(left)) {
                     return 1;
-                } else if (Cell.CellType.WALL == right) {
+                } else if ("Wall".equals(right)) {
                     return 3;
                 }
 
@@ -83,29 +83,29 @@ public class WallEnemy extends Enemy {
 
             // Left + Right
 
-            if (Cell.CellType.WALL == up && Cell.CellType.WALL == down) {
+            if ("Wall".equals(up) && "Wall".equals(down)) {
 
-                if (Cell.CellType.WALL == left) {
+                if ("Wall".equals(left)) {
                     return 1;
-                } else if (Cell.CellType.WALL == right) {
+                } else if ("Wall".equals(right)) {
                     return 3;
                 } else {
                     return direction;
                 }
 
-            } else if (1 == direction && Cell.CellType.WALL == right) {
+            } else if (1 == direction && "Wall".equals(right)) {
 
-                if (Cell.CellType.WALL == up) {
+                if ("Wall".equals(up)) {
                     return 2;
-                } else if (Cell.CellType.WALL == down) {
+                } else if ("Wall".equals(down)) {
                     return 0;
                 }
 
-            } else if (3 == direction && Cell.CellType.WALL == left) {
+            } else if (3 == direction && "Wall".equals(left)) {
 
-                if (Cell.CellType.WALL == up) {
+                if ("Wall".equals(up)) {
                     return 2;
-                } else if (Cell.CellType.WALL == down) {
+                } else if ("Wall".equals(down)) {
                     return 0;
                 }
 

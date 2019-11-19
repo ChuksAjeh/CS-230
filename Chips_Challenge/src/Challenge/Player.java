@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 public class Player extends Entity {
 
-    private static final EntityType entityType;
     private static final Image sprite;
     private ArrayList<Item> inventory;
     private int direction;
@@ -18,12 +17,11 @@ public class Player extends Entity {
     Lumberjack jack = new Lumberjack();
 
     static  {
-        entityType = EntityType.PLAYER;
         sprite = new Image("images/ENTITY_PLAYER.png");
     }
 
     public Player(int direction) {
-        super(entityType, sprite, false);
+        super(sprite, false);
         this.inventory = new ArrayList<>();
         this.direction = direction;
     }
@@ -58,7 +56,7 @@ public class Player extends Entity {
                     jack.log("FOUND COLLECTIBLE");
                     jack.log(this.getInventory().toString());
 
-                } else if (entity.getEntityType().toString().contains("ENEMY")) {
+                } else if (entity.getClass().getSimpleName().contains("Enemy")) {
 
                     // DEATH .. also #reset
 
@@ -132,7 +130,7 @@ public class Player extends Entity {
 
                 if (entity != null) {
 
-                    if (entity.getEntityType() == EntityType.PLAYER) {
+                    if (entity.getClass().getSimpleName().equals("Player")) {
                         // Player is found
                         return new int[] {x, y};
                     }
