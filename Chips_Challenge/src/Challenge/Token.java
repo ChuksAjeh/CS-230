@@ -8,8 +8,18 @@ import javafx.scene.image.Image;
  */
 public class Token extends Item {
 
+    private static final EntityType entityType;
+    private static final Image sprite;
+    private static final boolean collectible;
+
+    static {
+        entityType = EntityType.TOKEN;
+        sprite = new Image("images/ENTITY_TOKEN.png");
+        collectible = true;
+    }
+
     public Token() {
-        super(EntityType.TOKEN, true, new Image("images/ENTITY_TOKEN.png"));
+        super(entityType, sprite, collectible);
     }
 
 }

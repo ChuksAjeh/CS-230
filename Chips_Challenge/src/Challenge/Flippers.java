@@ -8,8 +8,16 @@ import javafx.scene.image.Image;
  */
 public class Flippers extends Equipment {
 
+    private static final EntityType entityType;
+    private static final Image sprite;
+
+    static {
+        entityType = EntityType.FLIPPERS;
+        sprite = new Image("images/ENTITY_FLIPPERS.png");
+    }
+
     public Flippers() {
-        super(EntityType.FLIPPERS, true, new Image("images/ENTITY_FLIPPERS.png"));
+        super(entityType, sprite, true);
     }
 
 }

@@ -8,15 +8,24 @@ import javafx.scene.image.Image;
  */
 public class LineEnemy extends Enemy {
 
-    public LineEnemy(int direction) {
-        super(EntityType.LINE_ENEMY, new Image("images/ENTITY_LINE_ENEMY.png"), direction);
+    private static final EntityType entityType;
+    private static final Image sprite;
+
+    static {
+        entityType = EntityType.LINE_ENEMY;
+        sprite = new Image("images/ENTITY_LINE_ENEMY.png");
     }
 
-    private int changeDirection() throws Exception {
+    public LineEnemy(int direction) {
+        super(entityType, sprite, direction);
+    }
+
+    private int changeDirection() {
 
         //Check for direction, then check whether next position is a wall
         //If it is a wall, change direction, else keep same direction.
         //This should be called every update.
+
         if (0 == this.getDirection()) {
             // UP
             if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()][this.getEnemyY()+1].getCellType()) {
@@ -45,10 +54,9 @@ public class LineEnemy extends Enemy {
             } else {
                 return 3;
             }
-        } else {
-            //throw exception (custom one like OutOfDirectionRange?
-            throw new Exception("Direction out of range!");
         }
+
+        return 0;
     }
 
 }

@@ -19,10 +19,10 @@ abstract class Cell {
         GROUND, WALL, GOAL, KEY_DOOR, TOKEN_DOOR, TELEPORTER, FIRE, WATER
     }
 
-    public Cell(CellType cellType, boolean passable, Image image) {
+    public Cell(CellType cellType, Image sprite, boolean passable) {
         this.cellType = cellType;
+        this.sprite = sprite;
         this.passable = passable;
-        this.sprite = image;
     }
 
     public CellType getCellType() {

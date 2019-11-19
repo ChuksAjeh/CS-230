@@ -35,8 +35,8 @@ abstract class Enemy extends Entity {
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
-    public Enemy(EntityType entityType, Image image, int direction) {
-        super(entityType, false, image);
+    public Enemy(EntityType entityType, Image sprite, int direction) {
+        super(entityType, sprite, false);
         this.direction = direction;
     }
 

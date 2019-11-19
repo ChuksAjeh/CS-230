@@ -9,15 +9,21 @@ import java.util.ArrayList;
  */
 public class Player extends Entity {
 
+    private static final EntityType entityType;
+    private static final Image sprite;
+    private ArrayList<Item> inventory;
+    private int direction;
+
     // TESTING
     Lumberjack jack = new Lumberjack();
 
-    private ArrayList<Item> inventory;
-
-    private int direction;
+    static  {
+        entityType = EntityType.PLAYER;
+        sprite = new Image("images/ENTITY_PLAYER.png");
+    }
 
     public Player(int direction) {
-        super(EntityType.PLAYER, false, new Image("images/ENTITY_PLAYER.png"));
+        super(entityType, sprite, false);
         this.inventory = new ArrayList<>();
         this.direction = direction;
     }
@@ -47,9 +53,9 @@ public class Player extends Entity {
 
                 if (entity.isCollectible()) {
 
-                    jack.log("FOUND COLLECTIBLE");
-
                     this.addItem((Item) entityGrid[newX][newY]);
+
+                    jack.log("FOUND COLLECTIBLE");
                     jack.log(this.getInventory().toString());
 
                 } else if (entity.getEntityType().toString().contains("ENEMY")) {
@@ -64,15 +70,11 @@ public class Player extends Entity {
 
                 jack.log(1, "Oof, you walked into a wall");
 
-                newX = x;
-                newY = y;
+                return entityGrid;
 
             }
 
             // Move player entity
-
-            // Make temp reference
-            Player temp = (Player) entityGrid[x][y];
 
             // Remove the player from the grid
             entityGrid[x][y] = null;

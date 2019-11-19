@@ -45,11 +45,9 @@ public class Level {
 
             char[] row = reader.nextLine().toCharArray();
 
-            System.out.println(row);
+//            System.out.println(row);
 
             for (int j = 0 ; j < x ; j++) {
-
-                // cellGrid[j][i] = new Ground();
 
                 if ('#' == row[j]) {
                     // This is a wall
