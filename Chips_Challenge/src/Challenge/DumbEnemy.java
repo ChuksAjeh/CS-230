@@ -8,9 +8,16 @@ import javafx.scene.image.Image;
  */
 public class DumbEnemy extends Enemy {
 
+    private static final EntityType entityType;
+    private static final Image sprite;
+
+    static {
+        entityType = EntityType.DUMB_ENEMY;
+        sprite = new Image("images/ENTITY_DUMB_ENEMY.png");
+    }
+
     public DumbEnemy(int direction) {
-        super(EntityType.DUMB_ENEMY, new Image("images/ENTITY_DUMB_ENEMY.png"), direction);
-        //This is a dumbenemy
+        super(entityType, sprite, direction);
     }
 
     private int nextDirection() {

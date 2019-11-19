@@ -16,9 +16,9 @@ abstract class Entity {
         PLAYER, SMART_ENEMY, DUMB_ENEMY, WALL_ENEMY, LINE_ENEMY, KEY, TOKEN, FIRE_BOOTS, FLIPPERS
     }
 
-    public Entity(EntityType entityType, boolean collectible, Image image) {
+    public Entity(EntityType entityType, Image sprite, boolean collectible) {
         this.entityType = entityType;
-        this.sprite = image;
+        this.sprite = sprite;
         this.collectible = collectible;
     }
 

@@ -8,7 +8,15 @@ import javafx.scene.image.Image;
  */
 public class Fire extends Obstacle {
 
+    private static final CellType cellType;
+    private static final Image sprite;
+
+    static {
+        cellType = CellType.FIRE;
+        sprite = new Image("images/CELL_FIRE.png");
+    }
+
     public Fire() {
-        super(CellType.FIRE, false, new Image("images/CELL_FIRE.png"));
+        super(cellType, sprite, false);
     }
 }

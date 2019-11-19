@@ -8,8 +8,16 @@ import javafx.scene.image.Image;
  */
 public class SmartEnemy extends Enemy {
 
+    private static final EntityType entityType;
+    private static final Image sprite;
+
+    static {
+        entityType = EntityType.SMART_ENEMY;
+        sprite = new Image("images/ENTITY_SMART_ENEMY.png");
+    }
+
     public SmartEnemy(int direction) {
-        super(EntityType.SMART_ENEMY, new Image("images/ENTITY_SMART_ENEMY.png"), direction);
+        super(entityType, sprite, direction);
     }
 
     private int nextDirection() {

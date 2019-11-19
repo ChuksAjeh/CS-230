@@ -30,22 +30,50 @@ public class Game {
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // Get and Render Cells
-        cellGrid = level.getCellGrid();
-        this.renderCellGrid(gc, cellGrid);
+        // No comment.
+        this.updateGrids(level);
 
-        // Get and Render Entitys
-        entityGrid = level.getEntityGrid();
-        this.renderEntityGrid(gc, entityGrid);
+        // Does this need a comment? method names should infer their purpose
+        int[] offset = calculateOffSet(player, canvas);
+
+        // Render grids
+        this.renderCellGrid(gc, cellGrid, offset);
+        this.renderEntityGrid(gc, entityGrid, offset);
 
         // Log Stuff - uncomment for spam
-        jack.logPlayerLoc(player, entityGrid);
+        // jack.logPlayerLoc(player, entityGrid);
         // jack.logCellGrid(cellGrid);
         // jack.logEntityGrid(entityGrid);
 
     }
 
-    private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid) {
+    private int[] calculateOffSet(Player player, Canvas canvas) {
+
+        // Not 100% sure of this, it may change, please don't try to comment it
+
+        int[] playerLocOffset = player.getLocation(entityGrid);
+
+        int playerXOffset = playerLocOffset[0] * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
+        int playerYOffset = playerLocOffset[1] * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
+
+        int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
+        int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
+
+        return new int[] {levelXOffset, levelYOffset};
+
+    }
+
+    private void updateGrids(Level level) {
+
+        this.cellGrid = level.getCellGrid();
+        this.entityGrid = level.getEntityGrid();
+
+    }
+
+    private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid, int[] offset) {
+
+        int xOffset = offset[0];
+        int yOffset = offset[1];
 
         for (int x = 0 ; x < cellGrid.length ; x++ ) {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
@@ -53,43 +81,46 @@ public class Game {
                 Cell cell = cellGrid[x][y];
                 Image sprite = resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
-                gc.drawImage(sprite, x * GRID_CELL_WIDTH, y * GRID_CELL_HEIGHT);
+                gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
 
             }
         }
 
     }
 
-    private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid) {
+    private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid, int[] offset) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0; y < entityGrid[x].length; y++ ) {
 
                 if (null != entityGrid[x][y]) {
-                    renderEntity(gc, x, y);
+                    renderEntity(gc, x, y, offset);
                 }
 
             }
         }
     }
 
-    private void renderEntity(GraphicsContext gc, int x, int y) {
+    private void renderEntity(GraphicsContext gc, int x, int y, int[] offset) {
 
         Entity entity = entityGrid[x][y];
 
         int xOnScreen = x * GRID_CELL_WIDTH;
         int yOnScreen = y * GRID_CELL_HEIGHT;
 
+        int xOffset = offset[0];
+        int yOffset = offset[1];
+
         Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (Entity.EntityType.PLAYER == entity.getEntityType()) {
             this.player = (Player) entity;
-            gc.drawImage(rotate(sprite, player.getDirection()), xOnScreen, yOnScreen);
+            gc.drawImage(rotate(sprite, player.getDirection()), xOnScreen - xOffset, yOnScreen - yOffset);
         } else if (entity.getEntityType().toString().contains("ENEMY")) {
             Enemy enemy = (Enemy) entityGrid[x][y];
-            gc.drawImage(rotate(sprite, enemy.getDirection()), xOnScreen, yOnScreen);
+            gc.drawImage(rotate(sprite, enemy.getDirection()), xOnScreen - xOffset, yOnScreen - yOffset);
         } else {
-            gc.drawImage(sprite, xOnScreen, yOnScreen);
+            gc.drawImage(sprite, xOnScreen - xOffset, yOnScreen - yOffset);
         }
 
     }

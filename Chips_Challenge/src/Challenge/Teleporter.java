@@ -8,14 +8,21 @@ import javafx.scene.image.Image;
  */
 public class Teleporter extends Impassable {
 
+    private static final CellType cellType;
+    private static final Image sprite;
     private Teleporter pair;
 
+    static {
+        cellType = CellType.TELEPORTER;
+        sprite = new Image("");
+    }
+
     public Teleporter() {
-        super(CellType.TELEPORTER, false, new Image(""));
+        super(cellType, sprite, false);
     }
 
     public Teleporter(Teleporter pair) {
-        super(CellType.TELEPORTER, false, new Image(""));
+        super(cellType, sprite, false);
         this.pair = pair;
     }
 
@@ -25,7 +32,7 @@ public class Teleporter extends Impassable {
     }
 
     public void setPlayerLocation(int[] playerLocation) {
-
+        // This may not be void
     }
 
 }
