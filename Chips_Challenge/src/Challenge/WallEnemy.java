@@ -11,17 +11,16 @@ import java.util.Random;
  */
 public class WallEnemy extends Enemy {
 
-    private static final EntityType entityType;
     private static final Image sprite;
-    private Random random = new Random();
+    private Random random;
 
     static {
-        entityType = EntityType.WALL_ENEMY;
         sprite = new Image("images/ENTITY_WALL_ENEMY.png");
     }
 
     public WallEnemy(int direction) {
-        super(entityType, sprite, direction);
+        super(sprite, direction);
+        random = new Random();
     }
 
     private int nextDirection() {
@@ -37,75 +36,86 @@ public class WallEnemy extends Enemy {
         // 4) For 0-2 IF both LEFT(3) and RIGHT(1) are GROUND then do random between LEFT(3) and RIGHT(1)
         // 5) For 1-3 IF both UP(0) and DOWN(2) are GROUND then do random between UP(0) and DOWN(2)
 
-        if (0 == this.getDirection() || 2 == this.getDirection()) {
-            // UP and DOWN
-            if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()-1][this.getEnemyY()].getCellType()
-                && Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()+1][this.getEnemyY()].getCellType()){
+        int direction = this.getDirection();
 
-                if(Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()][this.getEnemyY()-1].getCellType()){
+        // TODO : extract this as "getSurroundingCells"
+
+        String up = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1].getClass().getSimpleName();
+        String right = this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()].getClass().getSimpleName();
+        String down = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1].getClass().getSimpleName();
+        String left = this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()].getClass().getSimpleName();
+
+        if (0 == direction || 2 == direction) {
+
+            // Up + Down
+
+            if ("Wall".equals(left) && "Wall".equals(right)) {
+                
+                if ("Wall".equals(up)) {
                     return 2;
-                }
-
-                else if(Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()][this.getEnemyY()+1].getCellType()){
+                } else if ("Wall".equals(down)) {
                     return 0;
+                } else {
+                    return direction;
                 }
 
-                else{
-                    if (0 == this.getDirection()){
-                        return 0;
-                    }
-                    else{
-                        return 2;
-                    }
-                }
-            }
-            else {
-                if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()-1][this.getEnemyY()].getCellType()){
+            } else if (0 == direction && "Wall".equals(up)) {
+
+                if ("Wall".equals(left)) {
                     return 1;
-                }
-                else if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()+1][this.getEnemyY()].getCellType()){
-                    return 3;
-                }
-                else {
-                    return this.random.nextBoolean() ? 1 : 3;
-                }
-            }
-        }
-        else if (1 == this.getDirection() || 3 == this.getDirection()) {
-            // RIGHT AND LEFT
-            if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()][this.getEnemyY()-1].getCellType()
-                    && Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()+1][this.getEnemyY()+1].getCellType()){
-
-                if(Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()-1][this.getEnemyY()].getCellType()){
-                    return 1;
-                }
-
-                else if(Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()+1][this.getEnemyY()].getCellType()){
+                } else if ("Wall".equals(right)) {
                     return 3;
                 }
 
-                else{
-                    if (1 == this.getDirection()){
-                        return 1;
-                    }
-                    else{
-                        return 3;
-                    }
+            } else if (2 == direction && "Wall".equals(down)) {
+
+                if ("Wall".equals(left)) {
+                    return 1;
+                } else if ("Wall".equals(right)) {
+                    return 3;
                 }
 
+            } else {
+                return direction;
             }
-            else {
-                if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()][this.getEnemyY()-1].getCellType()){
+
+        } else if (1 == direction || 3 == direction) {
+
+            // Left + Right
+
+            if ("Wall".equals(up) && "Wall".equals(down)) {
+
+                if ("Wall".equals(left)) {
+                    return 1;
+                } else if ("Wall".equals(right)) {
+                    return 3;
+                } else {
+                    return direction;
+                }
+
+            } else if (1 == direction && "Wall".equals(right)) {
+
+                if ("Wall".equals(up)) {
+                    return 2;
+                } else if ("Wall".equals(down)) {
                     return 0;
                 }
-                else if (Cell.CellType.WALL == this.getCellGrid()[this.getEnemyX()][this.getEnemyY()+1].getCellType()){
+
+            } else if (3 == direction && "Wall".equals(left)) {
+
+                if ("Wall".equals(up)) {
                     return 2;
+                } else if ("Wall".equals(down)) {
+                    return 0;
                 }
-                else {
-                    return this.random.nextBoolean() ? 0 : 2;
-                }
+
+            } else {
+                return direction;
             }
+
         }
+
         return 0;
+
     }
 }

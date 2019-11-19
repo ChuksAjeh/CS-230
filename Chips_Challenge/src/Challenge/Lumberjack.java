@@ -39,7 +39,7 @@ public class Lumberjack {
                 if (null == c) {
                     log("NULL");
                 } else {
-                    log(c.getCellType().toString());
+                    log(c.getClass().getSimpleName().toString());
                 }
             }
         }
@@ -56,7 +56,7 @@ public class Lumberjack {
                 if (null == e) {
                     log("NULL");
                 } else {
-                    log(e.getEntityType().toString());
+                    log(e.getClass().getSimpleName().toString());
                 }
             }
         }

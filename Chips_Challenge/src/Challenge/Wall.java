@@ -8,15 +8,13 @@ import javafx.scene.image.Image;
  */
 public class Wall extends Impassable {
 
-    private static final CellType cellType;
     private static final Image sprite;
 
     static {
-        cellType = CellType.WALL;
         sprite = new Image("images/CELL_WALL.png");
     }
 
     public Wall() {
-        super(cellType, sprite, false);
+        super(sprite, false);
     }
 }

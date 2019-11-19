@@ -11,22 +11,12 @@ import javafx.scene.image.Image;
  */
 abstract class Cell {
 
-    private CellType cellType;
     private boolean passable;
     private Image sprite;
 
-    public enum CellType {
-        GROUND, WALL, GOAL, KEY_DOOR, TOKEN_DOOR, TELEPORTER, FIRE, WATER
-    }
-
-    public Cell(CellType cellType, Image sprite, boolean passable) {
-        this.cellType = cellType;
+    public Cell(Image sprite, boolean passable) {
         this.sprite = sprite;
         this.passable = passable;
-    }
-
-    public CellType getCellType() {
-        return this.cellType;
     }
 
     public void setPassable() {
