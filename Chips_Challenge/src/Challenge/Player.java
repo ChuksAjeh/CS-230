@@ -134,9 +134,7 @@ public class Player extends Entity {
                 }
             }
         }
-
         return new int[] {0, 0};
-
     }
 
     public int getDirection() {
