@@ -2,6 +2,7 @@ package Challenge;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -64,14 +65,16 @@ public class Menu extends Application {
         BorderPane root = new BorderPane();
 
         HBox bottomBar = new HBox();
+
         Button startButton = new Button("Start!");
 
-        bottomBar.setSpacing(10);
-        bottomBar.setPadding(new Insets(10, 10, 10, 10));
+
+//        bottomBar.setSpacing(10);
+//        bottomBar.setPadding(new Insets(10, 10, 10, 10));
 
         bottomBar.getChildren().add(startButton);
 
-        root.setBottom(bottomBar);
+        root.setCenter(bottomBar);
 
         startButton.setOnAction(e -> {
             System.out.println("SUCCESS!");
