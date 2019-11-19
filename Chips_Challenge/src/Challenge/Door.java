@@ -8,8 +8,8 @@ import javafx.scene.image.Image;
  */
 abstract class Door extends Obstacle {
 
-    public Door(CellType cellType, Image image) {
-        super(cellType, image);
+    public Door(CellType cellType, boolean passable, Image image) {
+        super(cellType, passable, image);
     }
 
 }

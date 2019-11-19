@@ -22,7 +22,7 @@ abstract class Enemy extends Entity {
      * @param direction the direction the enemy is set upon creation
      */
     public Enemy(EntityType entityType, Image image, int direction) {
-        super(entityType, image);
+        super(entityType, false, image);
         this.direction = direction;
     }
 

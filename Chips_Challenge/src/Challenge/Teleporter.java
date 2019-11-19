@@ -11,11 +11,11 @@ public class Teleporter extends Impassable {
     private Teleporter pair;
 
     public Teleporter() {
-        super(CellType.TELEPORTER, new Image(""));
+        super(CellType.TELEPORTER, false, new Image(""));
     }
 
     public Teleporter(Teleporter pair) {
-        super(CellType.TELEPORTER, new Image(""));
+        super(CellType.TELEPORTER, false, new Image(""));
         this.pair = pair;
     }
 

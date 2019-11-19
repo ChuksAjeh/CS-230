@@ -9,6 +9,6 @@ import javafx.scene.image.Image;
 public class Fire extends Obstacle {
 
     public Fire() {
-        super(CellType.FIRE, new Image("images/CELL_FIRE.png"));
+        super(CellType.FIRE, false, new Image("images/CELL_FIRE.png"));
     }
 }

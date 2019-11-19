@@ -11,7 +11,7 @@ public class Key extends Item {
     private Color colour;
 
     public Key(Color colour) {
-        super(EntityType.KEY, new Image("images/ENTITY_KEY.png"));
+        super(EntityType.KEY, true, new Image("images/ENTITY_KEY.png"));
 
         // TODO : This thing
 

@@ -9,6 +9,6 @@ import javafx.scene.image.Image;
 public class Wall extends Impassable {
 
     public Wall() {
-        super(CellType.WALL, new Image("images/CELL_WALL.png"));
+        super(CellType.WALL, false, new Image("images/CELL_WALL.png"));
     }
 }
