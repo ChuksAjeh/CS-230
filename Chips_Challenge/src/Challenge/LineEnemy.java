@@ -1,6 +1,7 @@
 package Challenge;
 
 import javafx.scene.image.Image;
+import java.util.ArrayList;
 
 /**
  * @author ..
@@ -24,37 +25,32 @@ public class LineEnemy extends Enemy {
         //If it is a wall, change direction, else keep same direction.
         //This should be called every update.
 
-        // TODO : extract this as "getSurroundingCells"
-
-        String up = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1].getClass().getSimpleName();
-        String right = this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()].getClass().getSimpleName();
-        String down = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1].getClass().getSimpleName();
-        String left = this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()].getClass().getSimpleName();
+        ArrayList<String> surroundingCells = getSurroundingCells();
 
         if (0 == this.getDirection()) {
             // UP
-            if ("Wall".equals(up)) {
+            if ("Wall".equals(surroundingCells.get(0))) {
                 return 2;
             } else {
                 return 0;
             }
         } else if (1 == this.getDirection()) {
             // RIGHT
-            if ("Wall".equals(right)) {
+            if ("Wall".equals(surroundingCells.get(1))) {
                 return 3;
             } else {
                 return 1;
             }
         } else if (2 == this.getDirection()) {
             // DOWN
-            if ("Wall".equals(down)) {
+            if ("Wall".equals(surroundingCells.get(2))) {
                 return 0;
             } else {
                 return 2;
             }
         } else if (3 == this.getDirection()) {
             // LEFT
-            if ("Wall".equals(left)) {
+            if ("Wall".equals(surroundingCells.get(3))) {
                 return 1;
             } else {
                 return 3;
@@ -62,6 +58,15 @@ public class LineEnemy extends Enemy {
         }
 
         return 0;
+    }
+
+    private ArrayList<String> getSurroundingCells(){
+        ArrayList<String> surroundingCellsArray = new ArrayList<>();
+        surroundingCellsArray.add(0, this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1].getClass().getSimpleName());
+        surroundingCellsArray.add(1, this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()].getClass().getSimpleName());
+        surroundingCellsArray.add(2, this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1].getClass().getSimpleName());
+        surroundingCellsArray.add(3, this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()].getClass().getSimpleName());
+        return surroundingCellsArray;
     }
 
 }
