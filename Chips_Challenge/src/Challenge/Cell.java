@@ -10,23 +10,41 @@ import javafx.scene.image.Image;
  *
  */
 abstract class Cell {
-
+    /**
+     * Whether the cell is passable by movable entities.
+     */
     private boolean passable;
+    /**
+     * Sprite used to render the object in game.
+     */
     private Image sprite;
-
+    /**
+     * Constructs a cell object.
+     */
     public Cell(Image sprite, boolean passable) {
         this.sprite = sprite;
         this.passable = passable;
     }
 
-    public void setPassable() {
-
+    /**
+     * Makes a impassable cell passable or a passable impassable.
+     */
+    public void switchPassable() {
+        this.passable = !this.passable;
     }
 
+    /**
+     * Checks if the object is passable.
+     * @return The object's passable state.
+     */
     public boolean isPassable() {
         return this.passable;
     }
 
+    /**
+     * Gets the sprite the object is using.
+     * @return The sprite being used to render the file.
+     */
     public Image getSprite() {
         return sprite;
     }

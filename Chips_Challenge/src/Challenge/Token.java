@@ -9,15 +9,13 @@ import javafx.scene.image.Image;
 public class Token extends Item {
 
     private static final Image sprite;
-    private static final boolean collectible;
 
     static {
         sprite = new Image("images/ENTITY_TOKEN.png");
-        collectible = true;
     }
 
     public Token() {
-        super(sprite, collectible);
+        super(sprite);
     }
 
 }

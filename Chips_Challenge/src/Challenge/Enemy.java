@@ -36,14 +36,14 @@ abstract class Enemy extends Entity {
      * @param direction the direction the enemy is set upon creation
      */
     public Enemy(Image sprite, int direction) {
-        super(sprite, false);
+        super(sprite);
         this.direction = direction;
     }
 
     /**
-     * #TODO How does the move method work for entities.
-     * @param direction
-     * @return
+     * Moves the enemy based on the inputted direction
+     * @param direction The direction 0-3 representing N-S-E-W
+     * @return The new coordinates the enemy willat in the entity grid.
      */
     protected int[] move(int direction) throws Exception {
 
@@ -61,7 +61,7 @@ abstract class Enemy extends Entity {
             this.enemyX -= 1;
 
         } else {
-            //throw exception (custom one like OutOfDirectionRange?
+            //throw exception (custom one like OutOfDirectionRange?)
             throw new Exception("Direction out of range!");
         }
 
