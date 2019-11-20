@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -19,8 +18,8 @@ import java.io.FileNotFoundException;
 public class Menu extends Application {
 
     // The dimensions of the window
-    private static final int WINDOW_WIDTH = 1920;
-    private static final int WINDOW_HEIGHT = 1080;
+    private static final int WINDOW_WIDTH = 960;
+    private static final int WINDOW_HEIGHT = 720;
 
     // The dimensions of the canvas
     private static final int CANVAS_WIDTH = 960;
@@ -34,6 +33,7 @@ public class Menu extends Application {
 
     // TESTING
     private Player player = new Player(0);
+    private Controller controller = new Controller();
     Lumberjack jack = new Lumberjack();
     Game game = new Game();
     // TESTING
@@ -47,7 +47,7 @@ public class Menu extends Application {
 //        Level level = makeLevel("Test_File");
         level = makeLevel("TEST_NUMERO_DOS");
 
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event, level, player));
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
 
         primaryStage.setTitle("Thing?");
         primaryStage.setScene(scene);
@@ -86,35 +86,6 @@ public class Menu extends Application {
 
         return root;
 
-    }
-
-    private void processKeyEvent(KeyEvent event, Level level, Player player) {
-
-        Entity[][] newGrid;
-
-        if (KeyCode.UP == event.getCode()) {
-            newGrid = player.move(0, level);
-            level.setEntityGrid(newGrid);
-        } else if (KeyCode.RIGHT == event.getCode()) {
-            newGrid = player.move(1, level);
-            level.setEntityGrid(newGrid);
-        } else if (KeyCode.DOWN == event.getCode()) {
-            newGrid = player.move(2, level);
-            level.setEntityGrid(newGrid);
-        } else if (KeyCode.LEFT == event.getCode()) {
-            newGrid = player.move(3, level);
-            level.setEntityGrid(newGrid);
-        } else if (KeyCode.ESCAPE == event.getCode()) {
-            System.out.println("Adios Amigo!");
-            System.exit(0);
-        }
-
-        if (event.getCode().isArrowKey()) {
-            game.drawGame(level, canvas);
-        }
-
-        // Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
-        event.consume();
     }
 
     public Level makeLevel(String levelName) {

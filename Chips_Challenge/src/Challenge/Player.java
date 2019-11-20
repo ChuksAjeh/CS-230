@@ -12,6 +12,7 @@ public class Player extends Entity {
     private static final Image sprite;
     private ArrayList<Item> inventory;
     private int direction;
+    private int tokenCount;
 
     // TESTING
     Lumberjack jack = new Lumberjack();
@@ -24,6 +25,7 @@ public class Player extends Entity {
         super(sprite);
         this.inventory = new ArrayList<>();
         this.direction = direction;
+        this.tokenCount = 0;
     }
 
     private Entity[][] movePlayerEntity(int[] locations, Level level) {
@@ -150,7 +152,25 @@ public class Player extends Entity {
     }
 
     public void addItem(Item item) {
-        inventory.add(item);
+        if (!(item instanceof Token)) {
+            inventory.add(item);
+        } else if (checkTokenInInv()) {
+            tokenCount++;
+            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
+        } else {
+            inventory.add(item);
+            tokenCount++;
+            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
+        }
+    }
+
+    private boolean checkTokenInInv() {
+        for (Item item : inventory){
+            if (item instanceof Token) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeItem(Item item) {

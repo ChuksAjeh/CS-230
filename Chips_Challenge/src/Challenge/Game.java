@@ -77,37 +77,43 @@ public class Game {
 
     private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid, int[] offset) {
 
+        int xOnScreen;
+        int yOnScreen;
+
+        int[] position;
+
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0; y < entityGrid[x].length; y++ ) {
 
                 if (null != entityGrid[x][y]) {
-                    renderEntity(gc,entityGrid, x, y, offset);
+
+                    xOnScreen = x * GRID_CELL_WIDTH;
+                    yOnScreen = y * GRID_CELL_HEIGHT;
+
+                    position = new int[] {xOnScreen - offset[0], yOnScreen - offset[1]};
+
+                    renderEntity(gc, entityGrid[x][y], position);
                 }
 
             }
         }
     }
 
-    private void renderEntity(GraphicsContext gc, Entity[][] entityGrid, int x, int y, int[] offset) {
+    private void renderEntity(GraphicsContext gc, Entity entity, int[] position) {
 
-        Entity entity = entityGrid[x][y];
-
-        int xOnScreen = x * GRID_CELL_WIDTH;
-        int yOnScreen = y * GRID_CELL_HEIGHT;
-
-        int xOffset = offset[0];
-        int yOffset = offset[1];
+        int x = position[0];
+        int y = position[1];
 
         Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
             this.player = (Player) entity;
-            gc.drawImage(rotate(sprite, player.getDirection()), xOnScreen - xOffset, yOnScreen - yOffset);
+            gc.drawImage(rotate(sprite, player.getDirection()), x, y);
         } else if (entity.getClass().getSimpleName().contains("Enemy")) {
-            Enemy enemy = (Enemy) entityGrid[x][y];
-            gc.drawImage(rotate(sprite, enemy.getDirection()), xOnScreen - xOffset, yOnScreen - yOffset);
+            Enemy enemy = (Enemy) entity;
+            gc.drawImage(rotate(sprite, enemy.getDirection()), x, y);
         } else {
-            gc.drawImage(sprite, xOnScreen - xOffset, yOnScreen - yOffset);
+            gc.drawImage(sprite, x, y);
         }
 
     }

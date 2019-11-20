@@ -50,7 +50,7 @@ public class WallEnemy extends Enemy {
             // Up + Down
 
             if ("Wall".equals(left) && "Wall".equals(right)) {
-                
+
                 if ("Wall".equals(up)) {
                     return 2;
                 } else if ("Wall".equals(down)) {

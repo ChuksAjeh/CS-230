@@ -8,19 +8,20 @@ import java.util.Scanner;
 
 public class Level {
 
+    private final Cell[][] originalCellGrid;
+    private final Entity[][] originalEntityGrid;
+
     private Cell[][] cellGrid;
     private Entity[][] entityGrid;
 
     Scanner reader;
 
     public Level(String levelName) throws FileNotFoundException {
-
         buildLevel(levelName);
 
-    }
-
-    public void updateLevel() {
-
+        // Set original grids, for reset purposes
+        this.originalCellGrid = getCellGrid();
+        this.originalEntityGrid = getEntityGrid();
     }
 
     private void buildLevel(String level) throws FileNotFoundException {
@@ -99,15 +100,15 @@ public class Level {
                     this.entityGrid[x][y] = new LineEnemy(dir);
                 }
 
-            } else if (name.contains("KEY")) {
+            } else if (name.equals("KEY_DOOR")) {
 
                 colour = Color.rgb(Integer.parseInt(line[3]), Integer.parseInt(line[4]), Integer.parseInt(line[5]));
 
-                if ("KEY_DOOR".equals(name)) {
-                    this.cellGrid[x][y] = new KeyDoor(colour);
-                } else if ("KEY".equals(name)) {
-                    this.entityGrid[x][y] = new Key(colour);
-                }
+                int keyX = Integer.parseInt(line[6]);
+                int keyY = Integer.parseInt(line[7]);
+
+                this.cellGrid[x][y] = new KeyDoor(colour);
+                this.entityGrid[keyX][keyY] = new Key(colour);
 
             } else if ("TOKEN".equals(name)) {
                 this.entityGrid[x][y] = new Token();
@@ -153,6 +154,14 @@ public class Level {
 
     public void setEntityGrid(Entity[][] entityGrid) {
         this.entityGrid = entityGrid;
+    }
+
+    public Cell[][] getOriginalCellGrid() {
+        return this.originalCellGrid;
+    }
+
+    public Entity[][] getOriginalEntityGrid() {
+        return this.originalEntityGrid;
     }
 
     public Cell[][] getCellGrid() {
