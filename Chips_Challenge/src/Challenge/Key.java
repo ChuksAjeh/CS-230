@@ -8,19 +8,20 @@ import javafx.scene.paint.Color;
  */
 public class Key extends Item {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
     private final Color colour;
 
     static {
-        sprite = new Image("images/ENTITY_KEY.png");
+        SPRITE = new Image("images/ENTITY_KEY.png");
     }
 
     public Key(Color colour) {
-        super(sprite);
+        super(SPRITE);
         this.colour = colour;
     }
 
     public Color getColour() {
         return this.colour;
     }
+
 }

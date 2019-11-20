@@ -9,20 +9,20 @@ import java.util.ArrayList;
  */
 public class Player extends Entity {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
     private ArrayList<Item> inventory;
     private int direction;
     private int tokenCount;
 
     // TESTING
-    Lumberjack jack = new Lumberjack();
+    final Lumberjack jack = new Lumberjack();
 
     static  {
-        sprite = new Image("images/ENTITY_PLAYER.png");
+        SPRITE = new Image("images/ENTITY_PLAYER.png");
     }
 
     public Player(int direction) {
-        super(sprite);
+        super(SPRITE);
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
@@ -156,11 +156,11 @@ public class Player extends Entity {
             inventory.add(item);
         } else if (checkTokenInInv()) {
             tokenCount++;
-            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
+            jack.log(1, "Current tokens: " + tokenCount);
         } else {
             inventory.add(item);
             tokenCount++;
-            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
+            jack.log(1, "Current tokens: " + tokenCount);
         }
     }
 

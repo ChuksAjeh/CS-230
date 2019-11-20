@@ -24,4 +24,5 @@ public class User {
     public int[] getScores() {
         return this.scores;
     }
+
 }

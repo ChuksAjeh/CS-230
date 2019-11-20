@@ -8,10 +8,10 @@ import javafx.scene.image.Image;
  */
 abstract class Entity {
 
-    private Image sprite;
+    private final Image SPRITE;
 
     public Entity(Image sprite) {
-        this.sprite = sprite;
+        this.SPRITE = sprite;
     }
 
     public int[] findEntity(Entity entity, Entity[][] entityGrid) {
@@ -30,7 +30,8 @@ abstract class Entity {
 
     }
 
-    public Image getSprite() {
-        return sprite;
+    public Image getSPRITE() {
+        return SPRITE;
     }
+
 }

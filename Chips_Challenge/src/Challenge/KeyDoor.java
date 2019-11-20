@@ -8,15 +8,15 @@ import javafx.scene.paint.Color;
  */
 public class KeyDoor extends Door {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
     private final Color colour;
 
     static {
-        sprite = new Image("images/CELL_KEY_DOOR.png");
+        SPRITE = new Image("images/CELL_KEY_DOOR.png");
     }
 
     public KeyDoor(Color colour) {
-        super(sprite, false);
+        super(SPRITE, false);
         this.colour = colour;
     }
 

@@ -11,16 +11,14 @@ import java.util.Random;
  */
 public class WallEnemy extends Enemy {
 
-    private static final Image sprite;
-    private Random random;
+    private static final Image SPRITE;
 
     static {
-        sprite = new Image("images/ENTITY_WALL_ENEMY.png");
+        SPRITE = new Image("images/ENTITY_WALL_ENEMY.png");
     }
 
     public WallEnemy(int direction) {
-        super(sprite, direction);
-        random = new Random();
+        super(SPRITE, direction);
     }
 
     private int nextDirection() {
@@ -118,4 +116,5 @@ public class WallEnemy extends Enemy {
         return 0;
 
     }
+
 }

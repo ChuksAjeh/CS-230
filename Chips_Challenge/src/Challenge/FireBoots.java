@@ -8,14 +8,14 @@ import javafx.scene.image.Image;
  */
 public class FireBoots extends Equipment {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
 
     static {
-        sprite = new Image("images/ENTITY_FIRE_BOOTS.png");
+        SPRITE = new Image("images/ENTITY_FIRE_BOOTS.png");
     }
 
     public FireBoots() {
-        super(sprite);
+        super(SPRITE);
     }
 
 }

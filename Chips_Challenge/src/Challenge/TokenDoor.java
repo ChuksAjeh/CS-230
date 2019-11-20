@@ -8,15 +8,15 @@ import javafx.scene.image.Image;
  */
 public class TokenDoor extends Door {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
     private final int requirement;
 
     static {
-        sprite = new Image("images/CELL_TOKEN_DOOR.png");
+        SPRITE = new Image("images/CELL_TOKEN_DOOR.png");
     }
 
     public TokenDoor(int requirement) {
-        super(sprite, false);
+        super(SPRITE, false);
         this.requirement = requirement;
     }
 

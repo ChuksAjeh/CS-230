@@ -8,13 +8,14 @@ import javafx.scene.image.Image;
  */
 public class Goal extends Cell {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
 
     static {
-        sprite = new Image("images/CELL_GOAL.png");
+        SPRITE = new Image("images/CELL_GOAL.png");
     }
 
     public Goal() {
-        super(sprite, true);
+        super(SPRITE, true);
     }
+
 }

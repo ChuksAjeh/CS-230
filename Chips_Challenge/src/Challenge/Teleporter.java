@@ -8,19 +8,19 @@ import javafx.scene.image.Image;
  */
 public class Teleporter extends Impassable {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
     private Teleporter pair;
 
     static {
-        sprite = new Image("");
+        SPRITE = new Image("");
     }
 
     public Teleporter() {
-        super(sprite, false);
+        super(SPRITE, false);
     }
 
     public Teleporter(Teleporter pair) {
-        super(sprite, false);
+        super(SPRITE, false);
         this.pair = pair;
     }
 
