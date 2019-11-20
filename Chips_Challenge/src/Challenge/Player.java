@@ -156,8 +156,11 @@ public class Player extends Entity {
             inventory.add(item);
         } else if (checkTokenInInv()) {
             tokenCount++;
+            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
         } else {
             inventory.add(item);
+            tokenCount++;
+            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
         }
     }
 
