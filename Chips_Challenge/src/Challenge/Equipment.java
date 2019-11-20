@@ -1,7 +1,7 @@
 package Challenge;
 import javafx.scene.image.Image;
 
-/**An equipment is a items that is permanently in a players inventory, allowing the player to traverse through hazards
+/**An equipment is a item that is permanently in a players inventory, allowing the player to traverse through hazards
  * like fire.
  * @author Angelo
  * @version 1.0
