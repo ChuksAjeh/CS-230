@@ -21,7 +21,7 @@ public class Player extends Entity {
     }
 
     public Player(int direction) {
-        super(sprite, false);
+        super(sprite);
         this.inventory = new ArrayList<>();
         this.direction = direction;
     }
@@ -49,11 +49,11 @@ public class Player extends Entity {
 
             if (null != entity) {
 
-                if (entity.isCollectible()) {
+                if (entity instanceof Item) {
 
                     this.addItem((Item) entityGrid[newX][newY]);
 
-                    jack.log("FOUND COLLECTIBLE");
+                    jack.log("FOUND ITEM");
                     jack.log(this.getInventory().toString());
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {

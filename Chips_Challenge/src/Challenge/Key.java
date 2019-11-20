@@ -9,16 +9,14 @@ import javafx.scene.paint.Color;
 public class Key extends Item {
 
     private static final Image sprite;
-    private static final boolean collectible;
     private final Color colour;
 
     static {
         sprite = new Image("images/ENTITY_KEY.png");
-        collectible = true;
     }
 
     public Key(Color colour) {
-        super(sprite, collectible);
+        super(sprite);
         this.colour = colour;
     }
 

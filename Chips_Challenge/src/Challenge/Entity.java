@@ -9,15 +9,9 @@ import javafx.scene.image.Image;
 abstract class Entity {
 
     private Image sprite;
-    private boolean collectible;
 
-    public Entity(Image sprite, boolean collectible) {
+    public Entity(Image sprite) {
         this.sprite = sprite;
-        this.collectible = collectible;
-    }
-
-    public boolean isCollectible() {
-        return collectible;
     }
 
     public int[] findEntity(Entity entity, Entity[][] entityGrid) {

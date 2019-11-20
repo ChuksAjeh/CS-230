@@ -15,7 +15,7 @@ public class FireBoots extends Equipment {
     }
 
     public FireBoots() {
-        super(sprite, true);
+        super(sprite);
     }
 
 }
