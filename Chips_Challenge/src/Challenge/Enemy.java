@@ -62,7 +62,7 @@ abstract class Enemy extends Entity {
             this.enemyX -= 1;
 
         } else {
-            //throw exception (custom one like OutOfDirectionRange?)
+            // throw exception (custom one like OutOfDirectionRange?)
             throw new Exception("Direction out of range!");
         }
 

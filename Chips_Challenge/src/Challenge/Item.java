@@ -18,7 +18,7 @@ abstract class Item extends Entity {
     private final static boolean COLLECTIBLE;
 
     static {
-        //All items are collectible.
+        // All items are collectible.
         COLLECTIBLE = true;
     }
 
