@@ -22,11 +22,11 @@ public class Teleporter extends Impassable {
     public Teleporter(Teleporter pair) {
         super(SPRITE, false);
         this.pair = pair;
+        pair.setPair(this);
     }
 
-    public void setPair(Teleporter pair) {
+    private void setPair(Teleporter pair) {
         this.pair = pair;
-        pair.setPair(this);
     }
 
     public void setPlayerLocation(int[] playerLocation) {

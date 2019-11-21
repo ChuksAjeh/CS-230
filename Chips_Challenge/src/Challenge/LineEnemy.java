@@ -26,34 +26,14 @@ public class LineEnemy extends Enemy {
 
         String[] surroundingCells = getSurroundingCells();
 
-        if (0 == this.getDirection()) {
-            // UP
-            if ("Wall".equals(surroundingCells[0])) {
-                return 2;
-            } else {
-                return 0;
-            }
-        } else if (1 == this.getDirection()) {
-            // RIGHT
-            if ("Wall".equals(surroundingCells[1])) {
-                return 3;
-            } else {
-                return 1;
-            }
-        } else if (2 == this.getDirection()) {
-            // DOWN
-            if ("Wall".equals(surroundingCells[2])) {
-                return 0;
-            } else {
-                return 2;
-            }
-        } else if (3 == this.getDirection()) {
-            // LEFT
-            if ("Wall".equals(surroundingCells[3])) {
-                return 1;
-            } else {
-                return 3;
-            }
+        if (0 == this.getDirection()) { // UP
+            return "Wall".equals(surroundingCells[0]) ? 2 : 0;
+        } else if (1 == this.getDirection()) { // RIGHT
+            return "Wall".equals(surroundingCells[1]) ? 3 : 1;
+        } else if (2 == this.getDirection()) { // DOWN
+            return "Wall".equals(surroundingCells[2]) ? 0 : 2;
+        } else if (3 == this.getDirection()) { // LEFT
+            return "Wall".equals(surroundingCells[3]) ? 1 : 3;
         }
 
         return 0;
