@@ -20,9 +20,9 @@ public class LineEnemy extends Enemy {
 
     private int changeDirection() {
 
-        //Check for direction, then check whether next position is a wall
-        //If it is a wall, change direction, else keep same direction.
-        //This should be called every update.
+        // Check for direction, then check whether next position is a wall
+        // If it is a wall, change direction, else keep same direction.
+        // This should be called every update.
 
         String[] surroundingCells = getSurroundingCells();
 
