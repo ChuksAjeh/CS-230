@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
  */
 public class LineEnemy extends Enemy {
 
+    /**
+     * The sprite to represent the dumb enemy.
+     */
     private static final Image SPRITE;
 
     static {

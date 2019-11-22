@@ -1,14 +1,20 @@
 package Challenge;
 
 import javafx.scene.image.Image;
+
+import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
-/**
- * @author ..
+/**A dumb enemy is an enemy whose movement is determined by the players location. It tries to find the shortest distance
+ * to the player and uses that path to determine its next direction. It does not take into account impassable territory
+ * hence it is a dumb enemy.
+ * @author Samuel
  * @version 1.0
  */
 public class DumbEnemy extends Enemy {
-
+    /**
+     * The sprite to represent the dumb enemy.
+     */
     private static final Image SPRITE;
     private Lumberjack jack  = new Lumberjack();
 
@@ -16,12 +22,19 @@ public class DumbEnemy extends Enemy {
         SPRITE = new Image("images/ENTITY_DUMB_ENEMY.png");
     }
 
+    /**
+     * Constructs a dumb enemy
+     * @param direction The intial direction of the enemy
+     */
     public DumbEnemy(int direction) {
         super(SPRITE, direction);
     }
 
+    /**
+     * Finds the next direction of the dumb enemy.
+     * @return The next direction
+     */
     private int nextDirection() {
-
         int xDif = getPlayerPosition()[0] - getEnemyX();
         int yDif = getPlayerPosition()[1] - getEnemyY();
 
