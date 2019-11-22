@@ -11,16 +11,14 @@ import java.util.Random;
  */
 public class WallEnemy extends Enemy {
 
-    private static final Image sprite;
-    private Random random;
+    private static final Image SPRITE;
 
     static {
-        sprite = new Image("images/ENTITY_WALL_ENEMY.png");
+        SPRITE = new Image("images/ENTITY_WALL_ENEMY.png");
     }
 
     public WallEnemy(int direction) {
-        super(sprite, direction);
-        random = new Random();
+        super(SPRITE, direction);
     }
 
     private int nextDirection() {
@@ -40,41 +38,29 @@ public class WallEnemy extends Enemy {
 
         // TODO : extract this as "getSurroundingCells"
 
-        String up = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1].getClass().getSimpleName();
-        String right = this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()].getClass().getSimpleName();
-        String down = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1].getClass().getSimpleName();
-        String left = this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()].getClass().getSimpleName();
+        Cell up = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() -1];
+        Cell right = this.getCellGrid()[this.getEnemyX() + 1][this.getEnemyY()];
+        Cell down = this.getCellGrid()[this.getEnemyX()][this.getEnemyY() + 1];
+        Cell left = this.getCellGrid()[this.getEnemyX() - 1][this.getEnemyY()];
 
         if (0 == direction || 2 == direction) {
 
             // Up + Down
 
-            if ("Wall".equals(left) && "Wall".equals(right)) {
+            if (left instanceof Wall && right instanceof Wall) {
 
-                if ("Wall".equals(up)) {
+                if (up instanceof Wall) {
                     return 2;
-                } else if ("Wall".equals(down)) {
+                } else if (down instanceof Wall) {
                     return 0;
                 } else {
                     return direction;
                 }
 
-            } else if (0 == direction && "Wall".equals(up)) {
-
-                if ("Wall".equals(left)) {
-                    return 1;
-                } else if ("Wall".equals(right)) {
-                    return 3;
-                }
-
-            } else if (2 == direction && "Wall".equals(down)) {
-
-                if ("Wall".equals(left)) {
-                    return 1;
-                } else if ("Wall".equals(right)) {
-                    return 3;
-                }
-
+            } else if (0 == direction && up instanceof Wall) {
+                return left instanceof Wall ? 1 : 3;
+            } else if (2 == direction && down instanceof Wall) {
+                return left instanceof Wall ? 1 : 3;
             } else {
                 return direction;
             }
@@ -83,32 +69,20 @@ public class WallEnemy extends Enemy {
 
             // Left + Right
 
-            if ("Wall".equals(up) && "Wall".equals(down)) {
+            if (up instanceof Wall && down instanceof Wall) {
 
-                if ("Wall".equals(left)) {
+                if (left instanceof Wall) {
                     return 1;
-                } else if ("Wall".equals(right)) {
+                } else if (right instanceof Wall) {
                     return 3;
                 } else {
                     return direction;
                 }
 
-            } else if (1 == direction && "Wall".equals(right)) {
-
-                if ("Wall".equals(up)) {
-                    return 2;
-                } else if ("Wall".equals(down)) {
-                    return 0;
-                }
-
-            } else if (3 == direction && "Wall".equals(left)) {
-
-                if ("Wall".equals(up)) {
-                    return 2;
-                } else if ("Wall".equals(down)) {
-                    return 0;
-                }
-
+            } else if (1 == direction && right instanceof Wall) {
+                return up instanceof Wall ? 2 : 0;
+            } else if (3 == direction && left instanceof Wall) {
+                return up instanceof Wall ? 2 : 0;
             } else {
                 return direction;
             }
@@ -118,4 +92,5 @@ public class WallEnemy extends Enemy {
         return 0;
 
     }
+
 }

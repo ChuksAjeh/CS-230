@@ -9,20 +9,20 @@ import java.util.ArrayList;
  */
 public class Player extends Entity {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
     private ArrayList<Item> inventory;
     private int direction;
     private int tokenCount;
 
     // TESTING
-    Lumberjack jack = new Lumberjack();
+    final Lumberjack jack = new Lumberjack();
 
     static  {
-        sprite = new Image("images/ENTITY_PLAYER.png");
+        SPRITE = new Image("images/ENTITY_PLAYER.png");
     }
 
     public Player(int direction) {
-        super(sprite);
+        super(SPRITE);
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
@@ -96,29 +96,21 @@ public class Player extends Entity {
         int x = currentLoc[0];
         int y = currentLoc[1];
 
+        int[] locations = new int[] {x, y, x, y};
+
         if (0 == direction) {
-
-            this.direction = direction;
-            return movePlayerEntity(new int[] {x, y, x, y-1}, level);
-
+            locations = new int[] {x, y, x, y-1};
         } else if (1 == direction) {
-
-            this.direction = direction;
-            return movePlayerEntity(new int[] {x, y, x+1, y}, level);
-
+            locations = new int[] {x, y, x+1, y};
         } else if (2 == direction) {
-
-            this.direction = direction;
-            return movePlayerEntity(new int[] {x, y, x, y+1}, level);
-
+            locations = new int[] {x, y, x, y+1};
         } else if (3 == direction) {
-
-            this.direction = direction;
-            return movePlayerEntity(new int[] {x, y, x-1, y}, level);
-
+            locations = new int[] {x, y, x-1, y};
         }
 
-        return null;
+        this.direction = direction;
+
+        return movePlayerEntity(locations, level);
     }
 
     public int[] getLocation(Entity[][] entityGrid) {
@@ -130,16 +122,14 @@ public class Player extends Entity {
 
                 Entity entity = entityGrid[x][y];
 
-                if (entity != null) {
-
-                    if (entity.getClass().getSimpleName().equals("Player")) {
-                        // Player is found
-                        return new int[] {x, y};
-                    }
-
+                if (entity instanceof Player) {
+                    // Player is found
+                    return new int[] {x, y};
                 }
+
             }
         }
+
         return new int[] {0, 0};
     }
 
@@ -152,24 +142,37 @@ public class Player extends Entity {
     }
 
     public void addItem(Item item) {
+
         if (!(item instanceof Token)) {
+
             inventory.add(item);
+
         } else if (checkTokenInInv()) {
-            tokenCount++;
-            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
+
+            this.tokenCount += 1;
+
+            jack.log(1, "Current tokens: " + tokenCount);
+
         } else {
+
             inventory.add(item);
-            tokenCount++;
-            jack.log(1, "Current tokens: " + Integer.toString(tokenCount));
+            this.tokenCount += 1;
+
+            jack.log(1, "Current tokens: " + tokenCount);
         }
+
     }
 
     private boolean checkTokenInInv() {
-        for (Item item : inventory){
+
+        for (Item item : inventory) {
+
             if (item instanceof Token) {
                 return true;
             }
+
         }
+
         return false;
     }
 

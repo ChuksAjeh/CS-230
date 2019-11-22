@@ -8,13 +8,14 @@ import javafx.scene.image.Image;
  */
 public class Ground extends Cell {
 
-    private static final Image sprite;
+    private static final Image SPRITE;
 
     static {
-        sprite = new Image("images/CELL_GROUND.png");
+        SPRITE = new Image("images/CELL_GROUND.png");
     }
 
     public Ground() {
-        super(sprite, true);
+        super(SPRITE, true);
     }
+
 }

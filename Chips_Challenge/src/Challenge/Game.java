@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
 public class Game {
 
     // The size of each cell
-    private static int GRID_CELL_WIDTH = 120;
-    private static int GRID_CELL_HEIGHT = 120;
+    private static final int GRID_CELL_WIDTH = 120;
+    private static final int GRID_CELL_HEIGHT = 120;
 
     Player player = new Player(0);
     Lumberjack jack = new Lumberjack();
@@ -66,7 +66,7 @@ public class Game {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = resize(cell.getSPRITE(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
                 gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
 
@@ -104,7 +104,7 @@ public class Game {
         int x = position[0];
         int y = position[1];
 
-        Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        Image sprite = resize(entity.getSPRITE(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
             this.player = (Player) entity;

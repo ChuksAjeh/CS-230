@@ -31,7 +31,7 @@ class Ping {
 
         for (int i = 0 ; i < inputArray.length ; i++ ) {
 
-            if (i % 2 == 0) {
+            if (0 == i % 2) {
                 out.append(shiftUp(inputArray[i]));
             } else {
                 out.append(shiftDown(inputArray[i]));
@@ -55,27 +55,11 @@ class Ping {
     }
 
     private char shiftUp(char c) {
-
-        if (c == 'Z') {
-            c = ('A');
-        } else {
-            c = (char) (c + 1);
-        }
-
-        return c;
-
+        return 'Z' == c ? 'A' : (char) (c + 1);
     }
 
     private char shiftDown(char c) {
-
-        if (c == 'A') {
-            c = ('Z');
-        } else {
-            c = (char) (c - 1);
-        }
-
-        return c;
-
+        return 'A' == c ? 'Z' : (char) (c - 1);
     }
 
 }

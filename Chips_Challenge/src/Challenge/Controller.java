@@ -33,7 +33,8 @@ public class Controller {
             game.drawGame(level, canvas);
         }
 
-        // Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
+        // Consume the event. This means we mark it as dealt with.
+        // This stops other GUI nodes (buttons etc) responding to it.
         event.consume();
     }
 

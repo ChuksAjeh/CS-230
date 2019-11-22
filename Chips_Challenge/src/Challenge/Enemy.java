@@ -4,8 +4,9 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * Enemies are movable hazards designed to end the level upon contact with the player. Each enemy has its own unique
- * way of moving to the player. Again this class shouldn't be instantiated, instead, its sub-classes should be.
+ * Enemies are movable hazards designed to end the level upon contact with the player.
+ * Each enemy has its own unique way of moving to the player.
+ * Again this class shouldn't be instantiated, instead, its sub-classes should be.
  * @author ..
  * @version 1.0
  */
@@ -35,15 +36,15 @@ abstract class Enemy extends Entity {
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
-    public Enemy(Image sprite, int direction) {
-        super(sprite);
+    public Enemy(Image SPRITE, int direction) {
+        super(SPRITE);
         this.direction = direction;
     }
 
     /**
      * Moves the enemy based on the inputted direction
      * @param direction The direction 0-3 representing N-S-E-W
-     * @return The new coordinates the enemy willat in the entity grid.
+     * @return The new coordinates the enemy will be at in the entity grid.
      */
     protected int[] move(int direction) throws Exception {
 
@@ -61,7 +62,7 @@ abstract class Enemy extends Entity {
             this.enemyX -= 1;
 
         } else {
-            //throw exception (custom one like OutOfDirectionRange?)
+            // throw exception (custom one like OutOfDirectionRange?)
             throw new Exception("Direction out of range!");
         }
 

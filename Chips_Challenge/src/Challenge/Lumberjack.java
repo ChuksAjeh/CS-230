@@ -16,15 +16,10 @@ public class Lumberjack {
 
     public void log(int priority, String message) {
 
-        switch (priority) {
-
-            case 1:
-                System.out.println("Useful : " + message);
-                break;
-            default:
-                this.log(message);
-                break;
-
+        if (priority == 1) {
+            System.out.println("Useful : " + message);
+        } else {
+            this.log(message);
         }
 
     }
@@ -39,7 +34,7 @@ public class Lumberjack {
                 if (null == c) {
                     log("NULL");
                 } else {
-                    log(c.getClass().getSimpleName().toString());
+                    log(c.getClass().getSimpleName());
                 }
             }
         }
@@ -56,7 +51,7 @@ public class Lumberjack {
                 if (null == e) {
                     log("NULL");
                 } else {
-                    log(e.getClass().getSimpleName().toString());
+                    log(e.getClass().getSimpleName());
                 }
             }
         }
