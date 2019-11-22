@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
  * @author ..
  * @version 1.0
  */
+//Enemies can only stand on ground
 abstract class Enemy extends Entity {
 
     /**
