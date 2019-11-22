@@ -36,6 +36,10 @@ abstract class Cell {
         this.passable = !this.passable;
     }
 
+    public void setPassable(boolean newValue) {
+        this.passable = newValue;
+    }
+
     /**
      * Checks if the object is passable.
      * @return The object's passable state.
