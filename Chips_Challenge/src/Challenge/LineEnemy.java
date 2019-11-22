@@ -42,21 +42,4 @@ public class LineEnemy extends Enemy {
         return 0;
     }
 
-    private String[] getSurroundingCells() {
-
-        int x = this.getEnemyX();
-        int y = this.getEnemyY();
-
-        return new String[] {
-            getCellName(x, y - 1),
-            getCellName(x + 1, y),
-            getCellName(x, y + 1),
-            getCellName(x - 1, y)
-        };
-    }
-
-    private String getCellName(int x, int y) {
-        return this.getCellGrid()[x][y].getClass().getSimpleName();
-    }
-
 }
