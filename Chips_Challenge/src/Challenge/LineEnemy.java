@@ -8,7 +8,9 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class LineEnemy extends Enemy {
-
+    /**
+     * The sprite to represent the dumb enemy.
+     */
     private static final Image sprite;
 
     static {
