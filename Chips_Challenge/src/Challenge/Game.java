@@ -27,10 +27,13 @@ public class Game {
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+
+
         // Does this need a comment? method names should infer their purpose
         int[] offset = this.calculateOffSet(player, level, canvas);
 
-        // Render grids
+        // Render stuff
+        this.renderBackground(gc, canvas);
         this.renderCellGrid(gc, level.getCellGrid(), offset);
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
@@ -54,6 +57,24 @@ public class Game {
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
 
         return new int[] {levelXOffset, levelYOffset};
+
+    }
+
+    private void renderBackground(GraphicsContext gc, Canvas canvas) {
+
+        int boundWidth = 0 - GRID_CELL_WIDTH / 2;
+        int boundHeight = 0 - GRID_CELL_HEIGHT / 2;
+
+        Wall backing = new Wall();
+        Image backingSprite = backing.getSPRITE();
+
+        for (int x = boundWidth ; x < canvas.getWidth() - boundWidth ; x += GRID_CELL_WIDTH) {
+            for (int y = boundHeight ; y < canvas.getHeight() - boundHeight ; y += GRID_CELL_HEIGHT) {
+                
+                gc.drawImage(backingSprite, x, y);
+
+            }
+        }
 
     }
 

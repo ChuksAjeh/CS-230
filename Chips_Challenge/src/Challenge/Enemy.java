@@ -70,21 +70,18 @@ abstract class Enemy extends Entity {
         return null;
     }
 
-    public String[] getSurroundingCells() {
+    public Cell[] getSurroundingCells() {
 
-        int x = this.getEnemyX();
-        int y = this.getEnemyY();
+        int x = getEnemyX();
+        int y = getEnemyY();
 
-        return new String[] {
-                getCellName(x, y - 1),
-                getCellName(x + 1, y),
-                getCellName(x, y + 1),
-                getCellName(x - 1, y)
+        return new Cell[] {
+                cellGrid[x][y - 1],
+                cellGrid[x + 1][y],
+                cellGrid[x][y + 1],
+                cellGrid[x - 1][y]
         };
-    }
 
-    private String getCellName(int x, int y) {
-        return this.getCellGrid()[x][y].getClass().getSimpleName();
     }
 
     /**
