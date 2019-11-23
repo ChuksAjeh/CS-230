@@ -53,10 +53,10 @@ public class Player extends Entity {
 
                 if (entity instanceof Item) {
 
-                    this.addItem((Item) entityGrid[newX][newY]);
+                    this.addItem((Item) entityGrid[newX][newY], level);
 
                     jack.log("FOUND ITEM");
-                    jack.log(this.getInventory().toString());
+                    jack.log(getInventory().toString());
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {
 
@@ -141,25 +141,42 @@ public class Player extends Entity {
         return inventory;
     }
 
-    public void addItem(Item item) {
+    private void addItem(Item item, Level level) {
 
-        if (!(item instanceof Token)) {
-
-            inventory.add(item);
-
-        } else if (checkTokenInInv()) {
+        if (item instanceof Token) {
 
             this.tokenCount += 1;
 
             jack.log(1, "Current tokens: " + tokenCount);
 
-        } else {
+            if (checkTokenInInv()) {
+                return;
+            }
 
-            inventory.add(item);
-            this.tokenCount += 1;
+        } else if (item instanceof FireBoots || item instanceof Flippers) {
 
-            jack.log(1, "Current tokens: " + tokenCount);
+            setCellsPassable(level, item);
+
         }
+
+        inventory.add(item);
+    }
+
+    private void setCellsPassable(Level level, Item item) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        String cellType = item instanceof FireBoots ? "Fire" : "Water";
+
+        for (Cell[] row : cellGrid) {
+            for (Cell c : row) {
+                if (cellType.equals(c.getClass().getSimpleName())) {
+                    c.setPassable(true);
+                }
+            }
+        }
+
+        jack.log(1, cellType + " set to passable");
 
     }
 

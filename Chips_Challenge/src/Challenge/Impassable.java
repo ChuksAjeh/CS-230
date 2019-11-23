@@ -8,8 +8,8 @@ import javafx.scene.image.Image;
  */
 abstract class Impassable extends Cell {
 
-    public Impassable(Image SPRITE, boolean passable) {
-        super(SPRITE, passable);
+    public Impassable(Image sprite, boolean passable) {
+        super(sprite, passable);
     }
 
 }

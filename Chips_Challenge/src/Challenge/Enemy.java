@@ -37,8 +37,8 @@ abstract class Enemy extends Entity {
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
-    public Enemy(Image SPRITE, int direction) {
-        super(SPRITE);
+    public Enemy(Image sprite, int direction) {
+        super(sprite);
         this.direction = direction;
     }
 
@@ -47,44 +47,37 @@ abstract class Enemy extends Entity {
      * @param direction The direction 0-3 representing N-S-E-W
      * @return The new coordinates the enemy will be at in the entity grid.
      */
-    protected int[] move(int direction) throws Exception {
+    protected int[] move(int direction) {
 
-        if (0 == direction) {
-            // UP
-            this.enemyY += 1;
-        } else if (1 == direction) {
-            // RIGHT
-            this.enemyX += 1;
-        } else if (2 == direction) {
-            // DOWN
-            this.enemyY -= 1;
-        } else if (3 == direction) {
-            // LEFT
-            this.enemyX -= 1;
-
-        } else {
-            // throw exception (custom one like OutOfDirectionRange?)
-            throw new Exception("Direction out of range!");
-        }
+//        if (0 == direction) {
+//             UP
+//            this.enemyY += 1;
+//        } else if (1 == direction) {
+//             RIGHT
+//            this.enemyX += 1;
+//        } else if (2 == direction) {
+//             DOWN
+//            this.enemyY -= 1;
+//        } else if (3 == direction) {
+//             LEFT
+//            this.enemyX -= 1;
+//        }
 
         return null;
     }
 
-    public String[] getSurroundingCells() {
+    public Cell[] getSurroundingCells() {
 
-        int x = this.getEnemyX();
-        int y = this.getEnemyY();
+        int x = getEnemyX();
+        int y = getEnemyY();
 
-        return new String[] {
-                getCellName(x, y - 1),
-                getCellName(x + 1, y),
-                getCellName(x, y + 1),
-                getCellName(x - 1, y)
+        return new Cell[] {
+            cellGrid[x][y - 1],
+            cellGrid[x + 1][y],
+            cellGrid[x][y + 1],
+            cellGrid[x - 1][y]
         };
-    }
 
-    private String getCellName(int x, int y) {
-        return this.getCellGrid()[x][y].getClass().getSimpleName();
     }
 
     /**

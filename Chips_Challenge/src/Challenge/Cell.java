@@ -36,6 +36,10 @@ abstract class Cell {
         this.passable = !this.passable;
     }
 
+    public void setPassable(boolean newValue) {
+        this.passable = newValue;
+    }
+
     /**
      * Checks if the object is passable.
      * @return The object's passable state.
@@ -48,7 +52,7 @@ abstract class Cell {
      * Gets the sprite the object is using.
      * @return The sprite being used to render the file.
      */
-    public Image getSPRITE() {
+    public Image getSprite() {
         return SPRITE;
     }
 

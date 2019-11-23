@@ -27,19 +27,11 @@ public class LineEnemy extends Enemy {
         // If it is a wall, change direction, else keep same direction.
         // This should be called every update.
 
-        String[] surroundingCells = getSurroundingCells();
+        Cell[] sc = getSurroundingCells();
+        int dir = getDirection();
 
-        if (0 == this.getDirection()) { // UP
-            return "Wall".equals(surroundingCells[0]) ? 2 : 0;
-        } else if (1 == this.getDirection()) { // RIGHT
-            return "Wall".equals(surroundingCells[1]) ? 3 : 1;
-        } else if (2 == this.getDirection()) { // DOWN
-            return "Wall".equals(surroundingCells[2]) ? 0 : 2;
-        } else if (3 == this.getDirection()) { // LEFT
-            return "Wall".equals(surroundingCells[3]) ? 1 : 3;
-        }
+        return sc[dir] instanceof Wall ? (dir + 2) % 4 : dir;
 
-        return 0;
     }
 
 }

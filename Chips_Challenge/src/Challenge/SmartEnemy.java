@@ -1,8 +1,10 @@
 package Challenge;
 
+import com.sun.deploy.util.Waiter;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.*;
 
 
@@ -35,14 +37,25 @@ public class SmartEnemy extends Enemy {
         //source node for the enemy/
         int srcX = getEnemyX();
         int srcY = getEnemyY();
-        //find the player location.
 
+        //find the player location.
         int sinkX = player.getLocation(entityGrid)[0];
         int sinkY = player.getLocation(entityGrid)[1];
+
         // walls, doors, hazards are all impassable for enemy
         int[][] dist = new int[height][width];
-        for (int i = 0; i <= height; i++) {
-            for (int j = 0; j <= width; j++) {
+
+        for (int i = 0 ; i <= height ; i++) {
+            for (int j = 0 ; j <= width ; j++) {
+
+                Cell cell = cellGrid[i][j];
+
+                if (cell instanceof Wall || cell instanceof Fire || cell instanceof TokenDoor || cell instanceof Water) {
+                    dist[i][j] = 0;
+                }
+
+                /*
+
                 //provides use with a set of distances
                 if (cellGrid[i][j].getClass().getSimpleName().equals("Wall") || cellGrid[i][j].getClass().getSimpleName().equals("Fire")) {
                     dist[i][j] = 0;
@@ -53,37 +66,39 @@ public class SmartEnemy extends Enemy {
                 } else {
 
                 }
+
+                */
+
             }
         }
+
         return 0;
     }
 
 
     // get the neighbours of the cell:
-    private String getSurroundingCells(Cell[][] cellGrid, int i, int j) {
-        String up = cellGrid[this.getEnemyX()][this.getEnemyY() - 1].getClass().getSimpleName();
-        String right = cellGrid[this.getEnemyX() + 1][this.getEnemyY()].getClass().getSimpleName();
-        String down = cellGrid[this.getEnemyX()][this.getEnemyY() + 1].getClass().getSimpleName();
-        String left = cellGrid[this.getEnemyX() - 1][this.getEnemyY()].getClass().getSimpleName();
-        return null;
-
-    }
-
     private Cell[] getSurroundingCellsBFS(Cell[][] cellGrid, int i, int j) {
+
         Cell[] surround = new Cell[4];
-        surround[0] = cellGrid[this.getEnemyX()][this.getEnemyY() - 1];
-        surround[1] = cellGrid[this.getEnemyX() + 1][this.getEnemyY()];
-        surround[2] = cellGrid[this.getEnemyX()][this.getEnemyY() + 1];
-        surround[3] = cellGrid[this.getEnemyX() - 1][this.getEnemyY()];
+
+        surround[0] = cellGrid[getEnemyX()][getEnemyY() - 1];
+        surround[1] = cellGrid[getEnemyX() + 1][getEnemyY()];
+        surround[2] = cellGrid[getEnemyX()][getEnemyY() + 1];
+        surround[3] = cellGrid[getEnemyX() - 1][getEnemyY()];
+
         return surround;
 
     }
+
     //UNFINISHED
     void BFS(int x, int y, Level level) {
-        // Mark all the vertices as not visited(By default
-        // set as false)
+
+        // Mark all the vertices as not visited
+        // (By default set as false)
         boolean visited[][] = new boolean[10][10];
+
         Cell[][] cellGrid = level.getCellGrid();
+
         // Create a queue for BFS
         LinkedList<Cell> queue = new LinkedList<Cell>();
 
@@ -112,22 +127,21 @@ public class SmartEnemy extends Enemy {
      * @return  An array with 0 representing impassable objects and a 1 representing passable objects
      */
     private static int[][] flatten(Entity[][]entityGrid, Cell[][] cellGrid) {
-        int[][] level = new int[entityGrid.length][entityGrid[0].length];
-        for (int i = 0; i < entityGrid.length; i++) {
-            for (int j = 0; j < entityGrid[i].length; j++) {
-                if (entityGrid[i][j] != null) {
+
+        int height = entityGrid.length;
+        int width = entityGrid[0].length;
+
+        int[][] level = new int[height][width];
+
+        for (int i = 0 ; i < height ; i++) {
+            for (int j = 0 ; j < width ; j++) {
+
+                if (entityGrid[i][j] != null || cellGrid[i][j] instanceof Impassable) {
                     level[i][j] = 1;
                 }
             }
         }
 
-        for (int i = 0; i < cellGrid.length; i++) {
-            for (int j = 0; j < cellGrid[i].length; j++) {
-                if (cellGrid[i][j] instanceof Impassable) {
-                    level[i][j] = 1;
-                }
-            }
-        }
         return level;
     }
 
