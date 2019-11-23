@@ -30,7 +30,7 @@ abstract class Entity {
 
     }
 
-    public Image getSPRITE() {
+    public Image getSprite() {
         return SPRITE;
     }
 

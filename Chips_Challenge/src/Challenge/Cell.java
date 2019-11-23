@@ -52,7 +52,7 @@ abstract class Cell {
      * Gets the sprite the object is using.
      * @return The sprite being used to render the file.
      */
-    public Image getSPRITE() {
+    public Image getSprite() {
         return SPRITE;
     }
 

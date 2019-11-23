@@ -70,27 +70,28 @@ public class Level {
 
     private void buildCompleteGrids(Scanner reader) {
 
+        String[] line; // Line being parsed
+        String name; // Name of a thing
         int x; // X component of a thing
         int y; // Y component of a thing
-
         int dir; // Direction used for Enemy and Player
         int req; // Requirement value used for TokenDoor
-
         Color colour; // Colour used for Key and KeyDoor
 
         while (reader.hasNextLine()) {
 
-            String[] line = reader.nextLine().toUpperCase().split(",");
-            String name = line[0];
-
+            line = reader.nextLine().toUpperCase().split(",");
+            name = line[0];
             x = Integer.parseInt(line[1]);
             y = Integer.parseInt(line[2]);
 
-            if (name.contains("ENEMY")) {
+            if (name.contains("ENEMY") || "Player".equals(name)) {
 
                 dir = Integer.parseInt(line[3]);
 
-                if ("SMART_ENEMY".equals(name)) {
+                if ("Player".equals(name)) {
+                    this.entityGrid[x][y] = new Player(dir);
+                } else if ("SMART_ENEMY".equals(name)) {
                     this.entityGrid[x][y] = new SmartEnemy(dir);
                 } else if ("DUMB_ENEMY".equals(name)) {
                     this.entityGrid[x][y] = new DumbEnemy(dir);
@@ -115,9 +116,6 @@ public class Level {
             } else if ("TOKEN_DOOR".equals(name)) {
                 req = Integer.parseInt(line[3]);
                 this.cellGrid[x][y] = new TokenDoor(req);
-            } else if ("PLAYER".equals(name)) {
-                dir = Integer.parseInt(line[3]);
-                this.entityGrid[x][y] = new Player(dir);
             } else if ("GOAL".equals(name)) {
                 this.cellGrid[x][y] = new Goal();
             } else if ("FIRE".equals(name)) {

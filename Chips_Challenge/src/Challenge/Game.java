@@ -66,7 +66,7 @@ public class Game {
         int boundHeight = 0 - GRID_CELL_HEIGHT / 2;
 
         Wall backing = new Wall();
-        Image backingSprite = backing.getSPRITE();
+        Image backingSprite = backing.getSprite();
 
         for (int x = boundWidth ; x < canvas.getWidth() - boundWidth ; x += GRID_CELL_WIDTH) {
             for (int y = boundHeight ; y < canvas.getHeight() - boundHeight ; y += GRID_CELL_HEIGHT) {
@@ -87,7 +87,7 @@ public class Game {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = resize(cell.getSPRITE(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
                 gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
 
@@ -125,7 +125,7 @@ public class Game {
         int x = position[0];
         int y = position[1];
 
-        Image sprite = resize(entity.getSPRITE(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
             this.player = (Player) entity;
