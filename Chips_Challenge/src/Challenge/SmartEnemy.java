@@ -50,7 +50,6 @@ public class SmartEnemy extends Enemy {
 
                 Cell cell = cellGrid[i][j];
 
-
                 if (cell instanceof Wall || cell instanceof Fire || cell instanceof TokenDoor || cell instanceof Water) {
                     dist[i][j] = 0;
                 }
@@ -78,17 +77,6 @@ public class SmartEnemy extends Enemy {
 
 
     // get the neighbours of the cell:
-    private String getSurroundingCells(Cell[][] cellGrid, int i, int j) {
-
-        String up = cellGrid[getEnemyX()][getEnemyY() - 1].getClass().getSimpleName();
-        String right = cellGrid[getEnemyX() + 1][getEnemyY()].getClass().getSimpleName();
-        String down = cellGrid[getEnemyX()][getEnemyY() + 1].getClass().getSimpleName();
-        String left = cellGrid[getEnemyX() - 1][getEnemyY()].getClass().getSimpleName();
-
-        return null;
-
-    }
-
     private Cell[] getSurroundingCellsBFS(Cell[][] cellGrid, int i, int j) {
 
         Cell[] surround = new Cell[4];
@@ -140,25 +128,17 @@ public class SmartEnemy extends Enemy {
      */
     private static int[][] flatten(Entity[][]entityGrid, Cell[][] cellGrid) {
 
-        int[][] level = new int[entityGrid.length][entityGrid[0].length];
+        int height = entityGrid.length;
+        int width = entityGrid[0].length;
 
-        for (int i = 0 ; i < entityGrid.length ; i++) {
-            for (int j = 0 ; j < entityGrid[i].length ; j++) {
+        int[][] level = new int[height][width];
 
-                if (entityGrid[i][j] != null) {
+        for (int i = 0 ; i < height ; i++) {
+            for (int j = 0 ; j < width ; j++) {
+
+                if (entityGrid[i][j] != null || cellGrid[i][j] instanceof Impassable) {
                     level[i][j] = 1;
                 }
-
-            }
-        }
-
-        for (int i = 0 ; i < cellGrid.length ; i++) {
-            for (int j = 0 ; j < cellGrid[i].length ; j++) {
-
-                if (cellGrid[i][j] instanceof Impassable) {
-                    level[i][j] = 1;
-                }
-
             }
         }
 

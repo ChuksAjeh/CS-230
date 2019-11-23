@@ -85,11 +85,11 @@ public class Level {
             x = Integer.parseInt(line[1]);
             y = Integer.parseInt(line[2]);
 
-            if (name.contains("ENEMY") || "Player".equals(name)) {
+            if (name.contains("ENEMY") || "PLAYER".equals(name)) {
 
                 dir = Integer.parseInt(line[3]);
 
-                if ("Player".equals(name)) {
+                if ("PLAYER".equals(name)) {
                     this.entityGrid[x][y] = new Player(dir);
                 } else if ("SMART_ENEMY".equals(name)) {
                     this.entityGrid[x][y] = new SmartEnemy(dir);

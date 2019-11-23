@@ -56,6 +56,7 @@ public class Game {
         int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
 
+//        return new int[] {0, 0};
         return new int[] {levelXOffset, levelYOffset};
 
     }
