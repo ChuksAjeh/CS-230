@@ -30,7 +30,18 @@ public class Controller {
         }
 
         if (event.getCode().isArrowKey()) {
+
             game.drawGame(level, canvas);
+
+//            if (player.getStatus()) {
+//                game.drawGame(level, canvas);
+//            } else if (!player.getStatus()) {
+//
+//                level = makeLevel(level.getLevelName());
+//
+//                game.drawGame(level, canvas);
+//            }
+
         }
 
         // Consume the event. This means we mark it as dealt with.
