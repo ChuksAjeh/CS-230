@@ -109,6 +109,15 @@ public class Player extends Entity {
                     return entityGrid;
                 }
 
+            } else if (cell instanceof Teleporter) {
+
+                Teleporter teleporter = (Teleporter) cell;
+
+                jack.log(1, "Walking into a Teleporter. ");
+
+                newX = teleporter.setPlayerLocation(cellGrid)[0];
+                newY = teleporter.setPlayerLocation(cellGrid)[1];
+
             } else if (!cell.isPassable()) {
 
                 jack.log(1, "Oof, you walked into a wall");

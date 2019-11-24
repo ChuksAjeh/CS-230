@@ -29,8 +29,25 @@ public class Teleporter extends Impassable {
         this.pair = pair;
     }
 
-    public void setPlayerLocation(int[] playerLocation) {
-        // This may not be void
+    private Teleporter getPair(){
+        return pair;
     }
 
+    public int[] setPlayerLocation(Cell[][] cellGrid) {
+
+        for (int x = 0 ; x < cellGrid.length ; x++ ) {
+            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
+
+                Cell cell = cellGrid[x][y];
+
+                if (cell instanceof Teleporter && cell==this.getPair()) {
+                    // Pair is found
+                    return new int[] {x, y};
+                }
+
+            }
+        }
+
+        return new int[] {0, 0};
+    }
 }
