@@ -8,20 +8,17 @@ import java.util.Scanner;
 
 public class Level {
 
-    private final Cell[][] originalCellGrid;
-    private final Entity[][] originalEntityGrid;
-
     private Cell[][] cellGrid;
     private Entity[][] entityGrid;
+
+    private String levelName;
 
     Scanner reader;
 
     public Level(String levelName) throws FileNotFoundException {
         buildLevel(levelName);
 
-        // Set original grids, for reset purposes
-        this.originalCellGrid = getCellGrid();
-        this.originalEntityGrid = getEntityGrid();
+        this.levelName = levelName;
     }
 
     private void buildLevel(String level) throws FileNotFoundException {
@@ -154,20 +151,16 @@ public class Level {
         this.entityGrid = entityGrid;
     }
 
-    public Cell[][] getOriginalCellGrid() {
-        return this.originalCellGrid;
-    }
-
-    public Entity[][] getOriginalEntityGrid() {
-        return this.originalEntityGrid;
-    }
-
     public Cell[][] getCellGrid() {
         return this.cellGrid;
     }
 
     public Entity[][] getEntityGrid() {
         return this.entityGrid;
+    }
+
+    public String getLevelName() {
+        return this.levelName;
     }
 
     public int[] getLocation() {

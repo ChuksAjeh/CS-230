@@ -13,6 +13,7 @@ public class Player extends Entity {
     private ArrayList<Item> inventory;
     private int direction;
     private int tokenCount;
+    private boolean alive;
 
     // TESTING
     final Lumberjack jack = new Lumberjack();
@@ -26,6 +27,7 @@ public class Player extends Entity {
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
+        this.alive = true;
     }
 
     private Entity[][] movePlayerEntity(int[] locations, Level level) {
@@ -63,6 +65,10 @@ public class Player extends Entity {
                     // DEATH .. also #reset
 
                     jack.log(1, "Kill me");
+
+                    killPlayer();
+
+                    return entityGrid;
 
                 }
 
@@ -195,6 +201,14 @@ public class Player extends Entity {
 
     public void removeItem(Item item) {
         this.inventory.remove(item);
+    }
+
+    public boolean getStatus() {
+        return this.alive;
+    }
+
+    private void killPlayer() {
+        this.alive = false;
     }
 
 }

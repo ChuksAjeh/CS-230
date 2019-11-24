@@ -27,8 +27,6 @@ public class Game {
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-
-
         // Does this need a comment? method names should infer their purpose
         int[] offset = this.calculateOffSet(player, level, canvas);
 

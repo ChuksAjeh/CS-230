@@ -11,8 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-
 public class Menu extends Application {
 
     // The dimensions of the window
@@ -43,7 +41,7 @@ public class Menu extends Application {
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 //        Level level = makeLevel("Test_File");
-        level = makeLevel("TEST_NUMERO_DOS");
+        level = controller.makeLevel("TEST_NUMERO_DOS");
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
 
@@ -83,21 +81,6 @@ public class Menu extends Application {
         });
 
         return root;
-
-    }
-
-    public Level makeLevel(String levelName) {
-
-        // Build a Level thing
-        Level level = null;
-
-        try {
-            level = new Level(levelName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return level;
 
     }
 
