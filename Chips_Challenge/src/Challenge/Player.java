@@ -2,6 +2,7 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
+import javafx.scene.paint.Color;
 import java.util.ArrayList;
 /**
  * @author ..
@@ -70,6 +71,42 @@ public class Player extends Entity {
 
                     return entityGrid;
 
+                }
+            } else if (cell instanceof KeyDoor) {
+
+                jack.log(1, "Walking into a KeyDoor");
+
+                KeyDoor currentDoor = (KeyDoor) cell;
+                Color doorColor = currentDoor.getColour();
+
+                if (checkKeyColourInInv(doorColor)) {
+                    jack.log(1, "Player has the correct key");
+
+                    this.inventory.remove(findKeyColour(doorColor));
+
+                    cellGrid[newX][newY] = new Ground();
+
+                    level.setCellGrid(cellGrid);
+
+                } else {
+                    return entityGrid;
+                }
+            } else if (cell instanceof TokenDoor) {
+
+                TokenDoor currentDoor = (TokenDoor) cell;
+
+                jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
+                jack.log(1, "Current Tokens " + this.tokenCount);
+
+                if (this.tokenCount >= currentDoor.getRequirement()) {
+                    jack.log(1,"Opening token door");
+                    this.removeTokens(currentDoor.getRequirement());
+
+                    cellGrid[newX][newY] = new Ground();
+
+                    level.setCellGrid(cellGrid);
+                } else {
+                    return entityGrid;
                 }
 
             } else if (!cell.isPassable()) {
@@ -186,6 +223,34 @@ public class Player extends Entity {
 
     }
 
+    private boolean checkKeyColourInInv(Color color){
+        for (Item item : this.inventory) {
+            if (item instanceof Key) {
+                Key currentKey = (Key) item;
+                if (color.equals(currentKey.getColour())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Item findKeyColour(Color color) {
+        Item returnItem = null;
+
+        for (Item item : this.inventory) {
+            if (item instanceof Key) {
+                Key currentKey = (Key) item;
+                if (color.equals(currentKey.getColour())) {
+                    returnItem = item;
+                }
+            }
+        }
+
+        return returnItem;
+    }
+
     private boolean checkTokenInInv() {
 
         for (Item item : inventory) {
@@ -197,6 +262,33 @@ public class Player extends Entity {
         }
 
         return false;
+    }
+
+    private void removeTokens(int amount) {
+        if (checkTokenInInv()) {
+            jack.log(1, "Can remove tokens");
+            int newTokenCount = this.tokenCount - amount;
+
+            if (newTokenCount < 0) {
+                jack.log(1, "Don't have enough tokens");
+            } else if (0 == newTokenCount) {
+                this.tokenCount = newTokenCount;
+                removeTokenFromInv();
+            } else {
+                this.tokenCount = newTokenCount;
+            }
+
+        } else {
+            jack.log(1, "Can't remove tokens!");
+        }
+    }
+
+    private void removeTokenFromInv(){
+        for (Item item : this.inventory) {
+            if (item instanceof Token) {
+                this.removeItem(item);
+            }
+        }
     }
 
     public void removeItem(Item item) {
