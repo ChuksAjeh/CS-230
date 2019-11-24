@@ -127,12 +127,13 @@ public class Level {
 
                 // This might not work, I have not tested it yet
                 Teleporter temp = new Teleporter();
+
                 this.cellGrid[x][y] = temp;
 
-                x = Integer.parseInt(line[3]);
-                y = Integer.parseInt(line[4]);
+                int pairX = Integer.parseInt(line[3]);
+                int pairY = Integer.parseInt(line[4]);
 
-                this.cellGrid[x][y] = new Teleporter(temp);
+                this.cellGrid[pairX][pairY] = new Teleporter(temp);
             }
 
         }
