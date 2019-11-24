@@ -100,11 +100,12 @@ public class Player extends Entity {
 
                 if (this.tokenCount >= currentDoor.getRequirement()) {
                     jack.log(1,"Opening token door");
-                    this.removeTokens(currentDoor.getRequirement());
 
                     cellGrid[newX][newY] = new Ground();
 
                     level.setCellGrid(cellGrid);
+
+                    this.removeTokens(currentDoor.getRequirement());
                 } else {
                     return entityGrid;
                 }
@@ -293,11 +294,14 @@ public class Player extends Entity {
     }
 
     private void removeTokenFromInv(){
+        Item currentItem = null;
         for (Item item : this.inventory) {
             if (item instanceof Token) {
-                this.removeItem(item);
+                currentItem = item;
             }
         }
+
+        removeItem(currentItem);
     }
 
     public void removeItem(Item item) {
