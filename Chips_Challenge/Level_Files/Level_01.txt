@@ -24,3 +24,5 @@ Token,2,2
 Token,3,2
 Teleporter,11,11,2,11
 FireBoots,7,9
+Fire,8,1
+Fire,8,2
