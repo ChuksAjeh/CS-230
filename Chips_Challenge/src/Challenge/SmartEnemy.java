@@ -22,40 +22,9 @@ public class SmartEnemy extends Enemy {
     }
 
 
-    private int nextDirection(Level level, Player player) {
 
-        //get the width and height of the grid:
-        int width = level.getEntityGrid().length - 1;
-        int height = level.getEntityGrid()[0].length - 1;
+    public void  nextDirection(Level level, Player player) {
 
-        //pull in current grid data: Cell & Entity:
-        Cell[][] cellGrid = level.getCellGrid();
-        Entity[][] entityGrid = level.getEntityGrid();
-
-        //source node for the enemy/
-        int srcX = getEnemyX();
-        int srcY = getEnemyY();
-        //find the player location.
-
-        int sinkX = player.getLocation(entityGrid)[0];
-        int sinkY = player.getLocation(entityGrid)[1];
-        // walls, doors, hazards are all impassable for enemy
-        int[][] dist = new int[height][width];
-        for (int i = 0; i <= height; i++) {
-            for (int j = 0; j <= width; j++) {
-                //provides use with a set of distances
-                if (cellGrid[i][j].getClass().getSimpleName().equals("Wall") || cellGrid[i][j].getClass().getSimpleName().equals("Fire")) {
-                    dist[i][j] = 0;
-                }
-                //covers door and water obstacle
-                else if (cellGrid[i][j].getClass().getSimpleName().equals("TokenDoor") || cellGrid[i][j].getClass().getSimpleName().equals("Water")) {
-                    dist[i][j] = 0;
-                } else {
-
-                }
-            }
-        }
-        return 0;
     }
 
 
@@ -102,8 +71,69 @@ public class SmartEnemy extends Enemy {
 
         }
 
-
     }
+
+    public static void Breadth (int[][]level, Player player, Entity[][] entities){
+        int[] playerLocation = player.getLocation(entities);
+
+        if(level[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] != 1 ||level[playerLocation[0]][playerLocation[1]]!=1){
+            System.out.println("unable to find shortest path");
+        }
+
+        final int[] row ={-1,0,0,1};
+        final int[] col ={0,-1,1,0};
+        boolean[][] visited =new boolean[level.length][level[0].length];
+       //set the source node as visited and enqueue
+        visited[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] = true;
+        Queue<BFS> vertices = new LinkedList<>();
+        vertices.add(new BFS(new SmartEnemy(0).getEnemyX(),new SmartEnemy(0).getEnemyY(),0));
+
+        //store the minimum distance:
+        int minDist = Integer.MAX_VALUE;
+
+
+        while(!vertices.isEmpty()){
+            // pop front not from queue and process it
+            BFS bfs = vertices.poll();
+            // source node and distance
+            int srcX = bfs.getX();
+            int srcY =bfs.getY();
+            int dist = bfs.getDist();
+
+            //if destination is found, update minimum distance and stop
+            if(srcX == playerLocation[0] && srcY == playerLocation[1]){
+                minDist = dist;
+                break;
+            }
+
+            for(int i =0; i<4; i++){
+                //check for all 4 possible movements from current cell and enqueue it
+                if(isValid(level, visited, srcX+row[i],srcY+col[i])){
+                    //mark each cell as visited and enqueue it
+                    visited[srcX+row[i]][srcY+col[i]] = true;
+                    vertices.add(new BFS(srcX+row[i],srcY+col[i],dist+1));
+                }
+            }
+
+        }
+
+        if(minDist != Integer.MAX_VALUE){
+            System.out.println(minDist);
+        }else{
+            System.out.println("Destination can't be reached.");
+        }
+    }
+
+
+    //check whether it is a valid cell or not.
+    private static boolean isValid (int[][] level, boolean[][] visited, int row, int col){
+        final int ROW = level.length - 1;
+        final int COL = level[0].length - 1;
+        return (row >= 0) &&(row<ROW)&&(col>=0)&&(col<COL) && !visited[ROW][COL];
+    }
+
+
+
 
     /**
      * Gets a array showing passable and impassable objects in the level
@@ -111,7 +141,7 @@ public class SmartEnemy extends Enemy {
      * @param cellGrid The cell grid for the level.
      * @return  An array with 0 representing impassable objects and a 1 representing passable objects
      */
-    private static int[][] flatten(Entity[][]entityGrid, Cell[][] cellGrid) {
+    public static int[][] flatten(Entity[][]entityGrid, Cell[][] cellGrid) {
         int[][] level = new int[entityGrid.length][entityGrid[0].length];
         for (int i = 0; i < entityGrid.length; i++) {
             for (int j = 0; j < entityGrid[i].length; j++) {
@@ -154,6 +184,27 @@ public class SmartEnemy extends Enemy {
 //            int[][] toPrint = flatten(entity, cell);
 //            System.out.println(Arrays.toString(toPrint));
 //        }
+
+    public static void main(String[] args){
+
+        SmartEnemy s = new SmartEnemy(0);
+        Player player = new Player(0);
+
+        int[][] mat =
+                {
+                        { 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
+                        { 0, 1, 1, 1, 1, 1, 0, 1, 0, 1 },
+                        { 0, 0, 1, 0, 1, 1, 1, 0, 0, 1 },
+                        { 1, 0, 1, 1, 1, 0, 1, 1, 0, 1 },
+                        { 0, 0, 0, 1, 0, 0, 0, 1, 0, 1 },
+                        { 1, 0, 1, 1, 1, 0, 0, 1, 1, 0 },
+                        { 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+                        { 0, 1, 1, 1, 1, 1, 1, 1, 0, 0 },
+                        { 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
+                        { 0, 0, 1, 0, 0, 1, 1, 0, 0, 1 },
+                };
+
+    }
     }
 
 
