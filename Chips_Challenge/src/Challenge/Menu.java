@@ -41,7 +41,7 @@ public class Menu extends Application {
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 //        Level level = makeLevel("Test_File");
-        level = controller.makeLevel("TEST_NUMERO_DOS");
+        level = controller.makeLevel("Level_01");
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
 
