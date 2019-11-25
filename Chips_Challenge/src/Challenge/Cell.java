@@ -56,4 +56,17 @@ abstract class Cell {
         return SPRITE;
     }
 
+    public int[] findCell(Cell cell, Cell[][] cellGrid) {
+        for (int x = 0 ; x < cellGrid.length ; x++ ) {
+            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
+
+                if (cellGrid[x][y] == cell) {
+                    return new int[] {x, y};
+                }
+
+            }
+        }
+
+        return new int[] {0, 0};
+    }
 }
