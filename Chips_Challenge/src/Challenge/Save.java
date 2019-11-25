@@ -12,10 +12,9 @@ import java.io.Writer;
 
 public class Save {
 
-    private static int saveNo = 0;
-    private static String saveName = "SaveFile";
+    private int saveNo = 0;
+    private String fileName = "";
 
-    private String fileName;
     private Lumberjack jack = new Lumberjack();
 
     public Save () {
@@ -23,9 +22,10 @@ public class Save {
 
     public void saveFile(Level level) throws IOException {
         String directory;
+        String fileName = level.getLevelName();
 
-        this.fileName = saveName + "_" + saveNo;
-        saveNo++;
+        this.fileName = fileName + "_" + saveNo;
+        this.saveNo++;
 
         directory = "Level_Files/" + this.fileName;
         File file = new File(directory);
@@ -169,9 +169,9 @@ public class Save {
 
                 } else if (cell instanceof Teleporter) {
 
-                    /*logWritten(cell);
+                    logWritten(cell);
                     Teleporter teleporter = (Teleporter) cell;
-                    writeTeleporter(tempGrid, teleporter, writer);*/
+                    writeTeleporter(tempGrid, teleporter, writer);
 
                 }
             }
@@ -193,7 +193,12 @@ public class Save {
     }
 
     private void writeTeleporter(Cell[][] cellGrid, Teleporter teleporter, FileWriter writer) throws IOException {
-        Teleporter pair = new Teleporter();
+        Teleporter pair = teleporter.getPair();
+
+        writeCellPos(cellGrid, teleporter, writer);
+        writer.write(",");
+        writer.write(pair.findCell(pair,cellGrid)[0] + ",");
+        writer.write(pair.findCell(pair,cellGrid)[1] + "\n");
     }
 
     private void writeCellPos(Cell[][] cellGrid, Cell cell, FileWriter writer) throws IOException {
