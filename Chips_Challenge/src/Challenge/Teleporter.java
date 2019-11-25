@@ -12,7 +12,7 @@ public class Teleporter extends Impassable {
     private Teleporter pair;
 
     static {
-        SPRITE = new Image("");
+        SPRITE = new Image("images/CELL_TELEPORTER.png");
     }
 
     public Teleporter() {
@@ -29,25 +29,8 @@ public class Teleporter extends Impassable {
         this.pair = pair;
     }
 
-    private Teleporter getPair(){
+    public Teleporter getPair(){
         return pair;
     }
 
-    public int[] setPlayerLocation(Cell[][] cellGrid) {
-
-        for (int x = 0 ; x < cellGrid.length ; x++ ) {
-            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
-
-                Cell cell = cellGrid[x][y];
-
-                if (cell instanceof Teleporter && cell==this.getPair()) {
-                    // Pair is found
-                    return new int[] {x, y};
-                }
-
-            }
-        }
-
-        return new int[] {0, 0};
-    }
 }

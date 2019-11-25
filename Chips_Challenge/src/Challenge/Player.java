@@ -74,23 +74,16 @@ public class Player extends Entity {
                 }
             } else if (cell instanceof KeyDoor) {
 
+                Color doorColour = ((KeyDoor) cell).getColour();
+
                 jack.log(1, "Walking into a KeyDoor");
 
-                KeyDoor currentDoor = (KeyDoor) cell;
-                Color doorColor = currentDoor.getColour();
-
-                if (checkKeyColourInInv(doorColor)) {
-                    jack.log(1, "Player has the correct key");
-
-                    this.inventory.remove(findKeyColour(doorColor));
-
-                    cellGrid[newX][newY] = new Ground();
-
-                    level.setCellGrid(cellGrid);
-
+                if (checkKeyColourInInv(doorColour)) {
+                    openKeyDoor(level, doorColour, newX, newY);
                 } else {
                     return entityGrid;
                 }
+
             } else if (cell instanceof TokenDoor) {
 
                 TokenDoor currentDoor = (TokenDoor) cell;
@@ -99,25 +92,23 @@ public class Player extends Entity {
                 jack.log(1, "Current Tokens " + this.tokenCount);
 
                 if (this.tokenCount >= currentDoor.getRequirement()) {
-                    jack.log(1,"Opening token door");
-
-                    cellGrid[newX][newY] = new Ground();
-
-                    level.setCellGrid(cellGrid);
-
-                    this.removeTokens(currentDoor.getRequirement());
+                    openTokenDoor(level, currentDoor, newX, newY);
                 } else {
                     return entityGrid;
                 }
 
             } else if (cell instanceof Teleporter) {
 
-                Teleporter teleporter = (Teleporter) cell;
-
                 jack.log(1, "Walking into a Teleporter. ");
 
-                newX = teleporter.setPlayerLocation(cellGrid)[0];
-                newY = teleporter.setPlayerLocation(cellGrid)[1];
+                Teleporter pair = ((Teleporter) cell).getPair();
+
+                int[] pairLocation = findTeleporterPair(cellGrid, pair);
+
+                newX = pairLocation[0];
+                newY = pairLocation[1];
+
+                // Not yet implemented
 
             } else if (!cell.isPassable()) {
 
@@ -215,6 +206,34 @@ public class Player extends Entity {
         inventory.add(item);
     }
 
+    private void openKeyDoor(Level level, Color doorColour, int newX, int newY) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        jack.log(1, "Player has the correct key");
+
+        this.inventory.remove(findKeyColour(doorColour));
+
+        cellGrid[newX][newY] = new Ground();
+
+        level.setCellGrid(cellGrid);
+
+    }
+
+    private void openTokenDoor(Level level, TokenDoor door, int newX, int newY) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        jack.log(1,"Opening token door");
+
+        cellGrid[newX][newY] = new Ground();
+
+        level.setCellGrid(cellGrid);
+
+        this.removeTokens(door.getRequirement());
+
+    }
+
     private void setCellsPassable(Level level, Item item) {
 
         Cell[][] cellGrid = level.getCellGrid();
@@ -234,12 +253,16 @@ public class Player extends Entity {
     }
 
     private boolean checkKeyColourInInv(Color color){
+
         for (Item item : this.inventory) {
             if (item instanceof Key) {
+
                 Key currentKey = (Key) item;
+
                 if (color.equals(currentKey.getColour())) {
                     return true;
                 }
+
             }
         }
 
@@ -247,11 +270,14 @@ public class Player extends Entity {
     }
 
     private Item findKeyColour(Color color) {
+
         Item returnItem = null;
 
         for (Item item : this.inventory) {
             if (item instanceof Key) {
+
                 Key currentKey = (Key) item;
+
                 if (color.equals(currentKey.getColour())) {
                     returnItem = item;
                 }
@@ -306,6 +332,25 @@ public class Player extends Entity {
 
     public void removeItem(Item item) {
         this.inventory.remove(item);
+    }
+
+    public int[] findTeleporterPair(Cell[][] cellGrid, Teleporter pair) {
+
+        // find teleporter pair in cell grid
+
+        for (int x = 0 ; x < cellGrid.length ; x++ ) {
+            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
+
+                if (pair == cellGrid[x][y]) {
+                    // Pair is found
+                    return new int[] {x, y};
+                }
+
+            }
+        }
+
+        return new int[] {0, 0};
+
     }
 
     public boolean getStatus() {
