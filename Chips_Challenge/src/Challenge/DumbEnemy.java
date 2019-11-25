@@ -2,7 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 /**A dumb enemy is an enemy whose movement is determined by the players location. It tries to find the shortest distance

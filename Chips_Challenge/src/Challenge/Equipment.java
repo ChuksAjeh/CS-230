@@ -11,7 +11,7 @@ abstract class Equipment extends Item {
 
     /**
      * Constructs a equipment object.
-     * @param SPRITE The sprite for that specific equipment.
+     * @param sprite The sprite for that specific equipment.
      */
     public Equipment(Image sprite) {
         super(sprite);

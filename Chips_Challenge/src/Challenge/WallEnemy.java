@@ -2,8 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.Random;
-
 //#TODO CHANGE WALL TO EVERY OBSTACLE OBJECT
 /**
  * @author Ioan Mazurca
