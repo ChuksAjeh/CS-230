@@ -88,17 +88,17 @@ public class Level {
 
                 if ("PLAYER".equals(name)) {
                     this.entityGrid[x][y] = new Player(dir);
-                } else if ("SMART_ENEMY".equals(name)) {
+                } else if ("SMARTENEMY".equals(name)) {
                     this.entityGrid[x][y] = new SmartEnemy(dir);
-                } else if ("DUMB_ENEMY".equals(name)) {
+                } else if ("DUMBENEMY".equals(name)) {
                     this.entityGrid[x][y] = new DumbEnemy(dir);
-                } else if ("WALL_ENEMY".equals(name)) {
+                } else if ("WALLENEMY".equals(name)) {
                     this.entityGrid[x][y] = new WallEnemy(dir);
-                } else if ("LINE_ENEMY".equals(name)) {
+                } else if ("LINEENEMY".equals(name)) {
                     this.entityGrid[x][y] = new LineEnemy(dir);
                 }
 
-            } else if (name.equals("KEY_DOOR")) {
+            } else if (name.equals("KEYDOOR")) {
 
                 colour = Color.rgb(Integer.parseInt(line[3]), Integer.parseInt(line[4]), Integer.parseInt(line[5]));
 
@@ -110,7 +110,7 @@ public class Level {
 
             } else if ("TOKEN".equals(name)) {
                 this.entityGrid[x][y] = new Token();
-            } else if ("TOKEN_DOOR".equals(name)) {
+            } else if ("TOKENDOOR".equals(name)) {
                 req = Integer.parseInt(line[3]);
                 this.cellGrid[x][y] = new TokenDoor(req);
             } else if ("GOAL".equals(name)) {
@@ -119,7 +119,7 @@ public class Level {
                 this.cellGrid[x][y] = new Fire();
             } else if ("WATER".equals(name)) {
                 this. cellGrid[x][y] = new Water();
-            } else if ("FIRE_BOOTS".equals(name)) {
+            } else if ("FIREBOOTS".equals(name)) {
                 this.entityGrid[x][y] = new FireBoots();
             } else if ("FLIPPERS".equals(name)) {
                 this.entityGrid[x][y] = new Flippers();
