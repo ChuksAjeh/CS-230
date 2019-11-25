@@ -1,10 +1,7 @@
 package Challenge;
 
-import com.sun.deploy.util.Waiter;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
-import java.io.File;
 import java.util.*;
 
 
@@ -95,12 +92,12 @@ public class SmartEnemy extends Enemy {
 
         // Mark all the vertices as not visited
         // (By default set as false)
-        boolean visited[][] = new boolean[10][10];
+        boolean[][] visited = new boolean[10][10];
 
         Cell[][] cellGrid = level.getCellGrid();
 
         // Create a queue for BFS
-        LinkedList<Cell> queue = new LinkedList<Cell>();
+        LinkedList<Cell> queue = new LinkedList<>();
 
         // Mark the current node as visited and enqueue it
         visited[x][y] = true;
