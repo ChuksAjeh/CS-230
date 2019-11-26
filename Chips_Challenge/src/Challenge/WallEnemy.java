@@ -2,13 +2,12 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 /**
- * @author Ioan Mazurca
+ * @author George Carpenter, Ioan Mazurca, Angelo Balistoy
  * @version 1.0
  */
 public class WallEnemy extends Enemy {
