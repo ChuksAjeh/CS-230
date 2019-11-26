@@ -21,6 +21,8 @@ abstract class Cell {
      */
     private final Image SPRITE;
 
+    Lumberjack jack = new Lumberjack();
+
     /**
      * Constructs a cell object.
      */
@@ -36,6 +38,10 @@ abstract class Cell {
         this.passable = !this.passable;
     }
 
+    public void setPassable(boolean newValue) {
+        this.passable = newValue;
+    }
+
     /**
      * Checks if the object is passable.
      * @return The object's passable state.
@@ -48,8 +54,24 @@ abstract class Cell {
      * Gets the sprite the object is using.
      * @return The sprite being used to render the file.
      */
-    public Image getSPRITE() {
+    public Image getSprite() {
         return SPRITE;
     }
 
+    public int[] findCell(Cell cell, Cell[][] cellGrid) {
+        for (int x = 0 ; x < cellGrid.length ; x++ ) {
+            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
+
+                if (cellGrid[x][y] == cell) {
+                    int[] retVal = {x,y};
+                    //jack.log(1,Integer.toString(retVal[0]));
+                    //jack.log(1,Integer.toString(retVal[1]));
+                    return new int[] {x, y};
+                }
+
+            }
+        }
+
+        return new int[] {0, 0};
+    }
 }

@@ -1,17 +1,17 @@
 package Challenge;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Menu extends Application {
 
@@ -43,7 +43,7 @@ public class Menu extends Application {
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 //        Level level = makeLevel("Test_File");
-        level = makeLevel("TEST_NUMERO_DOS");
+        level = controller.makeLevel("Level_01");
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
 
@@ -56,17 +56,27 @@ public class Menu extends Application {
     private BorderPane mainMenu() {
 
         BorderPane root = new BorderPane();
-
-        HBox bottomBar = new HBox();
+        VBox vbox = new VBox();
 
         Button startButton = new Button("Start!");
+        Button users = new Button ("Profiles");
+        Button quit = new Button ("Exit");
+        Button back = new Button("Back");
+        Button up = new Button("Test");
 
-//        bottomBar.setSpacing(10);
+        vbox.setSpacing(10);
 //        bottomBar.setPadding(new Insets(10, 10, 10, 10));
 
-        bottomBar.getChildren().add(startButton);
+        //users.setStyle("-fx-background-color: #222222");
 
-        root.setCenter(bottomBar);
+
+        //bottomBar.setStyle("-fx-background-color: #222222");
+        vbox.getChildren().addAll(startButton, users, quit, back, up);
+
+
+        //root.setAlignment(vbox, Pos.CENTER);
+        root.setMargin(vbox, new Insets(300,300,300,300));
+        root.setCenter(vbox);
 
         startButton.setOnAction(e -> {
             System.out.println("SUCCESS!");
@@ -78,26 +88,15 @@ public class Menu extends Application {
 
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-            game.drawGame(level, canvas);
+            try {
+                game.drawGame(level, canvas);
+            } catch (IOException E) {
+                jack.log(1,"MENU - IOException");
+            }
 
         });
 
         return root;
-
-    }
-
-    public Level makeLevel(String levelName) {
-
-        // Build a Level thing
-        Level level = null;
-
-        try {
-            level = new Level(levelName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return level;
 
     }
 

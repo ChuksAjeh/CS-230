@@ -2,6 +2,7 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
+import javafx.scene.paint.Color;
 import java.util.ArrayList;
 /**
  * @author ..
@@ -13,6 +14,7 @@ public class Player extends Entity {
     private ArrayList<Item> inventory;
     private int direction;
     private int tokenCount;
+    private boolean alive;
 
     // TESTING
     final Lumberjack jack = new Lumberjack();
@@ -26,6 +28,7 @@ public class Player extends Entity {
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
+        this.alive = true;
     }
 
     private Entity[][] movePlayerEntity(int[] locations, Level level) {
@@ -53,10 +56,10 @@ public class Player extends Entity {
 
                 if (entity instanceof Item) {
 
-                    this.addItem((Item) entityGrid[newX][newY]);
+                    this.addItem((Item) entityGrid[newX][newY], level);
 
                     jack.log("FOUND ITEM");
-                    jack.log(this.getInventory().toString());
+                    jack.log(getInventory().toString());
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {
 
@@ -64,7 +67,48 @@ public class Player extends Entity {
 
                     jack.log(1, "Kill me");
 
+                    killPlayer();
+
+                    return entityGrid;
+
                 }
+            } else if (cell instanceof KeyDoor) {
+
+                Color doorColour = ((KeyDoor) cell).getColour();
+
+                jack.log(1, "Walking into a KeyDoor");
+
+                if (checkKeyColourInInv(doorColour)) {
+                    openKeyDoor(level, doorColour, newX, newY);
+                } else {
+                    return entityGrid;
+                }
+
+            } else if (cell instanceof TokenDoor) {
+
+                TokenDoor currentDoor = (TokenDoor) cell;
+
+                jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
+                jack.log(1, "Current Tokens " + this.tokenCount);
+
+                if (this.tokenCount >= currentDoor.getRequirement()) {
+                    openTokenDoor(level, currentDoor, newX, newY);
+                } else {
+                    return entityGrid;
+                }
+
+            } else if (cell instanceof Teleporter) {
+
+                jack.log(1, "Walking into a Teleporter. ");
+
+                Teleporter pair = ((Teleporter) cell).getPair();
+
+                int[] pairLocation = findTeleporterPair(cellGrid, pair);
+
+                newX = pairLocation[0];
+                newY = pairLocation[1];
+
+                // Not yet implemented
 
             } else if (!cell.isPassable()) {
 
@@ -141,26 +185,106 @@ public class Player extends Entity {
         return inventory;
     }
 
-    public void addItem(Item item) {
+    private void addItem(Item item, Level level) {
 
-        if (!(item instanceof Token)) {
-
-            inventory.add(item);
-
-        } else if (checkTokenInInv()) {
+        if (item instanceof Token) {
 
             this.tokenCount += 1;
 
             jack.log(1, "Current tokens: " + tokenCount);
 
-        } else {
+            if (checkTokenInInv()) {
+                return;
+            }
 
-            inventory.add(item);
-            this.tokenCount += 1;
+        } else if (item instanceof FireBoots || item instanceof Flippers) {
 
-            jack.log(1, "Current tokens: " + tokenCount);
+            setCellsPassable(level, item);
+
         }
 
+        inventory.add(item);
+    }
+
+    private void openKeyDoor(Level level, Color doorColour, int newX, int newY) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        jack.log(1, "Player has the correct key");
+
+        this.inventory.remove(findKeyColour(doorColour));
+
+        cellGrid[newX][newY] = new Ground();
+
+        level.setCellGrid(cellGrid);
+
+    }
+
+    private void openTokenDoor(Level level, TokenDoor door, int newX, int newY) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        jack.log(1,"Opening token door");
+
+        cellGrid[newX][newY] = new Ground();
+
+        level.setCellGrid(cellGrid);
+
+        this.removeTokens(door.getRequirement());
+
+    }
+
+    private void setCellsPassable(Level level, Item item) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        String cellType = item instanceof FireBoots ? "Fire" : "Water";
+
+        for (Cell[] row : cellGrid) {
+            for (Cell c : row) {
+                if (cellType.equals(c.getClass().getSimpleName())) {
+                    c.setPassable(true);
+                }
+            }
+        }
+
+        jack.log(1, cellType + " set to passable");
+
+    }
+
+    private boolean checkKeyColourInInv(Color color){
+
+        for (Item item : this.inventory) {
+            if (item instanceof Key) {
+
+                Key currentKey = (Key) item;
+
+                if (color.equals(currentKey.getColour())) {
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+    private Item findKeyColour(Color color) {
+
+        Item returnItem = null;
+
+        for (Item item : this.inventory) {
+            if (item instanceof Key) {
+
+                Key currentKey = (Key) item;
+
+                if (color.equals(currentKey.getColour())) {
+                    returnItem = item;
+                }
+            }
+        }
+
+        return returnItem;
     }
 
     private boolean checkTokenInInv() {
@@ -176,8 +300,65 @@ public class Player extends Entity {
         return false;
     }
 
+    private void removeTokens(int amount) {
+        if (checkTokenInInv()) {
+            jack.log(1, "Can remove tokens");
+            int newTokenCount = this.tokenCount - amount;
+
+            if (newTokenCount < 0) {
+                jack.log(1, "Don't have enough tokens");
+            } else if (0 == newTokenCount) {
+                this.tokenCount = newTokenCount;
+                removeTokenFromInv();
+            } else {
+                this.tokenCount = newTokenCount;
+            }
+
+        } else {
+            jack.log(1, "Can't remove tokens!");
+        }
+    }
+
+    private void removeTokenFromInv(){
+        Item currentItem = null;
+        for (Item item : this.inventory) {
+            if (item instanceof Token) {
+                currentItem = item;
+            }
+        }
+
+        removeItem(currentItem);
+    }
+
     public void removeItem(Item item) {
         this.inventory.remove(item);
+    }
+
+    public int[] findTeleporterPair(Cell[][] cellGrid, Teleporter pair) {
+
+        // find teleporter pair in cell grid
+
+        for (int x = 0 ; x < cellGrid.length ; x++ ) {
+            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
+
+                if (pair == cellGrid[x][y]) {
+                    // Pair is found
+                    return new int[] {x, y};
+                }
+
+            }
+        }
+
+        return new int[] {0, 0};
+
+    }
+
+    public boolean getStatus() {
+        return this.alive;
+    }
+
+    private void killPlayer() {
+        this.alive = false;
     }
 
 }

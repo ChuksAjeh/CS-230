@@ -11,10 +11,10 @@ abstract class Equipment extends Item {
 
     /**
      * Constructs a equipment object.
-     * @param SPRITE The sprite for that specific equipment.
+     * @param sprite The sprite for that specific equipment.
      */
-    public Equipment(Image SPRITE) {
-        super(SPRITE);
+    public Equipment(Image sprite) {
+        super(sprite);
         // Unlike standard items, equipment cannot be consumed upon use.
         this.consumable = false;
     }
