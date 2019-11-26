@@ -1,14 +1,14 @@
 package Challenge;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
@@ -54,17 +54,27 @@ public class Menu extends Application {
     private BorderPane mainMenu() {
 
         BorderPane root = new BorderPane();
-
-        HBox bottomBar = new HBox();
+        VBox vbox = new VBox();
 
         Button startButton = new Button("Start!");
+        Button users = new Button ("Profiles");
+        Button quit = new Button ("Exit");
+        Button back = new Button("Back");
+        Button up = new Button("Test");
 
-//        bottomBar.setSpacing(10);
+        vbox.setSpacing(10);
 //        bottomBar.setPadding(new Insets(10, 10, 10, 10));
 
-        bottomBar.getChildren().add(startButton);
+        //users.setStyle("-fx-background-color: #222222");
 
-        root.setCenter(bottomBar);
+
+        //bottomBar.setStyle("-fx-background-color: #222222");
+        vbox.getChildren().addAll(startButton, users, quit, back, up);
+
+
+        //root.setAlignment(vbox, Pos.CENTER);
+        root.setMargin(vbox, new Insets(300,300,300,300));
+        root.setCenter(vbox);
 
         startButton.setOnAction(e -> {
             System.out.println("SUCCESS!");
