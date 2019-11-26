@@ -34,6 +34,11 @@ abstract class Enemy extends Entity {
     private Cell[][] cellGrid;
 
     /**
+     * The entity grid the enemy uses
+     */
+    private Entity[][] entityGrid;
+
+    /**
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
@@ -76,6 +81,20 @@ abstract class Enemy extends Entity {
             cellGrid[x + 1][y],
             cellGrid[x][y + 1],
             cellGrid[x - 1][y]
+        };
+
+    }
+
+    public Entity[] getSurroundingEntitys() {
+
+        int x = getEnemyX();
+        int y = getEnemyY();
+
+        return new Entity[] {
+                entityGrid[x][y - 1],
+                entityGrid[x + 1][y],
+                entityGrid[x][y + 1],
+                entityGrid[x - 1][y]
         };
 
     }
@@ -126,6 +145,14 @@ abstract class Enemy extends Entity {
      */
     public void setCellGrid(Cell[][] cellGrid) {
         this.cellGrid = cellGrid;
+    }
+
+    /**
+     * Sets the entity grid for the enemy.
+     * @param entityGrid The cell grid to be used.
+     */
+    public void setEntityGrid(Entity[][] entityGrid) {
+        this.entityGrid = entityGrid;
     }
 
     /**
