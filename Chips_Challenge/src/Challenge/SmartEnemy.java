@@ -25,6 +25,8 @@ public class SmartEnemy extends Enemy {
     public void  nextDirection(Level level, Player player) {
       
         //pull in current grid data: Cell & Entity:
+        int height = 0;
+        int width = 0;
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
 
@@ -65,8 +67,6 @@ public class SmartEnemy extends Enemy {
 
             }
         }
-
-        return 0;
 
     }
 
