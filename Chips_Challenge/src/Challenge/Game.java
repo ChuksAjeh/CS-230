@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
+
 public class Game {
 
     // The size of each cell
@@ -15,8 +17,9 @@ public class Game {
 
     Player player = new Player(0);
     Lumberjack jack = new Lumberjack();
+    Save save = new Save();
 
-    public void drawGame(Level level, Canvas canvas) {
+    public void drawGame(Level level, Canvas canvas) throws IOException {
 
         // Because it's logical
         assert null != level;
@@ -35,6 +38,7 @@ public class Game {
         this.renderCellGrid(gc, level.getCellGrid(), offset);
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
+        save.saveFile(level);
         // Log Stuff - uncomment for spam
         // jack.logPlayerLoc(player, entityGrid);
         // jack.logCellGrid(cellGrid);
