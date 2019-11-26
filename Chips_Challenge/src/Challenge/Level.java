@@ -8,20 +8,17 @@ import java.util.Scanner;
 
 public class Level {
 
-    private final Cell[][] originalCellGrid;
-    private final Entity[][] originalEntityGrid;
-
     private Cell[][] cellGrid;
     private Entity[][] entityGrid;
+
+    private String levelName;
 
     Scanner reader;
 
     public Level(String levelName) throws FileNotFoundException {
         buildLevel(levelName);
 
-        // Set original grids, for reset purposes
-        this.originalCellGrid = getCellGrid();
-        this.originalEntityGrid = getEntityGrid();
+        this.levelName = levelName;
     }
 
     private void buildLevel(String level) throws FileNotFoundException {
@@ -70,37 +67,38 @@ public class Level {
 
     private void buildCompleteGrids(Scanner reader) {
 
+        String[] line; // Line being parsed
+        String name; // Name of a thing
         int x; // X component of a thing
         int y; // Y component of a thing
-
         int dir; // Direction used for Enemy and Player
         int req; // Requirement value used for TokenDoor
-
         Color colour; // Colour used for Key and KeyDoor
 
         while (reader.hasNextLine()) {
 
-            String[] line = reader.nextLine().toUpperCase().split(",");
-            String name = line[0];
-
+            line = reader.nextLine().toUpperCase().split(",");
+            name = line[0];
             x = Integer.parseInt(line[1]);
             y = Integer.parseInt(line[2]);
 
-            if (name.contains("ENEMY")) {
+            if (name.contains("ENEMY") || "PLAYER".equals(name)) {
 
                 dir = Integer.parseInt(line[3]);
 
-                if ("SMART_ENEMY".equals(name)) {
+                if ("PLAYER".equals(name)) {
+                    this.entityGrid[x][y] = new Player(dir);
+                } else if ("SMARTENEMY".equals(name)) {
                     this.entityGrid[x][y] = new SmartEnemy(dir);
-                } else if ("DUMB_ENEMY".equals(name)) {
+                } else if ("DUMBENEMY".equals(name)) {
                     this.entityGrid[x][y] = new DumbEnemy(dir);
-                } else if ("WALL_ENEMY".equals(name)) {
+                } else if ("WALLENEMY".equals(name)) {
                     this.entityGrid[x][y] = new WallEnemy(dir);
-                } else if ("LINE_ENEMY".equals(name)) {
+                } else if ("LINEENEMY".equals(name)) {
                     this.entityGrid[x][y] = new LineEnemy(dir);
                 }
 
-            } else if (name.equals("KEY_DOOR")) {
+            } else if (name.equals("KEYDOOR")) {
 
                 colour = Color.rgb(Integer.parseInt(line[3]), Integer.parseInt(line[4]), Integer.parseInt(line[5]));
 
@@ -112,19 +110,16 @@ public class Level {
 
             } else if ("TOKEN".equals(name)) {
                 this.entityGrid[x][y] = new Token();
-            } else if ("TOKEN_DOOR".equals(name)) {
+            } else if ("TOKENDOOR".equals(name)) {
                 req = Integer.parseInt(line[3]);
                 this.cellGrid[x][y] = new TokenDoor(req);
-            } else if ("PLAYER".equals(name)) {
-                dir = Integer.parseInt(line[3]);
-                this.entityGrid[x][y] = new Player(dir);
             } else if ("GOAL".equals(name)) {
                 this.cellGrid[x][y] = new Goal();
             } else if ("FIRE".equals(name)) {
                 this.cellGrid[x][y] = new Fire();
             } else if ("WATER".equals(name)) {
                 this. cellGrid[x][y] = new Water();
-            } else if ("FIRE_BOOTS".equals(name)) {
+            } else if ("FIREBOOTS".equals(name)) {
                 this.entityGrid[x][y] = new FireBoots();
             } else if ("FLIPPERS".equals(name)) {
                 this.entityGrid[x][y] = new Flippers();
@@ -132,12 +127,13 @@ public class Level {
 
                 // This might not work, I have not tested it yet
                 Teleporter temp = new Teleporter();
+
                 this.cellGrid[x][y] = temp;
 
-                x = Integer.parseInt(line[3]);
-                y = Integer.parseInt(line[4]);
+                int pairX = Integer.parseInt(line[3]);
+                int pairY = Integer.parseInt(line[4]);
 
-                this.cellGrid[x][y] = new Teleporter(temp);
+                this.cellGrid[pairX][pairY] = new Teleporter(temp);
             }
 
         }
@@ -156,20 +152,16 @@ public class Level {
         this.entityGrid = entityGrid;
     }
 
-    public Cell[][] getOriginalCellGrid() {
-        return this.originalCellGrid;
-    }
-
-    public Entity[][] getOriginalEntityGrid() {
-        return this.originalEntityGrid;
-    }
-
     public Cell[][] getCellGrid() {
         return this.cellGrid;
     }
 
     public Entity[][] getEntityGrid() {
         return this.entityGrid;
+    }
+
+    public String getLevelName() {
+        return this.levelName;
     }
 
     public int[] getLocation() {

@@ -29,7 +29,7 @@ class Ping {
 
         StringBuilder out = new StringBuilder();
 
-        for (int i = 0 ; i < inputArray.length ; i++ ) {
+        for (int i = 0 ; i < inputArray.length ; i++) {
 
             if (0 == i % 2) {
                 out.append(shiftUp(inputArray[i]));

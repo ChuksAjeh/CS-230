@@ -30,7 +30,8 @@ public class Game {
         // Does this need a comment? method names should infer their purpose
         int[] offset = this.calculateOffSet(player, level, canvas);
 
-        // Render grids
+        // Render stuff
+        this.renderBackground(gc, canvas);
         this.renderCellGrid(gc, level.getCellGrid(), offset);
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
@@ -53,7 +54,26 @@ public class Game {
         int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
 
+//        return new int[] {0, 0};
         return new int[] {levelXOffset, levelYOffset};
+
+    }
+
+    private void renderBackground(GraphicsContext gc, Canvas canvas) {
+
+        int boundWidth = 0 - GRID_CELL_WIDTH / 2;
+        int boundHeight = 0 - GRID_CELL_HEIGHT / 2;
+
+        Wall backing = new Wall();
+        Image backingSprite = backing.getSprite();
+
+        for (int x = boundWidth ; x < canvas.getWidth() - boundWidth ; x += GRID_CELL_WIDTH) {
+            for (int y = boundHeight ; y < canvas.getHeight() - boundHeight ; y += GRID_CELL_HEIGHT) {
+                
+                gc.drawImage(backingSprite, x, y);
+
+            }
+        }
 
     }
 
@@ -66,7 +86,7 @@ public class Game {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = resize(cell.getSPRITE(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
                 gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
 
@@ -104,7 +124,7 @@ public class Game {
         int x = position[0];
         int y = position[1];
 
-        Image sprite = resize(entity.getSPRITE(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
             this.player = (Player) entity;
