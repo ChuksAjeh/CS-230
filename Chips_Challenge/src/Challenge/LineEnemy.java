@@ -28,7 +28,7 @@ public class LineEnemy extends Enemy {
         // This should be called every update.
 
         Cell[] sc = getSurroundingCells();
-        int dir = getDirection();
+        int dir = this.getDirection();
 
         return sc[dir] instanceof Wall ? (dir + 2) % 4 : dir;
 
