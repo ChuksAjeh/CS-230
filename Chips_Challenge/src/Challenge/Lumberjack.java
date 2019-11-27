@@ -44,6 +44,7 @@ public class Lumberjack {
     /**
      * Logs a grid
      * @param grid the grid to log
+     * @param <T> Cell or Entity
      */
     public <T> void logGrid(T[][] grid) {
 

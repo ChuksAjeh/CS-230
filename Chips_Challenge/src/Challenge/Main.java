@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Main extends Application {
@@ -111,7 +110,7 @@ public class Main extends Application {
 
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
-        root.setAlignment(menu, Pos.CENTER);
+        BorderPane.setAlignment(menu, Pos.CENTER);
 
         return root;
 
@@ -139,11 +138,7 @@ public class Main extends Application {
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         root.setCenter(canvas);
 
-        try {
-            game.drawGame(level, canvas);
-        } catch (IOException E) {
-            jack.log(1,"MENU - IOException");
-        }
+        game.drawGame(level, canvas);
 
         return root;
     }

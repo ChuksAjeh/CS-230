@@ -21,8 +21,6 @@ abstract class Cell {
      */
     private final Image SPRITE;
 
-    Lumberjack jack = new Lumberjack();
-
     /**
      * Constructs a cell object.
      */
@@ -63,9 +61,6 @@ abstract class Cell {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 if (cellGrid[x][y] == cell) {
-                    int[] retVal = {x,y};
-                    //jack.log(1,Integer.toString(retVal[0]));
-                    //jack.log(1,Integer.toString(retVal[1]));
                     return new int[] {x, y};
                 }
 

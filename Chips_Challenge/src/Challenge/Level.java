@@ -25,7 +25,7 @@ public class Level {
     /**
      * The name of the level to build
      */
-    private String levelName;
+    private final String levelName;
 
     /**
      * Constructs a Level from a given file name

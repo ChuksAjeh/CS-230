@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BFSVertex {
+
     int x;
     int y;
     int dist;
