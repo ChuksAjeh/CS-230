@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author ..
+ * @author Samuel Roach
  * @version 1.0
  */
 
@@ -15,6 +15,7 @@ public class Save {
     private int saveNo = 0;
     private String fileName = "";
     private Cell[][] cellGrid;
+    private Entity[][] entityGrid;
     private final Lumberjack jack = new Lumberjack();
 
     public Save () {
@@ -41,7 +42,7 @@ public class Save {
         }
 
         //Create directory for new file
-        directory = "Users/" + "Dave/" + this.fileName + ".txt";
+        directory = "Users/" + "Dave" + "/" + this.fileName + ".txt";
         File file = new File(directory);
 
         //Create the file
@@ -62,59 +63,61 @@ public class Save {
         writer.close();
     }
 
-    private void writeSize(Cell[][] cellGrid, FileWriter writer) throws IOException {
+    private void writeSize(Cell[][] cGrid, FileWriter w) throws IOException {
 
-        int xSize = cellGrid.length;
-        int ySize = cellGrid[0].length;
+        int xSize = cGrid.length;
+        int ySize = cGrid[0].length;
 
-        writer.write(xSize + "," + ySize + "," + "\n");
+        w.write(xSize + "," + ySize + "," + "\n");
     }
 
-    private void writeWalls(Cell[][] cellGrid,FileWriter writer) throws IOException {
-        for (Cell[] row : cellGrid) {
+    private void writeWalls(Cell[][] cGrid,FileWriter w) throws IOException {
+
+        for (Cell[] row : cGrid) {
             for (Cell cell : row) {
 
                 if (cell instanceof Wall) {
-                    writer.write("#");
+                    w.write("#");
                 } else {
-                    writer.write(" ");
+                    w.write(" ");
                 }
 
             }
-            writer.write("\n");
+            w.write("\n");
         }
     }
 
-    private void writeEntities(Level level, FileWriter writer) throws IOException {
+    private void writeEntities(Level level, FileWriter w) throws IOException {
         for (Entity[] row : level.getEntityGrid()) {
             for (Entity entity : row) {
                 if (entity instanceof Player) {
 
                     logWritten(entity);
                     Player player = (Player) entity;
+                    int[] playerLoc = player.getLocation(level.getEntityGrid());
 
-                    writer.write("Player,");
-                    writer.write(player.getLocation(level.getEntityGrid())[0] + ",");
-                    writer.write(player.getLocation(level.getEntityGrid())[1] + ",");
-                    writer.write(player.getDirection() + "\n");
+                    w.write("Player,");
+                    w.write(playerLoc[0] + ",");
+                    w.write(playerLoc[1] + ",");
+                    w.write(player.getDirection() + "\n");
 
                 } else if (entity instanceof Enemy) {
 
                     logWritten(entity);
                     Enemy enemy = (Enemy) entity;
-                    writeEnemy(enemy, writer);
+                    writeEnemy(enemy, w);
 
                 } else if (entity instanceof Key) {
 
                     logWritten(entity);
                     Key key = (Key) entity;
-                    writeKey(key, level, writer);
+                    writeKey(key, level, w);
 
                 } else if (entity instanceof Item) {
 
                     logWritten(entity);
                     Item item = (Item) entity;
-                    writeItem(item, level, writer);
+                    writeItem(item, level, w);
 
                 } else {
 
@@ -126,28 +129,28 @@ public class Save {
         }
     }
 
-    private void writeEnemy(Enemy enemy, Writer writer) throws IOException {
+    private void writeEnemy(Enemy enemy, FileWriter w) throws IOException {
 
-        writer.write(enemy.getClass().getSimpleName());
-        writer.write(enemy.getEnemyX() + ",");
-        writer.write(enemy.getEnemyY() + ",");
-        writer.write(enemy.getDirection() + "\n");
-
-    }
-
-    private void writeItem(Item item, Level level, Writer writer) throws IOException {
-
-        writer.write(item.getClass().getSimpleName() + ",");
-        writer.write(item.findEntity(item, level.getEntityGrid())[0] + ",");
-        writer.write(item.findEntity(item, level.getEntityGrid())[1] + "\n");
+        w.write(enemy.getClass().getSimpleName());
+        w.write(enemy.getEnemyX() + ",");
+        w.write(enemy.getEnemyY() + ",");
+        w.write(enemy.getDirection() + "\n");
 
     }
 
-    private void writeKey(Key key, Level level, Writer writer) throws IOException {
+    private void writeItem(Item i, Level level, FileWriter w) throws IOException {
 
-        int red = (int) key.getColour().getRed();
-        int blue = (int) key.getColour().getBlue();
-        int green = (int) key.getColour().getGreen();
+        w.write(i.getClass().getSimpleName() + ",");
+        w.write(i.findEntity(i, level.getEntityGrid())[0] + ",");
+        w.write(i.findEntity(i, level.getEntityGrid())[1] + "\n");
+
+    }
+
+    private void writeKey(Key key, Level level, FileWriter w) throws IOException {
+
+        int red = (int) key.getColour().getRed() * 255;
+        int blue = (int) key.getColour().getBlue() * 255;
+        int green = (int) key.getColour().getGreen() * 255;
         int[] keyDoorCoords = new int[] {0,0};
         KeyDoor currentDoor;
 
@@ -163,16 +166,17 @@ public class Save {
             }
         }
 
-        writer.write("KeyDoor" + ",");
-        writer.write(keyDoorCoords[0] + "," + keyDoorCoords[1] + ",");
-        writer.write(red + "," + blue + "," + green + ",");
-        writer.write(key.findEntity(key,level.getEntityGrid())[0] + "," +
-                key.findEntity(key,level.getEntityGrid())[1]);
-        writer.write("\n");
+        int[] keyLoc = key.findEntity(key,level.getEntityGrid());
+
+        w.write("KeyDoor" + ",");
+        w.write(keyDoorCoords[0] + "," + keyDoorCoords[1] + ",");
+        w.write(red + "," + blue + "," + green + ",");
+        w.write(keyLoc[0] + "," + keyLoc[1]);
+        w.write("\n");
 
     }
 
-    private void writeCells(Cell[][] tempGrid, FileWriter writer) throws IOException {
+    private void writeCells(Cell[][] tempGrid, FileWriter w) throws IOException {
 
         for (Cell[] row : tempGrid) {
             for (Cell cell : row) {
@@ -180,37 +184,37 @@ public class Save {
 
                     logWritten(cell);
                     TokenDoor tokenDoor = (TokenDoor) cell;
-                    writeTokenDoor(tempGrid, tokenDoor, writer);
+                    writeTokenDoor(tempGrid, tokenDoor, w);
 
                 } else if (cell instanceof Obstacle) {
 
                     logWritten(cell);
                     Obstacle obstacle = (Obstacle) cell;
-                    writeObstacle(tempGrid, obstacle, writer);
+                    writeObstacle(tempGrid, obstacle, w);
 
                 } else if (cell instanceof Goal) {
 
                     logWritten(cell);
                     Goal goal = (Goal) cell;
-                    writeCellPos(tempGrid, goal, writer);
-                    writer.write("\n");
+                    writeCellPos(tempGrid, goal, w);
+                    w.write("\n");
 
                 } else if (cell instanceof Teleporter) {
 
                     logWritten(cell);
                     Teleporter teleporter = (Teleporter) cell;
-                    writeTeleporter(tempGrid, teleporter, writer);
+                    writeTeleporter(tempGrid, teleporter, w);
 
                 }
             }
         }
     }
 
-    private void writeTokenDoor(Cell[][] cellGrid, TokenDoor tokenDoor, FileWriter writer) throws IOException {
+    private void writeTokenDoor(Cell[][] cG, TokenDoor tD, FileWriter w) throws IOException {
 
-        writeCellPos(cellGrid, tokenDoor, writer);
-        writer.write(",");
-        writer.write(tokenDoor.getRequirement() + "\n");
+        writeCellPos(cG, tD, w);
+        w.write(",");
+        w.write(tD.getRequirement() + "\n");
 
     }
 
@@ -232,19 +236,6 @@ public class Save {
 
     }
 
-    private Cell[][] removeFromCell(Cell cell, Cell[][] cellGrid) {
-        for (int x = 0 ; x < cellGrid.length ; x++ ) {
-            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
-                if (cellGrid[x][y] == cell) {
-                    cellGrid[x][y] = new Ground();
-                }
-
-            }
-        }
-
-        return cellGrid;
-    }
-
     private void writeCellPos(Cell[][] cellGrid, Cell cell, FileWriter writer) throws IOException {
 
         int[] cellCoords = cell.findCell(cell, cellGrid);
@@ -256,15 +247,13 @@ public class Save {
     }
 
     private void logWritten(Object object) {
-        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+        //jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
 }
 
 /*
-    Cells and Entities I sill need to implement
-    --FIRE
-    --WATER
-    --TOKENDOOR
-    --TELEPORTER
-    --Goal
+    Create a pointer to this.cellGrid in saveFile to level.cellGrid etc
+    Create a global variable for the filewriter
+    Make sure every line is < 80
+    Refactor code to follow this
  */
