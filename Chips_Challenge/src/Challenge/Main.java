@@ -8,10 +8,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -36,7 +34,6 @@ public class Main extends Application {
 
     private Canvas canvas;
 
-
     private static Level level;
     private Player player = new Player(0);
     private Controller controller = new Controller();
@@ -53,13 +50,9 @@ public class Main extends Application {
         Pane root = mainMenu();
         window = primaryStage;
 
-
-
         level = controller.makeLevel("Level_01");
         Scene scene = new Scene(gaming(), WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
-
-
 
         primaryStage.setTitle("Thing?");
         primaryStage.setScene(scene);

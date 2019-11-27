@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
  * It can be collected, has its own sprite and is either consumable
  * or is a permanent addition to the player's inventory.
  * @author Angelo
- * @version %I%
+ * @version 1.0
  */
 abstract class Item extends Entity {
 
