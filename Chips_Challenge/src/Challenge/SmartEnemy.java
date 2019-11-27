@@ -10,163 +10,168 @@ import java.util.*;
  * @version 1.0
  */
 public class SmartEnemy extends Enemy {
+    /**
+     * The sprite used to represent the smart enemy.
+     */
     private static final Image SPRITE;
 
     static {
         SPRITE = new Image("images/ENTITY_SMART_ENEMY.png");
     }
 
+    /**
+     * Constructs an smart enemy
+     * @param direction The initial direction the enemy will take.
+     */
     public SmartEnemy(int direction) {
         super(SPRITE, direction);
     }
 
-
-
-    public void  nextDirection(Level level, Player player) {
-      
-        //pull in current grid data: Cell & Entity:
-        int height = 0;
-        int width = 0;
+    // Do we have to use level's grids or can we use the enemies' own entity and cell grid.
+    /**
+     * Gets the next direction based on the player's location and impassable objects.
+     * @param level The level object which holds the entity and cell grid
+     * @param player The player in the level
+     * @return An int from 0-3 representing NSEW.
+     */
+    public int nextDirection(Level level, Player player) {
+        // Grab cell and entity grid to flatten
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
-
-        //source node for the enemy/
-        int srcX = getEnemyX();
-        int srcY = getEnemyY();
-
-        //find the player location.
-        int sinkX = player.getLocation(entityGrid)[0];
-        int sinkY = player.getLocation(entityGrid)[1];
-
-        // walls, doors, hazards are all impassable for enemy
-        int[][] dist = new int[height][width];
-
-        for (int i = 0 ; i <= height ; i++) {
-            for (int j = 0 ; j <= width ; j++) {
-
-                Cell cell = cellGrid[i][j];
-
-                if (cell instanceof Wall || cell instanceof Fire || cell instanceof TokenDoor || cell instanceof Water) {
-                    dist[i][j] = 0;
-                }
-
-                /*
-
-                //provides use with a set of distances
-                if (cellGrid[i][j].getClass().getSimpleName().equals("Wall") || cellGrid[i][j].getClass().getSimpleName().equals("Fire")) {
-                    dist[i][j] = 0;
-                }
-                //covers door and water obstacle
-                else if (cellGrid[i][j].getClass().getSimpleName().equals("TokenDoor") || cellGrid[i][j].getClass().getSimpleName().equals("Water")) {
-                    dist[i][j] = 0;
-                } else {
-
-                }
-
-                */
-
-            }
+        int[][] flattenedGrid = SmartEnemy.flatten(entityGrid, cellGrid);
+        // Find a path using waterfront planning (BFS)
+        Queue<BFSVertex> path = SmartEnemy.findPathToPlayer(flattenedGrid, player, entityGrid);
+        // Find the next vertex the enemy should be on.
+        int[] nextNode = SmartEnemy.getNextNodeInPath(path);
+        int newEnemyX = nextNode[0];
+        int newEnemyY = nextNode[1];
+        // Using the next location that we know, find the direction the enemy must take.
+        if (this.getEnemyX() - newEnemyX == 0 && this.getEnemyY() - newEnemyY == 1) {
+            return 0;
         }
 
-    }
-
-
-    // get the neighbours of the cell:
-    private Cell[] getSurroundingCellsBFS(Cell[][] cellGrid, int i, int j) {
-
-        Cell[] surround = new Cell[4];
-
-        surround[0] = cellGrid[getEnemyX()][getEnemyY() - 1];
-        surround[1] = cellGrid[getEnemyX() + 1][getEnemyY()];
-        surround[2] = cellGrid[getEnemyX()][getEnemyY() + 1];
-        surround[3] = cellGrid[getEnemyX() - 1][getEnemyY()];
-
-        return surround;
-
-    }
-
-    //UNFINISHED
-    void BFS(int x, int y, Level level) {
-
-        // Mark all the vertices as not visited
-        // (By default set as false)
-        boolean[][] visited = new boolean[10][10];
-
-        Cell[][] cellGrid = level.getCellGrid();
-
-        // Create a queue for BFS
-        LinkedList<Cell> queue = new LinkedList<>();
-
-        // Mark the current node as visited and enqueue it
-        visited[x][y] = true;
-        queue.add(cellGrid[x][y]);
-
-        while (queue.size() != 0) {
-            // Dequeue a vertex from queue and print it
-            Cell vertex = queue.poll();
-            //System.out.print(s+" ");
-
-            // Get all adjacent vertices of the dequeued vertex s
-            // If a adjacent has not been visited, then mark it
-            // visited and enqueue it
-
+        else if (this.getEnemyX() - newEnemyX == -1 && this.getEnemyY() - newEnemyY == 0) {
+            return 1;
         }
 
+        else if (this.getEnemyX() - newEnemyX == 0 && this.getEnemyY() - newEnemyY == -1) {
+            return 2;
+        }
+
+        else {
+            return 3;
+        }
+
+
     }
 
-    public static void Breadth (int[][]level, Player player, Entity[][] entities){
+    /**
+     *Gets the next location the enemy will take.
+     * @param path The path the enemy will take.
+     * @return The next location in the path.
+     */
+    private static int[] getNextNodeInPath(Queue<BFSVertex> path) {
+        BFSVertex vertex = path.poll();
+        while (vertex.getDist() != 1) {
+            vertex = path.poll();
+        }
+        return new int[]{vertex.getX(), vertex.getY()};
+    }
+
+
+//    /** IS THIS NEEDED? IDK ILL JUST COMMENT IT AWAY
+//     * gets the surr
+//     * @param cellGrid
+//     * @param i
+//     * @param j
+//     * @return
+//     */
+//    private Cell[] getSurroundingCellsBFS(Cell[][] cellGrid, int i, int j) {
+//
+//        Cell[] surround = new Cell[4];
+//
+//        surround[0] = cellGrid[getEnemyX()][getEnemyY() - 1];
+//        surround[1] = cellGrid[getEnemyX() + 1][getEnemyY()];
+//        surround[2] = cellGrid[getEnemyX()][getEnemyY() + 1];
+//        surround[3] = cellGrid[getEnemyX() - 1][getEnemyY()];
+//
+//        return surround;
+//
+//    }
+
+    /**
+     * Finds a path from the smart enemy to the player.
+     * @param flattenedLevel The level which combines all impassable entities and cells.
+     * @param player The player.
+     * @param entities The entities within the level.
+     * @return The path to the player.
+     */
+    private static Queue<BFSVertex> findPathToPlayer(int[][] flattenedLevel, Player player, Entity[][] entities){
         int[] playerLocation = player.getLocation(entities);
-
-        if(level[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] != 1 ||level[playerLocation[0]][playerLocation[1]]!=1){
+        //Print out useful message 1;
+        if(flattenedLevel[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] != 1 ||
+                flattenedLevel[playerLocation[0]][playerLocation[1]]!=1){
             System.out.println("unable to find shortest path");
         }
 
         final int[] row ={-1,0,0,1};
         final int[] col ={0,-1,1,0};
-        boolean[][] visited =new boolean[level.length][level[0].length];
+        boolean[][] visited = new boolean[flattenedLevel.length][flattenedLevel[0].length];
        //set the source node as visited and enqueue
         visited[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] = true;
-        Queue<BFS> vertices = new LinkedList<>();
-        vertices.add(new BFS(new SmartEnemy(0).getEnemyX(),new SmartEnemy(0).getEnemyY(),0));
+        Queue<BFSVertex> vertices = new LinkedList<>();
+        vertices.add(new BFSVertex(new SmartEnemy(0).getEnemyX(),new SmartEnemy(0).getEnemyY(),0));
 
         //store the minimum distance:
         int minDist = Integer.MAX_VALUE;
+        //You know what they say about temporary solutions... they become permanent - Angelo 27/11/19
+        int srcX = vertices.peek().getX();
+        int srcY = vertices.peek().getY();
+        int dist = vertices.peek().getDist();
 
-
-        while(!vertices.isEmpty()){
+        do {
             // pop front not from queue and process it
-            BFS bfs = vertices.poll();
+            BFSVertex bfsVertex = vertices.poll();
             // source node and distance
-            int srcX = bfs.getX();
-            int srcY =bfs.getY();
-            int dist = bfs.getDist();
+            srcX = bfsVertex.getX();
+            srcY = bfsVertex.getY();
+            dist = bfsVertex.getDist();
 
             //if destination is found, update minimum distance and stop
             if(srcX == playerLocation[0] && srcY == playerLocation[1]){
                 minDist = dist;
-                break;
+                return vertices;
+
             }
 
             for(int i =0; i<4; i++){
                 //check for all 4 possible movements from current cell and enqueue it
-                if(isValid(level, visited, srcX+row[i],srcY+col[i])){
+                if(isValid(flattenedLevel, visited, srcX+row[i],srcY+col[i])){
                     //mark each cell as visited and enqueue it
                     visited[srcX+row[i]][srcY+col[i]] = true;
-                    vertices.add(new BFS(srcX+row[i],srcY+col[i],dist+1));
+                    vertices.add(new BFSVertex(srcX+row[i],srcY+col[i],dist+1));
                 }
             }
 
-        }
-
+        } while (!vertices.isEmpty() && srcX == playerLocation[0] && srcY == playerLocation[1]);
+        //Print useful messasge 2;
         if(minDist != Integer.MAX_VALUE){
             System.out.println(minDist);
         }else{
             System.out.println("Destination can't be reached.");
         }
+        return vertices;
     }
 
 
-    //check whether it is a valid cell or not.
+    /**
+     * Checks whether the cell is valid or not for BFS.
+     * @param level The flattened level.
+     * @param visited The array showing all visited nodes.
+     * @param row The row (x) coordinate
+     * @param col The column (y) coordinate
+     * @return
+     */
     private static boolean isValid (int[][] level, boolean[][] visited, int row, int col){
         final int ROW = level.length - 1;
         final int COL = level[0].length - 1;
@@ -201,50 +206,26 @@ public class SmartEnemy extends Enemy {
         return level;
     }
 
-//    public static void main(String[] args) {
-//        Entity[][] entity = new Entity[8][8];
-//        Cell[][] cell = new Cell[8][8];
+//    public static void main(String[] args){
 //
-//        for (int i = 0; i < entity.length; i++) {
-//            for (int j = 0; j < entity[i].length; j++) {
-//                if (i % 2 == 1) {
-//                    entity[i][j] = new FireBoots();
-//                }
-//            }
-//        }
+//        SmartEnemy s = new SmartEnemy(0);
+//        Player player = new Player(0);
 //
-//        for (int i = 0; i < cell.length; i++) {
-//            for (int j = 0; j < cell[i].length; j++) {
-//                if (i % 5 == 0) {
-//                    cell[i][j] = new Wall();
-//                } else {
-//                    cell[i][j] = new Ground();
-//                }
-//            }
-//            int[][] toPrint = flatten(entity, cell);
-//            System.out.println(Arrays.toString(toPrint));
-//        }
-
-    public static void main(String[] args){
-
-        SmartEnemy s = new SmartEnemy(0);
-        Player player = new Player(0);
-
-        int[][] mat =
-                {
-                        { 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
-                        { 0, 1, 1, 1, 1, 1, 0, 1, 0, 1 },
-                        { 0, 0, 1, 0, 1, 1, 1, 0, 0, 1 },
-                        { 1, 0, 1, 1, 1, 0, 1, 1, 0, 1 },
-                        { 0, 0, 0, 1, 0, 0, 0, 1, 0, 1 },
-                        { 1, 0, 1, 1, 1, 0, 0, 1, 1, 0 },
-                        { 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
-                        { 0, 1, 1, 1, 1, 1, 1, 1, 0, 0 },
-                        { 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
-                        { 0, 0, 1, 0, 0, 1, 1, 0, 0, 1 },
-                };
-
-    }
+//        int[][] mat =
+//                {
+//                        { 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
+//                        { 0, 1, 1, 1, 1, 1, 0, 1, 0, 1 },
+//                        { 0, 0, 1, 0, 1, 1, 1, 0, 0, 1 },
+//                        { 1, 0, 1, 1, 1, 0, 1, 1, 0, 1 },
+//                        { 0, 0, 0, 1, 0, 0, 0, 1, 0, 1 },
+//                        { 1, 0, 1, 1, 1, 0, 0, 1, 1, 0 },
+//                        { 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+//                        { 0, 1, 1, 1, 1, 1, 1, 1, 0, 0 },
+//                        { 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
+//                        { 0, 0, 1, 0, 0, 1, 1, 0, 0, 1 },
+//                };
+//
+//    }
     }
 
 
