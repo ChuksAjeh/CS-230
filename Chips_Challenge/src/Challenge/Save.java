@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Save {
 
     private String fileName = "";
+    private Level level;
     private Cell[][] cellGrid;
     private Entity[][] entityGrid;
     private FileWriter w;
@@ -28,6 +29,7 @@ public class Save {
         String directory;
         String levelName = level.getLevelName();
 
+        this.level = level;
         this.cellGrid = level.getCellGrid();
         this.entityGrid = level.getEntityGrid();
         this.fileName = levelName + "_" + "SAVE";
@@ -142,7 +144,7 @@ public class Save {
 
     private void writeItem(Item i) throws IOException {
 
-        int[] itemPos = i.findEntity(i, this.entityGrid);
+        int[] itemPos = level.getLocation(entityGrid, i);
 
         this.w.write(i.getClass().getSimpleName() + ",");
         this.w.write(itemPos[0] + ",");
@@ -170,7 +172,7 @@ public class Save {
             }
         }
 
-        int[] keyLoc = key.findEntity(key,this.entityGrid);
+        int[] keyLoc = level.getLocation(entityGrid, key);
 
         this.w.write("KeyDoor" + ",");
         this.w.write(keyDoorCoords[0] + "," + keyDoorCoords[1] + ",");

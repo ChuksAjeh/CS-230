@@ -1,19 +1,40 @@
 package Challenge;
 
 import javafx.scene.image.Image;
-
 import javafx.scene.paint.Color;
+import sun.net.www.content.text.Generic;
+
 import java.util.ArrayList;
+
 /**
- * @author ..
+ * @author George Carpenter
  * @version 1.0
  */
 public class Player extends Entity {
 
+    /**
+     * The Sprite used for the Player object, it will be rotated based on direction
+     */
     private static final Image SPRITE;
+
+    /**
+     * An array list used as the Player Inventory, items will be added and removed during gameplay
+     */
     private ArrayList<Item> inventory;
+
+    /**
+     * The direction we should be displaying the player spite in
+     */
     private int direction;
+
+    /**
+     * How many Tokens the Player is currently carrying
+     */
     private int tokenCount;
+
+    /**
+     * Tracks whether or not the Player has been killed
+     */
     private boolean alive;
 
     // TESTING
@@ -23,6 +44,10 @@ public class Player extends Entity {
         SPRITE = new Image("images/ENTITY_PLAYER.png");
     }
 
+    /**
+     * Constructs a Player object
+     * @param direction the direction the player is facing
+     */
     public Player(int direction) {
         super(SPRITE);
         this.inventory = new ArrayList<>();
@@ -31,6 +56,12 @@ public class Player extends Entity {
         this.alive = true;
     }
 
+    /**
+     * Used to move the player object in the Entity grid
+     * @param locations the current and potential new X and Y location of the player
+     * @param level the current Level object, this contains both the Cell and Entity grids
+     * @return the updated Entity grid for displaying to the screen
+     */
     private Entity[][] movePlayerEntity(int[] locations, Level level) {
 
         Cell[][] cellGrid = level.getCellGrid();
@@ -59,19 +90,17 @@ public class Player extends Entity {
                     this.addItem((Item) entityGrid[newX][newY], level);
 
                     jack.log("FOUND ITEM");
-                    jack.log(getInventory().toString());
+                    jack.log(this.inventory.toString());
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {
-
-                    // DEATH .. also #reset
 
                     jack.log(1, "Kill me");
 
                     killPlayer();
-
                     return entityGrid;
 
                 }
+
             } else if (cell instanceof KeyDoor) {
 
                 Color doorColour = ((KeyDoor) cell).getColour();
@@ -99,16 +128,14 @@ public class Player extends Entity {
 
             } else if (cell instanceof Teleporter) {
 
-                jack.log(1, "Walking into a Teleporter. ");
-
                 Teleporter pair = ((Teleporter) cell).getPair();
 
-                int[] pairLocation = findTeleporterPair(cellGrid, pair);
+                jack.log(1, "Walking into a Teleporter. ");
+
+                int[] pairLocation = level.getLocation(cellGrid, pair);
 
                 newX = pairLocation[0];
                 newY = pairLocation[1];
-
-                // Not yet implemented
 
             } else if (!cell.isPassable()) {
 
@@ -131,6 +158,13 @@ public class Player extends Entity {
 
     }
 
+
+    /**
+     * Used to move the Player in the Entity grid
+     * @param direction the direction the Player wishes to move
+     * @param level the Level object in which they are moving
+     * @return the updated Entity grid for displaying to the screen
+     */
     public Entity[][] move(int direction, Level level) {
 
         Entity[][] entityGrid = level.getEntityGrid();
@@ -157,9 +191,12 @@ public class Player extends Entity {
         return movePlayerEntity(locations, level);
     }
 
+    /**
+     * Used to find the Players current location in the Entity grid
+     * @param entityGrid the Entity grid to search
+     * @return the X and Y index of the Player object
+     */
     public int[] getLocation(Entity[][] entityGrid) {
-
-        // find player in entity grid
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
@@ -174,15 +211,15 @@ public class Player extends Entity {
             }
         }
 
-        return new int[] {0, 0};
+        return null;
     }
 
+    /**
+     * Used to track the current direction
+     * @return the Players direction
+     */
     public int getDirection() {
         return direction;
-    }
-
-    public ArrayList<Item> getInventory() {
-        return inventory;
     }
 
     private void addItem(Item item, Level level) {
@@ -332,25 +369,6 @@ public class Player extends Entity {
 
     public void removeItem(Item item) {
         this.inventory.remove(item);
-    }
-
-    public int[] findTeleporterPair(Cell[][] cellGrid, Teleporter pair) {
-
-        // find teleporter pair in cell grid
-
-        for (int x = 0 ; x < cellGrid.length ; x++ ) {
-            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
-
-                if (pair == cellGrid[x][y]) {
-                    // Pair is found
-                    return new int[] {x, y};
-                }
-
-            }
-        }
-
-        return new int[] {0, 0};
-
     }
 
     public boolean getStatus() {
