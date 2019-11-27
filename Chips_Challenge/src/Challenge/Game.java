@@ -39,6 +39,7 @@ public class Game {
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
         save.saveFile(level);
+
         // Log Stuff - uncomment for spam
         // jack.logPlayerLoc(player, entityGrid);
         // jack.logCellGrid(cellGrid);

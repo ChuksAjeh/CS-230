@@ -6,26 +6,56 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * @author George Carpenter
+ * @version 2.0
+ */
 public class Level {
 
+    /**
+     * The cell grid to build
+     */
     private Cell[][] cellGrid;
+
+    /**
+     * The entity grid to build
+     */
     private Entity[][] entityGrid;
 
+    /**
+     * The name of the level to build
+     */
     private String levelName;
 
-    Scanner reader;
-
-    public Level(String levelName) throws FileNotFoundException {
-        buildLevel(levelName);
+    /**
+     * Constructs a Level from a given file name
+     * @param levelName the name of the level to build
+     */
+    public Level(String levelName) {
 
         this.levelName = levelName;
+
+        try {
+            buildLevel(levelName);
+        } catch (FileNotFoundException e) {
+            // Nothing
+        }
+
     }
 
+    /**
+     * Begins the build process
+     * @param level the level to build
+     * @throws FileNotFoundException if the file does not exist
+     */
     private void buildLevel(String level) throws FileNotFoundException {
 
-        reader = new Scanner(new File("Level_Files/" + level + ".txt"));
+        Scanner reader = new Scanner(new File("Level_Files/" + level + ".txt"));
+
+        // Set a delimiter
         reader.useDelimiter(",");
 
+        // Read in the size of the level to create
         int x = reader.nextInt();
         int y = reader.nextInt();
 
@@ -44,6 +74,12 @@ public class Level {
 
     }
 
+    /**
+     * Builds a basic Wall / Ground grid
+     * @param reader the scanner
+     * @param x the width of the grid
+     * @param y the height of the grid
+     */
     private void buildBasicCellGrid(Scanner reader, int x, int y) {
 
         for (int i = 0 ; i < y ; i++) {
@@ -65,6 +101,10 @@ public class Level {
 
     }
 
+    /**
+     * Builds the remainder of the level grids
+     * @param reader the scanner
+     */
     private void buildCompleteGrids(Scanner reader) {
 
         String[] line; // Line being parsed
@@ -125,7 +165,6 @@ public class Level {
                 this.entityGrid[x][y] = new Flippers();
             } else if ("TELEPORTER".equals(name)) {
 
-                // This might not work, I have not tested it yet
                 Teleporter temp = new Teleporter();
 
                 this.cellGrid[x][y] = temp;
@@ -140,30 +179,53 @@ public class Level {
 
     }
 
-    private void buildEnemy() {
-
-    }
-
+    /**
+     * Sets the cell grid
+     * @param cellGrid the cell grid for the level Object
+     */
     public void setCellGrid(Cell[][] cellGrid) {
         this.cellGrid = cellGrid;
     }
 
+    /**
+     * Sets the entity grid
+     * @param entityGrid the entity grid for the level Object
+     */
     public void setEntityGrid(Entity[][] entityGrid) {
         this.entityGrid = entityGrid;
     }
 
+    /**
+     * Gets the cell grid
+     * @return the cell grid off the Level object
+     */
     public Cell[][] getCellGrid() {
         return this.cellGrid;
     }
 
+    /**
+     * Gets the entity grid
+     * @return the entity grid for the level Object
+     */
     public Entity[][] getEntityGrid() {
         return this.entityGrid;
     }
 
+    /**
+     * Gets the level name
+     * @return the name of the Level, for saving
+     */
     public String getLevelName() {
         return this.levelName;
     }
 
+    /**
+     * Used to find an Item or Cell in the Level grids
+     * @param grid which grid to search
+     * @param thing what you want to find
+     * @param <T> Cell or Entity
+     * @return The location if not null
+     */
     public <T> int[] getLocation(T[][] grid, T thing) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {

@@ -4,12 +4,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * @author George Carpenter
+ * @version 1.0
+ */
 public class Controller {
 
-    Lumberjack jack = new Lumberjack();
+    private Lumberjack jack = new Lumberjack();
 
     public void processKeyEvent(KeyEvent event, Level level, Player player, Game game, Canvas canvas) {
 
@@ -57,15 +60,7 @@ public class Controller {
     public Level makeLevel(String levelName) {
 
         // Build a Level thing
-        Level level = null;
-
-        try {
-            level = new Level(levelName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return level;
+        return new Level(levelName);
 
     }
 

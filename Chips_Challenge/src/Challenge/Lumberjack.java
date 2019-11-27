@@ -1,19 +1,36 @@
 package Challenge;
 
+/**
+ * This class is used entirely for testing, although we may also submit it
+ * @author George Carpenter
+ * @version 1.0
+ */
 public class Lumberjack {
 
+    /**
+     * Lumberjacks usually remove trees not construct them
+     */
     public Lumberjack() {
         // They're a lumberjack and they're OK
         // They sleeps all night and they works all day
         // https://www.youtube.com/watch?v=FshU58nI0Ts
     }
 
+    /**
+     * Logs stuff
+     * @param message what to log
+     */
     public void log(String message) {
 
         System.out.println("Spam : " + message);
 
     }
 
+    /**
+     * Logs more stuff
+     * @param priority for not spam
+     * @param message what to log
+     */
     public void log(int priority, String message) {
 
         if (priority == 1) {
@@ -24,29 +41,16 @@ public class Lumberjack {
 
     }
 
-    public void logCellGrid(Cell[][] cellGrid) {
+    /**
+     * Logs a grid
+     * @param grid the grid to log
+     */
+    public <T> void logGrid(T[][] grid) {
 
-        System.out.println("===== START CELL GRID =====");
+        System.out.println("===== START GRID =====");
 
-        for (Cell[] row : cellGrid) {
-            for (Cell c : row) {
-
-                if (null == c) {
-                    log("NULL");
-                } else {
-                    log(c.getClass().getSimpleName());
-                }
-            }
-        }
-
-    }
-
-    public void logEntityGrid(Entity[][] entityGrid) {
-
-        System.out.println("===== START ENTITY GRID =====");
-
-        for (Entity[] row : entityGrid) {
-            for (Entity e : row) {
+        for (T[] row : grid) {
+            for (T e : row) {
 
                 if (null == e) {
                     log("NULL");
@@ -58,6 +62,11 @@ public class Lumberjack {
 
     }
 
+    /**
+     * Logs the Player location
+     * @param player the Player object to track
+     * @param entityGrid the grid to find them in
+     */
     public void logPlayerLoc(Player player, Entity[][] entityGrid) {
 
         int[] playerLoc = player.getLocation(entityGrid);

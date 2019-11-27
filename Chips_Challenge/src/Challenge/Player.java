@@ -2,7 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import sun.net.www.content.text.Generic;
 
 import java.util.ArrayList;
 
@@ -107,7 +106,7 @@ public class Player extends Entity {
 
                 jack.log(1, "Walking into a KeyDoor");
 
-                if (checkKeyColourInInv(doorColour)) {
+                if (null != findKey(doorColour)) {
                     openKeyDoor(level, doorColour, newX, newY);
                 } else {
                     return entityGrid;
@@ -157,7 +156,6 @@ public class Player extends Entity {
         }
 
     }
-
 
     /**
      * Used to move the Player in the Entity grid
@@ -222,6 +220,12 @@ public class Player extends Entity {
         return direction;
     }
 
+    /**
+     * Used to add items to the Players inventory
+     * This Method can also update some cells to passable
+     * @param item the item to add to the players inventory
+     * @param level the Level object, if it needs updating as a result
+     */
     private void addItem(Item item, Level level) {
 
         if (item instanceof Token) {
@@ -243,13 +247,20 @@ public class Player extends Entity {
         inventory.add(item);
     }
 
+    /**
+     * Method to 'open' a key door and replace it with ground
+     * @param level the level object
+     * @param doorColour the colour of door
+     * @param newX the X location of the door
+     * @param newY the Y location of the door
+     */
     private void openKeyDoor(Level level, Color doorColour, int newX, int newY) {
 
         Cell[][] cellGrid = level.getCellGrid();
 
         jack.log(1, "Player has the correct key");
 
-        this.inventory.remove(findKeyColour(doorColour));
+        this.inventory.remove(findKey(doorColour));
 
         cellGrid[newX][newY] = new Ground();
 
@@ -257,6 +268,13 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * Method to 'open' a token door and replace it with ground
+     * @param level the level object
+     * @param door the door object
+     * @param newX the X location of the door
+     * @param newY the Y location of the door
+     */
     private void openTokenDoor(Level level, TokenDoor door, int newX, int newY) {
 
         Cell[][] cellGrid = level.getCellGrid();
@@ -271,6 +289,11 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * Method to set cells as passable on item pickup
+     * @param level the level object
+     * @param item the item collected, this dictates what is made passable
+     */
     private void setCellsPassable(Level level, Item item) {
 
         Cell[][] cellGrid = level.getCellGrid();
@@ -289,41 +312,31 @@ public class Player extends Entity {
 
     }
 
-    private boolean checkKeyColourInInv(Color color){
+    /**
+     * Method to find a key of a set colour
+     * @param colour the colour to search for
+     * @return the key, if present
+     */
+    private Item findKey(Color colour) {
 
         for (Item item : this.inventory) {
             if (item instanceof Key) {
 
                 Key currentKey = (Key) item;
 
-                if (color.equals(currentKey.getColour())) {
-                    return true;
-                }
-
-            }
-        }
-
-        return false;
-    }
-
-    private Item findKeyColour(Color color) {
-
-        Item returnItem = null;
-
-        for (Item item : this.inventory) {
-            if (item instanceof Key) {
-
-                Key currentKey = (Key) item;
-
-                if (color.equals(currentKey.getColour())) {
-                    returnItem = item;
+                if (colour.equals(currentKey.getColour())) {
+                    return item;
                 }
             }
         }
 
-        return returnItem;
+        return null;
     }
 
+    /**
+     * Checks if a Player is already carrying a token
+     * @return true if a token exists
+     */
     private boolean checkTokenInInv() {
 
         for (Item item : inventory) {
@@ -337,8 +350,13 @@ public class Player extends Entity {
         return false;
     }
 
+    /**
+     * Checks if a Player has enough tokens
+     * @param amount the amount of tokens
+     */
     private void removeTokens(int amount) {
         if (checkTokenInInv()) {
+
             jack.log(1, "Can remove tokens");
             int newTokenCount = this.tokenCount - amount;
 
@@ -356,6 +374,9 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Removes tokens
+     */
     private void removeTokenFromInv(){
         Item currentItem = null;
         for (Item item : this.inventory) {
@@ -367,14 +388,25 @@ public class Player extends Entity {
         removeItem(currentItem);
     }
 
+    /**
+     * Used to remove an item from the players inventory
+     * @param item the item to remove
+     */
     public void removeItem(Item item) {
         this.inventory.remove(item);
     }
 
+    /**
+     * Holds the Players alive status
+     * @return true if they are alive
+     */
     public boolean getStatus() {
         return this.alive;
     }
 
+    /**
+     * Kills the Player
+     */
     private void killPlayer() {
         this.alive = false;
     }
