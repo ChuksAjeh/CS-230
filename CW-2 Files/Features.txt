@@ -1,0 +1,19 @@
+Movement
+Picking up items
+Fire
+Water
+TokenDoor
+KeyDoor
+Teleporter
+Walls
+Update file every game tick
+Load a game file
+Message of the day
+Dumb enemy movement
+Smart enemy movement
+Line Enemy movement
+Wall enemy movement
+Player death
+Sprites
+
+
