@@ -164,7 +164,18 @@ public class Level {
         return this.levelName;
     }
 
-    public int[] getLocation() {
+    public <T> int[] getLocation(T[][] grid, T thing) {
+
+        for (int x = 0 ; x < entityGrid.length ; x++ ) {
+            for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
+
+                if (thing == grid[x][y]) {
+                    return new int[] {x, y};
+                }
+
+            }
+        }
+
         return null;
     }
 
