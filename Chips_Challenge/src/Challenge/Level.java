@@ -23,7 +23,7 @@ public class Level {
 
     private void buildLevel(String level) throws FileNotFoundException {
 
-        reader = new Scanner(new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\" + level + ".txt"));
+        reader = new Scanner(new File("Level_Files/" + level + ".txt"));
         reader.useDelimiter(",");
 
         int x = reader.nextInt();
