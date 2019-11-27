@@ -8,12 +8,18 @@ import javafx.scene.image.Image;
  */
 public class Wall extends Impassable {
 
+    /**
+     * The sprite used to represent a wall in the game
+     */
     private static final Image SPRITE;
 
     static {
         SPRITE = new Image("images/CELL_WALL.png");
     }
 
+    /**
+     * Constructor
+     */
     public Wall() {
         super(SPRITE, false);
     }

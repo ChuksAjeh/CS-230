@@ -91,10 +91,10 @@ abstract class Enemy extends Entity {
         int y = getEnemyY();
 
         return new Entity[] {
-                entityGrid[x][y - 1],
-                entityGrid[x + 1][y],
-                entityGrid[x][y + 1],
-                entityGrid[x - 1][y]
+            entityGrid[x][y - 1],
+            entityGrid[x + 1][y],
+            entityGrid[x][y + 1],
+            entityGrid[x - 1][y]
         };
 
     }

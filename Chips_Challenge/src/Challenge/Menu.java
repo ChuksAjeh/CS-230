@@ -8,8 +8,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class Menu extends Application {
 
     // The dimensions of the window
@@ -104,11 +102,7 @@ public class Menu extends Application {
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         root.setCenter(canvas);
 
-        try {
-            game.drawGame(level, canvas);
-        } catch (IOException E) {
-            jack.log(1,"MENU - IOException");
-        }
+        game.drawGame(level, canvas);
 
         return root;
     }

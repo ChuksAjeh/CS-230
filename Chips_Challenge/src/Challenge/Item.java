@@ -15,12 +15,6 @@ abstract class Item extends Entity {
      * Whether an item is consumable or not. All items are consumable unless it is an Equipment
      */
     protected boolean consumable = true;
-    private final static boolean COLLECTIBLE;
-
-    static {
-        // All items are collectible.
-        COLLECTIBLE = true;
-    }
 
     /**
      * Constructs an item with its designated sprite.

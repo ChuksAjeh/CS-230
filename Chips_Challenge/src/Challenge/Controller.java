@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class Controller {
 
-    private Lumberjack jack = new Lumberjack();
+    private final Lumberjack jack = new Lumberjack();
 
     public void processKeyEvent(KeyEvent event, Level level, Player player, Game game, Canvas canvas) {
 
@@ -36,11 +36,8 @@ public class Controller {
         }
 
         if (event.getCode().isArrowKey()) {
-            try {
-                game.drawGame(level, canvas);
-            } catch (IOException E) {
-                jack.log(1,"CONTROLLER : IOException");
-            }
+            game.drawGame(level, canvas);
+
 //            if (player.getStatus()) {
 //                game.drawGame(level, canvas);
 //            } else if (!player.getStatus()) {
