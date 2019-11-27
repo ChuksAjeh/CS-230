@@ -12,13 +12,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Main extends Application {
@@ -33,6 +36,14 @@ public class Main extends Application {
 
     private Canvas canvas;
 
+
+    private static Level level;
+    private Player player = new Player(0);
+    private Controller controller = new Controller();
+    Lumberjack jack = new Lumberjack();
+    Game game = new Game();
+    Stage window;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -40,8 +51,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
         Pane root = mainMenu();
+        window = primaryStage;
 
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+
+        level = controller.makeLevel("Level_01");
+        Scene scene = new Scene(gaming(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
+
+
 
         primaryStage.setTitle("Thing?");
         primaryStage.setScene(scene);
@@ -49,64 +67,93 @@ public class Main extends Application {
 
     }
 
-    private BorderPane mainMenu() {
-
-        BorderPane root = new BorderPane();
-
-        HBox bottomBar = new HBox();
+    private Label messageOfTheDay(){
         Label message = new Label();
-
-        Pane centerThing = new Pane(); // No idea
-
-        Button startButton = new Button("Start!");
-
         AtomicReference<String> stuff = new AtomicReference<>(new Ping().getPing());
-
         message.textProperty().set(stuff.get());
         message.setTextFill(Color.rgb(200, 200, 200));
 
-        bottomBar.setPadding(new Insets(10, 10, 10, 10));
-        bottomBar.setAlignment(Pos.CENTER);
-        bottomBar.getChildren().add(message);
-
-        bottomBar.setStyle("-fx-background-color: #222222");
-        bottomBar.setMinHeight(36);
-
-        centerThing.getChildren().add(startButton);
-
-        startButton.setOnAction(e -> {
-
-            canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-            root.setCenter(canvas);
-
-            drawThing();
-        });
-
         Timeline timeline = new Timeline(
-            new KeyFrame(new Duration(5000), e -> {
-                stuff.set(new Ping().getPing());
-                message.textProperty().set(stuff.get());
-            })
+                new KeyFrame(new Duration(5000), e -> {
+                    stuff.set(new Ping().getPing());
+                    message.textProperty().set(stuff.get());
+                })
         );
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        root.setBottom(bottomBar);
-        root.setCenter(centerThing);
+
+        return message;
+    }
+
+
+    private BorderPane mainMenu() {
+
+        BorderPane root = new BorderPane();
+
+        Label message = new Label();
+
+        Button startButton = new Button("Start!");
+        Button users = new Button ("Profiles");
+        Button quit = new Button ("Exit");
+        BorderPane test = new BorderPane();
+        VBox menu = new VBox();
+        menu.getChildren().addAll(startButton, users, quit);
+
+
+        /*startButton.setOnAction(e -> {
+
+            canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+            root.setCenter(canvas);
+
+
+            try {
+                game.drawGame(level, canvas);
+            } catch (IOException E) {
+                jack.log(1,"MENU - IOException");
+            }
+        });
+*/
+
+        menu.setAlignment(Pos.CENTER);
+        root.setCenter(menu);
+        root.setAlignment(menu, Pos.CENTER);
 
         return root;
 
     }
 
-    public void drawThing() {
+    private HBox bottomBar(){
+        HBox bottomBar = new HBox();
+        bottomBar.setPadding(new Insets(10, 10, 10, 10));
+        bottomBar.setAlignment(Pos.CENTER);
+        bottomBar.getChildren().add(messageOfTheDay());
+        bottomBar.setStyle("-fx-background-color: #222222");
+        bottomBar.setMinHeight(36);
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        //gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        gc.drawImage(new Image("images/GUI_PLS.png"), 0, 0);
-
+        return bottomBar;
     }
+
+
+    private BorderPane gaming() {
+        BorderPane root = new BorderPane();
+
+        System.out.println("SUCCESS!");
+
+        root.setBottom(bottomBar());
+
+        canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        root.setCenter(canvas);
+
+        try {
+            game.drawGame(level, canvas);
+        } catch (IOException E) {
+            jack.log(1,"MENU - IOException");
+        }
+
+        return root;
+    }
+
 
 }
