@@ -11,9 +11,6 @@ import java.net.URL;
  */
 class Ping {
 
-    private final String puzzleURL = "http://cswebcat.swan.ac.uk/puzzle";
-    private final String messageURL = "http://cswebcat.swan.ac.uk/message?solution=";
-
     /**
      * Ping!
      * @return THe returned data, in String form
@@ -32,6 +29,7 @@ class Ping {
 
     private String pingAPI() throws Exception {
 
+        String puzzleURL = "http://cswebcat.swan.ac.uk/puzzle";
         String inputString = makeConnection(puzzleURL);
         char[] inputArray = inputString.toCharArray();
 
@@ -47,6 +45,7 @@ class Ping {
 
         }
 
+        String messageURL = "http://cswebcat.swan.ac.uk/message?solution=";
         return makeConnection(messageURL + out);
 
     }

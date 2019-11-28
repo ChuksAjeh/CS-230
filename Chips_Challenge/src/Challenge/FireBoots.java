@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class FireBoots extends Equipment {
+class FireBoots extends Equipment {
 
     /**
      * The sprite used for this class

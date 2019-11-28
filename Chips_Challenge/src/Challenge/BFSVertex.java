@@ -1,13 +1,10 @@
 package Challenge;
 
-import java.util.LinkedList;
-import java.util.Queue;
+class BFSVertex {
 
-public class BFSVertex {
-
-    int x;
-    int y;
-    int dist;
+    private int x;
+    private int y;
+    private int dist;
 
     public BFSVertex(int x, int y, int dist) {
         this.x = x;

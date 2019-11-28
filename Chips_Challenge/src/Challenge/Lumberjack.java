@@ -5,7 +5,7 @@ package Challenge;
  * @author George Carpenter
  * @version 1.0
  */
-public class Lumberjack {
+class Lumberjack {
 
     /**
      * Lumberjacks usually remove trees not construct them

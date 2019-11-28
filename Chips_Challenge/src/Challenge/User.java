@@ -1,6 +1,6 @@
 package Challenge;
 
-public class User {
+class User {
 
     private String userName;
     private int[] scores;

@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
  * @author George Carpenter
  * @version 1.0
  */
-public class KeyDoor extends Door {
+class KeyDoor extends Door {
 
     /**
      * The sprite used for this class

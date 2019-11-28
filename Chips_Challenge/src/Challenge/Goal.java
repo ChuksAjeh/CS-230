@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class Goal extends Cell {
+class Goal extends Cell {
 
     /**
      * The sprite used for this class
