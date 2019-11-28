@@ -19,6 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Main extends Application {
@@ -45,21 +48,16 @@ public class Main extends Application {
     }
 
     public void start(Stage primaryStage) {
-
-        Pane root = mainMenu();
         window = primaryStage;
 
-        level = controller.makeLevel("Level_01");
-        Scene scene = new Scene(gaming(), WINDOW_WIDTH, WINDOW_HEIGHT);
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
+        Scene intro = mainMenu(window);
 
-        primaryStage.setTitle("Thing?");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
+        window.setTitle("Jungle Hunt");
+        window.setScene(intro);
+        window.show();
     }
 
-    private Label messageOfTheDay(){
+    private Label messageOfTheDay() {
         Label message = new Label();
         AtomicReference<String> stuff = new AtomicReference<>(new Ping().getPing());
         message.textProperty().set(stuff.get());
@@ -80,42 +78,6 @@ public class Main extends Application {
     }
 
 
-    private BorderPane mainMenu() {
-
-        BorderPane root = new BorderPane();
-
-        Label message = new Label();
-
-        Button startButton = new Button("Start!");
-        Button users = new Button ("Profiles");
-        Button quit = new Button ("Exit");
-        BorderPane test = new BorderPane();
-        VBox menu = new VBox();
-        menu.getChildren().addAll(startButton, users, quit);
-
-
-        /*startButton.setOnAction(e -> {
-
-            canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-            root.setCenter(canvas);
-
-
-            try {
-                game.drawGame(level, canvas);
-            } catch (IOException E) {
-                jack.log(1,"MENU - IOException");
-            }
-        });
-*/
-
-        menu.setAlignment(Pos.CENTER);
-        root.setCenter(menu);
-        BorderPane.setAlignment(menu, Pos.CENTER);
-
-        return root;
-
-    }
-
     private HBox bottomBar(){
         HBox bottomBar = new HBox();
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
@@ -127,8 +89,127 @@ public class Main extends Application {
         return bottomBar;
     }
 
+    private Scene mainMenu(Stage window) {
+        BorderPane root = new BorderPane();
 
-    private BorderPane gaming() {
+        Button startButton = new Button("Start!");
+
+        Button users = new Button ("Profiles");
+
+        Button quit = new Button ("Exit");
+
+        VBox menu = new VBox();
+        menu.getChildren().addAll(startButton, users, quit);
+
+        root.setBottom(bottomBar());
+        menu.setAlignment(Pos.CENTER);
+        root.setCenter(menu);
+
+        startButton.setOnAction(e -> window.setScene(gaming("Level_01")));
+
+        users.setOnAction(e -> window.setScene(profileMenu(window)));
+
+        quit.setOnAction(e -> System.exit(0));
+
+
+        Scene firstMenu = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+
+        return firstMenu;
+    }
+
+    private Scene profileMenu(Stage window) {
+        BorderPane root = new BorderPane();
+
+        Button selectProfile = new Button("Select Profile");
+
+        Button creatProfile = new Button("Create Profile");
+
+        Button selectLevel = new Button("Select Level");
+
+        Button back = new Button("Back");
+
+        VBox menu = new VBox();
+        menu.getChildren().addAll(selectProfile, creatProfile, selectLevel, back);
+
+        root.setBottom(bottomBar());
+        menu.setAlignment(Pos.CENTER);
+        root.setCenter(menu);
+
+        back.setOnAction(e -> window.setScene(mainMenu(window)));
+
+        selectProfile.setOnAction(e -> window.setScene(displayUsers()));
+
+        selectLevel.setOnAction(e -> window.setScene(displayLevel(window)));
+
+        Scene secondMenu = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        return secondMenu;
+    }
+
+    private Scene displayUsers(){
+        BorderPane root = new BorderPane();
+
+        VBox menu = new VBox();
+
+        ArrayList<Button> buttons=new ArrayList<>();
+
+        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        File[] files = path.listFiles();
+
+        for(int i=0; i < files.length;i++){
+            buttons.add(new Button(files[i].getName()));
+            menu.getChildren().add(buttons.get(i));
+        }
+
+        root.setBottom(bottomBar());
+        menu.setAlignment(Pos.CENTER);
+        root.setCenter(menu);
+
+
+        Scene displayUsers = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        return displayUsers;
+    }
+
+
+    private Scene displayLevel(Stage window) {
+        BorderPane root = new BorderPane();
+
+        VBox menu = new VBox();
+
+        ArrayList<Button> buttons=new ArrayList<>();
+
+        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File[] files = path.listFiles();
+
+        for(int i=0; i < files.length;i++){
+            buttons.add(new Button(files[i].getName()));
+            menu.getChildren().add(buttons.get(i));
+        }
+
+        root.setBottom(bottomBar());
+        menu.setAlignment(Pos.CENTER);
+        root.setCenter(menu);
+
+        for (Button button : buttons) {
+            button.setOnAction(e -> {
+                String levelName = button.getText();
+                levelName = levelName.substring(0, levelName.length()-4);
+                window.setScene(gaming(levelName));
+            });
+        }
+
+
+
+
+        Scene levels = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        return levels;
+    }
+
+
+    private Scene gaming(String name) {
         BorderPane root = new BorderPane();
 
         System.out.println("SUCCESS!");
@@ -138,9 +219,14 @@ public class Main extends Application {
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         root.setCenter(canvas);
 
+        level = controller.makeLevel(name);
+
         game.drawGame(level, canvas);
 
-        return root;
+        Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
+
+        return play;
     }
 
 
