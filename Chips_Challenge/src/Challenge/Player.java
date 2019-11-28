@@ -209,7 +209,7 @@ public class Player extends Entity {
             }
         }
 
-        return null;
+        return new int[] {0,0};
     }
 
     /**
