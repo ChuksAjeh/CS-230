@@ -40,8 +40,8 @@ public class Game {
 
         // Log Stuff - uncomment for spam
         // jack.logPlayerLoc(player, entityGrid);
-        // jack.logCellGrid(cellGrid);
-        // jack.logEntityGrid(entityGrid);
+        // jack.logGrid(level.getEntityGrid());
+        // jack.logGrid(level.getCellGrid());
 
     }
 

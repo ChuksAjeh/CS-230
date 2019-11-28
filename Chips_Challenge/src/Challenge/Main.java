@@ -60,28 +60,31 @@ public class Main extends Application {
     }
 
     private Label messageOfTheDay() {
+
         Label message = new Label();
         AtomicReference<String> stuff = new AtomicReference<>(new Ping().getPing());
+
         message.textProperty().set(stuff.get());
         message.setTextFill(Color.rgb(200, 200, 200));
 
         Timeline timeline = new Timeline(
-                new KeyFrame(new Duration(5000), e -> {
-                    stuff.set(new Ping().getPing());
-                    message.textProperty().set(stuff.get());
-                })
+            new KeyFrame(new Duration(5000), e -> {
+                stuff.set(new Ping().getPing());
+                message.textProperty().set(stuff.get());
+            })
         );
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-
 
         return message;
     }
 
 
     private HBox bottomBar(){
+
         HBox bottomBar = new HBox();
+
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.getChildren().add(messageOfTheDay());
@@ -92,12 +95,11 @@ public class Main extends Application {
     }
 
     private Scene mainMenu(Stage window) {
+
         BorderPane root = new BorderPane();
 
         Button startButton = new Button("Start!");
-
         Button users = new Button ("Profiles");
-
         Button quit = new Button ("Exit");
 
         VBox menu = new VBox();
@@ -113,22 +115,18 @@ public class Main extends Application {
 
         quit.setOnAction(e -> System.exit(0));
 
-
         Scene firstMenu = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
 
         return firstMenu;
     }
 
     private Scene profileMenu(Stage window) {
+
         BorderPane root = new BorderPane();
 
         Button selectProfile = new Button("Select Profile");
-
         EditableButton creatProfile = new EditableButton("Create Profile");
-
         Button selectLevel = new Button("Select Level");
-
         Button back = new Button("Back");
 
         VBox menu = new VBox();
@@ -138,15 +136,12 @@ public class Main extends Application {
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
 
-
         /*creatProfile.setOnMouseClicked(e -> {
 
         });*/
 
         back.setOnAction(e -> window.setScene(mainMenu(window)));
-
         selectProfile.setOnAction(e -> window.setScene(displayUsers()));
-
         selectLevel.setOnAction(e -> window.setScene(displayLevel(window)));
 
         Scene secondMenu = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -155,28 +150,32 @@ public class Main extends Application {
     }
 
     private Scene displayUsers(){
+
         BorderPane root = new BorderPane();
 
         VBox menu = new VBox();
 
         ArrayList<Button> buttons=new ArrayList<>();
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        File path = new File("Users/");
+
         File[] files = path.listFiles();
 
-        for(int i=0; i < files.length;i++){
+        for (int i = 0 ; i < files.length ; i++ ) {
+
             buttons.add(new Button(files[i].getName()));
             menu.getChildren().add(buttons.get(i));
+
         }
 
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
 
-        for(Button button : buttons){
+        for(Button button : buttons) {
             button.setOnAction(e -> window.setScene(displayLevel(window)));
         }
-
 
         Scene displayUsers = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -185,18 +184,23 @@ public class Main extends Application {
 
 
     private Scene displayLevel(Stage window) {
+
         BorderPane root = new BorderPane();
 
         VBox menu = new VBox();
 
         ArrayList<Button> buttons=new ArrayList<>();
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_Files/");
+
         File[] files = path.listFiles();
 
-        for(int i=0; i < files.length;i++){
+        for (int i = 0 ; i < files.length ; i++ ) {
+
             buttons.add(new Button(files[i].getName()));
             menu.getChildren().add(buttons.get(i));
+
         }
 
         root.setBottom(bottomBar());
@@ -211,9 +215,6 @@ public class Main extends Application {
             });
         }
 
-
-
-
         Scene levels = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         return levels;
@@ -221,6 +222,7 @@ public class Main extends Application {
 
 
     private Scene gaming(String name) {
+
         BorderPane root = new BorderPane();
 
         System.out.println("SUCCESS!");
@@ -242,6 +244,7 @@ public class Main extends Application {
 
 
     class EditableButton extends Button {
+
         TextField tf = new TextField();
 
         public EditableButton(String text) {
@@ -253,10 +256,14 @@ public class Main extends Application {
             });
 
             tf.setOnAction(ae -> {
-                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+
+                // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                File path = new File("Users/"+tf.getText());
+
                 path.mkdir();
 
                 window.setScene(displayUsers());
+
             });
         }
     }
