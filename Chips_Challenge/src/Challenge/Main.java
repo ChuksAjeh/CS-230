@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicReference;
@@ -123,7 +125,7 @@ public class Main extends Application {
 
         Button selectProfile = new Button("Select Profile");
 
-        Button creatProfile = new Button("Create Profile");
+        EditableButton creatProfile = new EditableButton("Create Profile");
 
         Button selectLevel = new Button("Select Level");
 
@@ -135,6 +137,11 @@ public class Main extends Application {
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
+
+
+        /*creatProfile.setOnMouseClicked(e -> {
+
+        });*/
 
         back.setOnAction(e -> window.setScene(mainMenu(window)));
 
@@ -165,6 +172,10 @@ public class Main extends Application {
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
+
+        for(Button button : buttons){
+            button.setOnAction(e -> window.setScene(displayLevel(window)));
+        }
 
 
         Scene displayUsers = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -229,5 +240,25 @@ public class Main extends Application {
         return play;
     }
 
+
+    class EditableButton extends Button {
+        TextField tf = new TextField();
+
+        public EditableButton(String text) {
+            setText(text);
+            setOnMouseClicked(e -> {
+                //tf.setText(getText());
+                setText("");
+                setGraphic(tf);
+            });
+
+            tf.setOnAction(ae -> {
+                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                path.mkdir();
+
+                window.setScene(displayUsers());
+            });
+        }
+    }
 
 }
