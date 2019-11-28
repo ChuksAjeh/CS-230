@@ -13,7 +13,7 @@ abstract class Impassable extends Cell {
      * @param sprite the sprite used to represent an object of this type
      * @param passable whether or not this cell will be passable
      */
-    public Impassable(Image sprite, boolean passable) {
+    Impassable(Image sprite, boolean passable) {
         super(sprite, passable);
     }
 

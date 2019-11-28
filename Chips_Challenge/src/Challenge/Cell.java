@@ -24,16 +24,9 @@ abstract class Cell {
     /**
      * Constructs a cell object.
      */
-    public Cell(Image sprite, boolean passable) {
+    Cell(Image sprite, boolean passable) {
         this.SPRITE = sprite;
         this.passable = passable;
-    }
-
-    /**
-     * Makes a impassable cell passable or a passable impassable.
-     */
-    public void switchPassable() {
-        this.passable = !this.passable;
     }
 
     public void setPassable(boolean newValue) {

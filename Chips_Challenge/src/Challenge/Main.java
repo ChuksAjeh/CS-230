@@ -14,16 +14,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Main extends Application {
@@ -39,11 +37,11 @@ public class Main extends Application {
     private Canvas canvas;
 
     private static Level level;
-    private Player player = new Player(0);
-    private Controller controller = new Controller();
+    private final Player player = new Player(0);
+    private final Controller controller = new Controller();
     Lumberjack jack = new Lumberjack();
-    Game game = new Game();
-    Stage window;
+    private final Game game = new Game();
+    private Stage window;
 
     public static void main(String[] args) {
         launch(args);
@@ -115,9 +113,7 @@ public class Main extends Application {
 
         quit.setOnAction(e -> System.exit(0));
 
-        Scene firstMenu = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return firstMenu;
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
     private Scene profileMenu(Stage window) {
@@ -125,12 +121,12 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
 
         Button selectProfile = new Button("Select Profile");
-        EditableButton creatProfile = new EditableButton("Create Profile");
+        EditableButton createProfile = new EditableButton("Create Profile");
         Button selectLevel = new Button("Select Level");
         Button back = new Button("Back");
 
         VBox menu = new VBox();
-        menu.getChildren().addAll(selectProfile, creatProfile, selectLevel, back);
+        menu.getChildren().addAll(selectProfile, createProfile, selectLevel, back);
 
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
@@ -144,9 +140,7 @@ public class Main extends Application {
         selectProfile.setOnAction(e -> window.setScene(displayUsers()));
         selectLevel.setOnAction(e -> window.setScene(displayLevel(window)));
 
-        Scene secondMenu = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return secondMenu;
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
     private Scene displayUsers(){
@@ -155,19 +149,12 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        ArrayList<Button> buttons=new ArrayList<>();
-
         // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
         File path = new File("Users/");
 
         File[] files = path.listFiles();
 
-        for (int i = 0 ; i < files.length ; i++ ) {
-
-            buttons.add(new Button(files[i].getName()));
-            menu.getChildren().add(buttons.get(i));
-
-        }
+        ArrayList<Button> buttons = makeButtons(Objects.requireNonNull(files), menu);
 
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
@@ -177,24 +164,12 @@ public class Main extends Application {
             button.setOnAction(e -> window.setScene(displayLevel(window)));
         }
 
-        Scene displayUsers = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return displayUsers;
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
+    private ArrayList<Button> makeButtons(File[] files, VBox menu) {
 
-    private Scene displayLevel(Stage window) {
-
-        BorderPane root = new BorderPane();
-
-        VBox menu = new VBox();
-
-        ArrayList<Button> buttons=new ArrayList<>();
-
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
-        File path = new File("Level_Files/");
-
-        File[] files = path.listFiles();
+        ArrayList<Button> buttons = new ArrayList<>();
 
         for (int i = 0 ; i < files.length ; i++ ) {
 
@@ -203,6 +178,23 @@ public class Main extends Application {
 
         }
 
+        return buttons;
+
+    }
+
+    private Scene displayLevel(Stage window) {
+
+        BorderPane root = new BorderPane();
+
+        VBox menu = new VBox();
+
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_Files/");
+
+        File[] files = path.listFiles();
+
+        ArrayList<Button> buttons = makeButtons(Objects.requireNonNull(files), menu);
+
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
@@ -210,14 +202,13 @@ public class Main extends Application {
         for (Button button : buttons) {
             button.setOnAction(e -> {
                 String levelName = button.getText();
-                levelName = levelName.substring(0, levelName.length()-4);
+                levelName = levelName.substring(0, levelName.length() - 4);
                 window.setScene(gaming(levelName));
             });
         }
 
-        Scene levels = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        return levels;
     }
 
 
@@ -240,15 +231,18 @@ public class Main extends Application {
         play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
 
         return play;
+
     }
 
 
     class EditableButton extends Button {
 
-        TextField tf = new TextField();
+        final TextField tf = new TextField();
 
-        public EditableButton(String text) {
+        EditableButton(String text) {
+
             setText(text);
+
             setOnMouseClicked(e -> {
                 //tf.setText(getText());
                 setText("");
@@ -258,7 +252,7 @@ public class Main extends Application {
             tf.setOnAction(ae -> {
 
                 // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                File path = new File("Users/"+tf.getText());
+                File path = new File("Users/" + tf.getText());
 
                 path.mkdir();
 
@@ -266,6 +260,7 @@ public class Main extends Application {
 
             });
         }
+
     }
 
 }

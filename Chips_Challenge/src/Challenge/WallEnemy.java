@@ -10,7 +10,7 @@ import java.util.Random;
  * @author George Carpenter, Ioan Mazurca, Angelo Balistoy
  * @version 1.0
  */
-public class WallEnemy extends Enemy {
+class WallEnemy extends Enemy {
 
     private static final Image SPRITE;
     private final Random random;

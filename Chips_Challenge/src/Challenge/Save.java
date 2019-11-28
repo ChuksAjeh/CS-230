@@ -9,12 +9,7 @@ import java.util.ArrayList;
  * @author Samuel Roach
  * @version 1.0
  */
-public class Save {
-
-    /**
-     * Filename to save to
-     */
-    private String fileName = "";
+class Save {
 
     /**
      * The Level being saved
@@ -60,7 +55,10 @@ public class Save {
         this.level = level;
         this.cellGrid = level.getCellGrid();
         this.entityGrid = level.getEntityGrid();
-        this.fileName = levelName + "_" + "SAVE";
+        /**
+         * Filename to save to
+         */
+        String fileName = levelName + "_" + "SAVE";
 
         // Create folder for the current User
         File dirFile = new File("Users/" + "Dave");
@@ -74,7 +72,7 @@ public class Save {
         }
 
         // Create directory for new file
-        directory = "Users/" + "Dave" + "/" + this.fileName + ".txt";
+        directory = "Users/" + "Dave" + "/" + fileName + ".txt";
         File file = new File(directory);
 
         try {
@@ -112,10 +110,10 @@ public class Save {
 
     private void writeWalls() throws IOException {
 
-        for (int i = 0 ; i < this.cellGrid.length ; i++ ) {
-            for (int j = 0 ; j < this.cellGrid[i].length ; j++ ) {
+        for (Cell[] cells : this.cellGrid) {
+            for (Cell cell : cells) {
 
-                if (cellGrid[j][i] instanceof Wall) {
+                if (cell instanceof Wall) {
                     this.writer.write('#');
                 } else {
                     this.writer.write(' ');

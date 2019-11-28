@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
  * @author George Carpenter
  * @version 1.0
  */
-public class Key extends Item {
+class Key extends Item {
 
     /**
      * The sprite used for this class

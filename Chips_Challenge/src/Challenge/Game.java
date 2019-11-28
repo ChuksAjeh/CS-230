@@ -7,15 +7,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-public class Game {
+class Game {
 
     // The size of each cell
     private static final int GRID_CELL_WIDTH = 120;
     private static final int GRID_CELL_HEIGHT = 120;
 
-    Player player = new Player(0);
+    private Player player = new Player(0);
     Lumberjack jack = new Lumberjack();
-    final Save save = new Save();
+    private final Save save = new Save();
 
     public void drawGame(Level level, Canvas canvas) {
 

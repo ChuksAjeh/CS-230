@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class Water extends Obstacle {
+class Water extends Obstacle {
 
     /**
      * The sprite used for this class

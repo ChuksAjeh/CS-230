@@ -4,13 +4,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.io.IOException;
-
 /**
  * @author George Carpenter
  * @version 1.0
  */
-public class Controller {
+class Controller {
 
     private final Lumberjack jack = new Lumberjack();
 

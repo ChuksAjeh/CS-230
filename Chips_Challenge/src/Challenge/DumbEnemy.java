@@ -10,7 +10,7 @@ import static java.lang.Math.abs;
  * @author Samuel
  * @version 1.0
  */
-public class DumbEnemy extends Enemy {
+class DumbEnemy extends Enemy {
     /**
      * The sprite to represent the dumb enemy.
      */
@@ -34,8 +34,8 @@ public class DumbEnemy extends Enemy {
      * @return The next direction
      */
     private int nextDirection() {
-        int xDif = getPlayerPosition()[0] - getEnemyX();
-        int yDif = getPlayerPosition()[1] - getEnemyY();
+        int xDif = getPlayerLocation()[0] - getEnemyX();
+        int yDif = getPlayerLocation()[1] - getEnemyY();
 
         if (abs(xDif) > abs(yDif)) {
             return 0 < xDif ? 1 : 3;

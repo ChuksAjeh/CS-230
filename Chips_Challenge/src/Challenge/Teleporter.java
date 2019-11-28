@@ -31,7 +31,7 @@ public class Teleporter extends Impassable {
 
     /**
      * Secondary constructor
-     * @param pair the pair Teleporter for this Object
+     * @param pair the pair Teleporter for this Teleporter Object
      */
     public Teleporter(Teleporter pair) {
         super(SPRITE, false);
@@ -41,7 +41,7 @@ public class Teleporter extends Impassable {
 
     /**
      * Adds a pair to a Teleporter Object
-     * @param pair the pair Object
+     * @param pair the pair Teleporter Object
      */
     private void setPair(Teleporter pair) {
         this.pair = pair;

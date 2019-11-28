@@ -13,7 +13,7 @@ abstract class Entity {
      */
     private final Image SPRITE;
 
-    public Entity(Image sprite) {
+    Entity(Image sprite) {
         this.SPRITE = sprite;
     }
 

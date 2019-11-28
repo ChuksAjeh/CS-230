@@ -14,13 +14,13 @@ abstract class Item extends Entity {
     /**
      * Whether an item is consumable or not. All items are consumable unless it is an Equipment
      */
-    protected boolean consumable = true;
+    boolean consumable = true;
 
     /**
      * Constructs an item with its designated sprite.
      * @param sprite The sprite used to render the item.
      */
-    public Item(Image sprite) {
+    Item(Image sprite) {
         super(sprite);
     }
 

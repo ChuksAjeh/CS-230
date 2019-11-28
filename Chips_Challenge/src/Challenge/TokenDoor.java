@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class TokenDoor extends Door {
+class TokenDoor extends Door {
 
     /**
      * The sprite used for this class

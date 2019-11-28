@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class Fire extends Obstacle {
+class Fire extends Obstacle {
 
     /**
      * The sprite used for this class

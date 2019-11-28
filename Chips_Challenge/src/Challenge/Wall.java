@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class Wall extends Impassable {
+class Wall extends Impassable {
 
     /**
      * The sprite used to represent a wall in the game

@@ -3,13 +3,14 @@ package Challenge;
 import javafx.scene.image.Image;
 
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
 /**
  * @author Chuks Ajeh, Angelo Balistoy
  * @version 1.0
  */
-public class SmartEnemy extends Enemy {
+class SmartEnemy extends Enemy {
 
     /**
      * The sprite used to represent the smart enemy.
@@ -75,7 +76,7 @@ public class SmartEnemy extends Enemy {
 
         BFSVertex vertex = path.poll();
 
-        while (vertex.getDist() != 1) {
+        while (Objects.requireNonNull(vertex).getDist() != 1) {
             vertex = path.poll();
         }
 
@@ -137,7 +138,7 @@ public class SmartEnemy extends Enemy {
         // Oops - Gnome
         int srcX = vertices.peek().getX();
         int srcY = vertices.peek().getY();
-        int dist = vertices.peek().getDist();
+        int dist = Objects.requireNonNull(vertices.peek()).getDist();
 
         do {
 
@@ -183,7 +184,7 @@ public class SmartEnemy extends Enemy {
      * @param visited The array showing all visited nodes.
      * @param row The row (x) coordinate
      * @param col The column (y) coordinate
-     * @return
+     * @return if the move is valid
      */
     private static boolean isValid (int[][] level, boolean[][] visited, int row, int col){
         final int ROW = level.length - 1;

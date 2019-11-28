@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author George Carpenter
  * @version 1.0
  */
-public class Player extends Entity {
+class Player extends Entity {
 
     /**
      * The Sprite used for the Player object, it will be rotated based on direction
@@ -37,7 +37,7 @@ public class Player extends Entity {
     private boolean alive;
 
     // TESTING
-    final Lumberjack jack = new Lumberjack();
+    private final Lumberjack jack = new Lumberjack();
 
     static  {
         SPRITE = new Image("images/ENTITY_PLAYER.png");
@@ -392,7 +392,7 @@ public class Player extends Entity {
      * Used to remove an item from the players inventory
      * @param item the item to remove
      */
-    public void removeItem(Item item) {
+    private void removeItem(Item item) {
         this.inventory.remove(item);
     }
 

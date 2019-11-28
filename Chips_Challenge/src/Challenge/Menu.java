@@ -25,10 +25,10 @@ public class Menu extends Application {
     private Canvas canvas;
 
     // TESTING
-    private Player player = new Player(0);
-    private Controller controller = new Controller();
+    private final Player player = new Player(0);
+    private final Controller controller = new Controller();
     Lumberjack jack = new Lumberjack();
-    Game game = new Game();
+    private final Game game = new Game();
     // TESTING
 
     private Stage window; // Todo: better names pls
