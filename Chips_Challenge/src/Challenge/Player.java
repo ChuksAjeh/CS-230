@@ -2,7 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -48,16 +47,13 @@ class Player extends Entity {
      * Constructs a Player object
      * @param direction the direction the player is facing
      */
-    public Player(int direction) {
-        super(SPRITE);
+    public Player(Position position, int direction) {
+        super(SPRITE, position);
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
         this.alive = true;
     }
-
-    private Stage window;
-    private static Main main;
 
     /**
      * Used to move the player object in the Entity grid

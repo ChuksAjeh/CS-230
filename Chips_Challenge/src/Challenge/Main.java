@@ -36,7 +36,7 @@ public class Main extends Application {
     private Canvas canvas;
 
     private static Level level;
-    private final Player player = new Player(0);
+    private final Player player = new Player(new Position(0, 0), 0);
     private final Controller controller = new Controller();
     Lumberjack jack = new Lumberjack();
     private final Game game = new Game();

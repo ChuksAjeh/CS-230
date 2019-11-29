@@ -128,15 +128,15 @@ public class Level {
                 dir = Integer.parseInt(line[3]);
 
                 if ("PLAYER".equals(name)) {
-                    this.entityGrid[x][y] = new Player(dir);
+                    this.entityGrid[x][y] = new Player(new Position(x, y), dir);
                 } else if ("SMARTENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new SmartEnemy(dir);
+                    this.entityGrid[x][y] = new SmartEnemy(new Position(x, y), dir);
                 } else if ("DUMBENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new DumbEnemy(dir);
+                    this.entityGrid[x][y] = new DumbEnemy(new Position(x, y), dir);
                 } else if ("WALLENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new WallEnemy(dir);
+                    this.entityGrid[x][y] = new WallEnemy(new Position(x, y), dir);
                 } else if ("LINEENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new LineEnemy(dir);
+                    this.entityGrid[x][y] = new LineEnemy(new Position(x, y), dir);
                 }
 
             } else if (name.equals("KEYDOOR")) {
@@ -147,10 +147,10 @@ public class Level {
                 int keyY = Integer.parseInt(line[7]);
 
                 this.cellGrid[x][y] = new KeyDoor(colour);
-                this.entityGrid[keyX][keyY] = new Key(colour);
+                this.entityGrid[keyX][keyY] = new Key(new Position(x, y), colour);
 
             } else if ("TOKEN".equals(name)) {
-                this.entityGrid[x][y] = new Token();
+                this.entityGrid[x][y] = new Token(new Position(x, y));
             } else if ("TOKENDOOR".equals(name)) {
                 req = Integer.parseInt(line[3]);
                 this.cellGrid[x][y] = new TokenDoor(req);
@@ -161,9 +161,9 @@ public class Level {
             } else if ("WATER".equals(name)) {
                 this. cellGrid[x][y] = new Water();
             } else if ("FIREBOOTS".equals(name)) {
-                this.entityGrid[x][y] = new FireBoots();
+                this.entityGrid[x][y] = new FireBoots(new Position(x, y));
             } else if ("FLIPPERS".equals(name)) {
-                this.entityGrid[x][y] = new Flippers();
+                this.entityGrid[x][y] = new Flippers(new Position(x, y));
             } else if ("TELEPORTER".equals(name)) {
 
                 Teleporter temp = new Teleporter();
