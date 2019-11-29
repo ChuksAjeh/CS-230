@@ -42,13 +42,10 @@ public class Main extends Application {
     private final Game game = new Game();
     private Stage window;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args);}
 
     public void start(Stage primaryStage) {
         window = primaryStage;
-
         Scene intro = mainMenu(window);
 
         window.setTitle("Jungle Hunt");
@@ -82,7 +79,7 @@ public class Main extends Application {
 
         HBox bottomBar = new HBox();
 
-        bottomBar.setPrefHeight(50);
+        bottomBar.setPrefHeight(36);
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.getChildren().add(messageOfTheDay());
@@ -153,8 +150,8 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
-        //File path = new File("Users/");
+//        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        File path = new File("Users/");
 
         File[] files = path.listFiles();
 
@@ -192,7 +189,7 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+//        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
@@ -280,7 +277,6 @@ public class Main extends Application {
         root.setBottom(bottomBar());
         root.setCenter(stack);
 
-
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, stack));
 
@@ -305,8 +301,8 @@ public class Main extends Application {
 
             tf.setOnAction(ae -> {
 
-                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                //File path = new File("Users/" + tf.getText());
+//                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                File path = new File("Users/" + tf.getText());
 
                 path.mkdir();
 

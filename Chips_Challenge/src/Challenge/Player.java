@@ -69,7 +69,15 @@ class Player extends Entity {
 
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
-
+        //Debug
+        for(int i = 0; i <  entityGrid.length; i++) {
+            for (int j = 0; j < entityGrid[i].length; j++) {
+                if (entityGrid[i][j] instanceof SmartEnemy) {
+                    SmartEnemy enemy = (SmartEnemy) entityGrid[i][j];
+                    jack.log(1, Integer.toString(enemy.nextDirection(level, this)));
+                }
+            }
+        }
         int x = locations[0];
         int y = locations[1];
         int newX = locations[2];
