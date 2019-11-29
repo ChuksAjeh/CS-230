@@ -8,13 +8,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -83,6 +82,7 @@ public class Main extends Application {
 
         HBox bottomBar = new HBox();
 
+        bottomBar.setPrefHeight(50);
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.getChildren().add(messageOfTheDay());
@@ -100,8 +100,10 @@ public class Main extends Application {
         Button users = new Button ("Profiles");
         Button quit = new Button ("Exit");
 
+        Button test = new Button ("Test");
+
         VBox menu = new VBox();
-        menu.getChildren().addAll(startButton, users, quit);
+        menu.getChildren().addAll(startButton, users, quit, test);
 
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
@@ -112,6 +114,8 @@ public class Main extends Application {
         users.setOnAction(e -> window.setScene(profileMenu(window)));
 
         quit.setOnAction(e -> System.exit(0));
+
+        test.setOnAction(e -> window.setScene(new Scene(pauseMenu(), WINDOW_WIDTH, WINDOW_HEIGHT)));
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
@@ -149,8 +153,8 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
-        File path = new File("Users/");
+        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        //File path = new File("Users/");
 
         File[] files = path.listFiles();
 
@@ -182,13 +186,13 @@ public class Main extends Application {
 
     }
 
-    private Scene displayLevel(Stage window) {
+    public Scene displayLevel(Stage window) {
 
         BorderPane root = new BorderPane();
 
         VBox menu = new VBox();
 
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
@@ -212,23 +216,73 @@ public class Main extends Application {
     }
 
 
+    private BorderPane pauseMenu(){
+        VBox vBox = new VBox();
+
+        BorderPane middleMenu = new BorderPane();
+
+        middleMenu.setPrefSize(200,200);
+
+        Button save = new Button("Save");
+        save.setPrefSize(200,50);
+        Button goBack = new Button("Return to main menu");
+        goBack.setPrefSize(200,50);
+        Button exitGame = new Button("Exit");
+        exitGame.setPrefSize(200,50);
+
+        vBox.getChildren().addAll(save, goBack, exitGame);
+
+        //vBox.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        vBox.setAlignment(Pos.CENTER);
+        middleMenu.setCenter(vBox);
+
+        goBack.setOnAction(e -> window.setScene(mainMenu(window)));
+
+        exitGame.setOnAction(e -> System.exit(0));
+
+        //vBox.setStyle("-fx-background-color: linear-gradient(to bottom, #006600 0%, #99ffcc 100%");
+
+        //middleMenu.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        //middleMenu.getStyleClass().add("middleMenu");
+
+        return middleMenu;
+    }
+
     private Scene gaming(String name) {
 
         BorderPane root = new BorderPane();
+        root.setPrefSize(960,670);
+
+        BorderPane drawing = new BorderPane();
+        drawing.setPrefSize(960,670);
+
+
+        StackPane stack = new StackPane();
+        //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         System.out.println("SUCCESS!");
 
-        root.setBottom(bottomBar());
 
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-        root.setCenter(canvas);
+
+        drawing.setCenter(canvas);
+
 
         level = controller.makeLevel(name);
 
         game.drawGame(level, canvas);
 
+        stack.getChildren().add(pauseMenu());
+        stack.getChildren().add(drawing);
+
+        root.setBottom(bottomBar());
+        root.setCenter(stack);
+
+
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, stack));
 
         return play;
 
@@ -251,8 +305,8 @@ public class Main extends Application {
 
             tf.setOnAction(ae -> {
 
-                // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                File path = new File("Users/" + tf.getText());
+                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                //File path = new File("Users/" + tf.getText());
 
                 path.mkdir();
 

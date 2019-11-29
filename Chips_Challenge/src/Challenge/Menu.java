@@ -71,7 +71,7 @@ public class Menu extends Application {
         // GAME
         level = controller.makeLevel("Level_01");
         scene3 = new Scene(gaming(), WINDOW_WIDTH, WINDOW_HEIGHT);
-        scene3.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas));
+        //scene3.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, ));
 
         window.setScene(scene1);
         window.setTitle("game");

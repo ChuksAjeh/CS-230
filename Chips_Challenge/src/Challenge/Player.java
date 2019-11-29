@@ -2,6 +2,7 @@ package Challenge;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,9 @@ class Player extends Entity {
         this.tokenCount = 0;
         this.alive = true;
     }
+
+    private Stage window;
+    private static Main main;
 
     /**
      * Used to move the player object in the Entity grid
