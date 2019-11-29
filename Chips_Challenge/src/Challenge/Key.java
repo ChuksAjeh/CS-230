@@ -27,8 +27,8 @@ class Key extends Item {
      * Constructor
      * @param colour the colour of the key
      */
-    public Key(Color colour) {
-        super(SPRITE);
+    public Key(Position position, Color colour) {
+        super(SPRITE, position);
         this.colour = colour;
     }
 

@@ -20,8 +20,8 @@ class Flippers extends Equipment {
     /**
      * Constructs a flipper object.
      */
-    public Flippers() {
-        super(SPRITE);
+    public Flippers(Position position) {
+        super(SPRITE, position);
     }
 
 }

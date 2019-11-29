@@ -25,8 +25,8 @@ class SmartEnemy extends Enemy {
      * Constructs an smart enemy
      * @param direction The initial direction the enemy will take.
      */
-    public SmartEnemy(int direction) {
-        super(SPRITE, direction);
+    public SmartEnemy(Position position, int direction) {
+        super(SPRITE, position, direction);
     }
 
     // Do we have to use level's grids or can we use the enemies' own entity and cell grid.
