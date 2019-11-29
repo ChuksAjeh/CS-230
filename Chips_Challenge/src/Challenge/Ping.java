@@ -8,12 +8,14 @@ import java.net.URL;
 /**
  * Class used to Ping a web server and return a Message Of The Day to be
  * displayed at all times during the game play
+ * @author George Carpenter
+ * @version 2.0
  */
 class Ping {
 
     /**
      * Ping!
-     * @return THe returned data, in String form
+     * @return The returned data, in String form
      */
     String getPing() {
 
@@ -27,6 +29,11 @@ class Ping {
 
     }
 
+    /**
+     * Calculates data to send to the web server
+     * @return the data to ping towards the web server
+     * @throws Exception if the data is incorrect
+     */
     private String pingAPI() throws Exception {
 
         String puzzleURL = "http://cswebcat.swan.ac.uk/puzzle";
@@ -50,6 +57,12 @@ class Ping {
 
     }
 
+    /**
+     * Makes a connection to the web server
+     * @param URL the URL to connect to
+     * @return the data returned from the web server
+     * @throws Exception If the web server is not connectable to
+     */
     private String makeConnection(String URL) throws Exception {
 
         java.net.URL url = new URL(URL);
@@ -61,10 +74,20 @@ class Ping {
         return br.readLine();
     }
 
+    /**
+     * Shifts Characters up, A -> B etc
+     * @param c the character to shift
+     * @return the shifted character
+     */
     private char shiftUp(char c) {
         return 'Z' == c ? 'A' : (char) (c + 1);
     }
 
+    /**
+     * Shifts Characters down, B -> A etc
+     * @param c the character to shift
+     * @return the shifted character
+     */
     private char shiftDown(char c) {
         return 'A' == c ? 'Z' : (char) (c - 1);
     }
