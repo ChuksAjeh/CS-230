@@ -1,19 +1,26 @@
 package Challenge;
 
+import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+/**
+ * @author George Carpenter
+ * @version 1.0
+ */
+class Controller {
 
-public class Controller {
+    private final Lumberjack jack = new Lumberjack();
 
-    Lumberjack jack = new Lumberjack();
 
-    public void processKeyEvent(KeyEvent event, Level level, Player player, Game game, Canvas canvas) {
+    public void processKeyEvent(KeyEvent event, Level level, Player player, Game game, Canvas canvas, StackPane root) {
 
         Entity[][] newGrid;
+
 
         if (KeyCode.UP == event.getCode()) {
             newGrid = player.move(0, level);
@@ -28,16 +35,14 @@ public class Controller {
             newGrid = player.move(3, level);
             level.setEntityGrid(newGrid);
         } else if (KeyCode.ESCAPE == event.getCode()) {
-            System.out.println("Adios Amigo!");
-            System.exit(0);
-        }
+            root.getChildren().get(0).toFront();
+        } /*else if (KeyCode.E == event.getCode()) {
+
+        }*/
 
         if (event.getCode().isArrowKey()) {
-            try {
-                game.drawGame(level, canvas);
-            } catch (IOException E) {
-                jack.log(1,"CONTROLLER : IOException");
-            }
+            game.drawGame(level, canvas);
+
 //            if (player.getStatus()) {
 //                game.drawGame(level, canvas);
 //            } else if (!player.getStatus()) {
@@ -49,6 +54,7 @@ public class Controller {
 
         }
 
+
         // Consume the event. This means we mark it as dealt with.
         // This stops other GUI nodes (buttons etc) responding to it.
         event.consume();
@@ -57,16 +63,7 @@ public class Controller {
     public Level makeLevel(String levelName) {
 
         // Build a Level thing
-        Level level = null;
-
-        try {
-            level = new Level(levelName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return level;
-
+        return new Level(levelName);
     }
 
 }

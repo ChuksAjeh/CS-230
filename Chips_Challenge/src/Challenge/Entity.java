@@ -3,14 +3,17 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * @author ..
+ * @author George Carpenter
  * @version 1.0
  */
 abstract class Entity {
 
+    /**
+     *
+     */
     private final Image SPRITE;
 
-    public Entity(Image sprite) {
+    Entity(Image sprite) {
         this.SPRITE = sprite;
     }
 

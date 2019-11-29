@@ -21,21 +21,12 @@ abstract class Cell {
      */
     private final Image SPRITE;
 
-    Lumberjack jack = new Lumberjack();
-
     /**
      * Constructs a cell object.
      */
-    public Cell(Image sprite, boolean passable) {
+    Cell(Image sprite, boolean passable) {
         this.SPRITE = sprite;
         this.passable = passable;
-    }
-
-    /**
-     * Makes a impassable cell passable or a passable impassable.
-     */
-    public void switchPassable() {
-        this.passable = !this.passable;
     }
 
     public void setPassable(boolean newValue) {
@@ -63,9 +54,6 @@ abstract class Cell {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 if (cellGrid[x][y] == cell) {
-                    int[] retVal = {x,y};
-                    //jack.log(1,Integer.toString(retVal[0]));
-                    //jack.log(1,Integer.toString(retVal[1]));
                     return new int[] {x, y};
                 }
 

@@ -42,7 +42,7 @@ abstract class Enemy extends Entity {
      * Creates an enemy
      * @param direction the direction the enemy is set upon creation
      */
-    public Enemy(Image sprite, int direction) {
+    Enemy(Image sprite, int direction) {
         super(sprite);
         this.direction = direction;
     }
@@ -71,7 +71,7 @@ abstract class Enemy extends Entity {
         return null;
     }
 
-    public Cell[] getSurroundingCells() {
+    Cell[] getSurroundingCells() {
 
         int x = getEnemyX();
         int y = getEnemyY();
@@ -85,16 +85,16 @@ abstract class Enemy extends Entity {
 
     }
 
-    public Entity[] getSurroundingEntitys() {
+    Entity[] getSurroundingEntitys() {
 
         int x = getEnemyX();
         int y = getEnemyY();
 
         return new Entity[] {
-                entityGrid[x][y - 1],
-                entityGrid[x + 1][y],
-                entityGrid[x][y + 1],
-                entityGrid[x - 1][y]
+            entityGrid[x][y - 1],
+            entityGrid[x + 1][y],
+            entityGrid[x][y + 1],
+            entityGrid[x - 1][y]
         };
 
     }
@@ -107,11 +107,7 @@ abstract class Enemy extends Entity {
         return this.cellGrid;
     }
 
-    /**
-     * Gets the player position.
-     * @return player position.
-     */
-    public int[] getPlayerPosition() {
+    public int[] getPlayerLocation() {
         return null;
     }
 
@@ -159,7 +155,7 @@ abstract class Enemy extends Entity {
      * Gets the direction.
      * @return A number from 0-3 (North South East West).
      */
-    protected int getDirection() {
+    int getDirection() {
         return direction;
     }
 
@@ -167,7 +163,7 @@ abstract class Enemy extends Entity {
      * Gets the enemy's X coordinate.
      * @return The X coordinate.
      */
-    protected int getEnemyX() {
+    int getEnemyX() {
         return enemyX;
     }
 
@@ -175,7 +171,7 @@ abstract class Enemy extends Entity {
      * Gets the enemy's Y coordinate.
      * @return  The Y coordinate.
      */
-    protected int getEnemyY() {
+    int getEnemyY() {
         return enemyY;
     }
 

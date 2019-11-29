@@ -3,10 +3,10 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * @author ..
+ * @author George Carpenter
  * @version 1.0
  */
-public class Flippers extends Equipment {
+class Flippers extends Equipment {
 
     /**
      * The sprite used for the flipper

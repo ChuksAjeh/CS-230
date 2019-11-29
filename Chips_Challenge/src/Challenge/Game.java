@@ -7,19 +7,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
-
-public class Game {
+class Game {
 
     // The size of each cell
     private static final int GRID_CELL_WIDTH = 120;
     private static final int GRID_CELL_HEIGHT = 120;
 
-    Player player = new Player(0);
+    private Player player = new Player(0);
     Lumberjack jack = new Lumberjack();
-    Save save = new Save();
+    private final Save save = new Save();
 
-    public void drawGame(Level level, Canvas canvas) throws IOException {
+    public void drawGame(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;
@@ -39,10 +37,11 @@ public class Game {
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
         save.saveFile(level);
+
         // Log Stuff - uncomment for spam
         // jack.logPlayerLoc(player, entityGrid);
-        // jack.logCellGrid(cellGrid);
-        // jack.logEntityGrid(entityGrid);
+        // jack.logGrid(level.getEntityGrid());
+        // jack.logGrid(level.getCellGrid());
 
     }
 
@@ -90,7 +89,7 @@ public class Game {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = resize(cell.getSprite());
 
                 gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
 
@@ -128,7 +127,7 @@ public class Game {
         int x = position[0];
         int y = position[1];
 
-        Image sprite = resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        Image sprite = resize(entity.getSprite());
 
         if (entity.getClass().getSimpleName().equals("Player")) {
             this.player = (Player) entity;
@@ -142,14 +141,14 @@ public class Game {
 
     }
 
-    private Image resize(Image image, int height, int width) {
+    private Image resize(Image image) {
 
         // Read Image
         ImageView imageView = new ImageView(image);
 
         // Resize
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
+        imageView.setFitHeight(Game.GRID_CELL_HEIGHT);
+        imageView.setFitWidth(Game.GRID_CELL_WIDTH);
 
         // Capture it? I think
         SnapshotParameters param = new SnapshotParameters();

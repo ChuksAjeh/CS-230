@@ -5,11 +5,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Class used to Ping a web server and return a Message Of The Day to be
+ * displayed at all times during the game play
+ */
 class Ping {
 
-    private final String puzzleURL = "http://cswebcat.swan.ac.uk/puzzle";
-    private final String messageURL = "http://cswebcat.swan.ac.uk/message?solution=";
-
+    /**
+     * Ping!
+     * @return THe returned data, in String form
+     */
     String getPing() {
 
         try {
@@ -24,6 +29,7 @@ class Ping {
 
     private String pingAPI() throws Exception {
 
+        String puzzleURL = "http://cswebcat.swan.ac.uk/puzzle";
         String inputString = makeConnection(puzzleURL);
         char[] inputArray = inputString.toCharArray();
 
@@ -39,6 +45,7 @@ class Ping {
 
         }
 
+        String messageURL = "http://cswebcat.swan.ac.uk/message?solution=";
         return makeConnection(messageURL + out);
 
     }

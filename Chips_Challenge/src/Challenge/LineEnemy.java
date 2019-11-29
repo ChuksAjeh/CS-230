@@ -3,10 +3,10 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * @author ..
- * @version 1.0
+ * @author George Caprenter, Ioan Mazurca
+ * @version 3.0
  */
-public class LineEnemy extends Enemy {
+class LineEnemy extends Enemy {
 
     /**
      * The sprite to represent the dumb enemy.
@@ -21,14 +21,14 @@ public class LineEnemy extends Enemy {
         super(SPRITE, direction);
     }
 
-    private int changeDirection() {
+    private int nextDirection() {
 
         // Check for direction, then check whether next position is a wall
         // If it is a wall, change direction, else keep same direction.
         // This should be called every update.
 
         Cell[] sc = getSurroundingCells();
-        int dir = this.getDirection();
+        int dir = getDirection();
 
         return sc[dir] instanceof Wall ? (dir + 2) % 4 : dir;
 
