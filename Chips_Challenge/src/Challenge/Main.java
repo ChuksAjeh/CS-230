@@ -42,13 +42,10 @@ public class Main extends Application {
     private final Game game = new Game();
     private Stage window;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args);}
 
     public void start(Stage primaryStage) {
         window = primaryStage;
-
         Scene intro = mainMenu(window);
 
         window.setTitle("Jungle Hunt");
@@ -279,7 +276,6 @@ public class Main extends Application {
 
         root.setBottom(bottomBar());
         root.setCenter(stack);
-
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, stack));
