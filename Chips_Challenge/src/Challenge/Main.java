@@ -82,7 +82,7 @@ public class Main extends Application {
 
         HBox bottomBar = new HBox();
 
-        bottomBar.setPrefHeight(50);
+        bottomBar.setPrefHeight(36);
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.getChildren().add(messageOfTheDay());
@@ -153,8 +153,8 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
-        //File path = new File("Users/");
+//        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        File path = new File("Users/");
 
         File[] files = path.listFiles();
 
@@ -192,7 +192,7 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+//        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
@@ -305,8 +305,8 @@ public class Main extends Application {
 
             tf.setOnAction(ae -> {
 
-                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                //File path = new File("Users/" + tf.getText());
+//                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                File path = new File("Users/" + tf.getText());
 
                 path.mkdir();
 
