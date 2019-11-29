@@ -17,8 +17,8 @@ class LineEnemy extends Enemy {
         SPRITE = new Image("images/ENTITY_LINE_ENEMY.png");
     }
 
-    public LineEnemy(int direction) {
-        super(SPRITE, direction);
+    public LineEnemy(int direction,int x, int y) {
+        super(SPRITE, direction,x,y);
     }
 
     private int nextDirection() {

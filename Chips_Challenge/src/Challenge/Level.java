@@ -124,19 +124,18 @@ public class Level {
             y = Integer.parseInt(line[2]);
 
             if (name.contains("ENEMY") || "PLAYER".equals(name)) {
-
                 dir = Integer.parseInt(line[3]);
 
                 if ("PLAYER".equals(name)) {
                     this.entityGrid[x][y] = new Player(dir);
                 } else if ("SMARTENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new SmartEnemy(dir);
+                    this.entityGrid[x][y] = new SmartEnemy(dir,x,y);
                 } else if ("DUMBENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new DumbEnemy(dir);
+                    this.entityGrid[x][y] = new DumbEnemy(dir,x,y);
                 } else if ("WALLENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new WallEnemy(dir);
+                    this.entityGrid[x][y] = new WallEnemy(dir,x,y);
                 } else if ("LINEENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new LineEnemy(dir);
+                    this.entityGrid[x][y] = new LineEnemy(dir,x,y);
                 }
 
             } else if (name.equals("KEYDOOR")) {

@@ -55,7 +55,6 @@ public class Menu extends Application {
         startButton.setOnAction(e -> window.setScene(scene3));
         users.setOnAction(e -> window.setScene(scene2));
         quit.setOnAction(e -> System.exit(0));
-
         // SECOND MENU
         Button createProfile = new Button("Create Profile");
         Button selectProfile = new Button("Select Profile");
@@ -70,7 +69,7 @@ public class Menu extends Application {
 
         // GAME
         level = controller.makeLevel("Level_01");
-        scene3 = new Scene(gaming(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.scene3 = new Scene(gaming(), WINDOW_WIDTH, WINDOW_HEIGHT);
         //scene3.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, ));
 
         window.setScene(scene1);
@@ -94,7 +93,6 @@ public class Menu extends Application {
 */
 
     private BorderPane gaming() {
-
         BorderPane root = new BorderPane();
 
         System.out.println("SUCCESS!");
