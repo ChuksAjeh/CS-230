@@ -1,5 +1,4 @@
 package Challenge;
-//#TODO Link enemy x and y to the actual grid. i.e. enemyX = 1 and enemy Y = 1 corresponds to cellGrid[1][1]
 
 import javafx.scene.image.Image;
 
@@ -40,8 +39,6 @@ abstract class Enemy extends Entity {
         super(sprite);
         this.position = position;
         this.direction = direction;
-        this.enemyX = x;
-        this.enemyY = y;
     }
 
     /**
