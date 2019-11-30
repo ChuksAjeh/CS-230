@@ -23,19 +23,22 @@ class DumbEnemy extends Enemy {
 
     /**
      * Constructs a dumb enemy
+     * @param position the position of the Enemy
      * @param direction The intial direction of the enemy
      */
-    public DumbEnemy(int direction,int x, int y) {
-        super(SPRITE, direction,x,y);
+    public DumbEnemy(Position position, int direction) {
+        super(SPRITE, position, direction);
     }
 
     /**
      * Finds the next direction of the dumb enemy.
+     * @param player the player object
      * @return The next direction
      */
-    private int nextDirection() {
-        int xDif = getPlayerLocation()[0] - getEnemyX();
-        int yDif = getPlayerLocation()[1] - getEnemyY();
+    private int nextDirection(Player player) {
+
+        int xDif = player.getPosition().x - this.getPosition().x;
+        int yDif = player.getPosition().y - this.getPosition().y;
 
         if (abs(xDif) > abs(yDif)) {
             return 0 < xDif ? 1 : 3;

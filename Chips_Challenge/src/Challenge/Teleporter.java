@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter
  * @version 1.0
  */
-public class Teleporter extends Impassable {
+public class Teleporter extends Cell {
 
     /**
      * The sprite used for this class
@@ -51,7 +51,7 @@ public class Teleporter extends Impassable {
      * Returns the pair Object
      * @return the pair Teleporter
      */
-    public Teleporter getPair(){
+    Teleporter getPair(){
         return pair;
     }
 

@@ -39,7 +39,7 @@ class Save {
     /**
      * Nice constructor
      */
-    public Save () {
+    Save() {
 
     }
 
@@ -55,9 +55,7 @@ class Save {
         this.level = level;
         this.cellGrid = level.getCellGrid();
         this.entityGrid = level.getEntityGrid();
-        /**
-         * Filename to save to
-         */
+
         String fileName = levelName + "_" + "SAVE";
 
         // Create folder for the current User
@@ -169,8 +167,8 @@ class Save {
     private void writeEnemy(Enemy enemy) throws IOException {
 
         this.writer.write(enemy.getClass().getSimpleName());
-        this.writer.write(enemy.getEnemyX() + ",");
-        this.writer.write(enemy.getEnemyY() + ",");
+        this.writer.write(enemy.getPosition().x + ",");
+        this.writer.write(enemy.getPosition().y + ",");
         this.writer.write(enemy.getDirection() + "\n");
 
     }
@@ -297,6 +295,7 @@ class Save {
 
         writtenTP.add(teleporter);
         writtenTP.add(pair);
+
     }
 
     private void writeCellPos(Cell cell) throws IOException {

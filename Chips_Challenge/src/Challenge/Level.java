@@ -127,15 +127,15 @@ public class Level {
                 dir = Integer.parseInt(line[3]);
 
                 if ("PLAYER".equals(name)) {
-                    this.entityGrid[x][y] = new Player(dir);
+                    this.entityGrid[x][y] = new Player(new Position(x, y), dir);
                 } else if ("SMARTENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new SmartEnemy(dir,x,y);
+                    this.entityGrid[x][y] = new SmartEnemy(new Position(x, y), dir);
                 } else if ("DUMBENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new DumbEnemy(dir,x,y);
+                    this.entityGrid[x][y] = new DumbEnemy(new Position(x, y), dir);
                 } else if ("WALLENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new WallEnemy(dir,x,y);
+                    this.entityGrid[x][y] = new WallEnemy(new Position(x, y), dir);
                 } else if ("LINEENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new LineEnemy(dir,x,y);
+                    this.entityGrid[x][y] = new LineEnemy(new Position(x, y), dir);
                 }
 
             } else if (name.equals("KEYDOOR")) {
@@ -215,7 +215,7 @@ public class Level {
      * Gets the level name
      * @return the name of the Level, for saving
      */
-    public String getLevelName() {
+    String getLevelName() {
         return this.levelName;
     }
 
@@ -226,7 +226,7 @@ public class Level {
      * @param <T> Cell or Entity
      * @return The location if not null
      */
-    public <T> int[] getLocation(T[][] grid, T thing) {
+    <T> int[] getLocation(T[][] grid, T thing) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0 ; y < entityGrid[x].length ; y++ ) {

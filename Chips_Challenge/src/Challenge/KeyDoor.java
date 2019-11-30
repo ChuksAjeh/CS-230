@@ -27,7 +27,7 @@ class KeyDoor extends Door {
      * Constructor
      * @param colour the colour of the door
      */
-    public KeyDoor(Color colour) {
+    KeyDoor(Color colour) {
         super(SPRITE, false);
         this.colour = colour;
     }

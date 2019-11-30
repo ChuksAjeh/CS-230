@@ -13,11 +13,11 @@ class Game {
     private static final int GRID_CELL_WIDTH = 120;
     private static final int GRID_CELL_HEIGHT = 120;
 
-    private Player player = new Player(0);
+    private Player player = new Player(new Position(0, 0), 0);
     Lumberjack jack = new Lumberjack();
     private final Save save = new Save();
 
-    public void drawGame(Level level, Canvas canvas) {
+    void drawGame(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;

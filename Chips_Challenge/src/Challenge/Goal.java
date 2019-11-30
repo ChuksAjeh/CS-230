@@ -20,7 +20,7 @@ class Goal extends Cell {
     /**
      * Constructor
      */
-    public Goal() {
+    Goal() {
         super(SPRITE, true);
     }
 

@@ -75,7 +75,7 @@ class Ping {
     }
 
     /**
-     * Shifts Characters up, A -> B etc
+     * Shifts Characters up, A to B etc
      * @param c the character to shift
      * @return the shifted character
      */
@@ -84,7 +84,7 @@ class Ping {
     }
 
     /**
-     * Shifts Characters down, B -> A etc
+     * Shifts Characters down, B to A etc
      * @param c the character to shift
      * @return the shifted character
      */

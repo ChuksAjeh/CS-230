@@ -26,7 +26,7 @@ class TokenDoor extends Door {
      * Constructor
      * @param requirement number of tokens required to open the door
      */
-    public TokenDoor(int requirement) {
+    TokenDoor(int requirement) {
         super(SPRITE, false);
         this.requirement = requirement;
     }
@@ -35,7 +35,7 @@ class TokenDoor extends Door {
      * Returns the requirement for the door
      * @return the requirement for the door
      */
-    public int getRequirement() {
+    int getRequirement() {
         return this.requirement;
     }
 
