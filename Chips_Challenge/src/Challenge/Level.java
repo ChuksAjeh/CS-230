@@ -124,7 +124,6 @@ public class Level {
             y = Integer.parseInt(line[2]);
 
             if (name.contains("ENEMY") || "PLAYER".equals(name)) {
-
                 dir = Integer.parseInt(line[3]);
 
                 if ("PLAYER".equals(name)) {

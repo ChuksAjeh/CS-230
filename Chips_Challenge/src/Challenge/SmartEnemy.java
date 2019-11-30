@@ -9,7 +9,7 @@ import java.util.*;
  * @version 1.0
  */
 class SmartEnemy extends Enemy {
-
+  
     private Lumberjack jack = new Lumberjack();
 
     /**

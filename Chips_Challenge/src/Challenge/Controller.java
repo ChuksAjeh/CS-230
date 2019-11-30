@@ -15,9 +15,7 @@ class Controller {
 
 
     public void processKeyEvent(KeyEvent event, Level level, Player player, Game game, Canvas canvas, StackPane root) {
-
         Entity[][] newGrid;
-
 
         if (KeyCode.UP == event.getCode()) {
             newGrid = player.move(0, level);

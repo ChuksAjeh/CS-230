@@ -18,7 +18,7 @@ class WallEnemy extends Enemy {
     static {
         SPRITE = new Image("images/ENTITY_WALL_ENEMY.png");
     }
-
+  
     WallEnemy(Position position, int direction) {
         super(SPRITE, position, direction);
         random = new Random();
