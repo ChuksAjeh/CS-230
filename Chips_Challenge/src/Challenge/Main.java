@@ -21,10 +21,16 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiPredicate;
 
@@ -45,16 +51,27 @@ public class Main extends Application {
     Lumberjack jack = new Lumberjack();
     private final Game game = new Game();
     private Stage window;
+    private static MediaPlayer mediaPlayer;
 
     public static void main(String[] args) { launch(args);}
 
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
         window = primaryStage;
         Scene intro = begin(window);
 
         window.setTitle("Jungle Hunt");
         window.setScene(intro);
         window.show();
+
+        try {
+            Media media = new Media(Paths.get("music/background_music1.mp3").toUri().toString());
+            this.mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(10);
+            mediaPlayer.setVolume(0.2);
+            mediaPlayer.play();
+        } catch (Exception E) {
+            jack.log(1,E.toString());
+        }
     }
 
     private Label messageOfTheDay() {
