@@ -76,11 +76,11 @@ class Save {
         try {
 
             // Create the file
-            if (file.createNewFile()) {
-                jack.log(1,"File is created!");
-            } else {
-                jack.log(1,"File already exists.");
-            }
+//            if (file.createNewFile()) {
+//                jack.log(1,"File is created!");
+//            } else {
+//                jack.log(1,"File already exists.");
+//            }
 
             // Write Content
             this.writer = new FileWriter(file);

@@ -1,3 +1,5 @@
+DONE:
+
 Movement
 Picking up items
 Fire
@@ -10,10 +12,12 @@ Update file every game tick
 Load a game file
 Message of the day
 Dumb enemy movement
-Smart enemy movement
 Line Enemy movement
 Wall enemy movement
-Player death
 Sprites
 
+NOT DONE:
 
+Player death
+Smart enemy movement
+High scores
