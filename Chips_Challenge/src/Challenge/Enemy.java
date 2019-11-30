@@ -1,5 +1,4 @@
 package Challenge;
-//#TODO Link enemy x and y to the actual grid. i.e. enemyX = 1 and enemy Y = 1 corresponds to cellGrid[1][1]
 
 import javafx.scene.image.Image;
 
@@ -7,7 +6,7 @@ import javafx.scene.image.Image;
  * Enemies are movable hazards designed to end the level upon contact with the player.
  * Each enemy has its own unique way of moving to the player.
  * Again this class shouldn't be instantiated, instead, its sub-classes should be.
- * @author ..
+ * @author George Carpenter, Angelo Balistoy
  * @version 1.0
  */
 //Enemies can only stand on ground
@@ -42,28 +41,42 @@ abstract class Enemy extends Entity {
         this.direction = direction;
     }
 
-    /**
-     * Moves the enemy based on the inputted direction
-     * @param direction The direction 0-3 representing N-S-E-W
-     * @return The new coordinates the enemy will be at in the entity grid.
-     */
-    protected int[] move(int direction) {
+    Entity[][] move(Level level, Entity[][] entityGrid) {
 
-//        if (0 == direction) {
-//             UP
-//            this.enemyY += 1;
-//        } else if (1 == direction) {
-//             RIGHT
-//            this.enemyX += 1;
-//        } else if (2 == direction) {
-//             DOWN
-//            this.enemyY -= 1;
-//        } else if (3 == direction) {
-//             LEFT
-//            this.enemyX -= 1;
-//        }
+        Position position = this.getPosition();
+        int direction = 0;
 
-        return null;
+        int x = position.x;
+        int y = position.y;
+
+        if (this instanceof SmartEnemy) {
+            direction = ((SmartEnemy) this).nextDirection(level, level.getPlayer());
+        } else if (this instanceof DumbEnemy) {
+            direction = ((DumbEnemy) this).nextDirection(level.getPlayer());
+        } else if (this instanceof LineEnemy) {
+            direction = ((LineEnemy) this).nextDirection();
+        } else if (this instanceof WallEnemy) {
+            direction = ((WallEnemy) this).nextDirection();
+        }
+
+        if (0 == direction) {
+            this.position = new Position(x, y - 1);
+            entityGrid[x][y - 1] = this;
+        } else if (1 == direction) {
+            this.position = new Position(x + 1, y);
+            entityGrid[x + 1][y] = this;
+        } else if (2 == direction) {
+            this.position = new Position(x, y + 1);
+            entityGrid[x][y + 1] = this;
+        } else if (3 == direction) {
+            this.position = new Position(x - 1, y);
+            entityGrid[x - 1][y] = this;
+        }
+
+        entityGrid[position.x][position.y] = null;
+
+        return entityGrid;
+
     }
 
     Cell[] getSurroundingCells() {

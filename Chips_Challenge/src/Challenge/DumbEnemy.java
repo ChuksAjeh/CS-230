@@ -35,7 +35,7 @@ class DumbEnemy extends Enemy {
      * @param player the player object
      * @return The next direction
      */
-    private int nextDirection(Player player) {
+    public int nextDirection(Player player) {
 
         int xDif = player.getPosition().x - this.getPosition().x;
         int yDif = player.getPosition().y - this.getPosition().y;

@@ -13,7 +13,6 @@ class Game {
     private static final int GRID_CELL_WIDTH = 120;
     private static final int GRID_CELL_HEIGHT = 120;
 
-    private Player player = new Player(new Position(0, 0), 0);
     Lumberjack jack = new Lumberjack();
     private final Save save = new Save();
 
@@ -29,7 +28,7 @@ class Game {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         // Does this need a comment? method names should infer their purpose
-        int[] offset = this.calculateOffSet(player, level, canvas);
+        int[] offset = this.calculateOffSet(level, canvas);
 
         // Render stuff
         this.renderBackground(gc, canvas);
@@ -45,14 +44,15 @@ class Game {
 
     }
 
-    private int[] calculateOffSet(Player player, Level level, Canvas canvas) {
+    private int[] calculateOffSet(Level level, Canvas canvas) {
 
         // Not 100% sure of this, it may change, please don't try to comment it
 
-        int[] playerLocOffset = player.getLocation(level.getEntityGrid());
+        Player player = level.getPlayer();
+        Position playerPosition = player.getPosition();
 
-        int playerXOffset = playerLocOffset[0] * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
-        int playerYOffset = playerLocOffset[1] * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
+        int playerXOffset = playerPosition.x * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
+        int playerYOffset = playerPosition.y * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
 
         int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
@@ -67,13 +67,12 @@ class Game {
         int boundWidth = 0 - GRID_CELL_WIDTH / 2;
         int boundHeight = 0 - GRID_CELL_HEIGHT / 2;
 
-        Wall backing = new Wall();
-        Image backingSprite = backing.getSprite();
+        Image backing = new Image("images/BACKING.png");
 
         for (int x = boundWidth ; x < canvas.getWidth() - boundWidth ; x += GRID_CELL_WIDTH) {
             for (int y = boundHeight ; y < canvas.getHeight() - boundHeight ; y += GRID_CELL_HEIGHT) {
-                
-                gc.drawImage(backingSprite, x, y);
+
+                gc.drawImage(backing, x, y);
 
             }
         }
@@ -130,8 +129,7 @@ class Game {
         Image sprite = resize(entity.getSprite());
 
         if (entity.getClass().getSimpleName().equals("Player")) {
-            this.player = (Player) entity;
-            gc.drawImage(rotate(sprite, player.getDirection()), x, y);
+            gc.drawImage(rotate(sprite, ((Player) entity).getDirection()), x, y);
         } else if (entity.getClass().getSimpleName().contains("Enemy")) {
             Enemy enemy = (Enemy) entity;
             gc.drawImage(rotate(sprite, enemy.getDirection()), x, y);

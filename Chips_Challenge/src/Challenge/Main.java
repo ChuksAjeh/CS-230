@@ -41,7 +41,6 @@ public class Main extends Application {
     private Canvas canvas;
 
     private static Level level;
-    private final Player player = new Player(new Position(0, 0), 0);
     private final Controller controller = new Controller();
     Lumberjack jack = new Lumberjack();
     private final Game game = new Game();
@@ -129,9 +128,7 @@ public class Main extends Application {
 
         root.setStyle("-fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%)");
 
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return scene;
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
 
@@ -151,8 +148,8 @@ public class Main extends Application {
 
         File[] files = path.listFiles();
 
-        for (int i = 0 ; i < files.length ; i++ ) {
-            loadUser.getItems().add(files[i].getName());
+        for (File file : files) {
+            loadUser.getItems().add(file.getName());
         }
 
 
@@ -200,9 +197,7 @@ public class Main extends Application {
 
         root.setCenter(vBox);
 
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return scene;
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
     private Scene loadGame(Stage window) {
@@ -235,9 +230,7 @@ public class Main extends Application {
 
         loadButton.setOnAction(e -> window.setScene(displayLevel(window)));
 
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return scene;
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
     // TODO I'll delete this method, I just keep it for now for testing
@@ -445,7 +438,7 @@ public class Main extends Application {
         root.setCenter(stack);
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, stack));
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, stack));
 
         return play;
 

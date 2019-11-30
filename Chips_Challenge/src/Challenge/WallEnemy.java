@@ -1,9 +1,6 @@
 package Challenge;
 
 import javafx.scene.image.Image;
-
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,24 +15,30 @@ class WallEnemy extends Enemy {
     static {
         SPRITE = new Image("images/ENTITY_WALL_ENEMY.png");
     }
-  
+
     WallEnemy(Position position, int direction) {
         super(SPRITE, position, direction);
         random = new Random();
     }
 
-    private int nextDirection() {
+    public int nextDirection() {
 
         Cell[] sc = getSurroundingCells();
         Entity[] se = getSurroundingEntitys();
 
         boolean[] passable = new boolean[4];
-        List list = Collections.singletonList(passable);
-        int numberOfMoves = Collections.frequency(list, true);
 
         for (int i = 0; i < passable.length; i++) {
             passable[i] = sc[i] instanceof Ground && se[i] == null;
         }
+
+        int numberOfMoves = countMoves(passable);
+
+        for (boolean b : passable) {
+            System.out.println(b);
+        }
+
+        System.out.println(numberOfMoves);
 
         if (0 == numberOfMoves) {
             // Cannot move .. something happens I guess, probably return 5 and then handle it later
@@ -54,6 +57,19 @@ class WallEnemy extends Enemy {
 
         // If none of above, 4 available spaces, return random
         return random.nextInt(4);
+    }
+
+    private int countMoves(boolean[] moves) {
+
+        int count = 0;
+
+        for (boolean b : moves) {
+            if (b) {
+                count += 1;
+            }
+        }
+
+        return count;
     }
 
     private int[] findMoves(boolean[] passable) {

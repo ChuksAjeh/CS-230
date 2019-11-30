@@ -15,8 +15,6 @@ abstract class Equipment extends Item {
      */
     Equipment(Image sprite) {
         super(sprite);
-        // Unlike standard items, equipment cannot be consumed upon use.
-        this.consumable = false;
     }
 
 }
