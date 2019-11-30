@@ -17,7 +17,7 @@ class Game {
     Lumberjack jack = new Lumberjack();
     private final Save save = new Save();
 
-    public void drawGame(Level level, Canvas canvas) {
+    void drawGame(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;

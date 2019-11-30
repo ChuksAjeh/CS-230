@@ -20,8 +20,8 @@ class FireBoots extends Equipment {
     /**
      * Constructor
      */
-    public FireBoots(Position position) {
-        super(SPRITE, position);
+    public FireBoots() {
+        super(SPRITE);
     }
 
 }

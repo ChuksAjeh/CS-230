@@ -36,6 +36,8 @@ class Player extends Entity {
      */
     private boolean alive;
 
+    private Position position;
+
     // TESTING
     private final Lumberjack jack = new Lumberjack();
 
@@ -45,10 +47,12 @@ class Player extends Entity {
 
     /**
      * Constructs a Player object
+     * @param position the position of the Player
      * @param direction the direction the player is facing
      */
     public Player(Position position, int direction) {
-        super(SPRITE, position);
+        super(SPRITE);
+        this.position = position;
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
@@ -409,6 +413,10 @@ class Player extends Entity {
      */
     private void killPlayer() {
         this.alive = false;
+    }
+
+    public Position getPosition() {
+        return this.position;
     }
 
 }

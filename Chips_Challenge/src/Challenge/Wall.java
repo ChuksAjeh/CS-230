@@ -20,7 +20,7 @@ class Wall extends Cell {
     /**
      * Constructor
      */
-    public Wall() {
+    Wall() {
         super(SPRITE, false);
     }
 

@@ -10,7 +10,7 @@ class Lumberjack {
     /**
      * Lumberjacks usually remove trees not construct them
      */
-    public Lumberjack() {
+    Lumberjack() {
         // They're a lumberjack and they're OK
         // They sleeps all night and they works all day
         // https://www.youtube.com/watch?v=FshU58nI0Ts
@@ -20,7 +20,7 @@ class Lumberjack {
      * Logs stuff
      * @param message what to log
      */
-    public void log(String message) {
+    void log(String message) {
 
         System.out.println("Spam : " + message);
 
@@ -31,7 +31,7 @@ class Lumberjack {
      * @param priority for not spam
      * @param message what to log
      */
-    public void log(int priority, String message) {
+    void log(int priority, String message) {
 
         if (priority == 1) {
             System.out.println("Useful : " + message);

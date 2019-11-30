@@ -6,7 +6,7 @@ class BFSVertex {
     private int y;
     private int dist;
 
-    public BFSVertex(int x, int y, int dist) {
+    BFSVertex(int x, int y, int dist) {
         this.x = x;
         this.y = y;
         this.dist = dist;
@@ -28,7 +28,7 @@ class BFSVertex {
         this.y = y;
     }
 
-    public int getDist() {
+    int getDist() {
         return dist;
     }
 

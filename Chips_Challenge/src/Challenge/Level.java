@@ -147,10 +147,10 @@ public class Level {
                 int keyY = Integer.parseInt(line[7]);
 
                 this.cellGrid[x][y] = new KeyDoor(colour);
-                this.entityGrid[keyX][keyY] = new Key(new Position(x, y), colour);
+                this.entityGrid[keyX][keyY] = new Key(colour);
 
             } else if ("TOKEN".equals(name)) {
-                this.entityGrid[x][y] = new Token(new Position(x, y));
+                this.entityGrid[x][y] = new Token();
             } else if ("TOKENDOOR".equals(name)) {
                 req = Integer.parseInt(line[3]);
                 this.cellGrid[x][y] = new TokenDoor(req);
@@ -161,9 +161,9 @@ public class Level {
             } else if ("WATER".equals(name)) {
                 this. cellGrid[x][y] = new Water();
             } else if ("FIREBOOTS".equals(name)) {
-                this.entityGrid[x][y] = new FireBoots(new Position(x, y));
+                this.entityGrid[x][y] = new FireBoots();
             } else if ("FLIPPERS".equals(name)) {
-                this.entityGrid[x][y] = new Flippers(new Position(x, y));
+                this.entityGrid[x][y] = new Flippers();
             } else if ("TELEPORTER".equals(name)) {
 
                 Teleporter temp = new Teleporter();
@@ -216,7 +216,7 @@ public class Level {
      * Gets the level name
      * @return the name of the Level, for saving
      */
-    public String getLevelName() {
+    String getLevelName() {
         return this.levelName;
     }
 
@@ -227,7 +227,7 @@ public class Level {
      * @param <T> Cell or Entity
      * @return The location if not null
      */
-    public <T> int[] getLocation(T[][] grid, T thing) {
+    <T> int[] getLocation(T[][] grid, T thing) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0 ; y < entityGrid[x].length ; y++ ) {

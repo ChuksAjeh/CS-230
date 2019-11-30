@@ -20,8 +20,8 @@ class Token extends Item {
     /**
      * Constructor
      */
-    public Token(Position position) {
-        super(SPRITE, position);
+    public Token() {
+        super(SPRITE);
     }
 
 }

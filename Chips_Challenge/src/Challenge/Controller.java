@@ -1,12 +1,9 @@
 package Challenge;
 
-import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 /**
  * @author George Carpenter

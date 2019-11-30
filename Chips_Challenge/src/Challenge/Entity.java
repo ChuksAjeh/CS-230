@@ -13,19 +13,12 @@ abstract class Entity {
      */
     private final Image SPRITE;
 
-    private Position position;
-
-    Entity(Image sprite, Position position) {
+    Entity(Image sprite) {
         this.SPRITE = sprite;
-        this.position = position;
     }
 
     public Image getSprite() {
         return SPRITE;
-    }
-
-    public Position getPosition() {
-        return this.position;
     }
 
 }

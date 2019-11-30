@@ -19,16 +19,6 @@ abstract class Enemy extends Entity {
     private int direction;
 
     /**
-     * The enemy X's position relative to top left cell == 0
-     */
-    private int enemyX;
-
-    /**
-     * The enemy Y's position relative to top left cell == 0
-     */
-    private int enemyY;
-
-    /**
      * The cell grid the enemy uses
      */
     private Cell[][] cellGrid;
@@ -38,12 +28,17 @@ abstract class Enemy extends Entity {
      */
     private Entity[][] entityGrid;
 
+    private Position position;
+
     /**
      * Creates an enemy
+     * @param sprite the sprite used to represent this Entity
+     * @param position the position of the Enemy
      * @param direction the direction the enemy is set upon creation
      */
     Enemy(Image sprite, Position position, int direction) {
-        super(sprite, position);
+        super(sprite);
+        this.position = position;
         this.direction = direction;
     }
 
@@ -73,8 +68,8 @@ abstract class Enemy extends Entity {
 
     Cell[] getSurroundingCells() {
 
-        int x = getEnemyX();
-        int y = getEnemyY();
+        int x = this.position.x;
+        int y = this.position.y;
 
         return new Cell[] {
             cellGrid[x][y - 1],
@@ -87,8 +82,8 @@ abstract class Enemy extends Entity {
 
     Entity[] getSurroundingEntitys() {
 
-        int x = getEnemyX();
-        int y = getEnemyY();
+        int x = this.position.x;
+        int y = this.position.y;
 
         return new Entity[] {
             entityGrid[x][y - 1],
@@ -107,32 +102,12 @@ abstract class Enemy extends Entity {
         return this.cellGrid;
     }
 
-    public int[] getPlayerLocation() {
-        return null;
-    }
-
     /**
      * Sets the direction of the enemy.
      * @param direction The new direction of the enemy.
      */
     public void setDirection(int direction) {
         this.direction = direction;
-    }
-
-    /**
-     * Sets the enemy's X coordinate.
-     * @param enemyX The new X coordinate.
-     */
-    public void setEnemyX(int enemyX) {
-        this.enemyX = enemyX;
-    }
-
-    /**
-     * Sets the enemy's Y coordinate.
-     * @param enemyY The new Y coordinate.
-     */
-    public void setEnemyY(int enemyY) {
-        this.enemyY = enemyY;
     }
 
     /**
@@ -159,20 +134,8 @@ abstract class Enemy extends Entity {
         return direction;
     }
 
-    /**
-     * Gets the enemy's X coordinate.
-     * @return The X coordinate.
-     */
-    int getEnemyX() {
-        return enemyX;
-    }
-
-    /**
-     * Gets the enemy's Y coordinate.
-     * @return  The Y coordinate.
-     */
-    int getEnemyY() {
-        return enemyY;
+    public Position getPosition() {
+        return this.position;
     }
 
 }

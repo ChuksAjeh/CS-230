@@ -51,7 +51,7 @@ public class Teleporter extends Cell {
      * Returns the pair Object
      * @return the pair Teleporter
      */
-    public Teleporter getPair(){
+    Teleporter getPair(){
         return pair;
     }
 

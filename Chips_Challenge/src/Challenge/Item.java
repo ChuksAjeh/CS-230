@@ -20,8 +20,8 @@ abstract class Item extends Entity {
      * Constructs an item with its designated sprite.
      * @param sprite The sprite used to render the item.
      */
-    Item(Image sprite, Position position) {
-        super(sprite, position);
+    Item(Image sprite) {
+        super(sprite);
     }
 
 }
