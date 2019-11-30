@@ -11,12 +11,12 @@ public class Position {
     /**
      * X location
      */
-    public int x;
+    public final int x;
 
     /**
      * Y location
      */
-    public int y;
+    public final int y;
 
     /**
      * Constructs a position

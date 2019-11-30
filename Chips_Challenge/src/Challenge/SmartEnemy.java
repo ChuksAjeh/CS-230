@@ -9,7 +9,7 @@ import java.util.*;
  * @version 1.0
  */
 class SmartEnemy extends Enemy {
-  
+
     private Lumberjack jack = new Lumberjack();
 
     /**
@@ -57,13 +57,15 @@ class SmartEnemy extends Enemy {
         int newEnemyY = this.getPosition().y - nextNode[1];
 
         // Using the next location that we know, find the direction the enemy must take.
-        final int[] row ={0,1,0,-1};
-        final int[] col ={-1,0,1,0};
+        final int[] row = {0,1,0,-1};
+        final int[] col = {-1,0,1,0};
+
         for(int i = 0; i < 4; i++) {
             if (newEnemyX == row[i] && newEnemyY == col[i]) {
                 return i;
             }
         }
+
         return 0;
     }
 
@@ -134,10 +136,10 @@ class SmartEnemy extends Enemy {
             srcY = bfsVertex.getY();
             dist = bfsVertex.getDist();
 
-            System.out.print("Counter " + counter + ": ");
-            System.out.print(srcX);
-            System.out.print(", " + srcY);
-            System.out.println(" dist:" + dist);
+//            System.out.print("Counter " + counter + ": ");
+//            System.out.print(srcX);
+//            System.out.print(", " + srcY);
+//            System.out.println(" dist:" + dist);
 
             // if destination is found, update minimum distance and stop
             if (srcX == playerPos.x && srcY == playerPos.y) {
@@ -165,15 +167,15 @@ class SmartEnemy extends Enemy {
         } while (!vertices.isEmpty() && !(srcX == playerPos.x && srcY == playerPos.y));
 
         // Print useful messasge 2;
-        System.out.println(srcX == playerPos.x);
-        System.out.println(srcY == playerPos.y);
-        System.out.println(vertices.isEmpty());
+//        System.out.println(srcX == playerPos.x);
+//        System.out.println(srcY == playerPos.y);
+//        System.out.println(vertices.isEmpty());
 
-        if (minDist != Integer.MAX_VALUE) {
-            System.out.println(minDist);
-        } else {
-            System.out.println(Arrays.deepToString(flattenedLevel));
-        }
+//        if (minDist != Integer.MAX_VALUE) {
+//            System.out.println(minDist);
+//        } else {
+//            System.out.println(Arrays.deepToString(flattenedLevel));
+//        }
 
         return pathToReturn;
     }

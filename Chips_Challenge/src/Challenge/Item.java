@@ -12,11 +12,6 @@ import javafx.scene.image.Image;
 abstract class Item extends Entity {
 
     /**
-     * Whether an item is consumable or not. All items are consumable unless it is an Equipment
-     */
-    boolean consumable = true;
-
-    /**
      * Constructs an item with its designated sprite.
      * @param sprite The sprite used to render the item.
      */

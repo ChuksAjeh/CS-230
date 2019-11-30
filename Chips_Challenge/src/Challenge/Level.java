@@ -4,13 +4,14 @@ import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * @author George Carpenter
  * @version 2.0
  */
-public class Level {
+class Level {
 
     /**
      * The cell grid to build
@@ -239,6 +240,41 @@ public class Level {
         }
 
         return null;
+    }
+
+    /**
+     * Gets the Player object from the level
+     * @return the Player object
+     */
+    Player getPlayer() {
+
+        for (Entity[] row : this.entityGrid) {
+            for (Entity entity : row) {
+                if (entity instanceof Player) {
+                    return (Player) entity;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    ArrayList<Enemy> getEnemies(Entity[][] entityGrid) {
+
+        ArrayList<Enemy> enemies = new ArrayList<>();
+
+        for (Entity[] row : entityGrid) {
+            for (Entity entity : row) {
+
+                if (entity instanceof Enemy) {
+                    enemies.add((Enemy) entity);
+                }
+
+            }
+        }
+
+        return enemies;
     }
 
 }
