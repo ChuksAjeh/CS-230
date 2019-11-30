@@ -40,8 +40,6 @@ abstract class Enemy extends Entity {
         super(sprite);
         this.position = position;
         this.direction = direction;
-        this.enemyX = x;
-        this.enemyY = y;
     }
 
     /**
