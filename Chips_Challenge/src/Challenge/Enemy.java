@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
  * @author George Carpenter, Angelo Balistoy
  * @version 1.0
  */
-//Enemies can only stand on ground
+
 abstract class Enemy extends Entity {
 
     /**
@@ -37,30 +37,34 @@ abstract class Enemy extends Entity {
      * @param sprite the sprite used to represent this Entity
      * @param position the position of the Enemy
      * @param direction the direction the enemy is set upon creation
-     */
-    Enemy(Image sprite, Position position, int direction) {
+     * */
+    public Enemy(Image sprite, Position position, int direction) {
         super(sprite);
         this.position = position;
         this.direction = direction;
     }
 
-    Entity[][] move(Level level, Entity[][] entityGrid) {
+    /**
+     * Gets the next direction of enemies.
+     * @param level The level being used.
+     * @return The next direction from 0-3 representing North, East, South, West respectively.
+     */
+    public abstract int nextDirection(Level level);
+    /**
+     * Moves the enemy based on a given direction.
+     * @param level The current level.
+     * @param entityGrid The current entity grid.
+     * @return The new entity grid to be used in the next turn.
+     */
+    public Entity[][] move(Level level, Entity[][] entityGrid) {
 
         Position position = this.getPosition();
         int direction = 0;
 
         int x = position.x;
         int y = position.y;
-
-        if (this instanceof SmartEnemy) {
-            direction = ((SmartEnemy) this).nextDirection(level, level.getPlayer());
-        } else if (this instanceof DumbEnemy) {
-            direction = ((DumbEnemy) this).nextDirection(level.getPlayer());
-        } else if (this instanceof LineEnemy) {
-            direction = ((LineEnemy) this).nextDirection();
-        } else if (this instanceof WallEnemy) {
-            direction = ((WallEnemy) this).nextDirection();
-        }
+        // For all instances of enemy, use its specific next direction.
+        direction = this.nextDirection(level);
 
         if (0 == direction) {
             this.position = new Position(x, y - 1);

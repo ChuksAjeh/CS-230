@@ -10,7 +10,7 @@ import static java.lang.Math.abs;
  * @author Samuel
  * @version 1.0
  */
-class DumbEnemy extends Enemy {
+public class DumbEnemy extends Enemy {
     /**
      * The sprite to represent the dumb enemy.
      */
@@ -18,34 +18,46 @@ class DumbEnemy extends Enemy {
     private Lumberjack jack  = new Lumberjack();
 
     static {
+        // Sets the Sprite to be rendered with this specific image.
         SPRITE = new Image("images/ENTITY_DUMB_ENEMY.png");
     }
 
     /**
      * Constructs a dumb enemy
      * @param position the position of the Enemy
-     * @param direction The intial direction of the enemy
+     * @param direction The initial direction of the enemy
      */
     public DumbEnemy(Position position, int direction) {
         super(SPRITE, position, direction);
     }
 
     /**
-     * Finds the next direction of the dumb enemy.
+     * Gets the next direction of the Dumb Enemy.
+     * @return The next direction.
+     */
+    public int nextDirection(Level level) {
+        Player player = level.getPlayer();
+        return this.nextDirection(player);
+    }
+    /**
+     * Finds the next direction of the dumb enemy where 0-3 represent North, East, South, West respectively.
      * @param player the player object
      * @return The next direction
      */
-    public int nextDirection(Player player) {
-
+    private int nextDirection(Player player) {
+        // Gets the x distance away from the player to the enemy.
         int xDif = player.getPosition().x - this.getPosition().x;
+        // Gets the y distace away from the enemy.
         int yDif = player.getPosition().y - this.getPosition().y;
-
+        // If we need to across rather than vertically.
         if (abs(xDif) > abs(yDif)) {
+            // Return East if relatively to the left of the player, else go West
             return 0 < xDif ? 1 : 3;
         } else if (abs(xDif) < abs(yDif)) {
+            // Return South if relatively North of the player, else go South.
             return 0 < yDif ? 2 : 0;
         } else {
-            return 0;
+            return 0; // Default to up otherwise.
         }
 
     }
