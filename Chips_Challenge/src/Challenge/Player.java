@@ -89,7 +89,7 @@ class Player extends Entity {
         int height = entityGrid[0].length - 1;
 
         if (newX < 0 || newY < 0 || newX > width || newY > height) {
-            jack.log(1, "Player out of bounds");
+            // jack.log(1, "Player out of bounds");
             return entityGrid;
         } else {
 
@@ -102,8 +102,8 @@ class Player extends Entity {
 
                     this.addItem((Item) entityGrid[newX][newY], level);
 
-                    jack.log("FOUND ITEM");
-                    jack.log(this.inventory.toString());
+                    // jack.log("FOUND ITEM");
+                    // jack.log(this.inventory.toString());
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {
 
@@ -118,7 +118,7 @@ class Player extends Entity {
 
                 Color doorColour = ((KeyDoor) cell).getColour();
 
-                jack.log(1, "Walking into a KeyDoor");
+                // jack.log(1, "Walking into a KeyDoor");
 
                 if (null != findKey(doorColour)) {
                     openKeyDoor(level, doorColour, newX, newY);
@@ -130,8 +130,8 @@ class Player extends Entity {
 
                 TokenDoor currentDoor = (TokenDoor) cell;
 
-                jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
-                jack.log(1, "Current Tokens " + this.tokenCount);
+                // jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
+                // jack.log(1, "Current Tokens " + this.tokenCount);
 
                 if (this.tokenCount >= currentDoor.getRequirement()) {
                     openTokenDoor(level, currentDoor, newX, newY);
@@ -143,7 +143,7 @@ class Player extends Entity {
 
                 Teleporter pair = ((Teleporter) cell).getPair();
 
-                jack.log(1, "Walking into a Teleporter. ");
+                // jack.log(1, "Walking into a Teleporter. ");
 
                 int[] pairLocation = level.getLocation(cellGrid, pair);
 
@@ -152,7 +152,7 @@ class Player extends Entity {
 
             } else if (!cell.isPassable()) {
 
-                jack.log(1, "Oof, you walked into a wall");
+                // jack.log(1, "Oof, you walked into a wall");
 
                 return entityGrid;
 

@@ -15,13 +15,13 @@
 #######     #####
 #######     #####
 #################
-Player,9,3,0
-Goal,14,3
-KeyDoor,12,3,0,0,0,3,3
-LineEnemy,7,9,1
-FireBoots,9,12
-Fire,6,1
-Fire,6,2
-Fire,6,3
-Fire,6,4
-Fire,6,5
+Player,9,3,0,
+Goal,14,3,
+KeyDoor,12,3,0,0,0,3,3,
+LineEnemy,7,9,1,
+FireBoots,9,12,
+Fire,6,1,
+Fire,6,2,
+Fire,6,3,
+Fire,6,4,
+Fire,6,5,

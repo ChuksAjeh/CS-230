@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import static java.lang.Integer.*;
+
 /**
  * @author George Carpenter
  * @version 2.0
@@ -104,71 +106,72 @@ class Level {
         StringTokenizer t = new StringTokenizer(file, ",");
 
         String label;
-        Position position;
-        int direq;
+        Position p;
+        int dr;
 
         while (t.hasMoreTokens()) {
 
             label = t.nextToken();
 
-            System.out.println(label);
+            // Debug
+            // System.out.println(label + " Created");
 
-            position = new Position(Integer.parseInt(t.nextToken()), Integer.parseInt(t.nextToken()));
+            p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
             if ("PLAYER".equals(label) || label.contains("ENEMY")) {
 
-                direq = Integer.parseInt(t.nextToken());
+                dr = parseInt(t.nextToken());
 
                 if ("PLAYER".equals(label)) {
-                    this.entityGrid[position.x][position.y] = new Player(position, direq);
+                    this.entityGrid[p.x][p.y] = new Player(p, dr);
                 } else if ("SMARTENEMY".equals(label)) {
-                    this.entityGrid[position.x][position.y] = new SmartEnemy(position, direq);
+                    this.entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
                 } else if ("DUMBENEMY".equals(label)) {
-                    this.entityGrid[position.x][position.y] = new DumbEnemy(position, direq);
+                    this.entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
                 } else if ("WALLENEMY".equals(label)) {
-                    this.entityGrid[position.x][position.y] = new WallEnemy(position, direq);
+                    this.entityGrid[p.x][p.y] = new WallEnemy(p, dr);
                 } else if ("LINEENEMY".equals(label)) {
-                    this.entityGrid[position.x][position.y] = new LineEnemy(position, direq);
+                    this.entityGrid[p.x][p.y] = new LineEnemy(p, dr);
                 }
 
             } else if ("KEYDOOR".equals(label)) {
 
-                int r = Integer.parseInt(t.nextToken());
-                int g = Integer.parseInt(t.nextToken());
-                int b = Integer.parseInt(t.nextToken());
+                int r = parseInt(t.nextToken());
+                int g = parseInt(t.nextToken());
+                int b = parseInt(t.nextToken());
 
                 Color colour = Color.rgb(r, g, b);
 
-                this.cellGrid[position.x][position.y] = new KeyDoor(colour);
+                this.cellGrid[p.x][p.y] = new KeyDoor(colour);
 
-                position = new Position(Integer.parseInt(t.nextToken()), Integer.parseInt(t.nextToken()));
+                p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
-                this.entityGrid[position.x][position.y] = new Key(colour);
+                this.entityGrid[p.x][p.y] = new Key(colour);
 
             } else if ("TOKEN".equals(label)) {
-                this.entityGrid[position.x][position.y] = new Token();
+                this.entityGrid[p.x][p.y] = new Token();
             } else if ("TOKENDOOR".equals(label)) {
-                direq = Integer.parseInt(t.nextToken());
-                this.cellGrid[position.x][position.y] = new TokenDoor(direq);
+                dr = parseInt(t.nextToken());
+                this.cellGrid[p.x][p.y] = new TokenDoor(dr);
             } else if ("GOAL".equals(label)) {
-                this.cellGrid[position.x][position.y] = new Goal();
+                this.cellGrid[p.x][p.y] = new Goal();
             } else if ("FIRE".equals(label)) {
-                this.cellGrid[position.x][position.y] = new Fire();
+                this.cellGrid[p.x][p.y] = new Fire();
             } else if ("WATER".equals(label)) {
-                this.cellGrid[position.x][position.y] = new Water();
+                this.cellGrid[p.x][p.y] = new Water();
             } else if ("FIREBOOTS".equals(label)) {
-                this.entityGrid[position.x][position.y] = new FireBoots();
+                this.entityGrid[p.x][p.y] = new FireBoots();
             } else if ("FLIPPERS".equals(label)) {
-                this.entityGrid[position.x][position.y] = new Flippers();
+                this.entityGrid[p.x][p.y] = new Flippers();
             } else if ("TELEPORTER".equals(label)) {
 
                 Teleporter temp = new Teleporter();
 
-                this.cellGrid[position.x][position.y] = temp;
+                this.cellGrid[p.x][p.y] = temp;
 
-                position = new Position(Integer.parseInt(t.nextToken()), Integer.parseInt(t.nextToken()));
+                p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
-                this.cellGrid[position.x][position.y] = new Teleporter(temp);
+                this.cellGrid[p.x][p.y] = new Teleporter(temp);
             }
 
         }
