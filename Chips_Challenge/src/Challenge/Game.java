@@ -4,7 +4,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-class Game {
+/**Game is used to render Chips Challenge. We render the entire level with this class.
+ * @author ..
+ * @version
+ */
+public class Game {
 
     // The size of each cell
     private static final int GRID_CELL_WIDTH = 120;

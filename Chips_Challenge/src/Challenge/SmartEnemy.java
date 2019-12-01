@@ -11,7 +11,7 @@ import java.util.Stack;
  * @author Chuks Ajeh, Angelo Balistoy
  * @version 1.0
  */
-class SmartEnemy extends Enemy {
+public class SmartEnemy extends Enemy {
 
     private Lumberjack jack = new Lumberjack();
 
@@ -33,15 +33,22 @@ class SmartEnemy extends Enemy {
         super(SPRITE, position, direction);
     }
 
-    // Do we have to use level's grids or can we use the enemies' own entity and cell grid.
-
+    /**
+     * Gets the next direction of the Smart Enemy.
+     * @param level The level being used.
+     * @return An int from 0-3 representing NESW.
+     */
+    public int nextDirection(Level level){
+        Player player = level.getPlayer();
+        return this.nextDirection(level, player);
+    }
     /**
      * Gets the next direction based on the player's location and impassable objects.
      * @param level The level object which holds the entity and cell grid
      * @param player The player in the level
      * @return An int from 0-3 representing NESW.
      */
-    public int nextDirection(Level level, Player player) {
+    private int nextDirection(Level level, Player player) {
 
         // Grab cell and entity grid to flatten
         Cell[][] cellGrid = level.getCellGrid();

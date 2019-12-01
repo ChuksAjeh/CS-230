@@ -1,98 +1,84 @@
 package Challenge;
 
+/**
+ * A BFS Vertex contains the x coordinate, the y coordinate, and distance from the source node. This class is used
+ * in the Smart Enemy class which requires these fields to implement the wavefront planning algorithim. This is just
+ * a BFS search and from that, find the shortest path back to the starting node from the goal node.
+ * @author Chuks
+ * @version 1.0
+ */
 class BFSVertex {
-
+    /**
+     * The x coordinate.
+     */
     private int x;
+    /**
+     * The Y coordinate.
+     */
     private int y;
+    /**
+     * The distance from the start node.
+     */
     private int dist;
 
+    /**
+     * Constructs a BFSVertex node.
+     * @param x The node's x coordinate
+     * @param y The node's y coordinate
+     * @param dist  The node's distance from the source node.
+     */
     BFSVertex(int x, int y, int dist) {
         this.x = x;
         this.y = y;
         this.dist = dist;
     }
 
+    /**
+     * Gets the x coordinate.
+     * @return The x coordinate.
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Sets the x coordinate.
+     * @param x The x coordinate.
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * Gets the Y coordinate.
+     * @return The Y coordinate
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Sets the Y coordinate
+     * @param y The Y coordinate.
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * Gets the distance from the source node.
+     * @return The distance from the source node.
+     */
     int getDist() {
         return dist;
     }
 
+    /**
+     * Sets the distance from the source node.
+     * @param dist The distance from the source node.
+     */
     public void setDist(int dist) {
         this.dist = dist;
     }
-//
-//    public static void Breadth (int[][]level, Player player, Entity[][] entities){
-//        int[] playerLocation = player.getLocation(entities);
-//
-//        if(level[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] != 1 ||level[playerLocation[0]][playerLocation[1]]!=1){
-//            System.out.println("unable to find shortest path");
-//        }
-//
-//        final int[] row ={-1,0,0,1};
-//        final int[] col ={0,-1,1,0};
-//        boolean[][] visited =new boolean[level.length][level[0].length];
-//        //set the source node as visited and enqueue
-//        visited[new SmartEnemy(0).getEnemyX()][new SmartEnemy(0).getEnemyY()] = true;
-//        Queue<BFS> vertices = new LinkedList<>();
-//        vertices.add(new BFS(new SmartEnemy(0).getEnemyX(),new SmartEnemy(0).getEnemyY(),0));
-//
-//        //store the minimum distance:
-//        int minDist = Integer.MAX_VALUE;
-//
-//
-//        while(!vertices.isEmpty()){
-//            // pop front not from queue and process it
-//            BFS bfs = vertices.poll();
-//            // source node and distance
-//            int srcX = bfs.getX();
-//            int srcY =bfs.getY();
-//            int dist = bfs.getDist();
-//
-//            //if destination is found, update minimum distance and stop
-//            if(srcX == playerLocation[0] && srcY == playerLocation[1]){
-//                minDist = dist;
-//                break;
-//            }
-//
-//            for(int i =0; i<4; i++){
-//                //check for all 4 possible movements from current cell and enqueue it
-//                if(isValid(level, visited, srcX+row[i],srcY+col[i])){
-//                    //mark each cell as visited and enqueue it
-//                    visited[srcX+row[i]][srcY+col[i]] = true;
-//                    vertices.add(new BFS(srcX+row[i],srcY+col[i],dist+1));
-//                }
-//            }
-//
-//        }
-//
-//        if(minDist != Integer.MAX_VALUE){
-//            System.out.println(minDist);
-//        }else{
-//            System.out.println("Destination can't be reached.");
-//        }
-//    }
-//
-//
-//    //check whether it is a valid cell or not.
-//    private static boolean isValid (int[][] level, boolean[][] visited, int row, int col){
-//        final int ROW = level.length - 1;
-//        final int COL = level[0].length - 1;
-//        return (row >= 0) &&(row<ROW)&&(col>=0)&&(col<COL) && !visited[ROW][COL];
-//    }
 
 }
