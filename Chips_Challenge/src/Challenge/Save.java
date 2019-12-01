@@ -47,7 +47,7 @@ class Save {
      * Saves the current Level to a file
      * @param level the level to save
      */
-    public void saveFile(Level level) {
+    void saveFile(Level level) {
 
         String directory;
         String levelName = level.getLevelName();
@@ -202,7 +202,7 @@ class Save {
                     cDoor = (KeyDoor) cell;
 
                     if (cDoor.getColour() == key.getColour()) {
-                        keyDoorCoords = cDoor.findCell(cDoor, this.cellGrid);
+                        keyDoorCoords = this.level.getLocation(this.cellGrid, cDoor);
                     }
                 }
 
@@ -310,7 +310,7 @@ class Save {
     private void writeTeleporter(Teleporter teleporter, ArrayList<Teleporter> writtenTP) throws IOException {
 
         Teleporter pair = teleporter.getPair();
-        int[] pairCell = pair.findCell(pair, this.cellGrid);
+        int[] pairCell = this.level.getLocation(this.cellGrid, pair);
 
         if (writtenTP.contains(teleporter)) {
 
@@ -332,7 +332,7 @@ class Save {
 
     private void writeCellPos(Cell cell) throws IOException {
 
-        int[] cellCoords = cell.findCell(cell, this.cellGrid);
+        int[] cellCoords = this.level.getLocation(this.cellGrid, cell);
 
         this.writer.write(cell.getClass().getSimpleName() + ",");
         this.writer.write(cellCoords[0] + ",");

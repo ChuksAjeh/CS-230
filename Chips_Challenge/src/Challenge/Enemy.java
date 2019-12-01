@@ -15,7 +15,7 @@ abstract class Enemy extends Entity {
     /**
      * The direction the enemy will travel
      */
-    private int direction;
+    int direction;
 
     /**
      * The cell grid the enemy uses
@@ -147,7 +147,7 @@ abstract class Enemy extends Entity {
      * Sets the direction of the enemy.
      * @param direction The new direction of the enemy.
      */
-    public void setDirection(int direction) {
+    void setDirection(int direction) {
         this.direction = direction;
     }
 
