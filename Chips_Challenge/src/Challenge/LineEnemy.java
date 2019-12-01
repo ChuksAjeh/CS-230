@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * @author George Caprenter, Ioan Mazurca
  * @version 3.0
  */
-class LineEnemy extends Enemy {
+public class LineEnemy extends Enemy {
 
     /**
      * The sprite to represent the dumb enemy.
@@ -30,7 +30,7 @@ class LineEnemy extends Enemy {
      * Used to calculate the next direction for the line enemy
      * @return the next direction
      */
-    public int nextDirection() {
+    public int nextDirection(Level level) {
 
         // This method is basically magic, do not question it's technique!
 
