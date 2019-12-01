@@ -26,7 +26,7 @@ class DumbEnemy extends Enemy {
      * @param position the position of the Enemy
      * @param direction The intial direction of the enemy
      */
-    public DumbEnemy(Position position, int direction) {
+    DumbEnemy(Position position, int direction) {
         super(SPRITE, position, direction);
     }
 

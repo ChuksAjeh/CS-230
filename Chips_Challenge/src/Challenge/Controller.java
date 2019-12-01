@@ -6,6 +6,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author George Carpenter
@@ -39,9 +40,15 @@ class Controller {
         ArrayList<Enemy> enemies = level.getEnemies(newGrid);
 
         for (Enemy e : enemies) {
-            e.setCellGrid(level.getCellGrid());
-            e.setEntityGrid(newGrid);
-            newGrid = e.move(level, newGrid);
+
+            if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
+                return;
+            } else {
+                e.setCellGrid(level.getCellGrid());
+                e.setEntityGrid(newGrid);
+                newGrid = e.move(level, newGrid);
+            }
+
         }
 
         if (event.getCode().isArrowKey()) {

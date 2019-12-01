@@ -68,8 +68,8 @@ public class Main extends Application {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.setVolume(0.2);
             mediaPlayer.play();
-        } catch (Exception E) {
-            jack.log(1,E.toString());
+        } catch (Exception e) {
+            // e.printStackTrace();
         }
     }
 
@@ -448,7 +448,6 @@ public class Main extends Application {
         return play;
 
     }
-
 
     class EditableButton extends Button {
 
