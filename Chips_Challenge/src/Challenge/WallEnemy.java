@@ -31,7 +31,7 @@ class WallEnemy extends Enemy {
      * Used to return the next direction of the wall enemy
      * @return the next available direction
      */
-    public int nextDirection() {
+    public int nextDirection(Level level) {
 
         Random random = new Random();
         boolean[] passable = getCells();
