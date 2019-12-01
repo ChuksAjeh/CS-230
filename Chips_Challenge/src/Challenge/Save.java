@@ -32,12 +32,12 @@ class Save {
     private FileWriter writer;
 
     /**
-     * Because why not, I'm on a roll
+     * Log writer
      */
     private final Lumberjack jack = new Lumberjack();
 
     /**
-     * Nice constructor
+     * Constructor
      */
     Save() {
 
@@ -107,8 +107,17 @@ class Save {
     }
 
     private void writeWalls() throws IOException {
-
-        for (Cell[] cells : this.cellGrid) {
+        for (int y = 0; y < this.cellGrid.length; y++) {
+            for (int x = 0; x < this.cellGrid[y].length; x++) {
+                if (this.cellGrid[y][x] instanceof Wall) {
+                    this.writer.write('#');
+                } else {
+                    this.writer.write(' ');
+                }
+            }
+            this.writer.write('\n');
+        }
+        /*for (Cell[] cells : this.cellGrid) {
             for (Cell cell : cells) {
 
                 if (cell instanceof Wall) {
@@ -119,7 +128,7 @@ class Save {
 
             }
             this.writer.write('\n');
-        }
+        }*/
     }
 
     private void writeEntities(Level level) throws IOException {
@@ -132,10 +141,10 @@ class Save {
                     Player player = (Player) entity;
                     int[] plyLoc = player.getLocation(this.entityGrid);
 
-                    this.writer.write(plyLoc[0] + ",");
                     this.writer.write("Player,");
+                    this.writer.write(plyLoc[0] + ",");
                     this.writer.write(plyLoc[1] + ",");
-                    this.writer.write(player.getDirection() + "\n");
+                    this.writer.write(player.getDirection() + "," + "\n");
 
                 } else if (entity instanceof Enemy) {
 
@@ -166,10 +175,10 @@ class Save {
 
     private void writeEnemy(Enemy enemy) throws IOException {
 
-        this.writer.write(enemy.getClass().getSimpleName());
+        this.writer.write(enemy.getClass().getSimpleName() + ",");
         this.writer.write(enemy.getPosition().x + ",");
         this.writer.write(enemy.getPosition().y + ",");
-        this.writer.write(enemy.getDirection() + "\n");
+        this.writer.write(enemy.getDirection() + "," + "\n");
 
     }
 
@@ -179,7 +188,7 @@ class Save {
 
         this.writer.write(i.getClass().getSimpleName() + ",");
         this.writer.write(itemPos[0] + ",");
-        this.writer.write(itemPos[1] + "\n");
+        this.writer.write(itemPos[1] + "," + "\n");
 
     }
 
@@ -215,7 +224,7 @@ class Save {
         this.writer.write(keyDoorCoords[0] + "," + keyDoorCoords[1] + ",");
         this.writer.write(red + "," + blue + "," + green + ",");
         this.writer.write(keyLoc[0] + "," + keyLoc[1]);
-        this.writer.write("\n");
+        this.writer.write("," + "\n");
 
     }
 
@@ -279,7 +288,7 @@ class Save {
                     logWritten(cell);
                     Goal goal = (Goal) cell;
                     writeCellPos(goal);
-                    this.writer.write("\n");
+                    this.writer.write("," + "\n");
 
                 } else if (cell instanceof Teleporter) {
 
@@ -296,14 +305,14 @@ class Save {
 
         writeCellPos(tD);
         this.writer.write(",");
-        this.writer.write(tD.getRequirement() + "\n");
+        this.writer.write(tD.getRequirement() + "," + "\n");
 
     }
 
     private void writeObstacle(Obstacle obstacle) throws IOException {
 
         writeCellPos(obstacle);
-        this.writer.write("\n");
+        this.writer.write("," + "\n");
 
     }
 
@@ -321,7 +330,7 @@ class Save {
             writeCellPos(teleporter);
             this.writer.write(",");
             this.writer.write(pairCell[0] + ",");
-            this.writer.write(pairCell[1] + "\n");
+            this.writer.write(pairCell[1] + "," + "\n");
 
         }
 
