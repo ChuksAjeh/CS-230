@@ -23,16 +23,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.nio.file.Path;
+
 import java.nio.file.Paths;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiPredicate;
 
 public class Main extends Application {
 
@@ -48,10 +45,9 @@ public class Main extends Application {
 
     private static Level level;
     private final Controller controller = new Controller();
-    Lumberjack jack = new Lumberjack();
+    private final Lumberjack jack = new Lumberjack();
     private final Game game = new Game();
     private Stage window;
-    private static MediaPlayer mediaPlayer;
 
     public static void main(String[] args) { launch(args);}
 
@@ -65,8 +61,8 @@ public class Main extends Application {
 
         try {
             Media media = new Media(Paths.get("music/background_music1.mp3").toUri().toString());
-            this.mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(10);
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.setVolume(0.2);
             mediaPlayer.play();
         } catch (Exception E) {
@@ -113,20 +109,18 @@ public class Main extends Application {
     private Scene begin(Stage window) {
         BorderPane root = new BorderPane();
 
-
         Button startButton = new Button("START");
         startButton.setPrefSize(150,100);
 
         Label title = new Label("JUNGLE HUNT");
 
-
         root.setCenter(startButton);
-        root.setAlignment(root.getCenter(), Pos.CENTER);
+        BorderPane.setAlignment(root.getCenter(), Pos.CENTER);
 
         root.setTop(title);
-        root.setAlignment(root.getTop(), Pos.TOP_CENTER);
+        BorderPane.setAlignment(root.getTop(), Pos.TOP_CENTER);
 
-        root.setMargin(root.getCenter(), new Insets(0,0,150,0));
+        BorderPane.setMargin(root.getCenter(), new Insets(0,0,150,0));
 
         root.setBottom(bottomBar());
 
@@ -136,10 +130,8 @@ public class Main extends Application {
         dropShadow.setOffsetY(3.0);
         dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 
-
         title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
         title.setEffect(dropShadow);
-
 
         startButton.setOnAction(e -> window.setScene(userSelection(window)));
 
@@ -162,17 +154,14 @@ public class Main extends Application {
         //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
         File path = new File("Users/");
 
-
         File[] files = path.listFiles();
 
         for (File file : files) {
             loadUser.getItems().add(file.getName());
         }
 
-
         loadUser.setPromptText("Select user profile");
         //Button loadUser = new Button("Load user profiles");
-
 
         loadUser.setOnAction(e -> window.setScene(loadGame(window)));
 
@@ -432,17 +421,14 @@ public class Main extends Application {
         BorderPane drawing = new BorderPane();
         drawing.setPrefSize(960,670);
 
-
         StackPane stack = new StackPane();
         //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         System.out.println("SUCCESS!");
 
-
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         drawing.setCenter(canvas);
-
 
         level = controller.makeLevel(name);
 

@@ -2,9 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author George Caprenter, Ioan Mazurca
  * @version 3.0
@@ -20,25 +17,30 @@ class LineEnemy extends Enemy {
         SPRITE = new Image("images/ENTITY_LINE_ENEMY.png");
     }
 
+    /**
+     * Constructs a Line Enemy Entity
+     * @param position the position of the Line Enemy
+     * @param direction the initial direction of the Line Enemy
+     */
     LineEnemy(Position position, int direction) {
         super(SPRITE, position, direction);
     }
 
+    /**
+     * Used to calculate the next direction for the line enemy
+     * @return the next direction
+     */
     public int nextDirection() {
 
-        // Check for direction, then check whether next position is a wall
-        // If it is a wall, change direction, else keep same direction.
-        // This should be called every update.
-
-        int dir = getDirection();
+        // This method is basically magic, do not question it's technique!
 
         boolean[] passable = getCells();
 
-        if (!passable[dir]) {
-            this.setDirection((dir + 2) % 4);
+        if (!passable[this.direction]) {
+            this.setDirection((this.direction + 2) % 4);
         }
 
-        return this.getDirection();
+        return this.direction;
     }
 
 }

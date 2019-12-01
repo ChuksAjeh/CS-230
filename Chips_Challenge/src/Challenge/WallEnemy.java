@@ -9,27 +9,38 @@ import java.util.Random;
  */
 class WallEnemy extends Enemy {
 
+    /**
+     * The sprite used to represent a WallEnemy in the game
+     */
     private static final Image SPRITE;
-    private final Random random;
 
     static {
         SPRITE = new Image("images/ENTITY_WALL_ENEMY.png");
     }
 
+    /**
+     * Constructs a WallEnemy
+     * @param position the position of the wall enemy
+     * @param direction the initial direction of the wall enemy
+     */
     WallEnemy(Position position, int direction) {
         super(SPRITE, position, direction);
-        random = new Random();
     }
 
+    /**
+     * Used to return the next direction of the wall enemy
+     * @return the next available direction
+     */
     public int nextDirection() {
 
+        Random random = new Random();
         boolean[] passable = getCells();
-
         int numberOfMoves = countMoves(passable);
 
         if (0 == numberOfMoves) {
-            // Cannot move .. something happens I guess, probably return 42 and then handle it later
-            return 42;
+            // Cannot move .. something happens I guess,
+            // probably return 42 and then handle it later
+            return 42; // seems legit
         } else if (1 == numberOfMoves) {
             // Only 1 available space
             return findMove(passable, true);
@@ -47,6 +58,11 @@ class WallEnemy extends Enemy {
         return random.nextInt(4);
     }
 
+    /**
+     * Counts the number of possible moves
+     * @param moves the array of possible, not necessarily available, moves
+     * @return the number of available moves
+     */
     private int countMoves(boolean[] moves) {
 
         int count = 0;
@@ -60,6 +76,11 @@ class WallEnemy extends Enemy {
         return count;
     }
 
+    /**
+     * Used to find moves when there are two
+     * @param passable the set of possible moves
+     * @return the set of available moves
+     */
     private int[] findMoves(boolean[] passable) {
 
         int[] moves = new int[2];
@@ -72,6 +93,12 @@ class WallEnemy extends Enemy {
 
     }
 
+    /**
+     * Used to find the move when there is either only one or three
+     * @param passable the set of possible moves
+     * @param val what to look for
+     * @return the available move
+     */
     private int findMove(boolean[] passable, boolean val) {
 
         for (int i = 0 ; i < passable.length ; i++ ) {
