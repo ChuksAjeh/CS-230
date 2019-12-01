@@ -10,10 +10,10 @@
 #    ##        #
 #              #
 ################
-Player,2,2,0
-Goal,12,8
-WallEnemy,4,5,0
-WallEnemy,4,8,0
-WallEnemy,8,2,2
-WallEnemy,9,7,1
-WallEnemy,13,4,3
+Player,2,2,0,
+Goal,12,8,
+WallEnemy,4,5,0,
+WallEnemy,4,8,0,
+WallEnemy,8,2,2,
+WallEnemy,9,7,1,
+WallEnemy,13,4,3,

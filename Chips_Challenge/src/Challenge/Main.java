@@ -48,7 +48,7 @@ public class Main extends Application {
     private final Lumberjack jack = new Lumberjack();
     private final Game game = new Game();
     private Stage window;
-
+  
     //Mediaplayer
     private static MediaPlayer mediaPlayer;
 
@@ -270,7 +270,6 @@ public class Main extends Application {
         quit.setOnAction(e -> System.exit(0));
 
         test.setOnAction(e -> window.setScene(new Scene(pauseMenu(), WINDOW_WIDTH, WINDOW_HEIGHT)));
-
 
         //scene.getStylesheets().add("file:layout.css");
 

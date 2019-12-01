@@ -12,12 +12,12 @@
 #   #       #
 #   #       #
 #############
-Player,6,6,0
-KeyDoor,4,4,0,0,0,8,10
-KeyDoor,5,7,0,0,0,10,5
-KeyDoor,11,3,0,0,0,2,5
-WallEnemy,1,1,1
-Teleporter,11,11,2,11
-FireBoots,7,9
-Fire,8,1
-Fire,8,2
+Player,6,6,0,
+KeyDoor,4,4,0,0,0,8,10,
+KeyDoor,5,7,0,0,0,10,5,
+KeyDoor,11,3,0,0,0,2,5,
+WallEnemy,1,1,1,
+Teleporter,11,11,2,11,
+FireBoots,7,9,
+Fire,8,1,
+Fire,8,2,
