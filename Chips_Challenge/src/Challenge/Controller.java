@@ -40,7 +40,17 @@ class Controller {
             e.setCellGrid(level.getCellGrid());
             e.setEntityGrid(newGrid);
 
+            if (level.getPlayer() == null) {
+                // No Player, they be dead
+                return;
+            }
+
+            // I am aware sequential if blocks are bad, however these two
+            // blocks are checking for different 'end conditions' so I'm
+            // happy for them to co-exist in their own bubble of code - Gnome
+
             if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
+                // Enemy cannot move, they be surrounded
                 return;
             }
 
@@ -63,8 +73,7 @@ class Controller {
 
         }
 
-        // Consume the event. This means we mark it as dealt with.
-        // This stops other GUI nodes (buttons etc) responding to it.
+        // Nom nom, lovely grub
         event.consume();
     }
 
