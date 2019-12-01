@@ -1,7 +1,6 @@
 package Challenge;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -211,7 +210,7 @@ class Player extends Entity {
      * @param entityGrid the Entity grid to search
      * @return the X and Y index of the Player object
      */
-    public int[] getLocation(Entity[][] entityGrid) {
+    int[] getLocation(Entity[][] entityGrid) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0 ; y < entityGrid[x].length ; y++ ) {

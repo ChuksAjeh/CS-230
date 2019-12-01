@@ -1,14 +1,12 @@
 package Challenge;
 
-import javafx.scene.paint.Color;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import static java.lang.Integer.*;
+import static java.lang.Integer.parseInt;
 
 /**
  * @author George Carpenter

@@ -14,7 +14,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -68,8 +71,8 @@ public class Main extends Application {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.setVolume(0.2);
             mediaPlayer.play();
-        } catch (Exception E) {
-            jack.log(1,E.toString());
+        } catch (Exception e) {
+            // e.printStackTrace();
         }
     }
 
@@ -448,7 +451,6 @@ public class Main extends Application {
         return play;
 
     }
-
 
     class EditableButton extends Button {
 

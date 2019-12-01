@@ -25,7 +25,7 @@ class Teleporter extends Cell {
     /**
      * Constructor
      */
-    public Teleporter() {
+    Teleporter() {
         super(SPRITE, false);
     }
 
@@ -33,7 +33,7 @@ class Teleporter extends Cell {
      * Secondary constructor
      * @param pair the pair Teleporter for this Teleporter Object
      */
-    public Teleporter(Teleporter pair) {
+    Teleporter(Teleporter pair) {
         super(SPRITE, false);
         this.pair = pair;
         pair.setPair(this);

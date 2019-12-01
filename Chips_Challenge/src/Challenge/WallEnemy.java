@@ -37,11 +37,9 @@ class WallEnemy extends Enemy {
         boolean[] passable = getCells();
         int numberOfMoves = countMoves(passable);
 
-        if (0 == numberOfMoves) {
-            // Cannot move .. something happens I guess,
-            // probably return 42 and then handle it later
-            return 42; // seems legit
-        } else if (1 == numberOfMoves) {
+        // 0 available moves cannot occur, it is handled in Controller
+
+        if (1 == numberOfMoves) {
             // Only 1 available space
             return findMove(passable, true);
         } else if (2 == numberOfMoves) {

@@ -74,10 +74,6 @@ abstract class Enemy extends Entity {
         } else if (3 == direction) {
             this.position = new Position(x - 1, y);
             entityGrid[x - 1][y] = this;
-        } else if (42 == direction) {
-            // Enemy cannot move, send halp!
-            // Owait never mind we can just noobmaster69 out of it!
-            return entityGrid;
         }
 
         entityGrid[position.x][position.y] = null;
