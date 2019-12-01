@@ -41,13 +41,14 @@ class Controller {
 
         for (Enemy e : enemies) {
 
+            e.setCellGrid(level.getCellGrid());
+            e.setEntityGrid(newGrid);
+
             if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
                 return;
-            } else {
-                e.setCellGrid(level.getCellGrid());
-                e.setEntityGrid(newGrid);
-                newGrid = e.move(level, newGrid);
             }
+
+            newGrid = e.move(level, newGrid);
 
         }
 
