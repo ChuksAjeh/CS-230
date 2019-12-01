@@ -39,6 +39,9 @@ class Level {
 
         try {
             buildLevel(levelName);
+
+
+
         } catch (FileNotFoundException e) {
             // Nothing
         }
@@ -112,7 +115,7 @@ class Level {
             label = t.nextToken();
 
             // Debug
-            System.out.println(label + " Created");
+            // System.out.println(label + " Created");
 
             p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
@@ -267,6 +270,10 @@ class Level {
         }
 
         return enemies;
+    }
+
+    String getLevelname() {
+        return this.levelName;
     }
 
 }

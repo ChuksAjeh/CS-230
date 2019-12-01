@@ -124,7 +124,7 @@ abstract class Enemy extends Entity {
         };
 
         for (int i = 0; i < passable.length; i++) {
-            passable[i] = sc[i] instanceof Ground && se[i] == null;
+            passable[i] = sc[i] instanceof Ground && (se[i] == null || se[i] instanceof Player);
         }
 
         return passable;

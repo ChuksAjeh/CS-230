@@ -46,13 +46,13 @@ public class Main extends Application {
 
     private Canvas canvas;
 
-    private static Level level;
+    static Level level;
+    private Game game = new Game();
     private final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
-    private final Game game = new Game();
     private Stage window;
-  
-    //Mediaplayer
+
+    // Mediaplayer
     private static MediaPlayer mediaPlayer;
 
     public static void main(String[] args) { launch(args);}
@@ -199,11 +199,11 @@ public class Main extends Application {
         File path = new File("Level_Files/");
         File[] files = path.listFiles();
 
-        assert files!=null;
+        assert files != null;
 
         startButton.setOnAction(e -> {
             String levelName = files[0].getName();
-            levelName = levelName.substring(0,levelName.length()-4);
+            levelName = levelName.substring(0, levelName.length() - 4);
             window.setScene(gaming(levelName));
         });
 

@@ -109,6 +109,7 @@ class Player extends Entity {
                     jack.log(1, "Kill me");
 
                     killPlayer();
+
                     return entityGrid;
 
                 }

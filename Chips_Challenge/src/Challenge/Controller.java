@@ -21,16 +21,12 @@ class Controller {
 
         if (KeyCode.UP == event.getCode()) {
             newGrid = player.move(0, level);
-            level.setEntityGrid(newGrid);
         } else if (KeyCode.RIGHT == event.getCode()) {
             newGrid = player.move(1, level);
-            level.setEntityGrid(newGrid);
         } else if (KeyCode.DOWN == event.getCode()) {
             newGrid = player.move(2, level);
-            level.setEntityGrid(newGrid);
         } else if (KeyCode.LEFT == event.getCode()) {
             newGrid = player.move(3, level);
-            level.setEntityGrid(newGrid);
         } else if (KeyCode.ESCAPE == event.getCode()) {
             root.getChildren().get(0).toFront();
         } else if (KeyCode.E == event.getCode()) {
@@ -53,16 +49,17 @@ class Controller {
         }
 
         if (event.getCode().isArrowKey()) {
-            game.drawGame(level, canvas);
+            level.setEntityGrid(newGrid);
 
-//            if (player.getStatus()) {
-//                game.drawGame(level, canvas);
-//            } else if (!player.getStatus()) {
-//
-//                level = makeLevel(level.getLevelName());
-//
-//                game.drawGame(level, canvas);
-//            }
+            if (player.getStatus() && level.getPlayer() != null) {
+                // Player should be alive
+                System.out.println("ALIVE");
+                game.drawGame(level, canvas);
+            } else {
+                System.out.println("DEAD");
+                Main.level = new Level(level.getLevelName());
+                game.drawGame(Main.level, canvas);
+            }
 
         }
 
