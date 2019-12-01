@@ -268,7 +268,6 @@ public class Main extends Application {
 
         test.setOnAction(e -> window.setScene(new Scene(pauseMenu(), WINDOW_WIDTH, WINDOW_HEIGHT)));
 
-
         //scene.getStylesheets().add("file:layout.css");
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);

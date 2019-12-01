@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * @author George Carpenter
@@ -32,7 +33,7 @@ class Level {
      * Constructs a Level from a given file name
      * @param levelName the name of the level to build
      */
-    public Level(String levelName) {
+    Level(String levelName) {
 
         this.levelName = levelName;
 
@@ -44,45 +45,26 @@ class Level {
 
     }
 
-    /**
-     * Begins the build process
-     * @param level the level to build
-     * @throws FileNotFoundException if the file does not exist
-     */
     private void buildLevel(String level) throws FileNotFoundException {
 
-        //Scanner reader = new Scanner(new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\" + level + ".txt"));
         Scanner reader = new Scanner(new File("Level_Files/" + level + ".txt"));
-
-        // Set a delimiter
         reader.useDelimiter(",");
 
-        // Read in the size of the level to create
+        buildBasicGrids(reader);
+        buildGrids(readRemainingLines(reader));
+
+    }
+
+    private void buildBasicGrids(Scanner reader) {
+
         int x = reader.nextInt();
         int y = reader.nextInt();
 
         // Throw away the rest of the line
         reader.nextLine();
 
-        // Build basic grids
-        setCellGrid(new Cell[x][y]);
-        setEntityGrid(new Entity[x][y]);
-
-        // Build basic cell grid
-        buildBasicCellGrid(reader, x, y);
-
-        // Populate grids
-        buildCompleteGrids(reader);
-
-    }
-
-    /**
-     * Builds a basic Wall / Ground grid
-     * @param reader the scanner
-     * @param x the width of the grid
-     * @param y the height of the grid
-     */
-    private void buildBasicCellGrid(Scanner reader, int x, int y) {
+        this.cellGrid = new Cell[x][y];
+        this.entityGrid = new Entity[x][y];
 
         for (int i = 0 ; i < y ; i++) {
 
@@ -103,77 +85,90 @@ class Level {
 
     }
 
-    /**
-     * Builds the remainder of the level grids
-     * @param reader the scanner
-     */
-    private void buildCompleteGrids(Scanner reader) {
+    private String readRemainingLines(Scanner reader) {
 
-        String[] line; // Line being parsed
-        String name; // Name of a thing
-        int x; // X component of a thing
-        int y; // Y component of a thing
-        int dir; // Direction used for Enemy and Player
-        int req; // Requirement value used for TokenDoor
-        Color colour; // Colour used for Key and KeyDoor
+        StringBuilder stringBuilder = new StringBuilder();
 
         while (reader.hasNextLine()) {
+            stringBuilder.append(reader.nextLine());
+        }
 
-            line = reader.nextLine().toUpperCase().split(",");
-            name = line[0];
-            x = Integer.parseInt(line[1]);
-            y = Integer.parseInt(line[2]);
+        reader.close();
 
-            if (name.contains("ENEMY") || "PLAYER".equals(name)) {
-                dir = Integer.parseInt(line[3]);
+        return stringBuilder.toString();
 
-                if ("PLAYER".equals(name)) {
-                    this.entityGrid[x][y] = new Player(new Position(x, y), dir);
-                } else if ("SMARTENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new SmartEnemy(new Position(x, y), dir);
-                } else if ("DUMBENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new DumbEnemy(new Position(x, y), dir);
-                } else if ("WALLENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new WallEnemy(new Position(x, y), dir);
-                } else if ("LINEENEMY".equals(name)) {
-                    this.entityGrid[x][y] = new LineEnemy(new Position(x, y), dir);
+    }
+
+    private void buildGrids(String file) {
+
+        StringTokenizer t = new StringTokenizer(file, ",");
+
+        String label;
+        Position position;
+        int direq;
+
+        while (t.hasMoreTokens()) {
+
+            label = t.nextToken();
+
+            System.out.println(label);
+
+            position = new Position(Integer.parseInt(t.nextToken()), Integer.parseInt(t.nextToken()));
+
+            if ("PLAYER".equals(label) || label.contains("ENEMY")) {
+
+                direq = Integer.parseInt(t.nextToken());
+
+                if ("PLAYER".equals(label)) {
+                    this.entityGrid[position.x][position.y] = new Player(position, direq);
+                } else if ("SMARTENEMY".equals(label)) {
+                    this.entityGrid[position.x][position.y] = new SmartEnemy(position, direq);
+                } else if ("DUMBENEMY".equals(label)) {
+                    this.entityGrid[position.x][position.y] = new DumbEnemy(position, direq);
+                } else if ("WALLENEMY".equals(label)) {
+                    this.entityGrid[position.x][position.y] = new WallEnemy(position, direq);
+                } else if ("LINEENEMY".equals(label)) {
+                    this.entityGrid[position.x][position.y] = new LineEnemy(position, direq);
                 }
 
-            } else if (name.equals("KEYDOOR")) {
+            } else if ("KEYDOOR".equals(label)) {
 
-                colour = Color.rgb(Integer.parseInt(line[3]), Integer.parseInt(line[4]), Integer.parseInt(line[5]));
+                int r = Integer.parseInt(t.nextToken());
+                int g = Integer.parseInt(t.nextToken());
+                int b = Integer.parseInt(t.nextToken());
 
-                int keyX = Integer.parseInt(line[6]);
-                int keyY = Integer.parseInt(line[7]);
+                Color colour = Color.rgb(r, g, b);
 
-                this.cellGrid[x][y] = new KeyDoor(colour);
-                this.entityGrid[keyX][keyY] = new Key(colour);
+                this.cellGrid[position.x][position.y] = new KeyDoor(colour);
 
-            } else if ("TOKEN".equals(name)) {
-                this.entityGrid[x][y] = new Token();
-            } else if ("TOKENDOOR".equals(name)) {
-                req = Integer.parseInt(line[3]);
-                this.cellGrid[x][y] = new TokenDoor(req);
-            } else if ("GOAL".equals(name)) {
-                this.cellGrid[x][y] = new Goal();
-            } else if ("FIRE".equals(name)) {
-                this.cellGrid[x][y] = new Fire();
-            } else if ("WATER".equals(name)) {
-                this. cellGrid[x][y] = new Water();
-            } else if ("FIREBOOTS".equals(name)) {
-                this.entityGrid[x][y] = new FireBoots();
-            } else if ("FLIPPERS".equals(name)) {
-                this.entityGrid[x][y] = new Flippers();
-            } else if ("TELEPORTER".equals(name)) {
+                position = new Position(Integer.parseInt(t.nextToken()), Integer.parseInt(t.nextToken()));
+
+                this.entityGrid[position.x][position.y] = new Key(colour);
+
+            } else if ("TOKEN".equals(label)) {
+                this.entityGrid[position.x][position.y] = new Token();
+            } else if ("TOKENDOOR".equals(label)) {
+                direq = Integer.parseInt(t.nextToken());
+                this.cellGrid[position.x][position.y] = new TokenDoor(direq);
+            } else if ("GOAL".equals(label)) {
+                this.cellGrid[position.x][position.y] = new Goal();
+            } else if ("FIRE".equals(label)) {
+                this.cellGrid[position.x][position.y] = new Fire();
+            } else if ("WATER".equals(label)) {
+                this.cellGrid[position.x][position.y] = new Water();
+            } else if ("FIREBOOTS".equals(label)) {
+                this.entityGrid[position.x][position.y] = new FireBoots();
+            } else if ("FLIPPERS".equals(label)) {
+                this.entityGrid[position.x][position.y] = new Flippers();
+            } else if ("TELEPORTER".equals(label)) {
 
                 Teleporter temp = new Teleporter();
 
-                this.cellGrid[x][y] = temp;
+                this.cellGrid[position.x][position.y] = temp;
 
-                int pairX = Integer.parseInt(line[3]);
-                int pairY = Integer.parseInt(line[4]);
+                position = new Position(Integer.parseInt(t.nextToken()), Integer.parseInt(t.nextToken()));
 
-                this.cellGrid[pairX][pairY] = new Teleporter(temp);
+                this.cellGrid[position.x][position.y] = new Teleporter(temp);
             }
 
         }
