@@ -20,7 +20,7 @@ class Water extends Obstacle {
     /**
      * Constructor
      */
-    public Water() {
+    Water() {
         super(SPRITE, false);
     }
 

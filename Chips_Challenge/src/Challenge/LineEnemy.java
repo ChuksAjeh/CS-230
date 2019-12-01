@@ -17,21 +17,30 @@ class LineEnemy extends Enemy {
         SPRITE = new Image("images/ENTITY_LINE_ENEMY.png");
     }
 
-    public LineEnemy(int direction,int x, int y) {
-        super(SPRITE, direction,x,y);
+    /**
+     * Constructs a Line Enemy Entity
+     * @param position the position of the Line Enemy
+     * @param direction the initial direction of the Line Enemy
+     */
+    LineEnemy(Position position, int direction) {
+        super(SPRITE, position, direction);
     }
 
-    private int nextDirection() {
+    /**
+     * Used to calculate the next direction for the line enemy
+     * @return the next direction
+     */
+    public int nextDirection() {
 
-        // Check for direction, then check whether next position is a wall
-        // If it is a wall, change direction, else keep same direction.
-        // This should be called every update.
+        // This method is basically magic, do not question it's technique!
 
-        Cell[] sc = getSurroundingCells();
-        int dir = getDirection();
+        boolean[] passable = getCells();
 
-        return sc[dir] instanceof Wall ? (dir + 2) % 4 : dir;
+        if (!passable[this.direction]) {
+            this.setDirection((this.direction + 2) % 4);
+        }
 
+        return this.direction;
     }
 
 }

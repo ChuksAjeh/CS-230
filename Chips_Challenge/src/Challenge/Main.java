@@ -8,15 +8,23 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.nio.file.Paths;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,21 +44,33 @@ public class Main extends Application {
     private Canvas canvas;
 
     private static Level level;
-    private final Player player = new Player(0);
     private final Controller controller = new Controller();
-    Lumberjack jack = new Lumberjack();
+    private final Lumberjack jack = new Lumberjack();
     private final Game game = new Game();
     private Stage window;
+  
+    //Mediaplayer
+    private static MediaPlayer mediaPlayer;
 
     public static void main(String[] args) { launch(args);}
 
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
         window = primaryStage;
-        Scene intro = mainMenu(window);
+        Scene intro = begin(window);
 
         window.setTitle("Jungle Hunt");
         window.setScene(intro);
         window.show();
+
+        try {
+            Media media = new Media(Paths.get("music/background_music1.mp3").toUri().toString());
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.setVolume(0.2);
+            mediaPlayer.play();
+        } catch (Exception E) {
+            jack.log(1,E.toString());
+        }
     }
 
     private Label messageOfTheDay() {
@@ -89,6 +109,140 @@ public class Main extends Application {
         return bottomBar;
     }
 
+    private Scene begin(Stage window) {
+        BorderPane root = new BorderPane();
+
+        Button startButton = new Button("START");
+        startButton.setPrefSize(150,100);
+
+        Label title = new Label("JUNGLE HUNT");
+
+        root.setCenter(startButton);
+        BorderPane.setAlignment(root.getCenter(), Pos.CENTER);
+
+        root.setTop(title);
+        BorderPane.setAlignment(root.getTop(), Pos.TOP_CENTER);
+
+        BorderPane.setMargin(root.getCenter(), new Insets(0,0,150,0));
+
+        root.setBottom(bottomBar());
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(3.0);
+        dropShadow.setOffsetY(3.0);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+
+        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
+        title.setEffect(dropShadow);
+
+        startButton.setOnAction(e -> window.setScene(userSelection(window)));
+
+        root.setStyle("-fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%)");
+
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+
+    private Scene userSelection(Stage window) {
+
+        BorderPane root = new BorderPane();
+
+        VBox menu = new VBox();
+
+        EditableButton newUser = new EditableButton("Create user profile");
+
+        ComboBox<String> loadUser = new ComboBox<>();
+
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        File path = new File("Users/");
+
+        File[] files = path.listFiles();
+
+        for (File file : files) {
+            loadUser.getItems().add(file.getName());
+        }
+
+        loadUser.setPromptText("Select user profile");
+        //Button loadUser = new Button("Load user profiles");
+
+        loadUser.setOnAction(e -> window.setScene(loadGame(window)));
+
+        Button quit = new Button("Quit");
+
+        menu.getChildren().addAll(newUser, loadUser, quit);
+        menu.setAlignment(Pos.CENTER);
+
+        root.setCenter(menu);
+        root.setBottom(bottomBar());
+
+        quit.setOnAction(e -> System.exit(0));
+
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+
+    private Scene newGame(Stage window) {
+        BorderPane root = new BorderPane();
+
+        VBox vBox = new VBox();
+
+        Button startButton = new Button("New Game");
+
+        vBox.getChildren().add(startButton);
+        vBox.setAlignment(Pos.CENTER);
+
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_Files/");
+        File[] files = path.listFiles();
+
+        assert files!=null;
+
+        startButton.setOnAction(e -> {
+            String levelName = files[0].getName();
+            levelName = levelName.substring(0,levelName.length()-4);
+            window.setScene(gaming(levelName));
+        });
+
+        root.setCenter(vBox);
+
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+    private Scene loadGame(Stage window) {
+        BorderPane root = new BorderPane();
+
+        VBox vBox = new VBox();
+
+
+        Button startButton = new Button("New game");
+
+        Button loadButton = new Button("Load game");
+
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_files/");
+        File[] files = path.listFiles();
+
+        assert files!=null;
+
+        startButton.setOnAction(e -> {
+            String levelName = files[0].getName();
+            levelName = levelName.substring(0,levelName.length()-4);
+            window.setScene(gaming(levelName));
+        });
+
+
+        vBox.getChildren().addAll(startButton,loadButton);
+        vBox.setAlignment(Pos.CENTER);
+
+        root.setCenter(vBox);
+
+        loadButton.setOnAction(e -> window.setScene(displayLevel(window)));
+
+        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+    // TODO I'll delete this method, I just keep it for now for testing
     private Scene mainMenu(Stage window) {
 
         BorderPane root = new BorderPane();
@@ -102,6 +256,9 @@ public class Main extends Application {
         VBox menu = new VBox();
         menu.getChildren().addAll(startButton, users, quit, test);
 
+        menu.setSpacing(50);
+
+
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
@@ -114,9 +271,12 @@ public class Main extends Application {
 
         test.setOnAction(e -> window.setScene(new Scene(pauseMenu(), WINDOW_WIDTH, WINDOW_HEIGHT)));
 
+        //scene.getStylesheets().add("file:layout.css");
+
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
+    // TODO I'll delete this method, I just keep it for now for testing
     private Scene profileMenu(Stage window) {
 
         BorderPane root = new BorderPane();
@@ -141,16 +301,19 @@ public class Main extends Application {
         selectProfile.setOnAction(e -> window.setScene(displayUsers()));
         selectLevel.setOnAction(e -> window.setScene(displayLevel(window)));
 
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
+    //TODO I'll delete this method soon, users display goes into comboBox
     private Scene displayUsers(){
 
         BorderPane root = new BorderPane();
 
         VBox menu = new VBox();
 
-//        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
         File path = new File("Users/");
 
         File[] files = path.listFiles();
@@ -183,13 +346,13 @@ public class Main extends Application {
 
     }
 
-    public Scene displayLevel(Stage window) {
+    private Scene displayLevel(Stage window) {
 
         BorderPane root = new BorderPane();
 
         VBox menu = new VBox();
 
-//        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
@@ -234,7 +397,7 @@ public class Main extends Application {
         vBox.setAlignment(Pos.CENTER);
         middleMenu.setCenter(vBox);
 
-        goBack.setOnAction(e -> window.setScene(mainMenu(window)));
+        goBack.setOnAction(e -> window.setScene(userSelection(window)));
 
         exitGame.setOnAction(e -> System.exit(0));
 
@@ -243,6 +406,11 @@ public class Main extends Application {
         //middleMenu.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
 
         //middleMenu.getStyleClass().add("middleMenu");
+
+        //middleMenu.getStylesheets().add("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\src\\Challenge\\layout.css");
+        //middleMenu.getStyleClass().add("middleMenu");
+
+        middleMenu.setStyle("-fx-background-color: linear-gradient(to top, #003300 9%, #006600 100%)");
 
         return middleMenu;
     }
@@ -255,17 +423,14 @@ public class Main extends Application {
         BorderPane drawing = new BorderPane();
         drawing.setPrefSize(960,670);
 
-
         StackPane stack = new StackPane();
         //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         System.out.println("SUCCESS!");
 
-
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         drawing.setCenter(canvas);
-
 
         level = controller.makeLevel(name);
 
@@ -278,7 +443,7 @@ public class Main extends Application {
         root.setCenter(stack);
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, player, game, canvas, stack));
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, stack));
 
         return play;
 
@@ -301,12 +466,12 @@ public class Main extends Application {
 
             tf.setOnAction(ae -> {
 
-//                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
                 File path = new File("Users/" + tf.getText());
 
                 path.mkdir();
 
-                window.setScene(displayUsers());
+                window.setScene(newGame(window));
 
             });
         }

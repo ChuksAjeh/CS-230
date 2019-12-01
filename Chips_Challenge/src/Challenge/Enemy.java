@@ -1,5 +1,4 @@
 package Challenge;
-//#TODO Link enemy x and y to the actual grid. i.e. enemyX = 1 and enemy Y = 1 corresponds to cellGrid[1][1]
 
 import javafx.scene.image.Image;
 
@@ -7,7 +6,7 @@ import javafx.scene.image.Image;
  * Enemies are movable hazards designed to end the level upon contact with the player.
  * Each enemy has its own unique way of moving to the player.
  * Again this class shouldn't be instantiated, instead, its sub-classes should be.
- * @author ..
+ * @author George Carpenter, Angelo Balistoy
  * @version 1.0
  */
 //Enemies can only stand on ground
@@ -16,17 +15,7 @@ abstract class Enemy extends Entity {
     /**
      * The direction the enemy will travel
      */
-    private int direction;
-
-    /**
-     * The enemy X's position relative to top left cell == 0
-     */
-    private int enemyX;
-
-    /**
-     * The enemy Y's position relative to top left cell == 0
-     */
-    private int enemyY;
+    int direction;
 
     /**
      * The cell grid the enemy uses
@@ -39,65 +28,110 @@ abstract class Enemy extends Entity {
     private Entity[][] entityGrid;
 
     /**
-     * Creates an enemy
-     * @param direction the direction the enemy is set upon creation
+     * The position of the Enemy
      */
-    Enemy(Image sprite, int direction, int x, int y) {
-        super(sprite);
-        this.direction = direction;
-        this.enemyX = x;
-        this.enemyY = y;
-    }
+    private Position position;
 
     /**
-     * Moves the enemy based on the inputted direction
-     * @param direction The direction 0-3 representing N-S-E-W
-     * @return The new coordinates the enemy will be at in the entity grid.
+     * Creates an enemy
+     * @param sprite the sprite used to represent this Entity
+     * @param position the position of the Enemy
+     * @param direction the direction the enemy is set upon creation
      */
-    protected int[] move(int direction) {
-
-//        if (0 == direction) {
-//             UP
-//            this.enemyY += 1;
-//        } else if (1 == direction) {
-//             RIGHT
-//            this.enemyX += 1;
-//        } else if (2 == direction) {
-//             DOWN
-//            this.enemyY -= 1;
-//        } else if (3 == direction) {
-//             LEFT
-//            this.enemyX -= 1;
-//        }
-
-        return null;
+    Enemy(Image sprite, Position position, int direction) {
+        super(sprite);
+        this.position = position;
+        this.direction = direction;
     }
 
-    Cell[] getSurroundingCells() {
+    Entity[][] move(Level level, Entity[][] entityGrid) {
 
-        int x = getEnemyX();
-        int y = getEnemyY();
+        Position position = this.getPosition();
+        int direction = 0;
 
-        return new Cell[] {
-            cellGrid[x][y - 1],
-            cellGrid[x + 1][y],
-            cellGrid[x][y + 1],
-            cellGrid[x - 1][y]
-        };
+        int x = position.x;
+        int y = position.y;
+
+        if (this instanceof SmartEnemy) {
+            direction = ((SmartEnemy) this).nextDirection(level, level.getPlayer());
+        } else if (this instanceof DumbEnemy) {
+            direction = ((DumbEnemy) this).nextDirection(level.getPlayer());
+        } else if (this instanceof LineEnemy) {
+            direction = ((LineEnemy) this).nextDirection();
+        } else if (this instanceof WallEnemy) {
+            direction = ((WallEnemy) this).nextDirection();
+        }
+
+        if (0 == direction) {
+            this.position = new Position(x, y - 1);
+            entityGrid[x][y - 1] = this;
+        } else if (1 == direction) {
+            this.position = new Position(x + 1, y);
+            entityGrid[x + 1][y] = this;
+        } else if (2 == direction) {
+            this.position = new Position(x, y + 1);
+            entityGrid[x][y + 1] = this;
+        } else if (3 == direction) {
+            this.position = new Position(x - 1, y);
+            entityGrid[x - 1][y] = this;
+        } else if (42 == direction) {
+            // Enemy cannot move, send halp!
+            // Owait never mind we can just noobmaster69 out of it!
+            return entityGrid;
+        }
+
+        entityGrid[position.x][position.y] = null;
+
+        return entityGrid;
 
     }
 
-    Entity[] getSurroundingEntitys() {
+//
+//                                  __
+//                         /\    .-" /
+//                        /  ; .'  .'
+//                       :   :/  .'
+//                        \  ;-.'
+//           .--""""--..__/     `.
+//         .'           .'    `o  \
+//        /                    `   ;
+//       :                  \      :
+//     .-;        -.         `.__.-'
+//    :  ;          \     ,   ;
+//    '._:           ;   :   (
+//        \/  .__    ;    \   `-.
+//         ;     "-,/_..--"`-..__)
+//         '""--.._:
+//
+//  Figure I, the Killer Rabbit of Caerbannog
+//
 
-        int x = getEnemyX();
-        int y = getEnemyY();
+    boolean[] getCells() {
 
-        return new Entity[] {
-            entityGrid[x][y - 1],
-            entityGrid[x + 1][y],
-            entityGrid[x][y + 1],
-            entityGrid[x - 1][y]
+        int x = this.position.x;
+        int y = this.position.y;
+
+        boolean[] passable = new boolean[4];
+
+        Cell[] sc = new Cell[] {
+            this.cellGrid[x][y - 1],
+            this.cellGrid[x + 1][y],
+            this.cellGrid[x][y + 1],
+            this.cellGrid[x - 1][y]
         };
+
+        Entity[] se = new Entity[] {
+            this.entityGrid[x][y - 1],
+            this.entityGrid[x + 1][y],
+            this.entityGrid[x][y + 1],
+            this.entityGrid[x - 1][y]
+        };
+
+        for (int i = 0; i < passable.length; i++) {
+            passable[i] = sc[i] instanceof Ground && se[i] == null;
+        }
+
+        return passable;
 
     }
 
@@ -109,32 +143,12 @@ abstract class Enemy extends Entity {
         return this.cellGrid;
     }
 
-    public int[] getPlayerLocation() {
-        return null;
-    }
-
     /**
      * Sets the direction of the enemy.
      * @param direction The new direction of the enemy.
      */
-    public void setDirection(int direction) {
+    void setDirection(int direction) {
         this.direction = direction;
-    }
-
-    /**
-     * Sets the enemy's X coordinate.
-     * @param enemyX The new X coordinate.
-     */
-    public void setEnemyX(int enemyX) {
-        this.enemyX = enemyX;
-    }
-
-    /**
-     * Sets the enemy's Y coordinate.
-     * @param enemyY The new Y coordinate.
-     */
-    public void setEnemyY(int enemyY) {
-        this.enemyY = enemyY;
     }
 
     /**
@@ -161,20 +175,8 @@ abstract class Enemy extends Entity {
         return direction;
     }
 
-    /**
-     * Gets the enemy's X coordinate.
-     * @return The X coordinate.
-     */
-    int getEnemyX() {
-        return enemyX;
-    }
-
-    /**
-     * Gets the enemy's Y coordinate.
-     * @return  The Y coordinate.
-     */
-    int getEnemyY() {
-        return enemyY;
+    public Position getPosition() {
+        return this.position;
     }
 
 }

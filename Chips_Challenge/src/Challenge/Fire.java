@@ -20,7 +20,7 @@ class Fire extends Obstacle {
     /**
      * Constructor
      */
-    public Fire() {
+    Fire() {
         super(SPRITE, false);
     }
 

@@ -17,10 +17,31 @@ class Goal extends Cell {
         SPRITE = new Image("images/CELL_GOAL.png");
     }
 
+//
+//            ___---___
+//         .--         --.
+//       ./   ()      .-. \.
+//      /   o    .   (   )  \
+//     / .            '-'    \
+//    | ()    .  O         .  |
+//   |                         |
+//   |    o           ()       |
+//   |       .--.          O   |
+//    | .   |    |            |
+//     \    `.__.'    o   .  /
+//      \                   /
+//       `\  o    ()      /'
+//         `--___   ___--'
+//               ---
+//
+//  Figure IV - The real goal
+//  (it is also made of cheese)
+//
+
     /**
      * Constructor
      */
-    public Goal() {
+    Goal() {
         super(SPRITE, true);
     }
 

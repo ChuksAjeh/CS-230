@@ -1,11 +1,8 @@
 package Challenge;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 class Game {
 
@@ -13,11 +10,10 @@ class Game {
     private static final int GRID_CELL_WIDTH = 120;
     private static final int GRID_CELL_HEIGHT = 120;
 
-    private Player player = new Player(0);
     Lumberjack jack = new Lumberjack();
     private final Save save = new Save();
 
-    public void drawGame(Level level, Canvas canvas) {
+    void drawGame(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;
@@ -29,7 +25,7 @@ class Game {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         // Does this need a comment? method names should infer their purpose
-        int[] offset = this.calculateOffSet(player, level, canvas);
+        int[] offset = this.calculateOffSet(level, canvas);
 
         // Render stuff
         this.renderBackground(gc, canvas);
@@ -45,14 +41,15 @@ class Game {
 
     }
 
-    private int[] calculateOffSet(Player player, Level level, Canvas canvas) {
+    private int[] calculateOffSet(Level level, Canvas canvas) {
 
         // Not 100% sure of this, it may change, please don't try to comment it
 
-        int[] playerLocOffset = player.getLocation(level.getEntityGrid());
+        Player player = level.getPlayer();
+        Position playerPosition = player.getPosition();
 
-        int playerXOffset = playerLocOffset[0] * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
-        int playerYOffset = playerLocOffset[1] * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
+        int playerXOffset = playerPosition.x * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
+        int playerYOffset = playerPosition.y * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
 
         int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
@@ -64,19 +61,11 @@ class Game {
 
     private void renderBackground(GraphicsContext gc, Canvas canvas) {
 
-        int boundWidth = 0 - GRID_CELL_WIDTH / 2;
-        int boundHeight = 0 - GRID_CELL_HEIGHT / 2;
+        Image backing = new Image("images/BACKING.png");
+        backing = SpriteConverter.resize(backing, (int) canvas.getHeight(), (int) canvas.getWidth());
+        gc.drawImage(backing, 0, 0);
 
-        Wall backing = new Wall();
-        Image backingSprite = backing.getSprite();
-
-        for (int x = boundWidth ; x < canvas.getWidth() - boundWidth ; x += GRID_CELL_WIDTH) {
-            for (int y = boundHeight ; y < canvas.getHeight() - boundHeight ; y += GRID_CELL_HEIGHT) {
-                
-                gc.drawImage(backingSprite, x, y);
-
-            }
-        }
+        // gc.drawImage(SpriteConverter.resize(new Image("images/BACKING.png"), (int) canvas.getHeight(), (int) canvas.getWidth()), 0, 0);
 
     }
 
@@ -89,7 +78,7 @@ class Game {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = resize(cell.getSprite());
+                Image sprite = SpriteConverter.resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
                 gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
 
@@ -127,52 +116,17 @@ class Game {
         int x = position[0];
         int y = position[1];
 
-        Image sprite = resize(entity.getSprite());
+        Image sprite = SpriteConverter.resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
-            this.player = (Player) entity;
-            gc.drawImage(rotate(sprite, player.getDirection()), x, y);
+            gc.drawImage(SpriteConverter.rotate(sprite, ((Player) entity).getDirection()), x, y);
         } else if (entity.getClass().getSimpleName().contains("Enemy")) {
             Enemy enemy = (Enemy) entity;
-            gc.drawImage(rotate(sprite, enemy.getDirection()), x, y);
+            gc.drawImage(SpriteConverter.rotate(sprite, enemy.getDirection()), x, y);
         } else {
             gc.drawImage(sprite, x, y);
         }
 
-    }
-
-    private Image resize(Image image) {
-
-        // Read Image
-        ImageView imageView = new ImageView(image);
-
-        // Resize
-        imageView.setFitHeight(Game.GRID_CELL_HEIGHT);
-        imageView.setFitWidth(Game.GRID_CELL_WIDTH);
-
-        // Capture it? I think
-        SnapshotParameters param = new SnapshotParameters();
-
-        param.setFill(Color.TRANSPARENT);
-
-        return imageView.snapshot(param, null);
-
-    }
-
-    private Image rotate(Image image, int direction) {
-
-        // Read Image
-        ImageView imageView = new ImageView(image);
-
-        // Rotate
-        imageView.setRotate(90 * direction);
-
-        // Capture it? I think
-        SnapshotParameters param = new SnapshotParameters();
-
-        param.setFill(Color.TRANSPARENT);
-
-        return imageView.snapshot(param, null);
     }
 
 }

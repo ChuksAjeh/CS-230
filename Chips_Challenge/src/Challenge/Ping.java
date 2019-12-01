@@ -29,6 +29,30 @@ class Ping {
 
     }
 
+//
+//                    ,        ,
+//               /(        )`
+//               \ \___   / |
+//               /- _  `-/  '
+//              (/\/ \ \   /\
+//              / /   | `    \
+//              O O   ) /    |
+//              `-^--'`<     '
+//             (_.)  _  )   /
+//              `.___/`    /
+//                `-----' /
+//   <----.     __ / __   \
+//   <----|====O)))==) \) /====
+//   <----'    `--' `.__,' \
+//                |        |
+//                 \       /
+//            ______( (_  / \______
+//          ,'  ,-----'   |        \
+//          `--{__________)        \/
+//
+//  Figure II - Beastie
+//
+
     /**
      * Calculates data to send to the web server
      * @return the data to ping towards the web server
@@ -75,7 +99,7 @@ class Ping {
     }
 
     /**
-     * Shifts Characters up, A -> B etc
+     * Shifts Characters up, A to B etc
      * @param c the character to shift
      * @return the shifted character
      */
@@ -84,7 +108,7 @@ class Ping {
     }
 
     /**
-     * Shifts Characters down, B -> A etc
+     * Shifts Characters down, B to A etc
      * @param c the character to shift
      * @return the shifted character
      */

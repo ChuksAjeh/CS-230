@@ -2,7 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -37,6 +36,8 @@ class Player extends Entity {
      */
     private boolean alive;
 
+    private Position position;
+
     // TESTING
     private final Lumberjack jack = new Lumberjack();
 
@@ -46,18 +47,17 @@ class Player extends Entity {
 
     /**
      * Constructs a Player object
+     * @param position the position of the Player
      * @param direction the direction the player is facing
      */
-    public Player(int direction) {
+    public Player(Position position, int direction) {
         super(SPRITE);
+        this.position = position;
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
         this.alive = true;
     }
-
-    private Stage window;
-    private static Main main;
 
     /**
      * Used to move the player object in the Entity grid
@@ -69,15 +69,17 @@ class Player extends Entity {
 
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
+
         //Debug
-        for(int i = 0; i <  entityGrid.length; i++) {
-            for (int j = 0; j < entityGrid[i].length; j++) {
-                if (entityGrid[i][j] instanceof SmartEnemy) {
-                    SmartEnemy enemy = (SmartEnemy) entityGrid[i][j];
-                    jack.log(1, Integer.toString(enemy.nextDirection(level, this)));
-                }
-            }
-        }
+//        for (Entity[] entities : entityGrid) {
+//            for (Entity entity : entities) {
+//                if (entity instanceof SmartEnemy) {
+//                    SmartEnemy enemy = (SmartEnemy) entity;
+//                    jack.log(1, Integer.toString(enemy.nextDirection(level, this)));
+//                }
+//            }
+//        }
+
         int x = locations[0];
         int y = locations[1];
         int newX = locations[2];
@@ -87,7 +89,7 @@ class Player extends Entity {
         int height = entityGrid[0].length - 1;
 
         if (newX < 0 || newY < 0 || newX > width || newY > height) {
-            jack.log(1, "Player out of bounds");
+            // jack.log(1, "Player out of bounds");
             return entityGrid;
         } else {
 
@@ -100,8 +102,8 @@ class Player extends Entity {
 
                     this.addItem((Item) entityGrid[newX][newY], level);
 
-                    jack.log("FOUND ITEM");
-                    jack.log(this.inventory.toString());
+                    // jack.log("FOUND ITEM");
+                    // jack.log(this.inventory.toString());
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {
 
@@ -114,9 +116,9 @@ class Player extends Entity {
 
             } else if (cell instanceof KeyDoor) {
 
-                Color doorColour = ((KeyDoor) cell).getColour();
+                KeyDoor.Colour doorColour = (((KeyDoor) cell).getColour());
 
-                jack.log(1, "Walking into a KeyDoor");
+                // jack.log(1, "Walking into a KeyDoor");
 
                 if (null != findKey(doorColour)) {
                     openKeyDoor(level, doorColour, newX, newY);
@@ -128,8 +130,8 @@ class Player extends Entity {
 
                 TokenDoor currentDoor = (TokenDoor) cell;
 
-                jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
-                jack.log(1, "Current Tokens " + this.tokenCount);
+                // jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
+                // jack.log(1, "Current Tokens " + this.tokenCount);
 
                 if (this.tokenCount >= currentDoor.getRequirement()) {
                     openTokenDoor(level, currentDoor, newX, newY);
@@ -141,7 +143,7 @@ class Player extends Entity {
 
                 Teleporter pair = ((Teleporter) cell).getPair();
 
-                jack.log(1, "Walking into a Teleporter. ");
+                // jack.log(1, "Walking into a Teleporter. ");
 
                 int[] pairLocation = level.getLocation(cellGrid, pair);
 
@@ -150,7 +152,7 @@ class Player extends Entity {
 
             } else if (!cell.isPassable()) {
 
-                jack.log(1, "Oof, you walked into a wall");
+                // jack.log(1, "Oof, you walked into a wall");
 
                 return entityGrid;
 
@@ -163,6 +165,9 @@ class Player extends Entity {
 
             // Add the player at new location
             entityGrid[newX][newY] = this;
+
+            // Update the Players Position
+            this.position = new Position(newX, newY);
 
             return entityGrid;
         }
@@ -266,7 +271,7 @@ class Player extends Entity {
      * @param newX the X location of the door
      * @param newY the Y location of the door
      */
-    private void openKeyDoor(Level level, Color doorColour, int newX, int newY) {
+    private void openKeyDoor(Level level, KeyDoor.Colour doorColour, int newX, int newY) {
 
         Cell[][] cellGrid = level.getCellGrid();
 
@@ -329,16 +334,19 @@ class Player extends Entity {
      * @param colour the colour to search for
      * @return the key, if present
      */
-    private Item findKey(Color colour) {
+    private Item findKey(KeyDoor.Colour colour) {
 
         for (Item item : this.inventory) {
             if (item instanceof Key) {
 
                 Key currentKey = (Key) item;
 
-                if (colour.equals(currentKey.getColour())) {
+                System.out.println(currentKey.getColour().toString());
+
+                if (colour.toString().equals(currentKey.getColour().toString())) {
                     return item;
                 }
+
             }
         }
 
@@ -421,6 +429,10 @@ class Player extends Entity {
      */
     private void killPlayer() {
         this.alive = false;
+    }
+
+    public Position getPosition() {
+        return this.position;
     }
 
 }

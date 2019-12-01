@@ -1,7 +1,6 @@
 package Challenge;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  * @author George Carpenter
@@ -17,27 +16,59 @@ class Key extends Item {
     /**
      * The colour of the key
      */
-    private final Color colour;
+    private final Colour colour;
+
+    public enum Colour {
+        RED, GREEN, BLUE, WHITE, BLACK
+    }
 
     static {
         SPRITE = new Image("images/ENTITY_KEY.png");
+
+//
+//     .---.
+//    /    |\________________
+//   ( ()  | ________   _   _)
+//    \    |/        | | | |
+//     `---'         "-" |_|
+//
+//  Figure III - A key
+//
+
     }
 
     /**
      * Constructor
      * @param colour the colour of the key
      */
-    public Key(Color colour) {
+    Key(String colour) {
         super(SPRITE);
-        this.colour = colour;
+        this.colour = setColour(colour);
     }
 
     /**
      * Gets the colour of the key
      * @return the colour of the key
      */
-    public Color getColour() {
+    public Colour getColour() {
         return this.colour;
+    }
+
+    private Colour setColour(String colour) {
+
+        if ("RED".equals(colour)) {
+            return Key.Colour.RED;
+        } else if ("GREEN".equals(colour)) {
+            return Key.Colour.GREEN;
+        } else if ("BLUE".equals(colour)) {
+            return Key.Colour.BLUE;
+        } else if ("WHITE".equals(colour)) {
+            return Key.Colour.WHITE;
+        } else if ("BLACK".equals(colour)) {
+            return Key.Colour.BLACK;
+        }
+
+        return null;
     }
 
 }
