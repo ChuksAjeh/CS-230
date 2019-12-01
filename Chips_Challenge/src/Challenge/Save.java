@@ -179,7 +179,7 @@ class Save {
 
     private void writeEnemy(Enemy enemy) throws IOException {
 
-        this.writer.write(enemy.getClass().getSimpleName());
+        this.writer.write(enemy.getClass().getSimpleName() + ",");
         this.writer.write(enemy.getPosition().x + ",");
         this.writer.write(enemy.getPosition().y + ",");
         this.writer.write(enemy.getDirection() + ",\n");
