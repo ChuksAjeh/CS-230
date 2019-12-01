@@ -1,9 +1,0 @@
-.root {
-    -fx-background-color: #003300;
-    -fx-border-color: rgb(49,89,23);
-}
-
-.button {
-    -fx-pref-width: 100;
-    -fx-pref-height: 50;
-}
