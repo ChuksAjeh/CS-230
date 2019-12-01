@@ -20,7 +20,7 @@ KeyDoor,11,3,0,0,0,2,5
 Token,3,1
 Token,3,2
 SmartEnemy6,4,0
-7,Player,6,1
+6,Player,6,0
 FireBoots,7,9
 KeyDoor,4,4,0,0,0,8,10
 KeyDoor,5,7,0,0,0,10,5

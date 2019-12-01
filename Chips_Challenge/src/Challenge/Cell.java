@@ -23,12 +23,18 @@ abstract class Cell {
 
     /**
      * Constructs a cell object.
+     * @param sprite the sprite used to represent this Cell
+     * @param passable whether or not this Cell is passable
      */
     Cell(Image sprite, boolean passable) {
         this.SPRITE = sprite;
         this.passable = passable;
     }
 
+    /**
+     * Changes a cells Passable state
+     * @param newValue if the cell should be passable
+     */
     public void setPassable(boolean newValue) {
         this.passable = newValue;
     }
@@ -49,17 +55,4 @@ abstract class Cell {
         return SPRITE;
     }
 
-    public int[] findCell(Cell cell, Cell[][] cellGrid) {
-        for (int x = 0 ; x < cellGrid.length ; x++ ) {
-            for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
-
-                if (cellGrid[x][y] == cell) {
-                    return new int[] {x, y};
-                }
-
-            }
-        }
-
-        return new int[] {0, 0};
-    }
 }

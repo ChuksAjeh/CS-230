@@ -1,12 +1,11 @@
 package Challenge;
 
-import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 /**
  * @author George Carpenter
@@ -14,11 +13,10 @@ import javafx.stage.Stage;
  */
 class Controller {
 
-    private final Lumberjack jack = new Lumberjack();
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, StackPane root) {
 
-
-    public void processKeyEvent(KeyEvent event, Level level, Player player, Game game, Canvas canvas, StackPane root) {
-        Entity[][] newGrid;
+        Entity[][] newGrid = level.getEntityGrid();
+        Player player = level.getPlayer();
 
         if (KeyCode.UP == event.getCode()) {
             newGrid = player.move(0, level);
@@ -34,9 +32,17 @@ class Controller {
             level.setEntityGrid(newGrid);
         } else if (KeyCode.ESCAPE == event.getCode()) {
             root.getChildren().get(0).toFront();
-        } /*else if (KeyCode.E == event.getCode()) {
+        } else if (KeyCode.E == event.getCode()) {
+            // Open the inventory, eventually
+        }
 
-        }*/
+        ArrayList<Enemy> enemies = level.getEnemies(newGrid);
+
+        for (Enemy e : enemies) {
+            e.setCellGrid(level.getCellGrid());
+            e.setEntityGrid(newGrid);
+            newGrid = e.move(level, newGrid);
+        }
 
         if (event.getCode().isArrowKey()) {
             game.drawGame(level, canvas);
@@ -52,13 +58,12 @@ class Controller {
 
         }
 
-
         // Consume the event. This means we mark it as dealt with.
         // This stops other GUI nodes (buttons etc) responding to it.
         event.consume();
     }
 
-    public Level makeLevel(String levelName) {
+    Level makeLevel(String levelName) {
 
         // Build a Level thing
         return new Level(levelName);

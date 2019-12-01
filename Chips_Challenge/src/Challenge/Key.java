@@ -21,13 +21,24 @@ class Key extends Item {
 
     static {
         SPRITE = new Image("images/ENTITY_KEY.png");
+
+//
+//     .---.
+//    /    |\________________
+//   ( ()  | ________   _   _)
+//    \    |/        | | | |
+//     `---'         "-" |_|
+//
+//  Figure III - A key
+//
+
     }
 
     /**
      * Constructor
      * @param colour the colour of the key
      */
-    public Key(Color colour) {
+    Key(Color colour) {
         super(SPRITE);
         this.colour = colour;
     }

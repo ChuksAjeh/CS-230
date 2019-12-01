@@ -2,7 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -37,6 +36,8 @@ class Player extends Entity {
      */
     private boolean alive;
 
+    private Position position;
+
     // TESTING
     private final Lumberjack jack = new Lumberjack();
 
@@ -46,18 +47,17 @@ class Player extends Entity {
 
     /**
      * Constructs a Player object
+     * @param position the position of the Player
      * @param direction the direction the player is facing
      */
-    public Player(int direction) {
+    public Player(Position position, int direction) {
         super(SPRITE);
+        this.position = position;
         this.inventory = new ArrayList<>();
         this.direction = direction;
         this.tokenCount = 0;
         this.alive = true;
     }
-
-    private Stage window;
-    private static Main main;
 
     /**
      * Used to move the player object in the Entity grid
@@ -69,15 +69,17 @@ class Player extends Entity {
 
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
+
         //Debug
-        for(int i = 0; i <  entityGrid.length; i++) {
-            for (int j = 0; j < entityGrid[i].length; j++) {
-                if (entityGrid[i][j] instanceof SmartEnemy) {
-                    SmartEnemy enemy = (SmartEnemy) entityGrid[i][j];
-                    jack.log(1, Integer.toString(enemy.nextDirection(level, this)));
-                }
-            }
-        }
+//        for (Entity[] entities : entityGrid) {
+//            for (Entity entity : entities) {
+//                if (entity instanceof SmartEnemy) {
+//                    SmartEnemy enemy = (SmartEnemy) entity;
+//                    jack.log(1, Integer.toString(enemy.nextDirection(level, this)));
+//                }
+//            }
+//        }
+
         int x = locations[0];
         int y = locations[1];
         int newX = locations[2];
@@ -163,6 +165,9 @@ class Player extends Entity {
 
             // Add the player at new location
             entityGrid[newX][newY] = this;
+
+            // Update the Players Position
+            this.position = new Position(newX, newY);
 
             return entityGrid;
         }
@@ -421,6 +426,10 @@ class Player extends Entity {
      */
     private void killPlayer() {
         this.alive = false;
+    }
+
+    public Position getPosition() {
+        return this.position;
     }
 
 }

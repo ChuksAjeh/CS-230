@@ -39,7 +39,7 @@ class Save {
     /**
      * Nice constructor
      */
-    public Save () {
+    Save() {
 
     }
 
@@ -47,7 +47,7 @@ class Save {
      * Saves the current Level to a file
      * @param level the level to save
      */
-    public void saveFile(Level level) {
+    void saveFile(Level level) {
 
         String directory;
         String levelName = level.getLevelName();
@@ -55,9 +55,7 @@ class Save {
         this.level = level;
         this.cellGrid = level.getCellGrid();
         this.entityGrid = level.getEntityGrid();
-        /**
-         * Filename to save to
-         */
+
         String fileName = levelName + "_" + "SAVE";
 
         // Create folder for the current User
@@ -78,11 +76,11 @@ class Save {
         try {
 
             // Create the file
-            if (file.createNewFile()) {
-                jack.log(1,"File is created!");
-            } else {
-                jack.log(1,"File already exists.");
-            }
+//            if (file.createNewFile()) {
+//                jack.log(1,"File is created!");
+//            } else {
+//                jack.log(1,"File already exists.");
+//            }
 
             // Write Content
             this.writer = new FileWriter(file);
@@ -169,8 +167,8 @@ class Save {
     private void writeEnemy(Enemy enemy) throws IOException {
 
         this.writer.write(enemy.getClass().getSimpleName());
-        this.writer.write(enemy.getEnemyX() + ",");
-        this.writer.write(enemy.getEnemyY() + ",");
+        this.writer.write(enemy.getPosition().x + ",");
+        this.writer.write(enemy.getPosition().y + ",");
         this.writer.write(enemy.getDirection() + "\n");
 
     }
@@ -204,7 +202,7 @@ class Save {
                     cDoor = (KeyDoor) cell;
 
                     if (cDoor.getColour() == key.getColour()) {
-                        keyDoorCoords = cDoor.findCell(cDoor, this.cellGrid);
+                        keyDoorCoords = this.level.getLocation(this.cellGrid, cDoor);
                     }
                 }
 
@@ -220,6 +218,38 @@ class Save {
         this.writer.write("\n");
 
     }
+
+//
+//  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+//  8                                                   8
+//  8  a---------------a                                8
+//  8  |               |                                8
+//  8  |               |                                8
+//  8  |               |                               8"
+//  8  "---------------"                               8a
+//  8                                                   8
+//  8                                                   8
+//  8                      ,aaaaa,                      8
+//  8                    ad":::::"ba                    8
+//  8                  ,d::;gPPRg;::b,                  8
+//  8                  d::dP'   `Yb::b                  8
+//  8                  8::8)     (8::8                  8
+//  8                  Y;:Yb     dP:;P  O               8
+//  8                  `Y;:"8ggg8":;P'                  8
+//  8                    "Yaa:::aaP"                    8
+//  8                       """""                       8
+//  8                                                   8
+//  8                       ,d"b,                       8
+//  8                       d:::8                       8
+//  8                       8:::8                       8
+//  8                       8:::8                       8
+//  8                       8:::8                       8
+//  8                       8:::8                       8
+//  8                  aaa  `bad'  aaa                  8
+//  """""""""""""""""""' `"""""""""' `"""""""""""""""""""
+//
+//  Figure VI - A proper format!
+//
 
     private void writeCells() throws IOException {
 
@@ -280,7 +310,7 @@ class Save {
     private void writeTeleporter(Teleporter teleporter, ArrayList<Teleporter> writtenTP) throws IOException {
 
         Teleporter pair = teleporter.getPair();
-        int[] pairCell = pair.findCell(pair, this.cellGrid);
+        int[] pairCell = this.level.getLocation(this.cellGrid, pair);
 
         if (writtenTP.contains(teleporter)) {
 
@@ -297,11 +327,12 @@ class Save {
 
         writtenTP.add(teleporter);
         writtenTP.add(pair);
+
     }
 
     private void writeCellPos(Cell cell) throws IOException {
 
-        int[] cellCoords = cell.findCell(cell, this.cellGrid);
+        int[] cellCoords = this.level.getLocation(this.cellGrid, cell);
 
         this.writer.write(cell.getClass().getSimpleName() + ",");
         this.writer.write(cellCoords[0] + ",");

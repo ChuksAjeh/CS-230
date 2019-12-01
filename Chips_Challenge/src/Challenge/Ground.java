@@ -20,7 +20,7 @@ class Ground extends Cell {
     /**
      * Constructor
      */
-    public Ground() {
+    Ground() {
         super(SPRITE, true);
     }
 
