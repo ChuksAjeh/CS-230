@@ -27,7 +27,7 @@ public class LineEnemy extends Enemy {
     }
 
     /**
-     * Used to calculate the next direction for the line enemy
+     * Used to calculate the next direction for the line enemy.
      * @return the next direction
      */
     public int nextDirection(Level level) {
