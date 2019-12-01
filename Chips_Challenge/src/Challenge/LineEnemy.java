@@ -32,14 +32,7 @@ class LineEnemy extends Enemy {
 
         int dir = getDirection();
 
-        Cell[] sc = getSurroundingCells();
-        Entity[] se = getSurroundingEntitys();
-
-        boolean[] passable = new boolean[4];
-
-        for (int i = 0; i < passable.length; i++) {
-            passable[i] = sc[i] instanceof Ground && se[i] == null;
-        }
+        boolean[] passable = getCells();
 
         if (!passable[dir]) {
             this.setDirection((dir + 2) % 4);
