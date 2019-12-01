@@ -67,12 +67,12 @@ class Game {
         int boundWidth = 0 - GRID_CELL_WIDTH / 2;
         int boundHeight = 0 - GRID_CELL_HEIGHT / 2;
 
-        //Image backing = new Image("images/BACKING.png");
+        Image backing = new Image("images/BACKING.png");
 
         for (int x = boundWidth ; x < canvas.getWidth() - boundWidth ; x += GRID_CELL_WIDTH) {
             for (int y = boundHeight ; y < canvas.getHeight() - boundHeight ; y += GRID_CELL_HEIGHT) {
 
-                //gc.drawImage(backing, x, y);
+                gc.drawImage(backing, x, y);
 
             }
         }
