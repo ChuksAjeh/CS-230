@@ -21,6 +21,17 @@ class Key extends Item {
 
     static {
         SPRITE = new Image("images/ENTITY_KEY.png");
+
+//
+//     .---.
+//    /    |\________________
+//   ( ()  | ________   _   _)
+//    \    |/        | | | |
+//     `---'         "-" |_|
+//
+//  Figure III - A key
+//
+
     }
 
     /**

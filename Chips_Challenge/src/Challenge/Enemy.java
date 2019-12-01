@@ -27,6 +27,9 @@ abstract class Enemy extends Entity {
      */
     private Entity[][] entityGrid;
 
+    /**
+     * The position of the Enemy
+     */
     private Position position;
 
     /**
@@ -71,6 +74,10 @@ abstract class Enemy extends Entity {
         } else if (3 == direction) {
             this.position = new Position(x - 1, y);
             entityGrid[x - 1][y] = this;
+        } else if (42 == direction) {
+            // Enemy cannot move, send halp!
+            // Owait never mind we can just noobmaster69 out of it!
+            return entityGrid;
         }
 
         entityGrid[position.x][position.y] = null;
@@ -79,31 +86,52 @@ abstract class Enemy extends Entity {
 
     }
 
-    Cell[] getSurroundingCells() {
+//
+//                                  __
+//                         /\    .-" /
+//                        /  ; .'  .'
+//                       :   :/  .'
+//                        \  ;-.'
+//           .--""""--..__/     `.
+//         .'           .'    `o  \
+//        /                    `   ;
+//       :                  \      :
+//     .-;        -.         `.__.-'
+//    :  ;          \     ,   ;
+//    '._:           ;   :   (
+//        \/  .__    ;    \   `-.
+//         ;     "-,/_..--"`-..__)
+//         '""--.._:
+//
+//  Figure I, the Killer Rabbit of Caerbannog
+//
+
+    boolean[] getCells() {
 
         int x = this.position.x;
         int y = this.position.y;
 
-        return new Cell[] {
-            cellGrid[x][y - 1],
-            cellGrid[x + 1][y],
-            cellGrid[x][y + 1],
-            cellGrid[x - 1][y]
+        boolean[] passable = new boolean[4];
+
+        Cell[] sc = new Cell[] {
+            this.cellGrid[x][y - 1],
+            this.cellGrid[x + 1][y],
+            this.cellGrid[x][y + 1],
+            this.cellGrid[x - 1][y]
         };
 
-    }
-
-    Entity[] getSurroundingEntitys() {
-
-        int x = this.position.x;
-        int y = this.position.y;
-
-        return new Entity[] {
-            entityGrid[x][y - 1],
-            entityGrid[x + 1][y],
-            entityGrid[x][y + 1],
-            entityGrid[x - 1][y]
+        Entity[] se = new Entity[] {
+            this.entityGrid[x][y - 1],
+            this.entityGrid[x + 1][y],
+            this.entityGrid[x][y + 1],
+            this.entityGrid[x - 1][y]
         };
+
+        for (int i = 0; i < passable.length; i++) {
+            passable[i] = sc[i] instanceof Ground && se[i] == null;
+        }
+
+        return passable;
 
     }
 

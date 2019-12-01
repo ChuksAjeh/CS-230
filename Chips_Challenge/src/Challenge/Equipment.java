@@ -17,4 +17,11 @@ abstract class Equipment extends Item {
         super(sprite);
     }
 
+//
+//       /
+//  O===[====================-
+//      \
+//
+//  Figure V - Engarde!
+
 }

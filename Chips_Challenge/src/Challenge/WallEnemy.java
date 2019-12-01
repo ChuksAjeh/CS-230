@@ -23,25 +23,13 @@ class WallEnemy extends Enemy {
 
     public int nextDirection() {
 
-        Cell[] sc = getSurroundingCells();
-        Entity[] se = getSurroundingEntitys();
-
-        boolean[] passable = new boolean[4];
-
-        for (int i = 0; i < passable.length; i++) {
-            passable[i] = sc[i] instanceof Ground && se[i] == null;
-        }
+        boolean[] passable = getCells();
 
         int numberOfMoves = countMoves(passable);
 
-        for (boolean b : passable) {
-            System.out.println(b);
-        }
-
-        System.out.println(numberOfMoves);
-
         if (0 == numberOfMoves) {
-            // Cannot move .. something happens I guess, probably return 5 and then handle it later
+            // Cannot move .. something happens I guess, probably return 42 and then handle it later
+            return 42;
         } else if (1 == numberOfMoves) {
             // Only 1 available space
             return findMove(passable, true);

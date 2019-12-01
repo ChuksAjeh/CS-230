@@ -14,7 +14,7 @@
 #############
 KeyDoor,11,3,0,0,0,2,5
 5,Player,4,3
-WallEnemy7,2,1
+WallEnemy6,1,1
 FireBoots,7,9
 KeyDoor,4,4,0,0,0,8,10
 KeyDoor,5,7,0,0,0,10,5
