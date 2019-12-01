@@ -49,7 +49,9 @@ public class Main extends Application {
     private final Game game = new Game();
     private Stage window;
 
-    public static void main(String[] args) { launch(args);}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public void start(Stage primaryStage){
         window = primaryStage;
