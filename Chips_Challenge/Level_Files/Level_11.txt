@@ -21,9 +21,9 @@
 #################
 Player,2,2,0,
 Goal,14,17,
-KeyDoor,8,2,0,0,255,2,6,
-KeyDoor,2,11,0,255,0,10,2,
-KeyDoor,12,6,255,0,0,10,17,
+KeyDoor,8,2,Blue,2,6,
+KeyDoor,2,11,Green,10,2,
+KeyDoor,12,6,Red,10,17,
 TokenDoor,2,15,10,
 TokenDoor,10,15,4,
 Token,14,2,

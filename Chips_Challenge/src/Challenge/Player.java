@@ -116,7 +116,7 @@ class Player extends Entity {
 
             } else if (cell instanceof KeyDoor) {
 
-                Color doorColour = ((KeyDoor) cell).getColour();
+                KeyDoor.Colour doorColour = (((KeyDoor) cell).getColour());
 
                 // jack.log(1, "Walking into a KeyDoor");
 
@@ -271,7 +271,7 @@ class Player extends Entity {
      * @param newX the X location of the door
      * @param newY the Y location of the door
      */
-    private void openKeyDoor(Level level, Color doorColour, int newX, int newY) {
+    private void openKeyDoor(Level level, KeyDoor.Colour doorColour, int newX, int newY) {
 
         Cell[][] cellGrid = level.getCellGrid();
 
@@ -334,16 +334,19 @@ class Player extends Entity {
      * @param colour the colour to search for
      * @return the key, if present
      */
-    private Item findKey(Color colour) {
+    private Item findKey(KeyDoor.Colour colour) {
 
         for (Item item : this.inventory) {
             if (item instanceof Key) {
 
                 Key currentKey = (Key) item;
 
-                if (colour.equals(currentKey.getColour())) {
+                System.out.println(currentKey.getColour().toString());
+
+                if (colour.toString().equals(currentKey.getColour().toString())) {
                     return item;
                 }
+
             }
         }
 

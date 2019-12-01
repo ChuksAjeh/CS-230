@@ -97,7 +97,7 @@ class Level {
 
         reader.close();
 
-        return stringBuilder.toString();
+        return stringBuilder.toString().toUpperCase();
 
     }
 
@@ -114,7 +114,7 @@ class Level {
             label = t.nextToken();
 
             // Debug
-            // System.out.println(label + " Created");
+            System.out.println(label + " Created");
 
             p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
@@ -136,11 +136,7 @@ class Level {
 
             } else if ("KEYDOOR".equals(label)) {
 
-                int r = parseInt(t.nextToken());
-                int g = parseInt(t.nextToken());
-                int b = parseInt(t.nextToken());
-
-                Color colour = Color.rgb(r, g, b);
+                String colour = t.nextToken();
 
                 this.cellGrid[p.x][p.y] = new KeyDoor(colour);
 

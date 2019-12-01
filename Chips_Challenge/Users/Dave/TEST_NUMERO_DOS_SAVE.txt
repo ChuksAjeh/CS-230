@@ -7,10 +7,8 @@
 #    #
 #    #
 ######
-WallEnemy1,4,0
-Token,2,1
-KeyDoor,6,1,0,0,0,2,2
-4,Player,3,0
+WallEnemy2,1,0
+4,Player,3,2
 Flippers,5,1
 FireBoots,5,4
 Teleporter,2,4,4,4
