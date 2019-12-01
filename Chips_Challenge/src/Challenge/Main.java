@@ -48,10 +48,11 @@ public class Main extends Application {
     private final Lumberjack jack = new Lumberjack();
     private final Game game = new Game();
     private Stage window;
+  
+    //Mediaplayer
+    private static MediaPlayer mediaPlayer;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args);}
 
     public void start(Stage primaryStage){
         window = primaryStage;
@@ -63,7 +64,7 @@ public class Main extends Application {
 
         try {
             Media media = new Media(Paths.get("music/background_music1.mp3").toUri().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.setVolume(0.2);
             mediaPlayer.play();
