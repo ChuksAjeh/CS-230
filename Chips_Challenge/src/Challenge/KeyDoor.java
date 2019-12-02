@@ -18,6 +18,9 @@ class KeyDoor extends Door {
      */
     private final Colour colour;
 
+    /**
+     * This is used for the colour of the KeyDoor
+     */
     public enum Colour {
         RED, GREEN, BLUE, WHITE, BLACK
     }
@@ -43,6 +46,11 @@ class KeyDoor extends Door {
         return this.colour;
     }
 
+    /**
+     * Sets the colour of the KeyDoor for checking
+     * @param colour the colour to set
+     * @return the colour Enum to set
+     */
     private Colour setColour(String colour) {
 
         if ("RED".equals(colour)) {
