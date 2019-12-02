@@ -46,10 +46,10 @@ public class LineEnemy extends Enemy {
         int dir = getDirection();
 
         if (!passable[dir]) {
-            this.setDirection((dir + 2) % 4);
+            setDirection((dir + 2) % 4);
         }
 
-        return dir;
+        return getDirection();
     }
 
 }
