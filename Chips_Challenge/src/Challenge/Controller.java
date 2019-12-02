@@ -16,6 +16,10 @@ import java.util.Arrays;
  */
 class Controller {
 
+    private static boolean changeMenu = true;
+    private static boolean changeInventory = true;
+    private static Main main;
+
     /**
      * Takes in certain inputs and outputs player actions.
      * @param event The event to be read.
@@ -44,9 +48,35 @@ class Controller {
             // Move to direction 3 (West)
             newGrid = player.move(3, level);
         } else if (KeyCode.ESCAPE == event.getCode()) {
-            root.getChildren().get(0).toFront();
+            if(changeMenu == true) {
+                root.lookup("#pauseMenu").toFront();
+                root.lookup("#Inventory").toBack();
+                changeMenu = false;
+            }
+            else {
+                root.lookup("#game").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeMenu = true;
+            }
+
         } else if (KeyCode.E == event.getCode()) {
             // Open the inventory, eventually
+
+            //root.lookup("#Inventory").toBack();
+
+            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
+            //root.getChildren().set(0, main.INVENTORY(level));
+
+            if(changeInventory) {
+                root.lookup("#Inventory").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeInventory = false;
+            }
+            else {
+                root.lookup("#game").toFront();
+                root.lookup("#Inventory").toBack();
+                changeInventory = true;
+            }
         }
 
         ArrayList<Enemy> enemies = level.getEnemies(newGrid);
@@ -57,16 +87,23 @@ class Controller {
             e.setCellGrid(level.getCellGrid());
             e.setEntityGrid(newGrid);
 
+            // I am aware sequential if blocks are bad, however these  blocks
+            // are checking for different 'end conditions' so I'm happy for
+            // them to co-exist in their own bubble of code - Gnome
+
             if (level.getPlayer() == null) {
                 // No Player, they be dead
                 return;
             }
 
-            // I am aware sequential if blocks are bad, however these two
-            // blocks are checking for different 'end conditions' so I'm
-            // happy for them to co-exist in their own bubble of code - Gnome
+            if (e instanceof DumbEnemy) {
 
-            if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
+                if (!e.getCells()[e.nextDirection(level)]) {
+                    // DumbEnemy trying to walk onto a wall
+                    return;
+                }
+
+            } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
                 // Enemy cannot move, they be surrounded
                 return;
             }
@@ -102,8 +139,8 @@ class Controller {
      */
     Level makeLevel(String levelName) {
 
-        // Build a Level thing
         return new Level(levelName);
+
     }
 
 }

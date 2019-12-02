@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Teleporter Cell, and by extension its pair
+ * whenever a Player walks into one they will appear out of the other.
  * @author George Carpenter
  * @version 1.0
  */

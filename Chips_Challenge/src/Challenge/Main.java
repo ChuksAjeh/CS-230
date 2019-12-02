@@ -3,9 +3,12 @@ package Challenge;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+
 import javafx.application.Application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -13,23 +16,29 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+
 import javafx.stage.Stage;
+
 import javafx.util.Duration;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Paths;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -55,7 +64,9 @@ public class Main extends Application {
     // Mediaplayer
     private static MediaPlayer mediaPlayer;
 
-    public static void main(String[] args) { launch(args);}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public void start(Stage primaryStage){
         window = primaryStage;
@@ -66,6 +77,7 @@ public class Main extends Application {
         window.show();
 
         try {
+            //Media media = new Media(Paths.get("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\music\\background_music1.mp3").toUri().toString());
             Media media = new Media(Paths.get("music/background_music1.mp3").toUri().toString());
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -85,10 +97,10 @@ public class Main extends Application {
         message.setTextFill(Color.rgb(200, 200, 200));
 
         Timeline timeline = new Timeline(
-            new KeyFrame(new Duration(5000), e -> {
-                stuff.set(new Ping().getPing());
-                message.textProperty().set(stuff.get());
-            })
+                new KeyFrame(new Duration(5000), e -> {
+                    stuff.set(new Ping().getPing());
+                    message.textProperty().set(stuff.get());
+                })
         );
 
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -245,95 +257,6 @@ public class Main extends Application {
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
-    // TODO I'll delete this method, I just keep it for now for testing
-    private Scene mainMenu(Stage window) {
-
-        BorderPane root = new BorderPane();
-
-        Button startButton = new Button("Start!");
-        Button users = new Button ("Profiles");
-        Button quit = new Button ("Exit");
-
-        Button test = new Button ("Test");
-
-        VBox menu = new VBox();
-        menu.getChildren().addAll(startButton, users, quit, test);
-
-        menu.setSpacing(50);
-
-
-        root.setBottom(bottomBar());
-        menu.setAlignment(Pos.CENTER);
-        root.setCenter(menu);
-
-        startButton.setOnAction(e -> window.setScene(gaming("Level_01")));
-
-        users.setOnAction(e -> window.setScene(profileMenu(window)));
-
-        quit.setOnAction(e -> System.exit(0));
-
-        test.setOnAction(e -> window.setScene(new Scene(pauseMenu(), WINDOW_WIDTH, WINDOW_HEIGHT)));
-
-        //scene.getStylesheets().add("file:layout.css");
-
-        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-    }
-
-    // TODO I'll delete this method, I just keep it for now for testing
-    private Scene profileMenu(Stage window) {
-
-        BorderPane root = new BorderPane();
-
-        Button selectProfile = new Button("Select Profile");
-        EditableButton createProfile = new EditableButton("Create Profile");
-        Button selectLevel = new Button("Select Level");
-        Button back = new Button("Back");
-
-        VBox menu = new VBox();
-        menu.getChildren().addAll(selectProfile, createProfile, selectLevel, back);
-
-        root.setBottom(bottomBar());
-        menu.setAlignment(Pos.CENTER);
-        root.setCenter(menu);
-
-        /*creatProfile.setOnMouseClicked(e -> {
-
-        });*/
-
-        back.setOnAction(e -> window.setScene(mainMenu(window)));
-        selectProfile.setOnAction(e -> window.setScene(displayUsers()));
-        selectLevel.setOnAction(e -> window.setScene(displayLevel(window)));
-
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-    }
-
-    //TODO I'll delete this method soon, users display goes into comboBox
-    private Scene displayUsers(){
-
-        BorderPane root = new BorderPane();
-
-        VBox menu = new VBox();
-
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
-        File path = new File("Users/");
-
-        File[] files = path.listFiles();
-
-        ArrayList<Button> buttons = makeButtons(Objects.requireNonNull(files), menu);
-
-        root.setBottom(bottomBar());
-        menu.setAlignment(Pos.CENTER);
-        root.setCenter(menu);
-
-        for(Button button : buttons) {
-            button.setOnAction(e -> window.setScene(displayLevel(window)));
-        }
-
-        return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-    }
-
     private ArrayList<Button> makeButtons(File[] files, VBox menu) {
 
         ArrayList<Button> buttons = new ArrayList<>();
@@ -378,13 +301,68 @@ public class Main extends Application {
 
     }
 
+    public AnchorPane inventory(Level level) {
+        HBox test = new HBox();
+        AnchorPane inv = new AnchorPane();
+        ArrayList<Item> lame = level.getPlayer().getInventory();
 
-    private BorderPane pauseMenu(){
+
+        for(Item item: lame) {
+            test.getChildren().add(new ImageView(item.getSprite()));
+        }
+
+
+        // FOR THE TESTING
+        Image change = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
+        Image change2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
+
+        //inventory.setPrefSize(50,50);
+
+
+
+        ImageView nr1 = new ImageView(change);
+        ImageView nr2 = new ImageView(change2);
+
+        //test.getChildren().addAll(nr1,nr2);
+
+        AnchorPane.setTopAnchor(test, 600.0);
+        AnchorPane.setLeftAnchor(test, 200.0);
+        AnchorPane.setRightAnchor(test, 200.0);
+        AnchorPane.setBottomAnchor(test,20.0);
+
+        //inventory.setPrefSize(100,100);
+        test.setStyle("-fx-background-color: #33ccff");
+
+        test.setPrefSize(100,200);
+        test.setAlignment(Pos.CENTER);
+
+        inv.getChildren().add(test);
+
+        inv.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
+
+        inv.setId("Inventory");
+
+        return inv;
+    }
+
+
+    private AnchorPane pauseMenu(){
+        AnchorPane pause = new AnchorPane();
         VBox vBox = new VBox();
 
-        BorderPane middleMenu = new BorderPane();
 
-        middleMenu.setPrefSize(200,200);
+        vBox.setPrefSize(200,200);
+
+        Label title = new Label("JUNGLE HUNT");
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(3.0);
+        dropShadow.setOffsetY(3.0);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+
+        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
+        title.setEffect(dropShadow);
 
         Button save = new Button("Save");
         save.setPrefSize(200,50);
@@ -393,29 +371,34 @@ public class Main extends Application {
         Button exitGame = new Button("Exit");
         exitGame.setPrefSize(200,50);
 
-        vBox.getChildren().addAll(save, goBack, exitGame);
+        vBox.getChildren().addAll(title, save, goBack, exitGame);
 
-        //vBox.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
 
         vBox.setAlignment(Pos.CENTER);
-        middleMenu.setCenter(vBox);
+        /*middleMenu.setCenter(vBox);*/
+        vBox.setSpacing(25);
+
 
         goBack.setOnAction(e -> window.setScene(userSelection(window)));
 
         exitGame.setOnAction(e -> System.exit(0));
 
-        //vBox.setStyle("-fx-background-color: linear-gradient(to bottom, #006600 0%, #99ffcc 100%");
+        vBox.setStyle("-fx-background-color: linear-gradient(to top, #003300 9%, #006600 100%)");
+        vBox.setMargin(exitGame, new Insets(0,0,20,0));
 
-        //middleMenu.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        //middleMenu.getStyleClass().add("middleMenu");
+        AnchorPane.setBottomAnchor(vBox,180.0);
+        AnchorPane.setLeftAnchor(vBox,250.0);
+        AnchorPane.setTopAnchor(vBox,150.0);
+        AnchorPane.setRightAnchor(vBox,250.0);
 
-        //middleMenu.getStylesheets().add("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\src\\Challenge\\layout.css");
-        //middleMenu.getStyleClass().add("middleMenu");
+        pause.getChildren().add(vBox);
 
-        middleMenu.setStyle("-fx-background-color: linear-gradient(to top, #003300 9%, #006600 100%)");
+        pause.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
-        return middleMenu;
+        pause.setId("pauseMenu");
+
+        return pause;
     }
 
     private Scene gaming(String name) {
@@ -429,24 +412,42 @@ public class Main extends Application {
         StackPane stack = new StackPane();
         //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        StackPane stack2 = new StackPane();
+
         System.out.println("SUCCESS!");
 
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         drawing.setCenter(canvas);
 
+        drawing.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
+
+        drawing.setId("game");
+
         level = controller.makeLevel(name);
 
         game.drawGame(level, canvas);
 
+
+        stack.getChildren().add(inventory(level));
         stack.getChildren().add(pauseMenu());
         stack.getChildren().add(drawing);
+
 
         root.setBottom(bottomBar());
         root.setCenter(stack);
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, stack));
+
+        //play.getStylesheets().add(Main.class.getResource("layout.css").toExternalForm());
+
+
+
+        //TESTING
+        System.out.println(pauseMenu().getId());
+        System.out.println(inventory(level).getId());
+
 
         return play;
 

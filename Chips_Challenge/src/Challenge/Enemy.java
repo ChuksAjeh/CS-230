@@ -3,8 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * Enemies are movable hazards designed to end the level upon contact with the player.
- * Each enemy has its own unique way of moving to the player.
+ * Enemies are movable hazards designed to end the level upon contact
+ * with the player. Each enemy has its own unique way of moving to the player.
  * Again this class shouldn't be instantiated, instead, its sub-classes should be.
  * @author George Carpenter, Angelo Balistoy
  * @version 1.0
@@ -101,37 +101,38 @@ abstract class Enemy extends Entity {
     /**
      * Moves the enemy based on a given direction.
      * @param level The current level.
-     * @param entityGrid The current entity grid.
+     * @param entityGrid the entityGrid in which to move the Enemy Object
      * @return The new entity grid to be used in the next turn.
      */
     public Entity[][] move(Level level, Entity[][] entityGrid) {
 
-        Position position = this.getPosition();
-        int direction = 0;
+        Position position = getPosition();
 
-        int x = position.x;
-        int y = position.y;
+        int newX = position.x;
+        int newY = position.y;
+
         // For all instances of enemy, use its specific next direction.
-        direction = this.nextDirection(level);
+        int direction = nextDirection(level);
 
         if (0 == direction) {
-            this.position = new Position(x, y - 1);
-            entityGrid[x][y - 1] = this;
+            newY = position.y - 1;
         } else if (1 == direction) {
-            this.position = new Position(x + 1, y);
-            entityGrid[x + 1][y] = this;
+            newX = position.x + 1;
         } else if (2 == direction) {
-            this.position = new Position(x, y + 1);
-            entityGrid[x][y + 1] = this;
+            newY = position.y + 1;
         } else if (3 == direction) {
-            this.position = new Position(x - 1, y);
-            entityGrid[x - 1][y] = this;
+            newX = position.x - 1;
         }
 
+        // Move the Enemy Object
+        this.position = new Position(newX, newY);
+        entityGrid[newX][newY] = this;
+
+        // Clear the old position in the grid
         entityGrid[position.x][position.y] = null;
 
+        // Return the new grid
         return entityGrid;
-
     }
 
 //

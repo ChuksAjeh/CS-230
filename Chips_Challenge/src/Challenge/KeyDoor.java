@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Door in the game and can be unlocked by a
+ * player carrying the correct Key, when it is replaced by a Ground cell
  * @author George Carpenter
  * @version 1.0
  */
@@ -18,6 +20,9 @@ class KeyDoor extends Door {
      */
     private final Colour colour;
 
+    /**
+     * This is used for the colour of the KeyDoor
+     */
     public enum Colour {
         RED, GREEN, BLUE, WHITE, BLACK
     }
@@ -43,6 +48,11 @@ class KeyDoor extends Door {
         return this.colour;
     }
 
+    /**
+     * Sets the colour of the KeyDoor for checking
+     * @param colour the colour to set
+     * @return the colour Enum to set
+     */
     private Colour setColour(String colour) {
 
         if ("RED".equals(colour)) {

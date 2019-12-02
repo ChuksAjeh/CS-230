@@ -5,11 +5,12 @@ import javafx.scene.image.Image;
 import java.util.Random;
 
 /**
- * A dumb enemy is an enemy whose movement is determined by the players location. It tries to find the shortest distance
- * to the player and uses that path to determine its next direction. It does not take into account impassable territory
- * hence it is a dumb enemy.
+ * A dumb enemy is an enemy whose movement is determined by the players
+ * location. It tries to find the shortest distance to the player and uses
+ * that path to determine its next direction. It does not take into account
+ * impassable territory hence it is a dumb enemy.
  * @author Samuel Roach, George Carpenter
- * @version 1.0
+ * @version 3.0
  */
 public class DumbEnemy extends Enemy {
 

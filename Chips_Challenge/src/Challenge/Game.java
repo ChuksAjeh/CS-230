@@ -5,7 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * Game is used to render Chips Challenge. We render the entire level with this class.
+ * Game is used to render Chips Challenge.
+ * We render the entire level with this class.
  * @author Everyone basically
  * @version 9001
  */
@@ -124,7 +125,15 @@ public class Game {
         Image sprite = SpriteConverter.resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
+
+//            if (((Player) entity).getDirection() == 3) {
+//                gc.drawImage(sprite, x + GRID_CELL_WIDTH, y, 0 - GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
+//            } else {
+//                gc.drawImage(sprite, x, y);
+//            }
+
             gc.drawImage(SpriteConverter.rotate(sprite, ((Player) entity).getDirection()), x, y);
+
         } else if (entity.getClass().getSimpleName().contains("Enemy")) {
             Enemy enemy = (Enemy) entity;
             gc.drawImage(SpriteConverter.rotate(sprite, enemy.getDirection()), x, y);

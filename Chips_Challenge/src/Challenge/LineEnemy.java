@@ -3,6 +3,9 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * The Line Enemy is an enemy that will only ever travel in one of two
+ * directions, its initial direction or its cardinal opposite, these will
+ * change dynamically whenever it comes across an impassable cell.
  * @author George Caprenter, Ioan Mazurca
  * @version 3.0
  */
@@ -46,10 +49,10 @@ public class LineEnemy extends Enemy {
         int dir = getDirection();
 
         if (!passable[dir]) {
-            this.setDirection((dir + 2) % 4);
+            setDirection((dir + 2) % 4);
         }
 
-        return dir;
+        return getDirection();
     }
 
 }
