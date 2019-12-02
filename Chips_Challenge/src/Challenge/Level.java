@@ -52,6 +52,51 @@ class Level {
 
     }
 
+    /**
+     * Gets the cell grid
+     * @return the cell grid off the Level object
+     */
+    public Cell[][] getCellGrid() {
+        return this.cellGrid;
+    }
+
+    /**
+     * Gets the entity grid
+     * @return the entity grid for the level Object
+     */
+    public Entity[][] getEntityGrid() {
+        return this.entityGrid;
+    }
+
+    /**
+     * Gets the level name
+     * @return the name of the Level, for saving
+     */
+    String getLevelName() {
+        return this.levelName;
+    }
+
+    /**
+     * Sets the cell grid
+     * @param cellGrid the cell grid for the level Object
+     */
+    public void setCellGrid(Cell[][] cellGrid) {
+        this.cellGrid = cellGrid;
+    }
+
+    /**
+     * Sets the entity grid
+     * @param entityGrid the entity grid for the level Object
+     */
+    public void setEntityGrid(Entity[][] entityGrid) {
+        this.entityGrid = entityGrid;
+    }
+
+    /**
+     * Builds the Level
+     * @param level the Level file to build
+     * @throws FileNotFoundException if the file doesn't exist
+     */
     private void buildLevel(String level) throws FileNotFoundException {
 
         //Scanner reader = new Scanner(new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\" + level + ".txt"));
@@ -63,6 +108,10 @@ class Level {
 
     }
 
+    /**
+     * Builds basic grids
+     * @param reader not-a-file-reader
+     */
     private void buildBasicGrids(Scanner reader) {
 
         int x = reader.nextInt();
@@ -93,6 +142,11 @@ class Level {
 
     }
 
+    /**
+     * Reads in the remaining lines in the file, to be built elsewhere
+     * @param reader not-a-file-reader
+     * @return The String containing the Entitys
+     */
     private String readRemainingLines(Scanner reader) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -107,6 +161,10 @@ class Level {
 
     }
 
+    /**
+     * Finishes the build process
+     * @param file the remaining data to build
+     */
     private void buildGrids(String file) {
 
         StringTokenizer t = new StringTokenizer(file, ",");
@@ -118,9 +176,6 @@ class Level {
         while (t.hasMoreTokens()) {
 
             label = t.nextToken();
-
-            // Debug
-            // System.out.println(label + " Created");
 
             p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
@@ -181,43 +236,43 @@ class Level {
     }
 
     /**
-     * Sets the cell grid
-     * @param cellGrid the cell grid for the level Object
+     * Gets the Player object from the level
+     * @return the Player object
      */
-    public void setCellGrid(Cell[][] cellGrid) {
-        this.cellGrid = cellGrid;
+    Player getPlayer() {
+
+        for (Entity[] row : this.entityGrid) {
+            for (Entity entity : row) {
+                if (entity instanceof Player) {
+                    return (Player) entity;
+                }
+            }
+        }
+
+        return null;
+
     }
 
     /**
-     * Sets the entity grid
-     * @param entityGrid the entity grid for the level Object
+     * Gets the list of Enemies that need to move each tick
+     * @param entityGrid the grid they exist in
+     * @return the array of Enemies
      */
-    public void setEntityGrid(Entity[][] entityGrid) {
-        this.entityGrid = entityGrid;
-    }
+    ArrayList<Enemy> getEnemies(Entity[][] entityGrid) {
 
-    /**
-     * Gets the cell grid
-     * @return the cell grid off the Level object
-     */
-    public Cell[][] getCellGrid() {
-        return this.cellGrid;
-    }
+        ArrayList<Enemy> enemies = new ArrayList<>();
 
-    /**
-     * Gets the entity grid
-     * @return the entity grid for the level Object
-     */
-    public Entity[][] getEntityGrid() {
-        return this.entityGrid;
-    }
+        for (Entity[] row : entityGrid) {
+            for (Entity entity : row) {
 
-    /**
-     * Gets the level name
-     * @return the name of the Level, for saving
-     */
-    String getLevelName() {
-        return this.levelName;
+                if (entity instanceof Enemy) {
+                    enemies.add((Enemy) entity);
+                }
+
+            }
+        }
+
+        return enemies;
     }
 
     /**
@@ -240,45 +295,6 @@ class Level {
         }
 
         return null;
-    }
-
-    /**
-     * Gets the Player object from the level
-     * @return the Player object
-     */
-    Player getPlayer() {
-
-        for (Entity[] row : this.entityGrid) {
-            for (Entity entity : row) {
-                if (entity instanceof Player) {
-                    return (Player) entity;
-                }
-            }
-        }
-
-        return null;
-
-    }
-
-    ArrayList<Enemy> getEnemies(Entity[][] entityGrid) {
-
-        ArrayList<Enemy> enemies = new ArrayList<>();
-
-        for (Entity[] row : entityGrid) {
-            for (Entity entity : row) {
-
-                if (entity instanceof Enemy) {
-                    enemies.add((Enemy) entity);
-                }
-
-            }
-        }
-
-        return enemies;
-    }
-
-    String getLevelname() {
-        return this.levelName;
     }
 
 }
