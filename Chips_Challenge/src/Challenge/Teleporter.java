@@ -40,19 +40,19 @@ class Teleporter extends Cell {
     }
 
     /**
-     * Adds a pair to a Teleporter Object
-     * @param pair the pair Teleporter Object
-     */
-    private void setPair(Teleporter pair) {
-        this.pair = pair;
-    }
-
-    /**
      * Returns the pair Object
      * @return the pair Teleporter
      */
     Teleporter getPair(){
         return pair;
+    }
+
+    /**
+     * Adds a pair to a Teleporter Object
+     * @param pair the pair Teleporter Object
+     */
+    private void setPair(Teleporter pair) {
+        this.pair = pair;
     }
 
 }
