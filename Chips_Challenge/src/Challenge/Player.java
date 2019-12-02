@@ -441,4 +441,8 @@ class Player extends Entity {
         return this.position;
     }
 
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
+
 }

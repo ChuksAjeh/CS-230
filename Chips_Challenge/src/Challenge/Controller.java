@@ -1,5 +1,6 @@
 package Challenge;
 
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,6 +16,10 @@ import java.util.Arrays;
  * @version 1.0
  */
 class Controller {
+
+    private static boolean changeMenu = true;
+    private static boolean changeInventory = true;
+    private static Main main;
 
     /**
      * Takes in certain inputs and outputs player actions.
@@ -44,9 +49,35 @@ class Controller {
             // Move to direction 3 (West)
             newGrid = player.move(3, level);
         } else if (KeyCode.ESCAPE == event.getCode()) {
-            root.getChildren().get(0).toFront();
+            if(changeMenu == true) {
+                root.lookup("#pauseMenu").toFront();
+                root.lookup("#Inventory").toBack();
+                changeMenu = false;
+            }
+            else {
+                root.lookup("#game").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeMenu = true;
+            }
+
         } else if (KeyCode.E == event.getCode()) {
             // Open the inventory, eventually
+
+            //root.lookup("#Inventory").toBack();
+
+            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
+            //root.getChildren().set(0, main.INVENTORY(level));
+
+            if(changeInventory) {
+                root.lookup("#Inventory").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeInventory = false;
+            }
+            else {
+                root.lookup("#game").toFront();
+                root.lookup("#Inventory").toBack();
+                changeInventory = true;
+            }
         }
 
         ArrayList<Enemy> enemies = level.getEnemies(newGrid);
