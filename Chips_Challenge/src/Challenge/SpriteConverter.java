@@ -60,4 +60,21 @@ abstract class SpriteConverter {
         return imageView.snapshot(param, null);
     }
 
+    // This does not work but I've left it for posterity - Gnome
+    static Image flip(Image image) {
+
+        // Read Image
+        ImageView imageView = new ImageView(image);
+
+        // Flip - nope
+        imageView.setScaleX(-1);
+
+        // Capture it? I think
+        SnapshotParameters param = new SnapshotParameters();
+
+        param.setFill(Color.TRANSPARENT);
+
+        return imageView.snapshot(param, null);
+    }
+
 }

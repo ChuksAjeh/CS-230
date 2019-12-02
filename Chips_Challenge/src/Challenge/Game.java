@@ -124,7 +124,15 @@ public class Game {
         Image sprite = SpriteConverter.resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
         if (entity.getClass().getSimpleName().equals("Player")) {
+
+//            if (((Player) entity).getDirection() == 3) {
+//                gc.drawImage(sprite, x + GRID_CELL_WIDTH, y, 0 - GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
+//            } else {
+//                gc.drawImage(sprite, x, y);
+//            }
+
             gc.drawImage(SpriteConverter.rotate(sprite, ((Player) entity).getDirection()), x, y);
+
         } else if (entity.getClass().getSimpleName().contains("Enemy")) {
             Enemy enemy = (Enemy) entity;
             gc.drawImage(SpriteConverter.rotate(sprite, enemy.getDirection()), x, y);

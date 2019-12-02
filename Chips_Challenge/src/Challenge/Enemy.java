@@ -106,35 +106,33 @@ abstract class Enemy extends Entity {
      */
     public Entity[][] move(Level level, Entity[][] entityGrid) {
 
-        Position position = this.getPosition();
-        int direction;
+        Position position = getPosition();
 
-        int x = position.x;
-        int y = position.y;
-
-        // TODO : Re-write this - Gnome
+        int newX = position.x;
+        int newY = position.y;
 
         // For all instances of enemy, use its specific next direction.
-        direction = this.nextDirection(level);
+        int direction = nextDirection(level);
 
         if (0 == direction) {
-            this.position = new Position(x, y - 1);
-            entityGrid[x][y - 1] = this;
+            newY = position.y - 1;
         } else if (1 == direction) {
-            this.position = new Position(x + 1, y);
-            entityGrid[x + 1][y] = this;
+            newX = position.x + 1;
         } else if (2 == direction) {
-            this.position = new Position(x, y + 1);
-            entityGrid[x][y + 1] = this;
+            newY = position.y + 1;
         } else if (3 == direction) {
-            this.position = new Position(x - 1, y);
-            entityGrid[x - 1][y] = this;
+            newX = position.x - 1;
         }
 
+        // Move the Enemy Object
+        this.position = new Position(newX, newY);
+        entityGrid[newX][newY] = this;
+
+        // Clear the old position in the grid
         entityGrid[position.x][position.y] = null;
 
+        // Return the new grid
         return entityGrid;
-
     }
 
 //
