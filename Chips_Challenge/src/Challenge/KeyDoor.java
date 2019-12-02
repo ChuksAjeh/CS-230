@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Door in the game and can be unlocked by a
+ * player carrying the correct Key, when it is replaced by a Ground cell
  * @author George Carpenter
  * @version 1.0
  */

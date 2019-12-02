@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 
 /**
+ * This class represents the Player object which will be controlled by the
+ * User, it is able to collect move around the game ane interact with both
+ * Items and Cells within the level.
  * @author George Carpenter
  * @version 1.0
  */
@@ -18,7 +21,7 @@ class Player extends Entity {
 
     /**
      * An array list used as the Player Inventory,
-     * items will be added and removed during gameplay
+     * items will be added and removed during game play
      */
     private ArrayList<Item> inventory;
 

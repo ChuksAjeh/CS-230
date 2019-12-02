@@ -10,6 +10,9 @@ import java.util.StringTokenizer;
 import static java.lang.Integer.parseInt;
 
 /**
+ * This class acts as a kind of super-ish class for the game, holding all
+ * information about the grids and allowing the "game" to run. The player,
+ * and enemies, will always be interacting with one or other part of it.
  * @author George Carpenter
  * @version 2.0
  */
