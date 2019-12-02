@@ -1,21 +1,26 @@
 package Challenge;
 
 /**
- * A BFS Vertex contains the x coordinate, the y coordinate, and distance from the source node. This class is used
- * in the Smart Enemy class which requires these fields to implement the wavefront planning algorithim. This is just
- * a BFS search and from that, find the shortest path back to the starting node from the goal node.
+ * A BFS Vertex contains the x coordinate, the y coordinate, and distance
+ * from the source node. This class is used in the Smart Enemy class which
+ * requires these fields to implement the wavefront planning algorithm.
+ * This is just a BFS search and from that, find the shortest path back to
+ * the starting node from the goal node.
  * @author Chuks
  * @version 1.0
  */
 class BFSVertex {
+
     /**
      * The x coordinate.
      */
     private int x;
+
     /**
      * The Y coordinate.
      */
     private int y;
+
     /**
      * The distance from the start node.
      */
@@ -42,27 +47,11 @@ class BFSVertex {
     }
 
     /**
-     * Sets the x coordinate.
-     * @param x The x coordinate.
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
      * Gets the Y coordinate.
      * @return The Y coordinate
      */
     public int getY() {
         return y;
-    }
-
-    /**
-     * Sets the Y coordinate
-     * @param y The Y coordinate.
-     */
-    public void setY(int y) {
-        this.y = y;
     }
 
     /**
@@ -74,11 +63,19 @@ class BFSVertex {
     }
 
     /**
-     * Sets the distance from the source node.
-     * @param dist The distance from the source node.
+     * Sets the x coordinate.
+     * @param x The x coordinate.
      */
-    public void setDist(int dist) {
-        this.dist = dist;
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Sets the Y coordinate
+     * @param y The Y coordinate.
+     */
+    public void setY(int y) {
+        this.y = y;
     }
 
 }

@@ -20,7 +20,7 @@ class Lumberjack {
      * Logs stuff
      * @param message what to log
      */
-    void log(String message) {
+    private void log(String message) {
 
         System.out.println("Spam : " + message);
 
