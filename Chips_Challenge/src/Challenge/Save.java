@@ -3,10 +3,14 @@ package Challenge;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 /**
- * @author Samuel Roach
+ * This class is used to save the game state each tick to ensure Player
+ * progress is never lost, games can be loaded from original files or
+ * their created save variants produced by this class
+ * @author Samuel Roach, George Carpenter
  * @version 1.0
  */
 class Save {
@@ -93,7 +97,7 @@ class Save {
             writer.close();
 
         } catch (IOException e) {
-            // Nothing
+            // Nothing, because Sam is a dumdum :p
         }
 
     }
@@ -136,53 +140,58 @@ class Save {
     }
 
     private void writeEntities(Level level) throws IOException {
+
         for (Entity[] row : level.getEntityGrid()) {
             for (Entity entity : row) {
-                if (entity instanceof Player) {
-
-                    logWritten(entity);
-
-                    Player player = (Player) entity;
-                    Position playerPos = player.getPosition();
-
-                    this.writer.write("Player,");
-                    this.writer.write(playerPos.x + ",");
-                    this.writer.write(playerPos.y + ",");
-                    this.writer.write(player.getDirection() + ",\n");
-
-                } else if (entity instanceof Enemy) {
-
-                    logWritten(entity);
-                    Enemy enemy = (Enemy) entity;
-                    writeEnemy(enemy);
-
-                } else if (entity instanceof Key) {
-
-                    logWritten(entity);
-                    Key key = (Key) entity;
-                    writeKey(key);
-
-                } else if (entity instanceof Item) {
-
-                    logWritten(entity);
-                    Item item = (Item) entity;
-                    writeItem(item);
-
-                } else {
-
-//                    jack.log(1, "Entity of type " + entity.toString() + " hasn't been written. Blame Samuel.");
-
-                }
+                writeEntity(entity);
             }
         }
+
     }
 
-    private void writeEnemy(Enemy enemy) throws IOException {
+    private void writeEntity(Entity entity) throws IOException {
 
-        this.writer.write(enemy.getClass().getSimpleName() + ",");
-        this.writer.write(enemy.getPosition().x + ",");
-        this.writer.write(enemy.getPosition().y + ",");
-        this.writer.write(enemy.getDirection() + ",\n");
+        if (entity instanceof Player) {
+
+            logWritten(entity);
+
+            Player player = (Player) entity;
+            Position playerPos = player.getPosition();
+
+            this.writer.write("Player,");
+            this.writer.write(playerPos.x + ",");
+            this.writer.write(playerPos.y + ",");
+            this.writer.write(player.getDirection() + ",\n");
+
+        } else if (entity instanceof Enemy) {
+
+            logWritten(entity);
+
+            Enemy enemy = (Enemy) entity;
+            Position enemyPos = enemy.getPosition();
+
+            this.writer.write(enemy.getClass().getSimpleName() + ",");
+            this.writer.write(enemyPos.x + ",");
+            this.writer.write(enemyPos.y + ",");
+            this.writer.write(enemy.getDirection() + ",\n");
+
+        } else if (entity instanceof Key) {
+
+            logWritten(entity);
+            Key key = (Key) entity;
+            writeKey(key);
+
+        } else if (entity instanceof Item) {
+
+            logWritten(entity);
+            Item item = (Item) entity;
+            writeItem(item);
+
+        } else {
+
+            jack.log(1, "Entity of type " + entity.toString() + " hasn't been written. Blame Samuel.");
+
+        }
 
     }
 
@@ -234,9 +243,9 @@ class Save {
 //  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 //  8                                                   8
 //  8  a---------------a                                8
-//  8  |               |                                8
-//  8  |               |                                8
-//  8  |               |                               8"
+//  8  |     Chips     |                                8
+//  8  |   Challenge   |                                8
+//  8  |    Vol 1.0    |                               8"
 //  8  "---------------"                               8a
 //  8                                                   8
 //  8                                                   8
@@ -354,4 +363,5 @@ class Save {
     private void logWritten(Object object) {
 //        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
+
 }

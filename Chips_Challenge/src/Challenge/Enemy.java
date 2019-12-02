@@ -3,8 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * Enemies are movable hazards designed to end the level upon contact with the player.
- * Each enemy has its own unique way of moving to the player.
+ * Enemies are movable hazards designed to end the level upon contact
+ * with the player. Each enemy has its own unique way of moving to the player.
  * Again this class shouldn't be instantiated, instead, its sub-classes should be.
  * @author George Carpenter, Angelo Balistoy
  * @version 1.0

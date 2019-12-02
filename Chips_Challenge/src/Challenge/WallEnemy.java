@@ -1,11 +1,17 @@
 package Challenge;
 
 import javafx.scene.image.Image;
+
 import java.util.Random;
 
 /**
+ * A wall enemy is an enemy whose movement is determined by the walls in the
+ * map, it should always stick to a wall ane have id's movement determined by
+ * the walls around it. If for whatever reason it finds itself with no walls
+ * be it through bad level design or entity removal it will move randomly
+ * until it comes into contact with a wall again.
  * @author George Carpenter, Ioan Mazurca, Angelo Balistoy
- * @version 1.0
+ * @version 4.0
  */
 class WallEnemy extends Enemy {
 

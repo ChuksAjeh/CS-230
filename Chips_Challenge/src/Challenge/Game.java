@@ -5,7 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * Game is used to render Chips Challenge. We render the entire level with this class.
+ * Game is used to render Chips Challenge.
+ * We render the entire level with this class.
  * @author Everyone basically
  * @version 9001
  */
