@@ -55,7 +55,9 @@ public class Main extends Application {
     // Mediaplayer
     private static MediaPlayer mediaPlayer;
 
-    public static void main(String[] args) { launch(args);}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public void start(Stage primaryStage){
         window = primaryStage;

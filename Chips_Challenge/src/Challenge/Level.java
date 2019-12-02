@@ -39,11 +39,14 @@ class Level {
 
         try {
             buildLevel(levelName);
-
-
-
         } catch (FileNotFoundException e) {
-            // Nothing
+
+            // e.printStackTrace();
+
+            // This won't ever be caught because the buttons in
+            // the game will only load files that exist already
+            // and as such no FileNotFound can ever occur
+
         }
 
     }
