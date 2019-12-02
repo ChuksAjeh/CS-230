@@ -70,10 +70,11 @@ class Lumberjack {
      */
     public void logPlayerLoc(Player player, Entity[][] entityGrid) {
 
-        int[] playerLoc = player.getLocation(entityGrid);
+        Position playerPosition = player.getPosition();
+
         int direction = player.getDirection();
 
-        log(1, "Player Loc + Dir -> " + playerLoc[0] + " " + playerLoc[1] + " " + direction);
+        log(1, "Player Loc + Dir -> " + playerPosition.x + " " + playerPosition.y + " " + direction);
 
     }
 

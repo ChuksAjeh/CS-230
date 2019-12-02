@@ -63,31 +63,12 @@ class Player extends Entity {
         this.alive = true;
     }
 
+    /**
+     * Gets the Player inventory, for printing to screen
+     * @return the player inventory
+     */
     public ArrayList<Item> getInventory() {
         return inventory;
-    }
-  
-    /**
-     * Used to find the Players current location in the Entity grid
-     * @param entityGrid the Entity grid to search
-     * @return the X and Y index of the Player object
-     */
-    int[] getLocation(Entity[][] entityGrid) {
-
-        for (int x = 0 ; x < entityGrid.length ; x++ ) {
-            for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
-
-                Entity entity = entityGrid[x][y];
-
-                if (entity instanceof Player) {
-                    // Player is found
-                    return new int[] {x, y};
-                }
-
-            }
-        }
-
-        return new int[] {0,0};
     }
 
     /**
