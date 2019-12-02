@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -140,8 +141,8 @@ class Controller {
      */
     Level makeLevel(String levelName) {
 
-        // Build a Level thing
         return new Level(levelName);
+
     }
 
 }
