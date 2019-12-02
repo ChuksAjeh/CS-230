@@ -1,7 +1,6 @@
 package Challenge;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,7 @@ class Player extends Entity {
     private Position position;
 
     // TESTING
-    private final Lumberjack jack = new Lumberjack();
+    // private final Lumberjack jack = new Lumberjack();
 
     static  {
         SPRITE = new Image("images/ENTITY_PLAYER.png");
@@ -50,7 +49,7 @@ class Player extends Entity {
      * @param position the position of the Player
      * @param direction the direction the player is facing
      */
-    public Player(Position position, int direction) {
+    Player(Position position, int direction) {
         super(SPRITE);
         this.position = position;
         this.inventory = new ArrayList<>();
@@ -107,9 +106,10 @@ class Player extends Entity {
 
                 } else if (entity.getClass().getSimpleName().contains("Enemy")) {
 
-                    jack.log(1, "Kill me");
+                    // jack.log(1, "Kill me");
 
                     killPlayer();
+
                     return entityGrid;
 
                 }
@@ -211,7 +211,7 @@ class Player extends Entity {
      * @param entityGrid the Entity grid to search
      * @return the X and Y index of the Player object
      */
-    public int[] getLocation(Entity[][] entityGrid) {
+    int[] getLocation(Entity[][] entityGrid) {
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
@@ -249,7 +249,7 @@ class Player extends Entity {
 
             this.tokenCount += 1;
 
-            jack.log(1, "Current tokens: " + tokenCount);
+            // jack.log(1, "Current tokens: " + tokenCount);
 
             if (checkTokenInInv()) {
                 return;
@@ -275,7 +275,7 @@ class Player extends Entity {
 
         Cell[][] cellGrid = level.getCellGrid();
 
-        jack.log(1, "Player has the correct key");
+        // jack.log(1, "Player has the correct key");
 
         this.inventory.remove(findKey(doorColour));
 
@@ -296,7 +296,7 @@ class Player extends Entity {
 
         Cell[][] cellGrid = level.getCellGrid();
 
-        jack.log(1,"Opening token door");
+        // jack.log(1,"Opening token door");
 
         cellGrid[newX][newY] = new Ground();
 
@@ -325,7 +325,7 @@ class Player extends Entity {
             }
         }
 
-        jack.log(1, cellType + " set to passable");
+        // jack.log(1, cellType + " set to passable");
 
     }
 
@@ -377,11 +377,11 @@ class Player extends Entity {
     private void removeTokens(int amount) {
         if (checkTokenInInv()) {
 
-            jack.log(1, "Can remove tokens");
+            // jack.log(1, "Can remove tokens");
             int newTokenCount = this.tokenCount - amount;
 
             if (newTokenCount < 0) {
-                jack.log(1, "Don't have enough tokens");
+                // jack.log(1, "Don't have enough tokens");
             } else if (0 == newTokenCount) {
                 this.tokenCount = newTokenCount;
                 removeTokenFromInv();
@@ -390,7 +390,7 @@ class Player extends Entity {
             }
 
         } else {
-            jack.log(1, "Can't remove tokens!");
+            // jack.log(1, "Can't remove tokens!");
         }
     }
 
@@ -398,7 +398,9 @@ class Player extends Entity {
      * Removes tokens
      */
     private void removeTokenFromInv(){
+
         Item currentItem = null;
+
         for (Item item : this.inventory) {
             if (item instanceof Token) {
                 currentItem = item;
@@ -420,7 +422,7 @@ class Player extends Entity {
      * Holds the Players alive status
      * @return true if they are alive
      */
-    public boolean getStatus() {
+    boolean getStatus() {
         return this.alive;
     }
 
@@ -431,6 +433,10 @@ class Player extends Entity {
         this.alive = false;
     }
 
+    /**
+     * Gets the Player's Position
+     * @return the Player's Position object
+     */
     public Position getPosition() {
         return this.position;
     }

@@ -7,17 +7,20 @@ Water
 TokenDoor
 KeyDoor
 Teleporter
-Walls
 Update file every game tick
 Load a game file
 Message of the day
 Dumb enemy movement
 Line Enemy movement
 Wall enemy movement
-Sprites
+Player death
 
 NOT DONE:
 
-Player death
-Smart enemy movement
 High scores
+Goal
+
+STILL IN PROGRESS:
+
+Sprites
+Smart enemy movement

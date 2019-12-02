@@ -2,13 +2,16 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * @author Chuks Ajeh, Angelo Balistoy
  * @version 1.0
  */
-class SmartEnemy extends Enemy {
+public class SmartEnemy extends Enemy {
 
     private Lumberjack jack = new Lumberjack();
 
@@ -30,15 +33,22 @@ class SmartEnemy extends Enemy {
         super(SPRITE, position, direction);
     }
 
-    // Do we have to use level's grids or can we use the enemies' own entity and cell grid.
-
+    /**
+     * Gets the next direction of the Smart Enemy.
+     * @param level The level being used.
+     * @return An int from 0-3 representing NESW.
+     */
+    public int nextDirection(Level level){
+        Player player = level.getPlayer();
+        return this.nextDirection(level, player);
+    }
     /**
      * Gets the next direction based on the player's location and impassable objects.
      * @param level The level object which holds the entity and cell grid
      * @param player The player in the level
      * @return An int from 0-3 representing NESW.
      */
-    public int nextDirection(Level level, Player player) {
+    private int nextDirection(Level level, Player player) {
 
         // Grab cell and entity grid to flatten
         Cell[][] cellGrid = level.getCellGrid();
@@ -101,8 +111,8 @@ class SmartEnemy extends Enemy {
             System.out.println("unable to find shortest path");
         }
 
-        final int[] row ={-1,0,0,1};
-        final int[] col ={0,-1,1,0};
+        final int[] row = {-1,0,0,1};
+        final int[] col = {0,-1,1,0};
 
         boolean[][] visited = new boolean[flattenedLevel.length][flattenedLevel[0].length];
 
@@ -148,7 +158,7 @@ class SmartEnemy extends Enemy {
 
             dist += 1;
 
-            for(int i = 0 ; i < 4 ; i++ ) {
+            for (int i = 0 ; i < 4 ; i++ ) {
                 // check for all 4 possible movements from current cell and enqueue it
                 if (isValid(flattenedLevel, visited, srcX + row[i],srcY + col[i])) {
 
@@ -188,7 +198,7 @@ class SmartEnemy extends Enemy {
      * @param col The column (y) coordinate
      * @return if the move is valid
      */
-    private static boolean isValid (int[][] flattenedLevel, boolean[][] visited, int row, int col){
+    private static boolean isValid (int[][] flattenedLevel, boolean[][] visited, int row, int col) {
 
         final int ROW = flattenedLevel.length - 1;
         final int COL = flattenedLevel[0].length - 1;
@@ -209,7 +219,7 @@ class SmartEnemy extends Enemy {
 
         int[][] level = new int[height][width];
 
-        for (int i = 0 ; i < height ; i++)  {
+        for (int i = 0 ; i < height ; i++ ) {
             for (int j = 0 ; j < width ; j++ ) {
 
                 if (entityGrid[i][j] instanceof Enemy || !cellGrid[i][j].isPassable() || cellGrid[i][j] instanceof Obstacle) {

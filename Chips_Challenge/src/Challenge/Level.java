@@ -1,14 +1,12 @@
 package Challenge;
 
-import javafx.scene.paint.Color;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import static java.lang.Integer.*;
+import static java.lang.Integer.parseInt;
 
 /**
  * @author George Carpenter
@@ -41,6 +39,9 @@ class Level {
 
         try {
             buildLevel(levelName);
+
+
+
         } catch (FileNotFoundException e) {
             // Nothing
         }
@@ -114,7 +115,7 @@ class Level {
             label = t.nextToken();
 
             // Debug
-            System.out.println(label + " Created");
+            // System.out.println(label + " Created");
 
             p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
@@ -269,6 +270,10 @@ class Level {
         }
 
         return enemies;
+    }
+
+    String getLevelname() {
+        return this.levelName;
     }
 
 }
