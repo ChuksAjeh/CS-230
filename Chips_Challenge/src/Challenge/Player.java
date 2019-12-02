@@ -341,7 +341,7 @@ class Player extends Entity {
 
                 Key currentKey = (Key) item;
 
-                System.out.println(currentKey.getColour().toString());
+                // System.out.println(currentKey.getColour().toString());
 
                 if (colour.toString().equals(currentKey.getColour().toString())) {
                     return item;
