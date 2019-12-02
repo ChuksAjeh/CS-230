@@ -101,6 +101,7 @@ abstract class Enemy extends Entity {
     /**
      * Moves the enemy based on a given direction.
      * @param level The current level.
+     * @param entityGrid the entityGrid in which to move the Enemy Object
      * @return The new entity grid to be used in the next turn.
      */
     public Entity[][] move(Level level, Entity[][] entityGrid) {
