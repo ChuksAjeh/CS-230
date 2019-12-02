@@ -143,11 +143,11 @@ class Save {
                     logWritten(entity);
 
                     Player player = (Player) entity;
-                    int[] plyLoc = player.getLocation(this.entityGrid);
+                    Position playerPos = player.getPosition();
 
                     this.writer.write("Player,");
-                    this.writer.write(plyLoc[0] + ",");
-                    this.writer.write(plyLoc[1] + ",");
+                    this.writer.write(playerPos.x + ",");
+                    this.writer.write(playerPos.y + ",");
                     this.writer.write(player.getDirection() + ",\n");
 
                 } else if (entity instanceof Enemy) {
