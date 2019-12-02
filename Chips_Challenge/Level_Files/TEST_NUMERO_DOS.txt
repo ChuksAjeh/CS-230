@@ -6,7 +6,7 @@
 #  #   #
 ########
 PLAYER,4,3,0,
-WALLENEMY,1,4,0,
+LINEENEMY,1,4,0,
 GOAL,3,2,
 KEYDOOR,6,1,White,2,2,
 TOKEN,2,1,

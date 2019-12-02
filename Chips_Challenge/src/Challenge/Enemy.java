@@ -111,6 +111,9 @@ abstract class Enemy extends Entity {
 
         int x = position.x;
         int y = position.y;
+
+        // TODO : Re-write this - Gnome
+
         // For all instances of enemy, use its specific next direction.
         direction = this.nextDirection(level);
 

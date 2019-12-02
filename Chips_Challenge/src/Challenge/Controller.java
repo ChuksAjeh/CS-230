@@ -57,16 +57,23 @@ class Controller {
             e.setCellGrid(level.getCellGrid());
             e.setEntityGrid(newGrid);
 
+            // I am aware sequential if blocks are bad, however these  blocks
+            // are checking for different 'end conditions' so I'm happy for
+            // them to co-exist in their own bubble of code - Gnome
+
             if (level.getPlayer() == null) {
                 // No Player, they be dead
                 return;
             }
 
-            // I am aware sequential if blocks are bad, however these two
-            // blocks are checking for different 'end conditions' so I'm
-            // happy for them to co-exist in their own bubble of code - Gnome
+            if (e instanceof DumbEnemy) {
 
-            if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
+                if (!e.getCells()[e.nextDirection(level)]) {
+                    // DumbEnemy trying to walk onto a wall
+                    return;
+                }
+
+            } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
                 // Enemy cannot move, they be surrounded
                 return;
             }
