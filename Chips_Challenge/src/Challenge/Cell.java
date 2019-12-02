@@ -7,7 +7,6 @@ import javafx.scene.image.Image;
  * cells to be able to set and get its type and also indicate whether it is a passable cell or not.
  * @author George and Angelo
  * @version 1.0
- *
  */
 abstract class Cell {
 
@@ -20,6 +19,29 @@ abstract class Cell {
      * Sprite used to render the object in game.
      */
     private final Image SPRITE;
+
+//
+//             ___
+//         _(((,|    What's DNA??
+//        /  _-\\
+//       / C o\o \    it's called deoxyribonucleic acid you dingus!
+//     _/_    __\ \     __ __     __ __     __ __     __
+//    /   \ \___/  )   /--X--\   /--X--\   /--X--\   /--
+//    |    |\_|\  /   /--/ \--\ /--/ \--\ /--/ \--\ /--/
+//    |    |#  #|/          \__X__/   \__X__/   \__X__/
+//    (   /     |
+//     |  |#  # |
+//     |  |    #|
+//     |  | #___n_,_
+//  ,-/   7-' .     `\
+//  `-\...\-_   -  o /
+//     |#  # `---U--'
+//     `-v-^-'\/
+//       \  |_|_
+//       (______)
+//
+//  Figure VII - Not a Cell because I couldn't find one
+//
 
     /**
      * Constructs a cell object.
