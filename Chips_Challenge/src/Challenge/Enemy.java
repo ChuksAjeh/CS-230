@@ -9,13 +9,12 @@ import javafx.scene.image.Image;
  * @author George Carpenter, Angelo Balistoy
  * @version 1.0
  */
-
 abstract class Enemy extends Entity {
 
     /**
      * The direction the enemy will travel
      */
-    int direction;
+    private int direction;
 
     /**
      * The cell grid the enemy uses
@@ -45,11 +44,60 @@ abstract class Enemy extends Entity {
     }
 
     /**
+     * Gets the direction.
+     * @return A number from 0-3 (North South East West).
+     */
+    int getDirection() {
+        return direction;
+    }
+
+    /**
+     * Gets the Position of this Enemy
+     * @return the Enemy Position Object
+     */
+    public Position getPosition() {
+        return this.position;
+    }
+
+    /**
+     * Gets the cell grid.
+     * @return The cell grid.
+     */
+    protected Cell[][] getCellGrid() {
+        return this.cellGrid;
+    }
+
+    /**
+     * Sets the direction of the enemy.
+     * @param direction The new direction of the enemy.
+     */
+    void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    /**
+     * Sets the cell grid for the enemy.
+     * @param cellGrid The cell grid to be used.
+     */
+    public void setCellGrid(Cell[][] cellGrid) {
+        this.cellGrid = cellGrid;
+    }
+
+    /**
+     * Sets the entity grid for the enemy.
+     * @param entityGrid The cell grid to be used.
+     */
+    public void setEntityGrid(Entity[][] entityGrid) {
+        this.entityGrid = entityGrid;
+    }
+
+    /**
      * Gets the next direction of enemies.
      * @param level The level being used.
      * @return The next direction from 0-3 representing North, East, South, West respectively.
      */
     public abstract int nextDirection(Level level);
+
     /**
      * Moves the enemy based on a given direction.
      * @param level The current level.
@@ -106,6 +154,10 @@ abstract class Enemy extends Entity {
 //  Figure I, the Killer Rabbit of Caerbannog
 //
 
+    /**
+     * Gets a list of possible moves for the Enemy
+     * @return a list of possible moves, not all are available
+     */
     boolean[] getCells() {
 
         int x = this.position.x;
@@ -133,50 +185,6 @@ abstract class Enemy extends Entity {
 
         return passable;
 
-    }
-
-    /**
-     * Gets the cell grid.
-     * @return The cell grid.
-     */
-    protected Cell[][] getCellGrid() {
-        return this.cellGrid;
-    }
-
-    /**
-     * Sets the direction of the enemy.
-     * @param direction The new direction of the enemy.
-     */
-    void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    /**
-     * Sets the cell grid for the enemy.
-     * @param cellGrid The cell grid to be used.
-     */
-    public void setCellGrid(Cell[][] cellGrid) {
-        this.cellGrid = cellGrid;
-    }
-
-    /**
-     * Sets the entity grid for the enemy.
-     * @param entityGrid The cell grid to be used.
-     */
-    public void setEntityGrid(Entity[][] entityGrid) {
-        this.entityGrid = entityGrid;
-    }
-
-    /**
-     * Gets the direction.
-     * @return A number from 0-3 (North South East West).
-     */
-    int getDirection() {
-        return direction;
-    }
-
-    public Position getPosition() {
-        return this.position;
     }
 
 }

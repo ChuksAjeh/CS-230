@@ -75,23 +75,6 @@ class WallEnemy extends Enemy {
     }
 
     /**
-     * Used to find moves when there are two
-     * @param passable the set of possible moves
-     * @return the set of available moves
-     */
-    private int[] findMoves(boolean[] passable) {
-
-        int[] moves = new int[2];
-
-        moves[0] = findMove(passable, true);
-        passable[moves[0]] = false;
-        moves[1] = findMove(passable, true);
-
-        return moves;
-
-    }
-
-    /**
      * Used to find the move when there is either only one or three
      * @param passable the set of possible moves
      * @param val what to look for
@@ -108,7 +91,22 @@ class WallEnemy extends Enemy {
         }
 
         return 0;
+    }
 
+    /**
+     * Used to find moves when there are two
+     * @param passable the set of possible moves
+     * @return the set of available moves
+     */
+    private int[] findMoves(boolean[] passable) {
+
+        int[] moves = new int[2];
+
+        moves[0] = findMove(passable, true);
+        passable[moves[0]] = false;
+        moves[1] = findMove(passable, true);
+
+        return moves;
     }
 
 }

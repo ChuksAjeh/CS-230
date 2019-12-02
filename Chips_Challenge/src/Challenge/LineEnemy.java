@@ -27,20 +27,29 @@ public class LineEnemy extends Enemy {
     }
 
     /**
-     * Used to calculate the next direction for the line enemy.
-     * @return the next direction
+     * Gets the next direction of the Line Enemy
+     * @return The next direction.
      */
     public int nextDirection(Level level) {
+        return this.nextDirection();
+    }
+
+    /**
+     * Used to calculate the next direction for the line enemy
+     * @return the next direction
+     */
+    private int nextDirection() {
 
         // This method is basically magic, do not question it's technique!
 
         boolean[] passable = getCells();
+        int dir = getDirection();
 
-        if (!passable[this.direction]) {
-            this.setDirection((this.direction + 2) % 4);
+        if (!passable[dir]) {
+            this.setDirection((dir + 2) % 4);
         }
 
-        return this.direction;
+        return dir;
     }
 
 }

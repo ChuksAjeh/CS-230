@@ -2,20 +2,23 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import static java.lang.Math.abs;
+import java.util.Random;
 
-/**A dumb enemy is an enemy whose movement is determined by the players location. It tries to find the shortest distance
+/**
+ * A dumb enemy is an enemy whose movement is determined by the players location. It tries to find the shortest distance
  * to the player and uses that path to determine its next direction. It does not take into account impassable territory
  * hence it is a dumb enemy.
- * @author Samuel
+ * @author Samuel Roach, George Carpenter
  * @version 1.0
  */
 public class DumbEnemy extends Enemy {
+
     /**
      * The sprite to represent the dumb enemy.
      */
     private static final Image SPRITE;
-    private Lumberjack jack  = new Lumberjack();
+
+    // private Lumberjack jack  = new Lumberjack();
 
     static {
         // Sets the Sprite to be rendered with this specific image.
@@ -39,25 +42,42 @@ public class DumbEnemy extends Enemy {
         Player player = level.getPlayer();
         return this.nextDirection(player);
     }
+
     /**
      * Finds the next direction of the dumb enemy where 0-3 represent North, East, South, West respectively.
      * @param player the player object
      * @return The next direction
      */
     private int nextDirection(Player player) {
-        // Gets the x distance away from the player to the enemy.
-        int xDif = player.getPosition().x - this.getPosition().x;
-        // Gets the y distace away from the enemy.
-        int yDif = player.getPosition().y - this.getPosition().y;
-        // If we need to across rather than vertically.
-        if (abs(xDif) > abs(yDif)) {
-            // Return East if relatively to the left of the player, else go West
-            return 0 < xDif ? 1 : 3;
-        } else if (abs(xDif) < abs(yDif)) {
-            // Return South if relatively North of the player, else go South.
-            return 0 < yDif ? 2 : 0;
+
+        Random random = new Random();
+
+        Position playerPos = player.getPosition();
+        Position enemyPos = this.getPosition();
+
+        if (playerPos.x > enemyPos.x) {
+
+            // Player is EAST of Enemy
+            return playerPos.y > enemyPos.y ?
+                    // Player is SOUTH EAST of Enemy
+                    random.nextBoolean() ? 2 : 1 :
+                    // Player is NORTH EAST of Enemy
+                    random.nextBoolean() ? 0 : 1;
+
+        } else if (playerPos.x < enemyPos.x) {
+
+            // Player is WEST of Enemy
+            return playerPos.y > enemyPos.y ?
+                    // Player is SOUTH WEST of Enemy
+                    random.nextBoolean() ? 2 : 3 :
+                    // Player is NORTH WEST of Enemy
+                    random.nextBoolean() ? 0 : 3;
+
         } else {
-            return 0; // Default to up otherwise.
+
+            // Player and Enemy have the same X
+            return playerPos.y > enemyPos.y ? 2 : 0;
+
         }
 
     }
