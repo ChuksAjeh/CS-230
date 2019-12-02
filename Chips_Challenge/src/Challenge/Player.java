@@ -63,6 +63,10 @@ class Player extends Entity {
         this.alive = true;
     }
 
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
+  
     /**
      * Used to find the Players current location in the Entity grid
      * @param entityGrid the Entity grid to search
