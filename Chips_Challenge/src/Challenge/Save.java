@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 /**
  * This class is used to save the game state each tick to ensure Player
- * progress is never lost, games can be loaded from original files or
- * their created save variants produced by this class
+ * progress is never lost. Games may be loaded from original files or their
+ * created save file variants produced by this class
  * @author Samuel Roach, George Carpenter
  * @version 1.0
  */
@@ -102,6 +102,44 @@ class Save {
 
     }
 
+//
+//  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+//  8                                                   8
+//  8  a---------------a                                8
+//  8  |     Chips     |                                8
+//  8  |   Challenge   |                                8
+//  8  |    Vol 1.0    |                               8"
+//  8  "---------------"                               8a
+//  8                                                   8
+//  8                                                   8
+//  8                      ,aaaaa,                      8
+//  8                    ad":::::"ba                    8
+//  8                  ,d::;gPPRg;::b,                  8
+//  8                  d::dP'   `Yb::b                  8
+//  8                  8::8)     (8::8                  8
+//  8                  Y;:Yb     dP:;P  O               8
+//  8                  `Y;:"8ggg8":;P'                  8
+//  8                    "Yaa:::aaP"                    8
+//  8                       """""                       8
+//  8                                                   8
+//  8                       ,d"b,                       8
+//  8                       d:::8                       8
+//  8                       8:::8                       8
+//  8                       8:::8                       8
+//  8                       8:::8                       8
+//  8                       8:::8                       8
+//  8                  aaa  `bad'  aaa                  8
+//  """""""""""""""""""' `"""""""""' `"""""""""""""""""""
+//
+//  Figure VI - A proper format!
+//
+
+    /**
+     * Writes the size of the level to the save file,
+     * before passing it to the remaining save functions
+     * @return the size of the Level grids, used elsewhere
+     * @throws IOException because IO is messy
+     */
     private int[] writeSize() throws IOException {
 
         int xSize = this.cellGrid.length;
@@ -112,7 +150,15 @@ class Save {
         return new int[] {xSize, ySize};
     }
 
+    /**
+     * Writes the walls to the save file diagram
+     * @param size the size of the grids
+     * @throws IOException because IO is messy
+     */
     private void writeWalls(int[] size) throws IOException {
+
+        // This is because Gnome is a big dumdum
+        // Buying 1x PivotTable? I think it's called that..
 
         Cell[][] wonkyGrid = new Cell[size[1]][size[0]];
 
@@ -135,10 +181,15 @@ class Save {
 
             }
 
-            this.writer.write('\n');
+            this.writer.write("\n");
         }
     }
 
+    /**
+     * Driver to write Entitys to the save file
+     * @param level the Level Object to save from
+     * @throws IOException because IO is messy
+     */
     private void writeEntities(Level level) throws IOException {
 
         for (Entity[] row : level.getEntityGrid()) {
@@ -149,11 +200,16 @@ class Save {
 
     }
 
+    /**
+     * Writes an Entity to the save file
+     * @param entity the Entity to save
+     * @throws IOException because IO is messy
+     */
     private void writeEntity(Entity entity) throws IOException {
 
         if (entity instanceof Player) {
 
-            logWritten(entity);
+            // logWritten(entity);
 
             Player player = (Player) entity;
             Position playerPos = player.getPosition();
@@ -165,7 +221,7 @@ class Save {
 
         } else if (entity instanceof Enemy) {
 
-            logWritten(entity);
+            // logWritten(entity);
 
             Enemy enemy = (Enemy) entity;
             Position enemyPos = enemy.getPosition();
@@ -177,13 +233,15 @@ class Save {
 
         } else if (entity instanceof Key) {
 
-            logWritten(entity);
+            // logWritten(entity);
+
             Key key = (Key) entity;
             writeKey(key);
 
         } else if (entity instanceof Item) {
 
-            logWritten(entity);
+            // logWritten(entity);
+
             Item item = (Item) entity;
             writeItem(item);
 
@@ -195,6 +253,11 @@ class Save {
 
     }
 
+    /**
+     * Writes Items to the save file
+     * @param i the Item to save
+     * @throws IOException because IO is messy
+     */
     private void writeItem(Item i) throws IOException {
 
         int[] itemPos = level.getLocation(entityGrid, i);
@@ -205,6 +268,11 @@ class Save {
 
     }
 
+    /**
+     * Writes Keys and by extension KeyDoors to the save file
+     * @param key the Key to save
+     * @throws IOException because IO is messy
+     */
     private void writeKey(Key key) throws IOException {
 
         String colour = key.getColour().toString();
@@ -239,38 +307,10 @@ class Save {
 
     }
 
-//
-//  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-//  8                                                   8
-//  8  a---------------a                                8
-//  8  |     Chips     |                                8
-//  8  |   Challenge   |                                8
-//  8  |    Vol 1.0    |                               8"
-//  8  "---------------"                               8a
-//  8                                                   8
-//  8                                                   8
-//  8                      ,aaaaa,                      8
-//  8                    ad":::::"ba                    8
-//  8                  ,d::;gPPRg;::b,                  8
-//  8                  d::dP'   `Yb::b                  8
-//  8                  8::8)     (8::8                  8
-//  8                  Y;:Yb     dP:;P  O               8
-//  8                  `Y;:"8ggg8":;P'                  8
-//  8                    "Yaa:::aaP"                    8
-//  8                       """""                       8
-//  8                                                   8
-//  8                       ,d"b,                       8
-//  8                       d:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                  aaa  `bad'  aaa                  8
-//  """""""""""""""""""' `"""""""""' `"""""""""""""""""""
-//
-//  Figure VI - A proper format!
-//
-
+    /**
+     * Driver to save all Cells
+     * @throws IOException because IO is messy
+     */
     private void writeCells() throws IOException {
 
         ArrayList<Teleporter> writtenTP = new ArrayList<>();
@@ -279,7 +319,8 @@ class Save {
             for (Cell cell : row) {
                 if (cell instanceof TokenDoor) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     TokenDoor tokenDoor = (TokenDoor) cell;
                     writeTokenDoor(tokenDoor);
 
@@ -290,20 +331,24 @@ class Save {
 
                 } else if (cell instanceof Obstacle) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     Obstacle obstacle = (Obstacle) cell;
                     writeObstacle(obstacle);
 
                 } else if (cell instanceof Goal) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     Goal goal = (Goal) cell;
                     writeCellPos(goal);
+
                     this.writer.write(",\n");
 
                 } else if (cell instanceof Teleporter) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     Teleporter teleporter = (Teleporter) cell;
                     writeTeleporter(teleporter, writtenTP);
 
@@ -312,6 +357,11 @@ class Save {
         }
     }
 
+    /**
+     * Writes TokenDoors to the save file
+     * @param tD the TokenDoor to save
+     * @throws IOException because IO is messy
+     */
     private void writeTokenDoor(TokenDoor tD) throws IOException {
 
         writeCellPos(tD);
@@ -320,6 +370,11 @@ class Save {
 
     }
 
+    /**
+     * Writes Obstacles to the save file
+     * @param obstacle the Obstacle to save
+     * @throws IOException because IO is messy
+     */
     private void writeObstacle(Obstacle obstacle) throws IOException {
 
         writeCellPos(obstacle);
@@ -327,6 +382,13 @@ class Save {
 
     }
 
+    /**
+     * Writes Teleporters to the save file
+     * @param teleporter the Teleporter to save
+     * @param writtenTP the list of already written teleporters,
+     *                  used to avoid duplication (not that it matters)
+     * @throws IOException because IO is messy
+     */
     private void writeTeleporter(Teleporter teleporter, ArrayList<Teleporter> writtenTP) throws IOException {
 
         Teleporter pair = teleporter.getPair();
@@ -350,6 +412,11 @@ class Save {
 
     }
 
+    /**
+     * Writes a cell position to the save file
+     * @param cell the Cell to save the position of
+     * @throws IOException because IO is messy
+     */
     private void writeCellPos(Cell cell) throws IOException {
 
         int[] cellCoords = this.level.getLocation(this.cellGrid, cell);
@@ -360,8 +427,12 @@ class Save {
 
     }
 
+    /**
+     * Writes a Log to the terminal when a thing is written to file.
+     * @param object what to write
+     */
     private void logWritten(Object object) {
-//        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
 
 }

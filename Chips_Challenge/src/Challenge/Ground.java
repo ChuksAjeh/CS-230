@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a simple ground cell,
+ * it is always passable by the player
  * @author George Carpenter
  * @version 1.0
  */

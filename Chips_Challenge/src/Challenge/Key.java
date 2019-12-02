@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Key used to unlock a door in the game,
+ * it can be collected by the player and is consumed on use.
  * @author George Carpenter
  * @version 1.0
  */

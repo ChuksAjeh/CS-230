@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Token Item, it can be collected by the player and
+ * will be consumed upon use opening a TokenDoor
  * @author George Carpenter
  * @version 1.0
  */
