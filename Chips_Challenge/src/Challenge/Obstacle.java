@@ -3,6 +3,9 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This is an abstract class designed to represent Obstacle Cells in the game
+ * that may start out impassable but at some point may become passable by the
+ * player through the collection of Items and Equipment.
  * @author George Carpenter
  * @version 1.0
  */

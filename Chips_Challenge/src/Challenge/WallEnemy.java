@@ -1,11 +1,17 @@
 package Challenge;
 
 import javafx.scene.image.Image;
+
 import java.util.Random;
 
 /**
+ * A wall enemy is an enemy whose movement is determined by the walls in the
+ * map, it should always stick to a wall and have it's movement determined by
+ * the walls around it. If for whatever reason it finds itself with no walls
+ * be it through bad level design or entity removal it will move randomly
+ * until it comes into contact with a wall again.
  * @author George Carpenter, Ioan Mazurca, Angelo Balistoy
- * @version 1.0
+ * @version 4.0
  */
 class WallEnemy extends Enemy {
 
@@ -31,7 +37,7 @@ class WallEnemy extends Enemy {
      * Used to return the next direction of the wall enemy
      * @return the next available direction
      */
-    public int nextDirection(Level level) {
+    int nextDirection(Level level) {
 
         Random random = new Random();
         boolean[] passable = getCells();
@@ -75,23 +81,6 @@ class WallEnemy extends Enemy {
     }
 
     /**
-     * Used to find moves when there are two
-     * @param passable the set of possible moves
-     * @return the set of available moves
-     */
-    private int[] findMoves(boolean[] passable) {
-
-        int[] moves = new int[2];
-
-        moves[0] = findMove(passable, true);
-        passable[moves[0]] = false;
-        moves[1] = findMove(passable, true);
-
-        return moves;
-
-    }
-
-    /**
      * Used to find the move when there is either only one or three
      * @param passable the set of possible moves
      * @param val what to look for
@@ -108,7 +97,22 @@ class WallEnemy extends Enemy {
         }
 
         return 0;
+    }
 
+    /**
+     * Used to find moves when there are two
+     * @param passable the set of possible moves
+     * @return the set of available moves
+     */
+    private int[] findMoves(boolean[] passable) {
+
+        int[] moves = new int[2];
+
+        moves[0] = findMove(passable, true);
+        passable[moves[0]] = false;
+        moves[1] = findMove(passable, true);
+
+        return moves;
     }
 
 }

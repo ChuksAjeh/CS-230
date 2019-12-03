@@ -2,7 +2,9 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-/**Fire is an obstacle in game that, if passed without fire boots, will cause player death.
+/**
+ * Fire is an obstacle in game that,
+ * if passed without fire boots will cause player death.
  * @author George Carpenter
  * @version 1.0
  */

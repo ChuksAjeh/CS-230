@@ -3,16 +3,23 @@ package Challenge;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.image.BufferedImage;
+/**
+ * SpriteConverter is an abstract class used to edit sprites before
+ * they are rendered into the game, resizing and rotating etc
+ * @author George Carpenter
+ * @version 2.0
+ */
+abstract class SpriteConverter {
 
-class SpriteConverter {
-
+    /**
+     * Resize a Sprite
+     * @param image the sprite to resize
+     * @param height the height of the new sprite
+     * @param width the width of the new sprite
+     * @return the resized sprite
+     */
     static Image resize(Image image, int height, int width) {
 
         // Read Image
@@ -31,6 +38,12 @@ class SpriteConverter {
 
     }
 
+    /**
+     * Rotate a Sprite
+     * @param image the sprite to rotate
+     * @param direction the amount of rotation
+     * @return the rotated sprite
+     */
     static Image rotate(Image image, int direction) {
 
         // Read Image
@@ -47,44 +60,21 @@ class SpriteConverter {
         return imageView.snapshot(param, null);
     }
 
-    static Image changeColour(Image image, Color colour) {
+    // This does not work but I've left it for posterity - Gnome
+    static Image flip(Image image) {
 
-        // This is basically impossible
+        // Read Image
+        ImageView imageView = new ImageView(image);
 
-        int newColour = 0; // this is wrong
+        // Flip - nope
+        imageView.setScaleX(-1);
 
-        ImageView im = new ImageView(image);
+        // Capture it? I think
+        SnapshotParameters param = new SnapshotParameters();
 
-        try {
-            BufferedImage bufferedImage = ImageIO.read((ImageInputStream) image);
+        param.setFill(Color.TRANSPARENT);
 
-            WritableImage wr = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-
-            PixelWriter pw = wr.getPixelWriter();
-
-            for (int y = 0 ; y < image.getHeight() ; y ++ ) {
-                for (int x = 0 ; x < image.getWidth() ; x ++ ) {
-
-                    int p = bufferedImage.getRGB(x, y);
-
-                    if (-1 == p) {
-                        // Pixel is white
-                        bufferedImage.setRGB(x, y, newColour);
-                    }
-
-                    pw.setArgb(x, y, bufferedImage.getRGB(x, y));
-
-                }
-            }
-
-            return new ImageView(wr).getImage();
-
-        } catch (Exception e) {
-            // Nothing
-        }
-
-        return image;
-
+        return imageView.snapshot(param, null);
     }
 
 }

@@ -3,10 +3,13 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * The Line Enemy is an enemy that will only ever travel in one of two
+ * directions, its initial direction or its cardinal opposite, these will
+ * change dynamically whenever it comes across an impassable cell.
  * @author George Caprenter, Ioan Mazurca
  * @version 3.0
  */
-public class LineEnemy extends Enemy {
+class LineEnemy extends Enemy {
 
     /**
      * The sprite to represent the dumb enemy.
@@ -27,20 +30,29 @@ public class LineEnemy extends Enemy {
     }
 
     /**
-     * Used to calculate the next direction for the line enemy.
-     * @return the next direction
+     * Gets the next direction of the Line Enemy
+     * @return The next direction.
      */
     public int nextDirection(Level level) {
+        return this.nextDirection();
+    }
+
+    /**
+     * Used to calculate the next direction for the line enemy
+     * @return the next direction
+     */
+    private int nextDirection() {
 
         // This method is basically magic, do not question it's technique!
 
         boolean[] passable = getCells();
+        int dir = getDirection();
 
-        if (!passable[this.direction]) {
-            this.setDirection((this.direction + 2) % 4);
+        if (!passable[dir]) {
+            setDirection((dir + 2) % 4);
         }
 
-        return this.direction;
+        return getDirection();
     }
 
 }

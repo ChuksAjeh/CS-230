@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Key used to unlock a door in the game,
+ * it can be collected by the player and is consumed on use.
  * @author George Carpenter
  * @version 1.0
  */
@@ -18,12 +20,16 @@ class Key extends Item {
      */
     private final Colour colour;
 
-    public enum Colour {
+    /**
+     * This is used for the colour of the Key
+     */
+    enum Colour {
         RED, GREEN, BLUE, WHITE, BLACK
     }
 
     static {
         SPRITE = new Image("images/ENTITY_KEY.png");
+    }
 
 //
 //     .---.
@@ -34,8 +40,6 @@ class Key extends Item {
 //
 //  Figure III - A key
 //
-
-    }
 
     /**
      * Constructor
@@ -50,22 +54,27 @@ class Key extends Item {
      * Gets the colour of the key
      * @return the colour of the key
      */
-    public Colour getColour() {
+    Colour getColour() {
         return this.colour;
     }
 
+    /**
+     * Sets the colour of the Key for checking
+     * @param colour the colour to set
+     * @return the colour Enum to set
+     */
     private Colour setColour(String colour) {
 
         if ("RED".equals(colour)) {
-            return Key.Colour.RED;
+            return Colour.RED;
         } else if ("GREEN".equals(colour)) {
-            return Key.Colour.GREEN;
+            return Colour.GREEN;
         } else if ("BLUE".equals(colour)) {
-            return Key.Colour.BLUE;
+            return Colour.BLUE;
         } else if ("WHITE".equals(colour)) {
-            return Key.Colour.WHITE;
+            return Colour.WHITE;
         } else if ("BLACK".equals(colour)) {
-            return Key.Colour.BLACK;
+            return Colour.BLACK;
         }
 
         return null;

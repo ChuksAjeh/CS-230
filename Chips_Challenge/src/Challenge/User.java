@@ -5,23 +5,23 @@ class User {
     private String userName;
     private int[] scores;
 
-    public User() {
+    User() {
 
     }
 
-    public void setUserName(String userName) {
+    void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setScores(int[] scores) {
+    void setScores(int[] scores) {
         this.scores = scores;
     }
 
-    public String getUserName() {
+    String getUserName() {
         return this.userName;
     }
 
-    public int[] getScores() {
+    int[] getScores() {
         return this.scores;
     }
 

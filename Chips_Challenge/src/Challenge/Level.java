@@ -2,6 +2,7 @@ package Challenge;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -9,6 +10,9 @@ import java.util.StringTokenizer;
 import static java.lang.Integer.parseInt;
 
 /**
+ * This class acts as a kind of super-ish class for the game, holding all
+ * information about the grids and allowing the "game" to run. The player,
+ * and enemies, will always be interacting with one or other part of it.
  * @author George Carpenter
  * @version 2.0
  */
@@ -17,12 +21,12 @@ class Level {
     /**
      * The cell grid to build
      */
-    private Cell[][] cellGrid;
+    private static Cell[][] cellGrid;
 
     /**
      * The entity grid to build
      */
-    private Entity[][] entityGrid;
+    private static Entity[][] entityGrid;
 
     /**
      * The name of the level to build
@@ -40,21 +44,76 @@ class Level {
         try {
             buildLevel(levelName);
         } catch (FileNotFoundException e) {
-            // Nothing
+
+            // e.printStackTrace();
+
+            // This won't ever be caught because the buttons in
+            // the game will only load files that exist already
+            // and as such no FileNotFound can ever occur
+
         }
 
     }
 
+    /**
+     * Gets the cell grid
+     * @return the cell grid off the Level object
+     */
+    public Cell[][] getCellGrid() {
+        return cellGrid;
+    }
+
+    /**
+     * Gets the entity grid
+     * @return the entity grid for the level Object
+     */
+    public Entity[][] getEntityGrid() {
+        return entityGrid;
+    }
+
+    /**
+     * Gets the level name
+     * @return the name of the Level, for saving
+     */
+    String getLevelName() {
+        return this.levelName;
+    }
+
+    /**
+     * Sets the cell grid
+     * @param cellGrid the cell grid for the level Object
+     */
+    public void setCellGrid(Cell[][] cellGrid) {
+        Level.cellGrid = cellGrid;
+    }
+
+    /**
+     * Sets the entity grid
+     * @param entityGrid the entity grid for the level Object
+     */
+    public void setEntityGrid(Entity[][] entityGrid) {
+        Level.entityGrid = entityGrid;
+    }
+
+    /**
+     * Builds the Level
+     * @param level the Level file to build
+     * @throws FileNotFoundException if the file doesn't exist
+     */
     private void buildLevel(String level) throws FileNotFoundException {
 
+        //Scanner reader = new Scanner(new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\" + level + ".txt"));
         Scanner reader = new Scanner(new File("Level_Files/" + level + ".txt"));
         reader.useDelimiter(",");
 
         buildBasicGrids(reader);
-        buildGrids(readRemainingLines(reader));
 
     }
 
+    /**
+     * Builds basic grids
+     * @param reader not-a-file-reader
+     */
     private void buildBasicGrids(Scanner reader) {
 
         int x = reader.nextInt();
@@ -63,8 +122,8 @@ class Level {
         // Throw away the rest of the line
         reader.nextLine();
 
-        this.cellGrid = new Cell[x][y];
-        this.entityGrid = new Entity[x][y];
+        cellGrid = new Cell[x][y];
+        entityGrid = new Entity[x][y];
 
         for (int i = 0 ; i < y ; i++) {
 
@@ -74,17 +133,24 @@ class Level {
 
                 if ('#' == row[j]) {
                     // This is a wall
-                    this.cellGrid[j][i] = new Wall();
+                    cellGrid[j][i] = new Wall();
                 } else {
                     // This is a ground
-                    this.cellGrid[j][i] = new Ground();
+                    cellGrid[j][i] = new Ground();
                 }
 
             }
         }
 
+        buildGrids(readRemainingLines(reader));
+
     }
 
+    /**
+     * Reads in the remaining lines in the file, to be built elsewhere
+     * @param reader not-a-file-reader
+     * @return The String containing the Entitys
+     */
     private String readRemainingLines(Scanner reader) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -99,73 +165,75 @@ class Level {
 
     }
 
+    /**
+     * Finishes the build process
+     * @param file the remaining data to build
+     */
     private void buildGrids(String file) {
 
         StringTokenizer t = new StringTokenizer(file, ",");
 
         String label;
-        Position p;
+        Position p = new Position(0, 0);
         int dr;
 
         while (t.hasMoreTokens()) {
 
             label = t.nextToken();
 
-            // Debug
-            System.out.println(label + " Created");
-
-            p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
+            if (!"INVENTORY".equals(label)) {
+                p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
+            }
 
             if ("PLAYER".equals(label) || label.contains("ENEMY")) {
 
                 dr = parseInt(t.nextToken());
 
                 if ("PLAYER".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new Player(p, dr);
+                    entityGrid[p.x][p.y] = new Player(p, dr);
                 } else if ("SMARTENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
                 } else if ("DUMBENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
                 } else if ("WALLENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new WallEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new WallEnemy(p, dr);
                 } else if ("LINEENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new LineEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new LineEnemy(p, dr);
                 }
 
             } else if ("KEYDOOR".equals(label)) {
 
                 String colour = t.nextToken();
-
-                this.cellGrid[p.x][p.y] = new KeyDoor(colour);
-
+                cellGrid[p.x][p.y] = new KeyDoor(colour);
                 p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
-
-                this.entityGrid[p.x][p.y] = new Key(colour);
+                entityGrid[p.x][p.y] = new Key(colour);
 
             } else if ("TOKEN".equals(label)) {
-                this.entityGrid[p.x][p.y] = new Token();
+                entityGrid[p.x][p.y] = new Token();
             } else if ("TOKENDOOR".equals(label)) {
                 dr = parseInt(t.nextToken());
-                this.cellGrid[p.x][p.y] = new TokenDoor(dr);
+                cellGrid[p.x][p.y] = new TokenDoor(dr);
             } else if ("GOAL".equals(label)) {
-                this.cellGrid[p.x][p.y] = new Goal();
+                cellGrid[p.x][p.y] = new Goal();
             } else if ("FIRE".equals(label)) {
-                this.cellGrid[p.x][p.y] = new Fire();
+                cellGrid[p.x][p.y] = new Fire();
             } else if ("WATER".equals(label)) {
-                this.cellGrid[p.x][p.y] = new Water();
+                cellGrid[p.x][p.y] = new Water();
             } else if ("FIREBOOTS".equals(label)) {
-                this.entityGrid[p.x][p.y] = new FireBoots();
+                entityGrid[p.x][p.y] = new FireBoots();
             } else if ("FLIPPERS".equals(label)) {
-                this.entityGrid[p.x][p.y] = new Flippers();
+                entityGrid[p.x][p.y] = new Flippers();
             } else if ("TELEPORTER".equals(label)) {
 
                 Teleporter temp = new Teleporter();
 
-                this.cellGrid[p.x][p.y] = temp;
+                cellGrid[p.x][p.y] = temp;
 
                 p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
-                this.cellGrid[p.x][p.y] = new Teleporter(temp);
+                cellGrid[p.x][p.y] = new Teleporter(temp);
+            } else if ("INVENTORY".equals(label)) {
+                readInventory(t);
             }
 
         }
@@ -173,43 +241,65 @@ class Level {
     }
 
     /**
-     * Sets the cell grid
-     * @param cellGrid the cell grid for the level Object
+     * Used to build the player inventory
+     * @param tokenizer the things that does the reading
      */
-    public void setCellGrid(Cell[][] cellGrid) {
-        this.cellGrid = cellGrid;
+    private void readInventory(StringTokenizer tokenizer) {
+
+        Player player = this.getPlayer();
+        String item = tokenizer.nextToken();
+
+        if ("FLIPPERS".equals(item)) {
+            player.addItem(this, new Flippers());
+        } else if ("FIREBOOTS".equals(item)) {
+            player.addItem(this, new FireBoots());
+        } else if ("KEY".equals(item)) {
+            player.addItem(this, new Key(tokenizer.nextToken()));
+        } else if ("TOKEN".equals(item)) {
+            player.addItem(this, new Token());
+            player.setTokenCount(Integer.parseInt(tokenizer.nextToken()));
+        }
+
     }
 
     /**
-     * Sets the entity grid
-     * @param entityGrid the entity grid for the level Object
+     * Gets the Player object from the level
+     * @return the Player object
      */
-    public void setEntityGrid(Entity[][] entityGrid) {
-        this.entityGrid = entityGrid;
+    Player getPlayer() {
+
+        for (Entity[] row : entityGrid) {
+            for (Entity entity : row) {
+                if (entity instanceof Player) {
+                    return (Player) entity;
+                }
+            }
+        }
+
+        return null;
+
     }
 
     /**
-     * Gets the cell grid
-     * @return the cell grid off the Level object
+     * Gets the list of Enemies that need to move each tick
+     * @param entityGrid the grid they exist in
+     * @return the array of Enemies
      */
-    public Cell[][] getCellGrid() {
-        return this.cellGrid;
-    }
+    ArrayList<Enemy> getEnemies(Entity[][] entityGrid) {
 
-    /**
-     * Gets the entity grid
-     * @return the entity grid for the level Object
-     */
-    public Entity[][] getEntityGrid() {
-        return this.entityGrid;
-    }
+        ArrayList<Enemy> enemies = new ArrayList<>();
 
-    /**
-     * Gets the level name
-     * @return the name of the Level, for saving
-     */
-    String getLevelName() {
-        return this.levelName;
+        for (Entity[] row : entityGrid) {
+            for (Entity entity : row) {
+
+                if (entity instanceof Enemy) {
+                    enemies.add((Enemy) entity);
+                }
+
+            }
+        }
+
+        return enemies;
     }
 
     /**
@@ -232,41 +322,6 @@ class Level {
         }
 
         return null;
-    }
-
-    /**
-     * Gets the Player object from the level
-     * @return the Player object
-     */
-    Player getPlayer() {
-
-        for (Entity[] row : this.entityGrid) {
-            for (Entity entity : row) {
-                if (entity instanceof Player) {
-                    return (Player) entity;
-                }
-            }
-        }
-
-        return null;
-
-    }
-
-    ArrayList<Enemy> getEnemies(Entity[][] entityGrid) {
-
-        ArrayList<Enemy> enemies = new ArrayList<>();
-
-        for (Entity[] row : entityGrid) {
-            for (Entity entity : row) {
-
-                if (entity instanceof Enemy) {
-                    enemies.add((Enemy) entity);
-                }
-
-            }
-        }
-
-        return enemies;
     }
 
 }
