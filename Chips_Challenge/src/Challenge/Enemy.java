@@ -124,12 +124,17 @@ abstract class Enemy extends Entity {
             newX = position.x - 1;
         }
 
-        // Move the Enemy Object
-        this.position = new Position(newX, newY);
-        entityGrid[newX][newY] = this;
+        if (this.getCells()[direction]) {
+            // If they can actually move there
 
-        // Clear the old position in the grid
-        entityGrid[position.x][position.y] = null;
+            // Move the Enemy Object
+            this.position = new Position(newX, newY);
+            entityGrid[newX][newY] = this;
+
+            // Clear the old position in the grid
+            entityGrid[position.x][position.y] = null;
+
+        }
 
         // Return the new grid
         return entityGrid;
