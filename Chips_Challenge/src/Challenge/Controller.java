@@ -27,12 +27,11 @@ class Controller {
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
      */
-    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene after, Scene die) {
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene success, Scene die) {
 
         // Grab the player and current entity grid
         Entity[][] newGrid = level.getEntityGrid();
         Player player = level.getPlayer();
-
 
         if (KeyCode.UP == event.getCode()) {
             // Move to direction 0 (North)
@@ -53,28 +52,37 @@ class Controller {
         // Move all the enemies after the player has moved.
         for (Enemy e : enemies) {
 
-            e.setCellGrid(level.getCellGrid());
-            e.setEntityGrid(newGrid);
+//            for (Cell[] row : level.getCellGrid()) {
+//                for (Cell c : row) {
+//                    System.out.println(c.getClass().getSimpleName());
+//                }
+//            }
 
             // I am aware sequential if blocks are bad, however these  blocks
             // are checking for different 'end conditions' so I'm happy for
             // them to co-exist in their own bubble of code - Gnome
 
-            if (level.getPlayer() == null) {
+            if (level.getPlayer() != null) {
                 // No Player, they be dead
-                return;
-            }
 
-            if (e instanceof DumbEnemy) {
+                // Update Grids
+                e.setCellGrid(level.getCellGrid());
+                e.setEntityGrid(newGrid);
 
-                if (!e.getCells()[e.nextDirection(level)]) {
-                    // DumbEnemy trying to walk onto a wall
-                    return;
-                }
+//                if (e instanceof DumbEnemy) {
 
-            } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
-                // Enemy cannot move, they be surrounded
-                return;
+                    // TODO : Fix this shit - Gnome
+
+//                    if (!e.getCells()[e.nextDirection(level)]) {
+                        // DumbEnemy trying to walk onto a wall
+//                        return;
+//                    }
+
+//                } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
+                    // Enemy cannot move, they be surrounded
+//                    return;
+//                }
+
             }
 
             newGrid = e.move(level, newGrid);
@@ -83,12 +91,13 @@ class Controller {
 
         // Redraw the level with new positions.
         if (event.getCode().isArrowKey()) {
-            level.setEntityGrid(newGrid);
-            if(player.getGameStatus()==true) {
-                player.setGameStatus();
-                Main.window.setScene(after);
-            }
 
+            level.setEntityGrid(newGrid);
+
+            if(player.getGameStatus()) {
+                player.setGameStatus();
+                Main.window.setScene(success);
+            }
 
             if (player.getStatus() && level.getPlayer() != null) {
                 // Player should be alive
@@ -108,7 +117,7 @@ class Controller {
 
     void processMenuEvent(KeyEvent event, StackPane root) {
          if (KeyCode.ESCAPE == event.getCode()) {
-            if(changeMenu == true) {
+            if(changeMenu) {
                 root.lookup("#pauseMenu").toFront();
                 root.lookup("#Inventory").toBack();
                 changeMenu = false;
@@ -138,6 +147,12 @@ class Controller {
             }
         }
     }
+
+    void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas canvas2) {
+        mini.drawGame(level,canvas2);
+        event.consume();
+    }
+
 
     /** Method to help reset the level.
      * Makes a new level

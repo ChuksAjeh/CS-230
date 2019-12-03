@@ -21,12 +21,12 @@ class Level {
     /**
      * The cell grid to build
      */
-    private Cell[][] cellGrid;
+    private static Cell[][] cellGrid;
 
     /**
      * The entity grid to build
      */
-    private Entity[][] entityGrid;
+    private static Entity[][] entityGrid;
 
     /**
      * The name of the level to build
@@ -60,7 +60,7 @@ class Level {
      * @return the cell grid off the Level object
      */
     public Cell[][] getCellGrid() {
-        return this.cellGrid;
+        return cellGrid;
     }
 
     /**
@@ -68,7 +68,7 @@ class Level {
      * @return the entity grid for the level Object
      */
     public Entity[][] getEntityGrid() {
-        return this.entityGrid;
+        return entityGrid;
     }
 
     /**
@@ -84,7 +84,7 @@ class Level {
      * @param cellGrid the cell grid for the level Object
      */
     public void setCellGrid(Cell[][] cellGrid) {
-        this.cellGrid = cellGrid;
+        Level.cellGrid = cellGrid;
     }
 
     /**
@@ -92,7 +92,7 @@ class Level {
      * @param entityGrid the entity grid for the level Object
      */
     public void setEntityGrid(Entity[][] entityGrid) {
-        this.entityGrid = entityGrid;
+        Level.entityGrid = entityGrid;
     }
 
     /**
@@ -107,7 +107,6 @@ class Level {
         reader.useDelimiter(",");
 
         buildBasicGrids(reader);
-        buildGrids(readRemainingLines(reader));
 
     }
 
@@ -123,8 +122,8 @@ class Level {
         // Throw away the rest of the line
         reader.nextLine();
 
-        this.cellGrid = new Cell[x][y];
-        this.entityGrid = new Entity[x][y];
+        cellGrid = new Cell[x][y];
+        entityGrid = new Entity[x][y];
 
         for (int i = 0 ; i < y ; i++) {
 
@@ -134,14 +133,16 @@ class Level {
 
                 if ('#' == row[j]) {
                     // This is a wall
-                    this.cellGrid[j][i] = new Wall();
+                    cellGrid[j][i] = new Wall();
                 } else {
                     // This is a ground
-                    this.cellGrid[j][i] = new Ground();
+                    cellGrid[j][i] = new Ground();
                 }
 
             }
         }
+
+        buildGrids(readRemainingLines(reader));
 
     }
 
@@ -182,59 +183,69 @@ class Level {
 
             p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
+            // System.out.print(cellGrid[p.x][p.y] + " - " + entityGrid[p.x][p.y]);
+
             if ("PLAYER".equals(label) || label.contains("ENEMY")) {
 
                 dr = parseInt(t.nextToken());
 
                 if ("PLAYER".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new Player(p, dr);
+                    entityGrid[p.x][p.y] = new Player(p, dr);
                 } else if ("SMARTENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
                 } else if ("DUMBENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
                 } else if ("WALLENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new WallEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new WallEnemy(p, dr);
                 } else if ("LINEENEMY".equals(label)) {
-                    this.entityGrid[p.x][p.y] = new LineEnemy(p, dr);
+                    entityGrid[p.x][p.y] = new LineEnemy(p, dr);
                 }
 
             } else if ("KEYDOOR".equals(label)) {
 
                 String colour = t.nextToken();
 
-                this.cellGrid[p.x][p.y] = new KeyDoor(colour);
+                cellGrid[p.x][p.y] = new KeyDoor(colour);
 
                 p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
-                this.entityGrid[p.x][p.y] = new Key(colour);
+                entityGrid[p.x][p.y] = new Key(colour);
 
             } else if ("TOKEN".equals(label)) {
-                this.entityGrid[p.x][p.y] = new Token();
+                entityGrid[p.x][p.y] = new Token();
             } else if ("TOKENDOOR".equals(label)) {
                 dr = parseInt(t.nextToken());
-                this.cellGrid[p.x][p.y] = new TokenDoor(dr);
+                cellGrid[p.x][p.y] = new TokenDoor(dr);
             } else if ("GOAL".equals(label)) {
-                this.cellGrid[p.x][p.y] = new Goal();
+                cellGrid[p.x][p.y] = new Goal();
             } else if ("FIRE".equals(label)) {
-                this.cellGrid[p.x][p.y] = new Fire();
+                cellGrid[p.x][p.y] = new Fire();
             } else if ("WATER".equals(label)) {
-                this.cellGrid[p.x][p.y] = new Water();
+                cellGrid[p.x][p.y] = new Water();
             } else if ("FIREBOOTS".equals(label)) {
-                this.entityGrid[p.x][p.y] = new FireBoots();
+                entityGrid[p.x][p.y] = new FireBoots();
             } else if ("FLIPPERS".equals(label)) {
-                this.entityGrid[p.x][p.y] = new Flippers();
+                entityGrid[p.x][p.y] = new Flippers();
             } else if ("TELEPORTER".equals(label)) {
 
                 Teleporter temp = new Teleporter();
 
-                this.cellGrid[p.x][p.y] = temp;
+                cellGrid[p.x][p.y] = temp;
 
                 p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
-                this.cellGrid[p.x][p.y] = new Teleporter(temp);
+                cellGrid[p.x][p.y] = new Teleporter(temp);
             }
 
+            // System.out.println(" + " + cellGrid[p.x][p.y] + " - " + entityGrid[p.x][p.y]);
+
         }
+
+//        for (Cell[] row : this.cellGrid) {
+//            for (Cell c : row) {
+//                System.out.println(c.getClass().getSimpleName());
+//            }
+//        }
 
     }
 
@@ -244,7 +255,7 @@ class Level {
      */
     Player getPlayer() {
 
-        for (Entity[] row : this.entityGrid) {
+        for (Entity[] row : entityGrid) {
             for (Entity entity : row) {
                 if (entity instanceof Player) {
                     return (Player) entity;
