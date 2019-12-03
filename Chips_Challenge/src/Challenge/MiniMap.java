@@ -97,17 +97,14 @@ class MiniMap {
         int x = position[0];
         int y = position[1];
 
-        Image sprite = SpriteConverter.resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        Image sprite = entity.getSprite();
 
         if (entity.getClass().getSimpleName().equals("Player")) {
 
-//            if (((Player) entity).getDirection() == 3) {
-//                gc.drawImage(sprite, x + GRID_CELL_WIDTH, y, 0 - GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
-//            } else {
-//                gc.drawImage(sprite, x, y);
-//            }
+            sprite = SpriteConverter.rotate(sprite, ((Player) entity).getDirection());
+            sprite = SpriteConverter.resize(sprite, GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
 
-            gc.drawImage(SpriteConverter.rotate(sprite, ((Player) entity).getDirection()), x, y);
+            gc.drawImage(sprite, x, y);
 
         }/* else if (entity.getClass().getSimpleName().contains("Enemy")) {
             Enemy enemy = (Enemy) entity;

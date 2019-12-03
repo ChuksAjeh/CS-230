@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  * @author Everyone basically
  * @version 9001
  */
-public class Game {
+class Game {
 
     // The size of each cell
     private static final int GRID_CELL_WIDTH = 120;

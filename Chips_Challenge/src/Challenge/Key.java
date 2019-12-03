@@ -23,7 +23,7 @@ class Key extends Item {
     /**
      * This is used for the colour of the Key
      */
-    public enum Colour {
+    enum Colour {
         RED, GREEN, BLUE, WHITE, BLACK
     }
 
@@ -54,7 +54,7 @@ class Key extends Item {
      * Gets the colour of the key
      * @return the colour of the key
      */
-    public Colour getColour() {
+    Colour getColour() {
         return this.colour;
     }
 
@@ -66,15 +66,15 @@ class Key extends Item {
     private Colour setColour(String colour) {
 
         if ("RED".equals(colour)) {
-            return Key.Colour.RED;
+            return Colour.RED;
         } else if ("GREEN".equals(colour)) {
-            return Key.Colour.GREEN;
+            return Colour.GREEN;
         } else if ("BLUE".equals(colour)) {
-            return Key.Colour.BLUE;
+            return Colour.BLUE;
         } else if ("WHITE".equals(colour)) {
-            return Key.Colour.WHITE;
+            return Colour.WHITE;
         } else if ("BLACK".equals(colour)) {
-            return Key.Colour.BLACK;
+            return Colour.BLACK;
         }
 
         return null;

@@ -93,6 +93,7 @@ class Save {
             writeWalls(size);
             writeEntities(level);
             writeCells();
+            writePlayerInventory(level.getPlayer());
 
             writer.close();
 
@@ -424,6 +425,29 @@ class Save {
         this.writer.write(cell.getClass().getSimpleName() + ",");
         this.writer.write(cellCoords[0] + ",");
         this.writer.write(cellCoords[1] + "");
+
+    }
+
+    /**
+     * Writes the Player's Inventory to the save file
+     * @param player the Player Object
+     * @throws IOException because IO is messy
+     */
+    private void writePlayerInventory(Player player) throws IOException {
+
+        writer.write("Inventory,");
+
+        for (Item item : player.getInventory()) {
+
+            writer.write(item.getClass().getSimpleName() + ",");
+
+            if (item instanceof Key) {
+                writer.write(((Key) item).getColour().toString() + ",");
+            } else if (item instanceof Token) {
+                writer.write(player.getTokenCount() + ",");
+            }
+
+        }
 
     }
 

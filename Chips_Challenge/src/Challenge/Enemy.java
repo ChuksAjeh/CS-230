@@ -37,7 +37,7 @@ abstract class Enemy extends Entity {
      * @param position the position of the Enemy
      * @param direction the direction the enemy is set upon creation
      * */
-    public Enemy(Image sprite, Position position, int direction) {
+    Enemy(Image sprite, Position position, int direction) {
         super(sprite);
         this.position = position;
         this.direction = direction;
@@ -55,7 +55,7 @@ abstract class Enemy extends Entity {
      * Gets the Position of this Enemy
      * @return the Enemy Position Object
      */
-    public Position getPosition() {
+    Position getPosition() {
         return this.position;
     }
 
@@ -79,7 +79,7 @@ abstract class Enemy extends Entity {
      * Sets the cell grid for the enemy.
      * @param cellGrid The cell grid to be used.
      */
-    public void setCellGrid(Cell[][] cellGrid) {
+    void setCellGrid(Cell[][] cellGrid) {
         this.cellGrid = cellGrid;
     }
 
@@ -87,7 +87,7 @@ abstract class Enemy extends Entity {
      * Sets the entity grid for the enemy.
      * @param entityGrid The cell grid to be used.
      */
-    public void setEntityGrid(Entity[][] entityGrid) {
+    void setEntityGrid(Entity[][] entityGrid) {
         this.entityGrid = entityGrid;
     }
 
@@ -96,7 +96,7 @@ abstract class Enemy extends Entity {
      * @param level The level being used.
      * @return The next direction from 0-3 representing North, East, South, West respectively.
      */
-    public abstract int nextDirection(Level level);
+    abstract int nextDirection(Level level);
 
     /**
      * Moves the enemy based on a given direction.
@@ -104,7 +104,7 @@ abstract class Enemy extends Entity {
      * @param entityGrid the entityGrid in which to move the Enemy Object
      * @return The new entity grid to be used in the next turn.
      */
-    public Entity[][] move(Level level, Entity[][] entityGrid) {
+    Entity[][] move(Level level, Entity[][] entityGrid) {
 
         Position position = getPosition();
 

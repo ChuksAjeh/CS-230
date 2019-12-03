@@ -53,15 +53,17 @@ public class Main extends Application {
     private static final int CANVAS_WIDTH = 960;
     private static final int CANVAS_HEIGHT = 684;
 
-    private Canvas canvas;
-    private Canvas canvas2;
+    private Canvas gameCanvas;
+    private Canvas miniMapCanvas;
 
-    static Level level;
     private Game game = new Game();
     private MiniMap miniMap = new MiniMap();
+
     private final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
+
     static Stage window;
+    static Level level;
 
     // Mediaplayer
     private static MediaPlayer mediaPlayer;
@@ -79,8 +81,8 @@ public class Main extends Application {
         window.show();
 
         try {
-            //Media media = new Media(Paths.get("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\music\\background_music1.mp3").toUri().toString());
-            Media media = new Media(Paths.get("music/background_music1.mp3").toUri().toString());
+            //Media media = new Media(Paths.get("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\music\\music.mp3").toUri().toString());
+            Media media = new Media(Paths.get("music/music.mp3").toUri().toString());
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.setVolume(0.2);
@@ -154,7 +156,7 @@ public class Main extends Application {
     }
 
 
-    public Scene userSelection() {
+    private Scene userSelection() {
 
         BorderPane root = new BorderPane();
 
@@ -307,7 +309,7 @@ public class Main extends Application {
 
     }
 
-    public AnchorPane inventory(Level level) {
+    private AnchorPane inventory(Level level) {
         HBox test = new HBox();
         AnchorPane inv = new AnchorPane();
         ArrayList<Item> lame = level.getPlayer().getInventory();
@@ -474,18 +476,16 @@ public class Main extends Application {
         StackPane stack = new StackPane();
         //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        StackPane stack2 = new StackPane();
-
         System.out.println("SUCCESS!");
 
-        canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        gameCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         AnchorPane awesome = new AnchorPane();
         BorderPane mini = new BorderPane();
         mini.setPrefSize(150,150);
-        canvas2 = new Canvas(150, 150);
+        miniMapCanvas = new Canvas(150, 150);
 
-        drawing.setCenter(canvas);
+        drawing.setCenter(gameCanvas);
 
         drawing.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
 
@@ -493,19 +493,15 @@ public class Main extends Application {
 
         level = controller.makeLevel(name);
 
-        game.drawGame(level, canvas);
+        game.drawGame(level, gameCanvas);
 
-        mini.setCenter(canvas2);
+        mini.setCenter(miniMapCanvas);
 
         mini.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
 
-        //mini.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
         mini.setStyle("-fx-border-color: #42832d ; -fx-border-width: 2px ");
 
-        //mini.setId("miniMap");
-
-        miniMap.drawGame(level, canvas2);
+        miniMap.drawGame(level, miniMapCanvas);
 
         AnchorPane.setBottomAnchor(mini, 500.0);
         AnchorPane.setLeftAnchor(mini, 750.0);
@@ -517,24 +513,16 @@ public class Main extends Application {
         stack.getChildren().add(drawing);
         stack.getChildren().add(awesome);
 
-        //stack2.getChildren().add(stack);
-        //stack2.getChildren().add(awesome);
-
         root.setBottom(bottomBar());
         root.setCenter(stack);
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, gameSucceed(), gameOver()));
-        play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processMiniMap(event, level, miniMap, canvas2));
-        play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processMenuEvent(event, stack));
-
-        //play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller);
-
-        //play.getStylesheets().add(Main.class.getResource("layout.css").toExternalForm());
-
-        //TESTING
-        System.out.println(pauseMenu().getId());
-        System.out.println(inventory(level).getId());
+        play.addEventHandler(KeyEvent.KEY_PRESSED, event ->
+                controller.processKeyEvent(event, level, game, gameCanvas, new Scene[] {gameSucceed(), gameOver()}));
+        play.addEventHandler(KeyEvent.KEY_PRESSED, event ->
+                controller.processMiniMap(event, level, miniMap, miniMapCanvas));
+        play.addEventHandler(KeyEvent.KEY_PRESSED, event ->
+                controller.processMenuEvent(event, stack));
 
         return play;
 

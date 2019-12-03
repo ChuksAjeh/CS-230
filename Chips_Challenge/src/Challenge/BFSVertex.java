@@ -42,7 +42,7 @@ class BFSVertex {
      * Gets the x coordinate.
      * @return The x coordinate.
      */
-    public int getX() {
+    int getX() {
         return x;
     }
 
@@ -50,7 +50,7 @@ class BFSVertex {
      * Gets the Y coordinate.
      * @return The Y coordinate
      */
-    public int getY() {
+    int getY() {
         return y;
     }
 
@@ -61,23 +61,5 @@ class BFSVertex {
     int getDist() {
         return dist;
     }
-
-    /**
-     * Sets the x coordinate.
-     * @param x The x coordinate.
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * Sets the Y coordinate
-     * @param y The Y coordinate.
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
-
-
 
 }

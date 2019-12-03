@@ -2,7 +2,6 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import javax.imageio.stream.ImageInputStream;
 import java.util.ArrayList;
 
 /**
@@ -46,7 +45,10 @@ class Player extends Entity {
      */
     private boolean alive;
 
-    private boolean finish = false;
+    /**
+     * Tracks if the game is finished
+     */
+    private boolean finish;
 
     // TESTING
     // private final Lumberjack jack = new Lumberjack();
@@ -67,13 +69,14 @@ class Player extends Entity {
         this.direction = direction;
         this.tokenCount = 0;
         this.alive = true;
+        this.finish = false;
     }
 
     /**
      * Gets the Player inventory, for printing to screen
      * @return the player inventory
      */
-    public ArrayList<Item> getInventory() {
+    ArrayList<Item> getInventory() {
         return inventory;
     }
 
@@ -81,7 +84,7 @@ class Player extends Entity {
      * Gets the Player's Position
      * @return the Player's Position object
      */
-    public Position getPosition() {
+    Position getPosition() {
         return this.position;
     }
 
@@ -89,8 +92,16 @@ class Player extends Entity {
      * Used to track the current direction
      * @return the Players direction
      */
-    public int getDirection() {
+    int getDirection() {
         return direction;
+    }
+
+    /**
+     * USed to store how many tokens the player has
+     * @return the number of tokens held
+     */
+    int getTokenCount() {
+        return this.tokenCount;
     }
 
     /**
@@ -101,12 +112,27 @@ class Player extends Entity {
         return this.alive;
     }
 
-    void setGameStatus() {
-        this.finish = false;
-    }
-
+    /**
+     * Used to track if the game is complete
+     * @return true if complete
+     */
     boolean getGameStatus() {
         return this.finish;
+    }
+
+    /**
+     * Used to set the Player Token count
+     * @param count the count to set it at
+     */
+    void setTokenCount(int count) {
+        this.tokenCount = count;
+    }
+
+    /**
+     * Resets the game status
+     */
+    void setGameStatus() {
+        this.finish = false;
     }
 
     /**
@@ -115,7 +141,7 @@ class Player extends Entity {
      * @param level the Level object in which they are moving
      * @return the updated Entity grid for displaying to the screen
      */
-    public Entity[][] move(int direction, Level level) {
+    Entity[][] move(int direction, Level level) {
 
         Position p = this.position;
 
@@ -235,7 +261,7 @@ class Player extends Entity {
      * @param level the Level object, if it needs updating as a result
      * @param item the item to add to the players inventory
      */
-    private void addItem(Level level, Item item) {
+    void addItem(Level level, Item item) {
 
         if (item instanceof Token) {
 
@@ -271,7 +297,7 @@ class Player extends Entity {
      * @param newX the X location of the door
      * @param newY the Y location of the door
      */
-    private void openKeyDoor(Level level, KeyDoor.Colour doorColour, int newX, int newY) {
+    private void openKeyDoor(Level level, Key.Colour doorColour, int newX, int newY) {
 
         Cell[][] cellGrid = level.getCellGrid();
 
@@ -290,7 +316,7 @@ class Player extends Entity {
      * @param colour the colour to search for
      * @return the key, if present
      */
-    private Item findKey(KeyDoor.Colour colour) {
+    private Item findKey(Key.Colour colour) {
 
         for (Item item : this.inventory) {
             if (item instanceof Key) {
@@ -326,7 +352,7 @@ class Player extends Entity {
 
         level.setCellGrid(cellGrid);
 
-        this.removeTokens(door.getRequirement());
+        // this.removeTokens(door.getRequirement());
 
     }
 
@@ -345,46 +371,6 @@ class Player extends Entity {
         }
 
         return false;
-    }
-
-    /**
-     * Checks if a Player has enough tokens
-     * @param amount the amount of tokens
-     */
-    private void removeTokens(int amount) {
-        if (checkTokenInInv()) {
-
-            // jack.log(1, "Can remove tokens");
-            int newTokenCount = this.tokenCount - amount;
-
-            if (newTokenCount < 0) {
-                // jack.log(1, "Don't have enough tokens");
-            } else if (0 == newTokenCount) {
-                this.tokenCount = newTokenCount;
-                removeTokenFromInv();
-            } else {
-                this.tokenCount = newTokenCount;
-            }
-
-        } else {
-            // jack.log(1, "Can't remove tokens!");
-        }
-    }
-
-    /**
-     * Removes tokens
-     */
-    private void removeTokenFromInv(){
-
-        Item currentItem = null;
-
-        for (Item item : this.inventory) {
-            if (item instanceof Token) {
-                currentItem = item;
-            }
-        }
-
-        removeItem(currentItem);
     }
 
     /**

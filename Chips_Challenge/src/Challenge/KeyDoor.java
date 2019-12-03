@@ -18,14 +18,7 @@ class KeyDoor extends Door {
     /**
      * The colour of the door
      */
-    private final Colour colour;
-
-    /**
-     * This is used for the colour of the KeyDoor
-     */
-    public enum Colour {
-        RED, GREEN, BLUE, WHITE, BLACK
-    }
+    private final Key.Colour colour;
 
     static {
         SPRITE = new Image("images/CELL_KEY_DOOR.png");
@@ -44,7 +37,7 @@ class KeyDoor extends Door {
      * Gets the colour of the door
      * @return the colour of the door
      */
-    public Colour getColour() {
+    Key.Colour getColour() {
         return this.colour;
     }
 
@@ -53,18 +46,18 @@ class KeyDoor extends Door {
      * @param colour the colour to set
      * @return the colour Enum to set
      */
-    private Colour setColour(String colour) {
+    private Key.Colour setColour(String colour) {
 
         if ("RED".equals(colour)) {
-            return Colour.RED;
+            return Key.Colour.RED;
         } else if ("GREEN".equals(colour)) {
-            return Colour.GREEN;
+            return Key.Colour.GREEN;
         } else if ("BLUE".equals(colour)) {
-            return Colour.BLUE;
+            return Key.Colour.BLUE;
         } else if ("WHITE".equals(colour)) {
-            return Colour.WHITE;
+            return Key.Colour.WHITE;
         } else if ("BLACK".equals(colour)) {
-            return Colour.BLACK;
+            return Key.Colour.BLACK;
         }
 
         return null;

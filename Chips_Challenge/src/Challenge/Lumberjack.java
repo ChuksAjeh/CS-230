@@ -46,7 +46,7 @@ class Lumberjack {
      * @param grid the grid to log
      * @param <T> Cell or Entity
      */
-    public <T> void logGrid(T[][] grid) {
+    <T> void logGrid(T[][] grid) {
 
         System.out.println("===== START GRID =====");
 
@@ -68,7 +68,7 @@ class Lumberjack {
      * @param player the Player object to track
      * @param entityGrid the grid to find them in
      */
-    public void logPlayerLoc(Player player, Entity[][] entityGrid) {
+    void logPlayerLoc(Player player, Entity[][] entityGrid) {
 
         Position playerPosition = player.getPosition();
 

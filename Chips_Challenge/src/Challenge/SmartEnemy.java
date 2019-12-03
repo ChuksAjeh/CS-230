@@ -8,7 +8,7 @@ import java.util.*;
  * @author Chuks Ajeh, Angelo Balistoy
  * @version 1.0
  */
-public class SmartEnemy extends Enemy {
+class SmartEnemy extends Enemy {
 
     private Lumberjack jack = new Lumberjack();
 
@@ -35,11 +35,12 @@ public class SmartEnemy extends Enemy {
      * @param level The level being used.
      * @return An int from 0-3 representing NESW.
      */
-    //using wavefront:
-    public int nextDirection(Level level){
+    int nextDirection(Level level){
+        // using wavefront:
         Player player = level.getPlayer();
         return this.nextDirection(level, player);
     }
+
     /**
      * Gets the next direction based on the player's location and impassable objects.
      * @param level The level object which holds the entity and cell grid
