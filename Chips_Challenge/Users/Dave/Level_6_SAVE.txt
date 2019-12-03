@@ -15,7 +15,7 @@
 # #    #
 #      #
 ########
-DumbEnemy,3,10,0,
-Player,4,8,1,
+Player,3,11,3,
+DumbEnemy,4,9,0,
 Goal,2,2,
 Teleporter,4,4,5,13,

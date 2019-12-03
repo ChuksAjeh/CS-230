@@ -33,7 +33,6 @@ class Controller {
         Entity[][] newGrid = level.getEntityGrid();
         Player player = level.getPlayer();
 
-
         if (KeyCode.UP == event.getCode()) {
             // Move to direction 0 (North)
             newGrid = player.move(0, level);
@@ -69,20 +68,21 @@ class Controller {
                 // Update Grids
                 e.setCellGrid(level.getCellGrid());
                 e.setEntityGrid(newGrid);
-            }
 
-            if (e instanceof DumbEnemy) {
+//                if (e instanceof DumbEnemy) {
 
-                // TODO : Fix this shit - Gnome
+                    // TODO : Fix this shit - Gnome
 
-                if (!e.getCells()[e.nextDirection(level)]) {
-                    // DumbEnemy trying to walk onto a wall
-                    return;
-                }
+//                    if (!e.getCells()[e.nextDirection(level)]) {
+                        // DumbEnemy trying to walk onto a wall
+//                        return;
+//                    }
 
-            } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
-                // Enemy cannot move, they be surrounded
-                return;
+//                } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
+                    // Enemy cannot move, they be surrounded
+//                    return;
+//                }
+
             }
 
             newGrid = e.move(level, newGrid);

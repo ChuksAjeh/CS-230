@@ -4,9 +4,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class MiniMap {
+class MiniMap {
 
-    public static int xMap,yMap;
     private static int GRID_CELL_WIDTH ;
     private static int GRID_CELL_HEIGHT;
 
@@ -15,11 +14,11 @@ public class MiniMap {
         // Because it's logical
         assert null != level;
 
-        xMap = level.getCellGrid().length-1;
-        yMap = level.getCellGrid()[xMap].length-1;
+        int xMap = level.getCellGrid().length - 1;
+        int yMap = level.getCellGrid()[xMap].length - 1;
 
-        GRID_CELL_WIDTH = (int)(canvas.getWidth()/xMap);
-        GRID_CELL_HEIGHT = (int)(canvas.getHeight()/yMap);
+        GRID_CELL_WIDTH = (int)(canvas.getWidth() / xMap);
+        GRID_CELL_HEIGHT = (int)(canvas.getHeight() / yMap);
 
         // Get the Graphic Context of the canvas. This is what we draw on.
         GraphicsContext gc = canvas.getGraphicsContext2D();
