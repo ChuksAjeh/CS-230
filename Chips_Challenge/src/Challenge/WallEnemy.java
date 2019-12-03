@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * A wall enemy is an enemy whose movement is determined by the walls in the
- * map, it should always stick to a wall ane have id's movement determined by
+ * map, it should always stick to a wall and have it's movement determined by
  * the walls around it. If for whatever reason it finds itself with no walls
  * be it through bad level design or entity removal it will move randomly
  * until it comes into contact with a wall again.
