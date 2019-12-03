@@ -54,7 +54,8 @@ public class Main extends Application {
     private static final int CANVAS_WIDTH = 960;
     private static final int CANVAS_HEIGHT = 684;
 
-    private Canvas canvas, canvas2;
+    private Canvas canvas;
+    private Canvas canvas2;
 
     static Level level;
     private Game game = new Game();
