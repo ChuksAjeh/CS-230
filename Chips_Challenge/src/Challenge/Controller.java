@@ -53,19 +53,27 @@ class Controller {
         // Move all the enemies after the player has moved.
         for (Enemy e : enemies) {
 
-            e.setCellGrid(level.getCellGrid());
-            e.setEntityGrid(newGrid);
+//            for (Cell[] row : level.getCellGrid()) {
+//                for (Cell c : row) {
+//                    System.out.println(c.getClass().getSimpleName());
+//                }
+//            }
 
             // I am aware sequential if blocks are bad, however these  blocks
             // are checking for different 'end conditions' so I'm happy for
             // them to co-exist in their own bubble of code - Gnome
 
-            if (level.getPlayer() == null) {
+            if (level.getPlayer() != null) {
                 // No Player, they be dead
-                return;
+
+                // Update Grids
+                e.setCellGrid(level.getCellGrid());
+                e.setEntityGrid(newGrid);
             }
 
             if (e instanceof DumbEnemy) {
+
+                // TODO : Fix this shit - Gnome
 
                 if (!e.getCells()[e.nextDirection(level)]) {
                     // DumbEnemy trying to walk onto a wall
@@ -83,12 +91,13 @@ class Controller {
 
         // Redraw the level with new positions.
         if (event.getCode().isArrowKey()) {
+
             level.setEntityGrid(newGrid);
-            if(player.getGameStatus()==true) {
+
+            if(player.getGameStatus()) {
                 player.setGameStatus();
                 Main.window.setScene(success);
             }
-
 
             if (player.getStatus() && level.getPlayer() != null) {
                 // Player should be alive
@@ -108,7 +117,7 @@ class Controller {
 
     void processMenuEvent(KeyEvent event, StackPane root) {
          if (KeyCode.ESCAPE == event.getCode()) {
-            if(changeMenu == true) {
+            if(changeMenu) {
                 root.lookup("#pauseMenu").toFront();
                 root.lookup("#Inventory").toBack();
                 changeMenu = false;
