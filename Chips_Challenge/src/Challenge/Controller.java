@@ -27,7 +27,7 @@ class Controller {
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
      */
-    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene after, Scene die) {
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene success, Scene die) {
 
         // Grab the player and current entity grid
         Entity[][] newGrid = level.getEntityGrid();
@@ -86,7 +86,7 @@ class Controller {
             level.setEntityGrid(newGrid);
             if(player.getGameStatus()==true) {
                 player.setGameStatus();
-                Main.window.setScene(after);
+                Main.window.setScene(success);
             }
 
 
@@ -138,6 +138,12 @@ class Controller {
             }
         }
     }
+
+    void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas canvas2) {
+        mini.drawGame(level,canvas2);
+        event.consume();
+    }
+
 
     /** Method to help reset the level.
      * Makes a new level

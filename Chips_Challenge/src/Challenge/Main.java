@@ -20,11 +20,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -54,10 +50,11 @@ public class Main extends Application {
     private static final int CANVAS_WIDTH = 960;
     private static final int CANVAS_HEIGHT = 684;
 
-    private Canvas canvas;
+    private Canvas canvas, canvas2;
 
     static Level level;
     private Game game = new Game();
+    private MiniMap miniMap = new MiniMap();
     private final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
     static Stage window;
@@ -487,6 +484,13 @@ public class Main extends Application {
 
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
+
+        AnchorPane awesome = new AnchorPane();
+        BorderPane mini = new BorderPane();
+        mini.setPrefSize(150,150);
+        canvas2 = new Canvas(150, 150);
+
+
         drawing.setCenter(canvas);
 
         drawing.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
@@ -497,18 +501,42 @@ public class Main extends Application {
 
         game.drawGame(level, canvas);
 
+        mini.setCenter(canvas2);
+
+        mini.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
+
+        //mini.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        mini.setStyle("-fx-border-color: red ; -fx-border-width: 10px ");
+
+        //mini.setId("miniMap");
+
+        miniMap.drawGame(level, canvas2);
+
+        AnchorPane.setBottomAnchor(mini, 500.0);
+        AnchorPane.setLeftAnchor(mini, 750.0);
+
+        awesome.getChildren().add(mini);
+
 
         stack.getChildren().add(inventory(level));
         stack.getChildren().add(pauseMenu());
         stack.getChildren().add(drawing);
+        stack.getChildren().add(awesome);
 
+
+        //stack2.getChildren().add(stack);
+        //stack2.getChildren().add(awesome);
 
         root.setBottom(bottomBar());
         root.setCenter(stack);
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, gameSucceed(), gameOver()));
-        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processMenuEvent(event, stack));
+        play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processMiniMap(event, level, miniMap, canvas2));
+        play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processMenuEvent(event, stack));
+
+        //play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller);
 
         //play.getStylesheets().add(Main.class.getResource("layout.css").toExternalForm());
 
