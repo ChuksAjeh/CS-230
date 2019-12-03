@@ -15,7 +15,8 @@
 #      # #### #
 #    # #      #
 ###############
-SmartEnemy,0,1,2,
+KeyDoor,5,13,GREEN,2,11,
+Player,3,12,0,
 KeyDoor,5,13,GREEN,4,13,
-Player,5,7,0,
+SmartEnemy,7,1,2,
 Goal,12,2,
