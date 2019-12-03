@@ -1,0 +1,31 @@
+13,13,
+#############
+#  #        #
+#  #        #
+#  #        #
+#  # ########
+#  #        #
+#  #   #    #
+#  #   #    #
+#  #   #    #
+#  #   #    #
+#  #   #    #
+#      #    #
+#############
+Token,1,1
+Token,1,2
+Token,2,1
+Token,2,2
+KeyDoor,11,3,0,0,0,2,5
+Token,3,1
+Token,3,2
+Player,7,5,3
+FireBoots,7,9
+KeyDoor,4,4,0,0,0,8,10
+Teleporter,2,11,11,11
+KeyDoor,4,4
+KeyDoor,5,7
+Fire,8,1
+Fire,8,2
+KeyDoor,11,3
+Teleporter,11,11,2,11
