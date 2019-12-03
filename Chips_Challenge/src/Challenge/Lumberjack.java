@@ -21,9 +21,7 @@ class Lumberjack {
      * @param message what to log
      */
     private void log(String message) {
-
-        System.out.println("Spam : " + message);
-
+        System.out.println(message);
     }
 
     /**
@@ -33,8 +31,12 @@ class Lumberjack {
      */
     void log(int priority, String message) {
 
-        if (priority == 1) {
-            System.out.println("Useful : " + message);
+        if (0 == priority) {
+            log("Spam : " + message);
+        } else if (1 == priority) {
+            log("Not Spam : " + message);
+        } else if (2 == priority) {
+            log("Maybe useful : " + message);
         } else {
             this.log(message);
         }
@@ -74,7 +76,7 @@ class Lumberjack {
 
         int direction = player.getDirection();
 
-        log(1, "Player Loc + Dir -> " + playerPosition.x + " " + playerPosition.y + " " + direction);
+        log(2, "Player Loc + Dir -> " + playerPosition.x + " " + playerPosition.y + " " + direction);
 
     }
 

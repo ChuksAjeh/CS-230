@@ -99,6 +99,11 @@ class Controller {
         event.consume();
     }
 
+    /**
+     * Handles Menu events
+     * @param event the events to respond to
+     * @param root the stackPane to replace / remove
+     */
     void processMenuEvent(KeyEvent event, StackPane root) {
 
         if (KeyCode.ESCAPE == event.getCode()) {
@@ -152,7 +157,6 @@ class Controller {
      * @return A new level with the inputted name
      */
     Level makeLevel(String levelName) {
-
         return new Level(levelName);
     }
 

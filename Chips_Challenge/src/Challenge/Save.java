@@ -67,9 +67,9 @@ class Save {
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                jack.log(1, "Directory for " + "DAVE" + " has been created!");
+                jack.log(0,"Directory for " + "DAVE" + " has been created!");
             } else {
-                jack.log(1,"Failed to create directory!");
+                jack.log(2,"Failed to create directory!");
             }
         }
 
