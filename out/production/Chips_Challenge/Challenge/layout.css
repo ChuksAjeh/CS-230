@@ -33,3 +33,7 @@
 
 }
 
+#miniMap {
+    -fx-border-width: 15px;
+    -fx-border-color: red;
+}
