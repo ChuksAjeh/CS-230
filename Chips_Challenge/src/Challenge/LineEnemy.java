@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
  * @author George Caprenter, Ioan Mazurca
  * @version 3.0
  */
-public class LineEnemy extends Enemy {
+class LineEnemy extends Enemy {
 
     /**
      * The sprite to represent the dumb enemy.

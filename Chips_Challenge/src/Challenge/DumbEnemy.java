@@ -12,7 +12,7 @@ import java.util.Random;
  * @author Samuel Roach, George Carpenter
  * @version 3.0
  */
-public class DumbEnemy extends Enemy {
+class DumbEnemy extends Enemy {
 
     /**
      * The sprite to represent the dumb enemy.
@@ -39,7 +39,7 @@ public class DumbEnemy extends Enemy {
      * Gets the next direction of the Dumb Enemy.
      * @return The next direction.
      */
-    public int nextDirection(Level level) {
+    int nextDirection(Level level) {
         Player player = level.getPlayer();
         return this.nextDirection(player);
     }

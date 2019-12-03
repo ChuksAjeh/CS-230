@@ -174,16 +174,16 @@ class Level {
         StringTokenizer t = new StringTokenizer(file, ",");
 
         String label;
-        Position p;
+        Position p = new Position(0, 0);
         int dr;
 
         while (t.hasMoreTokens()) {
 
             label = t.nextToken();
 
-            p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
-
-            // System.out.print(cellGrid[p.x][p.y] + " - " + entityGrid[p.x][p.y]);
+            if (!"INVENTORY".equals(label)) {
+                p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
+            }
 
             if ("PLAYER".equals(label) || label.contains("ENEMY")) {
 
@@ -204,11 +204,8 @@ class Level {
             } else if ("KEYDOOR".equals(label)) {
 
                 String colour = t.nextToken();
-
                 cellGrid[p.x][p.y] = new KeyDoor(colour);
-
                 p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
-
                 entityGrid[p.x][p.y] = new Key(colour);
 
             } else if ("TOKEN".equals(label)) {
@@ -235,17 +232,33 @@ class Level {
                 p = new Position(parseInt(t.nextToken()), parseInt(t.nextToken()));
 
                 cellGrid[p.x][p.y] = new Teleporter(temp);
+            } else if ("INVENTORY".equals(label)) {
+                readInventory(t);
             }
-
-            // System.out.println(" + " + cellGrid[p.x][p.y] + " - " + entityGrid[p.x][p.y]);
 
         }
 
-//        for (Cell[] row : this.cellGrid) {
-//            for (Cell c : row) {
-//                System.out.println(c.getClass().getSimpleName());
-//            }
-//        }
+    }
+
+    /**
+     * Used to build the player inventory
+     * @param tokenizer the things that does the reading
+     */
+    private void readInventory(StringTokenizer tokenizer) {
+
+        Player player = this.getPlayer();
+        String item = tokenizer.nextToken();
+
+        if ("FLIPPERS".equals(item)) {
+            player.addItem(this, new Flippers());
+        } else if ("FIREBOOTS".equals(item)) {
+            player.addItem(this, new FireBoots());
+        } else if ("KEY".equals(item)) {
+            player.addItem(this, new Key(tokenizer.nextToken()));
+        } else if ("TOKEN".equals(item)) {
+            player.addItem(this, new Token());
+            player.setTokenCount(Integer.parseInt(tokenizer.nextToken()));
+        }
 
     }
 

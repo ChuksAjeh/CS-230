@@ -30,7 +30,7 @@ abstract class Entity {
      * Returns the sprite to be rendered in the game
      * @return the sprite for rendering
      */
-    public Image getSprite() {
+    Image getSprite() {
         return SPRITE;
     }
 

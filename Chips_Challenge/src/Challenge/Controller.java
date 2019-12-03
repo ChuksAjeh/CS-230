@@ -7,17 +7,23 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * This class is designed to be used to allows the player to be controlled
  * by the user. It allows the input of arrow keys in order to move the player.
- * @author George Carpenter
+ * @author George Carpenterm, Ioan Mazurca
  * @version 1.0
  */
 class Controller {
 
+    /**
+     * Tracks scene change
+     */
     private static boolean changeMenu = true;
+
+    /**
+     * Tracks inventory change
+     */
     private static boolean changeInventory = true;
 
     /**
@@ -26,8 +32,13 @@ class Controller {
      * @param level The level being played
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
+     * @param scenes The scenes to manage with this handler
      */
-    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene success, Scene die) {
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene[] scenes) {
+
+        // Retrieve Scenes
+        Scene success = scenes[0];
+        Scene die = scenes[1];
 
         // Grab the player and current entity grid
         Entity[][] newGrid = level.getEntityGrid();
@@ -51,16 +62,6 @@ class Controller {
 
         // Move all the enemies after the player has moved.
         for (Enemy e : enemies) {
-
-//            for (Cell[] row : level.getCellGrid()) {
-//                for (Cell c : row) {
-//                    System.out.println(c.getClass().getSimpleName());
-//                }
-//            }
-
-            // I am aware sequential if blocks are bad, however these  blocks
-            // are checking for different 'end conditions' so I'm happy for
-            // them to co-exist in their own bubble of code - Gnome
 
             if (level.getPlayer() != null && player.getStatus()) {
                 // Player isn't dead
@@ -87,61 +88,66 @@ class Controller {
 
             if (player.getStatus() && level.getPlayer() != null) {
                 // Player should be alive
-                // System.out.println("ALIVE");
                 game.drawGame(level, canvas);
             } else {
-                // System.out.println("DEAD");
                 Main.level = new Level(level.getLevelName());
                 Main.window.setScene(die);
             }
 
         }
 
-        // Nom nom, lovely grub
         event.consume();
     }
 
     void processMenuEvent(KeyEvent event, StackPane root) {
-         if (KeyCode.ESCAPE == event.getCode()) {
-            if(changeMenu) {
-                root.lookup("#pauseMenu").toFront();
-                root.lookup("#Inventory").toBack();
-                changeMenu = false;
-            }
-            else {
-                root.lookup("#game").toFront();
-                root.lookup("#pauseMenu").toBack();
-                changeMenu = true;
-            }
+
+        if (KeyCode.ESCAPE == event.getCode()) {
+
+             if (changeMenu) {
+                 root.lookup("#pauseMenu").toFront();
+                 root.lookup("#Inventory").toBack();
+                 changeMenu = false;
+             } else {
+                 root.lookup("#game").toFront();
+                 root.lookup("#pauseMenu").toBack();
+                 changeMenu = true;
+             }
 
         } else if (KeyCode.E == event.getCode()) {
-            // Open the inventory, eventually
-            //root.lookup("#Inventory").toBack();
 
-            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
-            //root.getChildren().set(0, main.INVENTORY(level));
+             // Open the inventory, eventually
+             // root.lookup("#Inventory").toBack();
 
-            if(changeInventory) {
-                root.lookup("#Inventory").toFront();
-                root.lookup("#pauseMenu").toBack();
-                changeInventory = false;
-            }
-            else {
+             // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
+             // root.getChildren().set(0, main.INVENTORY(level));
+
+            if (changeInventory) {
+                 root.lookup("#Inventory").toFront();
+                 root.lookup("#pauseMenu").toBack();
+                 changeInventory = false;
+            } else {
                 root.lookup("#game").toFront();
                 root.lookup("#Inventory").toBack();
                 changeInventory = true;
             }
+
         }
     }
 
-    void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas canvas2) {
-        mini.drawGame(level,canvas2);
+    /**
+     * Processes the Mini map
+     * @param event What makes it appear
+     * @param level the level to render
+     * @param mini the mini map object
+     * @param miniMapCanvas the canvas to render it to
+     */
+    void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas miniMapCanvas) {
+        mini.drawGame(level, miniMapCanvas);
         event.consume();
     }
 
-
-    /** Method to help reset the level.
-     * Makes a new level
+    /**
+     * Method to help reset the level and make a new level
      * @param levelName The level's name.
      * @return A new level with the inputted name
      */
