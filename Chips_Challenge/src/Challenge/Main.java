@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 
 import javafx.application.Application;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -59,7 +60,7 @@ public class Main extends Application {
     private Game game = new Game();
     private final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
-    private Stage window;
+    static Stage window;
 
     // Mediaplayer
     private static MediaPlayer mediaPlayer;
@@ -70,7 +71,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage){
         window = primaryStage;
-        Scene intro = begin(window);
+        Scene intro = begin();
 
         window.setTitle("Jungle Hunt");
         window.setScene(intro);
@@ -124,7 +125,7 @@ public class Main extends Application {
         return bottomBar;
     }
 
-    private Scene begin(Stage window) {
+    private Scene begin() {
         BorderPane root = new BorderPane();
 
         Button startButton = new Button("START");
@@ -142,24 +143,17 @@ public class Main extends Application {
 
         root.setBottom(bottomBar());
 
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setRadius(5.0);
-        dropShadow.setOffsetX(3.0);
-        dropShadow.setOffsetY(3.0);
-        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+        style(title);
 
-        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
-        title.setEffect(dropShadow);
+        startButton.setOnAction(e -> window.setScene(userSelection()));
 
-        startButton.setOnAction(e -> window.setScene(userSelection(window)));
-
-        root.setStyle("-fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%)");
+        root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
 
-    private Scene userSelection(Stage window) {
+    public Scene userSelection() {
 
         BorderPane root = new BorderPane();
 
@@ -181,7 +175,7 @@ public class Main extends Application {
         loadUser.setPromptText("Select user profile");
         //Button loadUser = new Button("Load user profiles");
 
-        loadUser.setOnAction(e -> window.setScene(loadGame(window)));
+        loadUser.setOnAction(e -> window.setScene(loadGame()));
 
         Button quit = new Button("Quit");
 
@@ -190,6 +184,8 @@ public class Main extends Application {
 
         root.setCenter(menu);
         root.setBottom(bottomBar());
+        root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
+
 
         quit.setOnAction(e -> System.exit(0));
 
@@ -197,7 +193,7 @@ public class Main extends Application {
     }
 
 
-    private Scene newGame(Stage window) {
+    private Scene newGame() {
         BorderPane root = new BorderPane();
 
         VBox vBox = new VBox();
@@ -220,11 +216,14 @@ public class Main extends Application {
         });
 
         root.setCenter(vBox);
+        root.setBottom(bottomBar());
+
+        root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
-    private Scene loadGame(Stage window) {
+    private Scene loadGame() {
         BorderPane root = new BorderPane();
 
         VBox vBox = new VBox();
@@ -251,8 +250,11 @@ public class Main extends Application {
         vBox.setAlignment(Pos.CENTER);
 
         root.setCenter(vBox);
+        root.setBottom(bottomBar());
 
-        loadButton.setOnAction(e -> window.setScene(displayLevel(window)));
+        loadButton.setOnAction(e -> window.setScene(displayLevel()));
+
+        root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
@@ -272,7 +274,7 @@ public class Main extends Application {
 
     }
 
-    private Scene displayLevel(Stage window) {
+    private Scene displayLevel() {
 
         BorderPane root = new BorderPane();
 
@@ -296,6 +298,9 @@ public class Main extends Application {
                 window.setScene(gaming(levelName));
             });
         }
+
+
+        root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -355,14 +360,7 @@ public class Main extends Application {
 
         Label title = new Label("JUNGLE HUNT");
 
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setRadius(5.0);
-        dropShadow.setOffsetX(3.0);
-        dropShadow.setOffsetY(3.0);
-        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-
-        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
-        title.setEffect(dropShadow);
+        style(title);
 
         Button save = new Button("Save");
         save.setPrefSize(200,50);
@@ -379,7 +377,7 @@ public class Main extends Application {
         vBox.setSpacing(25);
 
 
-        goBack.setOnAction(e -> window.setScene(userSelection(window)));
+        goBack.setOnAction(e -> window.setScene(userSelection()));
 
         exitGame.setOnAction(e -> System.exit(0));
 
@@ -399,6 +397,77 @@ public class Main extends Application {
         pause.setId("pauseMenu");
 
         return pause;
+    }
+
+
+    private Scene gameSucceed() {
+        BorderPane pane = new BorderPane();
+        VBox vBox = new VBox();
+
+        Label title = new Label("LEVEL FINISHED SUCCESSFULLY");
+        style(title);
+
+        Button selectLevel = new Button("SELECT LEVELS");
+
+        Button returnMenu = new Button("USER SELECTION");
+
+        Button quit = new Button("Quit");
+
+        vBox.getChildren().addAll(title, selectLevel, returnMenu, quit);
+        vBox.setAlignment(Pos.CENTER);
+
+        selectLevel.setOnAction(e -> window.setScene(displayLevel()));
+
+        returnMenu.setOnAction(e -> window.setScene(userSelection()));
+
+        quit.setOnAction(e -> System.exit(0));
+
+        pane.setCenter(vBox);
+        pane.setBottom(bottomBar());
+        pane.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
+
+        return new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+    private Scene gameOver() {
+        BorderPane pane = new BorderPane();
+        VBox vBox = new VBox();
+
+        Label title = new Label("GAME OVER");
+        style(title);
+
+        Button restartLevel = new Button("RESTART LEVEL");
+
+        Button returnMenu = new Button("USER SELECTION");
+
+        Button quit = new Button("Quit");
+
+        restartLevel.setOnAction(e -> window.setScene(gaming(level.getLevelName())));
+
+        returnMenu.setOnAction(e -> window.setScene(userSelection()));
+
+        quit.setOnAction(e -> System.exit(0));
+
+        vBox.getChildren().addAll(title, restartLevel, returnMenu, quit);
+        vBox.setAlignment(Pos.CENTER);
+
+        pane.setCenter(vBox);
+        pane.setBottom(bottomBar());
+        pane.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
+
+        Scene scene = new Scene(pane,WINDOW_WIDTH,WINDOW_HEIGHT);
+
+        return scene;
+    }
+
+    private void style(Label title) {
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(3.0);
+        dropShadow.setOffsetY(3.0);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
+        title.setEffect(dropShadow);
     }
 
     private Scene gaming(String name) {
@@ -438,7 +507,8 @@ public class Main extends Application {
         root.setCenter(stack);
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, stack));
+        play.addEventHandler(KeyEvent.KEY_PRESSED, event -> controller.processKeyEvent(event, level, game, canvas, gameSucceed(), gameOver()));
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event -> controller.processMenuEvent(event, stack));
 
         //play.getStylesheets().add(Main.class.getResource("layout.css").toExternalForm());
 
@@ -474,7 +544,7 @@ public class Main extends Application {
 
                 path.mkdir();
 
-                window.setScene(newGame(window));
+                window.setScene(newGame());
 
             });
         }

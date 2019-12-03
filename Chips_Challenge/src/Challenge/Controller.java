@@ -1,5 +1,6 @@
 package Challenge;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,7 +19,6 @@ class Controller {
 
     private static boolean changeMenu = true;
     private static boolean changeInventory = true;
-    private static Main main;
 
     /**
      * Takes in certain inputs and outputs player actions.
@@ -26,9 +26,8 @@ class Controller {
      * @param level The level being played
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
-     * @param root The StackPane holding the scene
      */
-    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, StackPane root) {
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene after, Scene die) {
 
         // Grab the player and current entity grid
         Entity[][] newGrid = level.getEntityGrid();
@@ -47,36 +46,6 @@ class Controller {
         } else if (KeyCode.LEFT == event.getCode()) {
             // Move to direction 3 (West)
             newGrid = player.move(3, level);
-        } else if (KeyCode.ESCAPE == event.getCode()) {
-            if(changeMenu == true) {
-                root.lookup("#pauseMenu").toFront();
-                root.lookup("#Inventory").toBack();
-                changeMenu = false;
-            }
-            else {
-                root.lookup("#game").toFront();
-                root.lookup("#pauseMenu").toBack();
-                changeMenu = true;
-            }
-
-        } else if (KeyCode.E == event.getCode()) {
-            // Open the inventory, eventually
-
-            //root.lookup("#Inventory").toBack();
-
-            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
-            //root.getChildren().set(0, main.INVENTORY(level));
-
-            if(changeInventory) {
-                root.lookup("#Inventory").toFront();
-                root.lookup("#pauseMenu").toBack();
-                changeInventory = false;
-            }
-            else {
-                root.lookup("#game").toFront();
-                root.lookup("#Inventory").toBack();
-                changeInventory = true;
-            }
         }
 
         ArrayList<Enemy> enemies = level.getEnemies(newGrid);
@@ -115,6 +84,11 @@ class Controller {
         // Redraw the level with new positions.
         if (event.getCode().isArrowKey()) {
             level.setEntityGrid(newGrid);
+            if(player.getGameStatus()==true) {
+                player.setGameStatus();
+                Main.window.setScene(after);
+            }
+
 
             if (player.getStatus() && level.getPlayer() != null) {
                 // Player should be alive
@@ -123,13 +97,46 @@ class Controller {
             } else {
                 // System.out.println("DEAD");
                 Main.level = new Level(level.getLevelName());
-                game.drawGame(Main.level, canvas);
+                Main.window.setScene(die);
             }
 
         }
 
         // Nom nom, lovely grub
         event.consume();
+    }
+
+    void processMenuEvent(KeyEvent event, StackPane root) {
+         if (KeyCode.ESCAPE == event.getCode()) {
+            if(changeMenu == true) {
+                root.lookup("#pauseMenu").toFront();
+                root.lookup("#Inventory").toBack();
+                changeMenu = false;
+            }
+            else {
+                root.lookup("#game").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeMenu = true;
+            }
+
+        } else if (KeyCode.E == event.getCode()) {
+            // Open the inventory, eventually
+            //root.lookup("#Inventory").toBack();
+
+            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
+            //root.getChildren().set(0, main.INVENTORY(level));
+
+            if(changeInventory) {
+                root.lookup("#Inventory").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeInventory = false;
+            }
+            else {
+                root.lookup("#game").toFront();
+                root.lookup("#Inventory").toBack();
+                changeInventory = true;
+            }
+        }
     }
 
     /** Method to help reset the level.
@@ -140,7 +147,6 @@ class Controller {
     Level makeLevel(String levelName) {
 
         return new Level(levelName);
-
     }
 
 }

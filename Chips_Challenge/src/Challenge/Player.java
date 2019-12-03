@@ -2,6 +2,7 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
+import javax.imageio.stream.ImageInputStream;
 import java.util.ArrayList;
 
 /**
@@ -44,6 +45,8 @@ class Player extends Entity {
      * Tracks whether or not the Player has been killed
      */
     private boolean alive;
+
+    static private boolean finish=false;
 
     // TESTING
     // private final Lumberjack jack = new Lumberjack();
@@ -96,6 +99,14 @@ class Player extends Entity {
      */
     boolean getStatus() {
         return this.alive;
+    }
+
+    void setGameStatus() {
+        finish=false;
+    }
+
+    boolean getGameStatus() {
+        return finish;
     }
 
     /**
@@ -193,6 +204,8 @@ class Player extends Entity {
             int[] pairLocation = level.getLocation(cellGrid, pair);
             next = new Position(pairLocation[0], pairLocation[1]);
 
+        } else if (cell instanceof Goal) {
+            finish = true;
         } else if (!cell.isPassable()) {
 
             String cellName = cell.getClass().getSimpleName();
