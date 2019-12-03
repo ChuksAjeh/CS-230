@@ -166,6 +166,8 @@ abstract class Enemy extends Entity {
 
         boolean[] passable = new boolean[4];
 
+        // System.out.println(this.getClass().getSimpleName());
+
         Cell[] sc = new Cell[] {
             this.cellGrid[x][y - 1],
             this.cellGrid[x + 1][y],
@@ -180,7 +182,7 @@ abstract class Enemy extends Entity {
             this.entityGrid[x - 1][y]
         };
 
-        for (int i = 0; i < passable.length; i++) {
+        for (int i = 0 ; i < passable.length ; i++ ) {
             passable[i] = sc[i] instanceof Ground && (se[i] == null || se[i] instanceof Player);
         }
 

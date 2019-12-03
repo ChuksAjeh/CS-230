@@ -247,7 +247,7 @@ class Save {
 
         } else {
 
-            jack.log(1, "Entity of type " + entity.toString() + " hasn't been written. Blame Samuel.");
+            // jack.log(1, "Entity of type " + entity.toString() + " hasn't been written. Blame Samuel.");
 
         }
 

@@ -46,7 +46,7 @@ class Player extends Entity {
      */
     private boolean alive;
 
-    static private boolean finish=false;
+    private boolean finish = false;
 
     // TESTING
     // private final Lumberjack jack = new Lumberjack();
@@ -102,11 +102,11 @@ class Player extends Entity {
     }
 
     void setGameStatus() {
-        finish=false;
+        this.finish = false;
     }
 
     boolean getGameStatus() {
-        return finish;
+        return this.finish;
     }
 
     /**
@@ -205,7 +205,7 @@ class Player extends Entity {
             next = new Position(pairLocation[0], pairLocation[1]);
 
         } else if (cell instanceof Goal) {
-            finish = true;
+            this.finish = true;
         } else if (!cell.isPassable()) {
 
             String cellName = cell.getClass().getSimpleName();
