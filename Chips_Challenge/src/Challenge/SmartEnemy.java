@@ -2,11 +2,7 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author Chuks Ajeh, Angelo Balistoy
@@ -52,6 +48,8 @@ public class SmartEnemy extends Enemy {
      */
     private int nextDirection(Level level, Player player) {
 
+        Random random = new Random();
+
         // Grab cell and entity grid to flatten
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
@@ -69,12 +67,10 @@ public class SmartEnemy extends Enemy {
         BFSVertex nextNode = this.getFinalNode(path,path[this.getPosition().x][this.getPosition().y]);
 
         System.out.println("Original Position: "+ this.getPosition().x +" "+ this.getPosition().y);
-        int newEnemyX = this.getPosition().x - nextNode.getX();
+        int newEnemyY = this.getPosition().x - nextNode.getY();
         //System.out.println(Arrays.toString(nextNode.toString());
-        int newEnemyY = this.getPosition().y - nextNode.getY();
+        int newEnemyX = this.getPosition().y - nextNode.getX();
         System.out.println("New Position: "+newEnemyX+" "+newEnemyY);
-
-
 
         // Using the next location that we know, find the direction the enemy must take.
         final int[] row = {0,1,0,-1};
@@ -82,41 +78,45 @@ public class SmartEnemy extends Enemy {
 
         for(int i = 0; i < 4; i++) {
             if (newEnemyX == row[i] && newEnemyY == col[i]) {
+                this.setDirection(i);
                 return i;
             }
         }
 
-        return 0;
+        return random.nextInt(4);
     }
 
-    private BFSVertex getFinalNode(BFSVertex[][] bfsGrid, BFSVertex startnode){
+    private BFSVertex getFinalNode(BFSVertex[][] bfsGrid, BFSVertex startnode) {
         BFSVertex finalNode = startnode;
+        BFSVertex smallestVertex = null;
         //make sure this is the starting node and if in the grid and equal to zero return that node
 
-        if(startnode != null) {
+        if (startnode != null) {
             if (startnode.getDist() == 0) {
                 return finalNode;
             } else {
                 //get the surrounding nodes and then find the smallest of the lot
                 BFSVertex[] adjacentNodes = getSurroundingNodes(bfsGrid, startnode);
+
                 int min_dis = Integer.MAX_VALUE;
-                BFSVertex smallestVertex = null;
                 //find the smallest distanced vertex from current node
                 for (BFSVertex vertex : adjacentNodes) {
-                    if(vertex != null){
+                    if (vertex != null) {
                         if (vertex.getDist() < min_dis) {
                             min_dis = vertex.getDist();
                             smallestVertex = vertex;
                         }
                     }
                 }
+
                 //prevent a nullPoint exception
-                if (smallestVertex != null) {
-                    finalNode = getFinalNode(bfsGrid, smallestVertex);
-                }
+//                if (smallestVertex != null) {
+//                    return getFinalNode(bfsGrid, smallestVertex);
+//                }
             }
         }
-        return finalNode;
+        return smallestVertex;
+        //return finalNode;
     }
 
     private BFSVertex[] getSurroundingNodes(BFSVertex[][] BFSgrid , BFSVertex node){

@@ -501,7 +501,7 @@ public class Main extends Application {
 
         //mini.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        mini.setStyle("-fx-border-color: red ; -fx-border-width: 10px ");
+        mini.setStyle("-fx-border-color: #42832d ; -fx-border-width: 2px ");
 
         //mini.setId("miniMap");
 
