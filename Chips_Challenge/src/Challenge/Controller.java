@@ -62,26 +62,12 @@ class Controller {
             // are checking for different 'end conditions' so I'm happy for
             // them to co-exist in their own bubble of code - Gnome
 
-            if (level.getPlayer() != null) {
-                // No Player, they be dead
+            if (level.getPlayer() != null && player.getStatus()) {
+                // Player isn't dead
 
                 // Update Grids
                 e.setCellGrid(level.getCellGrid());
                 e.setEntityGrid(newGrid);
-
-//                if (e instanceof DumbEnemy) {
-
-                    // TODO : Fix this shit - Gnome
-
-//                    if (!e.getCells()[e.nextDirection(level)]) {
-                        // DumbEnemy trying to walk onto a wall
-//                        return;
-//                    }
-
-//                } else if (Arrays.equals(e.getCells(), new boolean[] {false, false, false, false})) {
-                    // Enemy cannot move, they be surrounded
-//                    return;
-//                }
 
             }
 

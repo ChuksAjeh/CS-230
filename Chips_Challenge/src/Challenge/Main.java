@@ -20,9 +20,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;	
-import javafx.scene.layout.HBox;	
-import javafx.scene.layout.StackPane;	
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -312,19 +312,15 @@ public class Main extends Application {
         AnchorPane inv = new AnchorPane();
         ArrayList<Item> lame = level.getPlayer().getInventory();
 
-
         for(Item item: lame) {
             test.getChildren().add(new ImageView(item.getSprite()));
         }
-
 
         // FOR THE TESTING
         Image change = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
         Image change2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
 
         //inventory.setPrefSize(50,50);
-
-
 
         ImageView nr1 = new ImageView(change);
         ImageView nr2 = new ImageView(change2);
@@ -356,7 +352,6 @@ public class Main extends Application {
         AnchorPane pause = new AnchorPane();
         VBox vBox = new VBox();
 
-
         vBox.setPrefSize(200,200);
 
         Label title = new Label("JUNGLE HUNT");
@@ -372,11 +367,9 @@ public class Main extends Application {
 
         vBox.getChildren().addAll(title, save, goBack, exitGame);
 
-
         vBox.setAlignment(Pos.CENTER);
         /*middleMenu.setCenter(vBox);*/
         vBox.setSpacing(25);
-
 
         goBack.setOnAction(e -> window.setScene(userSelection()));
 
@@ -384,7 +377,6 @@ public class Main extends Application {
 
         vBox.setStyle("-fx-background-color: linear-gradient(to top, #003300 9%, #006600 100%)");
         vBox.setMargin(exitGame, new Insets(0,0,20,0));
-
 
         AnchorPane.setBottomAnchor(vBox,180.0);
         AnchorPane.setLeftAnchor(vBox,250.0);
@@ -488,12 +480,10 @@ public class Main extends Application {
 
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
-
         AnchorPane awesome = new AnchorPane();
         BorderPane mini = new BorderPane();
         mini.setPrefSize(150,150);
         canvas2 = new Canvas(150, 150);
-
 
         drawing.setCenter(canvas);
 
@@ -522,12 +512,10 @@ public class Main extends Application {
 
         awesome.getChildren().add(mini);
 
-
         stack.getChildren().add(inventory(level));
         stack.getChildren().add(pauseMenu());
         stack.getChildren().add(drawing);
         stack.getChildren().add(awesome);
-
 
         //stack2.getChildren().add(stack);
         //stack2.getChildren().add(awesome);
@@ -544,12 +532,9 @@ public class Main extends Application {
 
         //play.getStylesheets().add(Main.class.getResource("layout.css").toExternalForm());
 
-
-
         //TESTING
         System.out.println(pauseMenu().getId());
         System.out.println(inventory(level).getId());
-
 
         return play;
 
