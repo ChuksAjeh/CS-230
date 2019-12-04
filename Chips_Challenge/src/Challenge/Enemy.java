@@ -79,7 +79,7 @@ abstract class Enemy extends Entity {
      * Sets the cell grid for the enemy.
      * @param cellGrid The cell grid to be used.
      */
-    void setCellGrid(Cell[][] cellGrid) {
+    private void setCellGrid(Cell[][] cellGrid) {
         this.cellGrid = cellGrid;
     }
 
@@ -87,7 +87,7 @@ abstract class Enemy extends Entity {
      * Sets the entity grid for the enemy.
      * @param entityGrid The cell grid to be used.
      */
-    void setEntityGrid(Entity[][] entityGrid) {
+    private void setEntityGrid(Entity[][] entityGrid) {
         this.entityGrid = entityGrid;
     }
 
@@ -193,6 +193,16 @@ abstract class Enemy extends Entity {
 
         return passable;
 
+    }
+
+    /**
+     * Used to update both grids at once
+     * @param cellGrid the new Cell grid
+     * @param entityGrid the nes Entity grid
+     */
+    void updateGrids(Cell[][] cellGrid, Entity[][] entityGrid) {
+        setCellGrid(cellGrid);
+        setEntityGrid(entityGrid);
     }
 
 }

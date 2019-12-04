@@ -36,12 +36,18 @@ class Level {
     private final String levelName;
 
     /**
+     * The list of Enemies in the Level, can be empty
+     */
+    private final ArrayList<Enemy> enemies;
+
+    /**
      * Constructs a Level from a given file name
      * @param levelName the name of the level to build
      */
     Level(String levelName) {
 
         this.levelName = levelName;
+        this.enemies = new ArrayList<>();
 
         try {
             buildLevel(levelName);
@@ -79,6 +85,14 @@ class Level {
      */
     String getLevelName() {
         return this.levelName;
+    }
+
+    /**
+     * Gets the list of Enemies that need to move each tick
+     * @return the array of Enemies
+     */
+    private ArrayList<Enemy> getEnemies() {
+        return this.enemies;
     }
 
     /**
@@ -193,14 +207,8 @@ class Level {
 
                 if ("PLAYER".equals(label)) {
                     entityGrid[p.x][p.y] = new Player(p, dr);
-                } else if ("SMARTENEMY".equals(label)) {
-                    entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
-                } else if ("DUMBENEMY".equals(label)) {
-                    entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
-                } else if ("WALLENEMY".equals(label)) {
-                    entityGrid[p.x][p.y] = new WallEnemy(p, dr);
-                } else if ("LINEENEMY".equals(label)) {
-                    entityGrid[p.x][p.y] = new LineEnemy(p, dr);
+                } else if (label.contains("ENEMY")) {
+                    addEnemy(label, p, dr, t);
                 }
 
             } else if ("KEYDOOR".equals(label)) {
@@ -243,6 +251,55 @@ class Level {
     }
 
     /**
+     * Used to add enemies to the grid and their own array
+     * @param label the name of the enemy
+     * @param p their position
+     * @param dr their direction
+     * @param tokenizer the string of tokens to read from
+     */
+    private void addEnemy(String label, Position p, int dr, StringTokenizer tokenizer) {
+
+        if ("SMARTENEMY".equals(label)) {
+            entityGrid[p.x][p.y] = new SmartEnemy(p, dr);
+        } else if ("DUMBENEMY".equals(label)) {
+            entityGrid[p.x][p.y] = new DumbEnemy(p, dr);
+        } else if ("WALLENEMY".equals(label)) {
+            entityGrid[p.x][p.y] = new WallEnemy(p, dr);
+        } else if ("LINEENEMY".equals(label)) {
+            entityGrid[p.x][p.y] = new LineEnemy(p, dr);
+        }
+
+        this.enemies.add((Enemy) entityGrid[p.x][p.y]);
+
+    }
+
+    /**
+     * Used to move Enemies within the level
+     * @param level this thing, soon (tm)
+     * @param grid the grid in which they move, not yet updates
+     * @return the new grid
+     */
+    Entity[][] moveEnemys(Level level, Entity[][] grid) {
+
+        ArrayList<Enemy> enemies = level.getEnemies();
+        Player player = level.getPlayer();
+
+        // Move all the enemies after the player has moved.
+        for (Enemy e : enemies) {
+
+            if (level.getPlayer() != null && player.getStatus()) {
+                // Player exists and isn't dead
+                e.updateGrids(level.getCellGrid(), grid);
+            }
+
+            grid = e.move(level, grid);
+
+        }
+
+        return grid;
+    }
+
+    /**
      * Used to build the player inventory
      * @param tokenizer the things that does the reading
      */
@@ -280,28 +337,6 @@ class Level {
 
         return null;
 
-    }
-
-    /**
-     * Gets the list of Enemies that need to move each tick
-     * @param entityGrid the grid they exist in
-     * @return the array of Enemies
-     */
-    ArrayList<Enemy> getEnemies(Entity[][] entityGrid) {
-
-        ArrayList<Enemy> enemies = new ArrayList<>();
-
-        for (Entity[] row : entityGrid) {
-            for (Entity entity : row) {
-
-                if (entity instanceof Enemy) {
-                    enemies.add((Enemy) entity);
-                }
-
-            }
-        }
-
-        return enemies;
     }
 
     /**

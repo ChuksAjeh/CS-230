@@ -12,7 +12,11 @@ import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,9 +43,11 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * This done mainy stuff
+ */
 public class Main extends Application {
 
     // The dimensions of the window
@@ -52,26 +58,28 @@ public class Main extends Application {
     private static final int CANVAS_WIDTH = 960;
     private static final int CANVAS_HEIGHT = 684;
 
+    // The two canvases we use in the game
     private Canvas gameCanvas;
     private Canvas miniMapCanvas;
 
     private Game game;
-    private MiniMap miniMap = new MiniMap();
+    private final MiniMap miniMap = new MiniMap();
 
+    // Not fat, just a controller
     private final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
 
+    private static MediaPlayer mediaPlayer;
+    private static String userName;
+
     static Stage window;
     static Level level;
-    public static long start = 0;
-    public static long end;
-    public static long elapsedTime;
-    public static long convert;
 
-    static String userName;
-
-    // Mediaplayer
-    private static MediaPlayer mediaPlayer;
+    // Not electric unfortunately, just used for timing stuff
+    static long start = 0;
+    static long end;
+    static long elapsedTime;
+    static long convert;
 
     public static void main(String[] args) {
         launch(args);
@@ -97,6 +105,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Used to display the Message of the day
+     * @return the message
+     */
     private Label messageOfTheDay() {
 
         Label message = new Label();
@@ -106,7 +118,7 @@ public class Main extends Application {
         message.setTextFill(Color.rgb(200, 200, 200));
 
         Timeline timeline = new Timeline(
-                new KeyFrame(new Duration(5000), e -> {
+                new KeyFrame(new Duration(30000), e -> {
                     stuff.set(new Ping().getPing());
                     message.textProperty().set(stuff.get());
                 })
@@ -176,7 +188,7 @@ public class Main extends Application {
 
         File[] files = path.listFiles();
 
-        for (File file : files) {
+        for (File file : Objects.requireNonNull(files)) {
             loadUser.getItems().add(file.getName());
         }
 
@@ -250,11 +262,11 @@ public class Main extends Application {
         File path = new File("Level_files/");
         File[] files = path.listFiles();
 
-        assert files!=null;
+        assert files != null;
 
         startButton.setOnAction(e -> {
             String levelName = files[0].getName();
-            levelName = levelName.substring(0,levelName.length()-4);
+            levelName = levelName.substring(0,levelName.length() - 4);
             window.setScene(gaming(levelName));
         });
 
@@ -390,7 +402,7 @@ public class Main extends Application {
         exitGame.setOnAction(e -> System.exit(0));
 
         vBox.setStyle("-fx-background-color: linear-gradient(to top, #003300 9%, #006600 100%)");
-        vBox.setMargin(exitGame, new Insets(0,0,20,0));
+        VBox.setMargin(exitGame, new Insets(0,0,20,0));
 
         AnchorPane.setBottomAnchor(vBox,180.0);
         AnchorPane.setLeftAnchor(vBox,250.0);
@@ -462,9 +474,7 @@ public class Main extends Application {
         pane.setBottom(bottomBar());
         pane.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
-        Scene scene = new Scene(pane,WINDOW_WIDTH,WINDOW_HEIGHT);
-
-        return scene;
+        return new Scene(pane,WINDOW_WIDTH,WINDOW_HEIGHT);
     }
 
     private void style(Label title) {
@@ -478,7 +488,7 @@ public class Main extends Application {
     }
     private Scene gaming(String name) {
 
-        jack.log(2, "user created " + userName);
+        // jack.log(2, "user created " + userName);
         game = new Game(userName);
 
         BorderPane root = new BorderPane();

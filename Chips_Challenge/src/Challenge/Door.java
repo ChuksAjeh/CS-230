@@ -14,10 +14,10 @@ abstract class Door extends Obstacle {
     /**
      * Constructor
      * @param sprite the sprite used for the cell of this type
-     * @param passable whether or not the cell will be passable
+     *
      */
-    Door(Image sprite, boolean passable) {
-        super(sprite, passable);
+    Door(Image sprite) {
+        super(sprite, false);
     }
 
 }

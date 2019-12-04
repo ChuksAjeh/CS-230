@@ -14,17 +14,17 @@ class BFSVertex {
     /**
      * The x coordinate.
      */
-    private int x;
+    private final int x;
 
     /**
      * The Y coordinate.
      */
-    private int y;
+    private final int y;
 
     /**
      * The distance from the start node.
      */
-    private int dist;
+    private final int dist;
 
     /**
      * Constructs a BFSVertex node.
