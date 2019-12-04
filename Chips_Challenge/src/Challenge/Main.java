@@ -7,7 +7,6 @@ import javafx.scene.media.MediaPlayer;
 
 import javafx.stage.Stage;
 
-
 import java.nio.file.Paths;
 
 /**
@@ -17,7 +16,7 @@ import java.nio.file.Paths;
  */
 public class Main extends Application {
 
-    private static MediaPlayer mediaPlayer;
+    private static MediaPlayer MEDIA_PLAYER;
     static Stage window;
 
     public static void main(String[] args) {
