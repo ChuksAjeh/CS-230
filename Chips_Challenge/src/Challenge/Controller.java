@@ -1,6 +1,5 @@
 package Challenge;
 
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,11 +17,6 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  */
 class Controller {
-
-    /**
-     * Tracks scene change
-     */
-    private static boolean changeMenu = true;
 
     /**
      * Tracks inventory change

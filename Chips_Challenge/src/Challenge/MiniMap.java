@@ -4,8 +4,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.util.stream.IntStream;
-
 /**
  * The MiniMap is a mini canvas that will be visible during the game and show
  * the player their surroundings sans entitys

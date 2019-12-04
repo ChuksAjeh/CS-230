@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GUI {
+class GUI {
 
     private static final int WINDOW_WIDTH = 960;
     private static final int WINDOW_HEIGHT = 720;
@@ -51,7 +51,6 @@ public class GUI {
 
     // Not fat, just a controller
     private static final Controller controller = new Controller();
-    private final Lumberjack jack = new Lumberjack();
 
     private static String userName;
 
@@ -63,7 +62,7 @@ public class GUI {
     static long elapsedTime;
     static long convert;
 
-    public static Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
+    public static final Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     private static Label messageOfTheDay() {
 
@@ -74,10 +73,10 @@ public class GUI {
         message.setTextFill(Color.rgb(200, 200, 200));
 
         Timeline timeline = new Timeline(
-                new KeyFrame(new Duration(30000), e -> {
-                    stuff.set(new Ping().getPing());
-                    message.textProperty().set(stuff.get());
-                })
+            new KeyFrame(new Duration(30000), e -> {
+                stuff.set(new Ping().getPing());
+                message.textProperty().set(stuff.get());
+            })
         );
 
         timeline.setCycleCount(Animation.INDEFINITE);
