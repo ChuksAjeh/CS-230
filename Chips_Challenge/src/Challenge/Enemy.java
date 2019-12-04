@@ -173,14 +173,14 @@ abstract class Enemy extends Entity {
 
         // System.out.println(this.getClass().getSimpleName());
 
-        Cell[] sc = new Cell[] {
+        Cell[] sc = {
             this.cellGrid[x][y - 1],
             this.cellGrid[x + 1][y],
             this.cellGrid[x][y + 1],
             this.cellGrid[x - 1][y]
         };
 
-        Entity[] se = new Entity[] {
+        Entity[] se = {
             this.entityGrid[x][y - 1],
             this.entityGrid[x + 1][y],
             this.entityGrid[x][y + 1],

@@ -9,7 +9,9 @@ import java.util.StringTokenizer;
 
 import static java.lang.Integer.parseInt;
 
-/**
+/**A level contains all information regarding the fundamental aspects of the game. That is, it holds information on all
+ * cells and entities in the entire game. These aspects can be manipulated in this class to allow the level to change
+ * accordingly due to entity actions.
  * This class acts as a kind of super-ish class for the game, holding all
  * information about the grids and allowing the "game" to run. The player,
  * and enemies, will always be interacting with one or other part of it.
