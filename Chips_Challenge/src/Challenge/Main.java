@@ -86,8 +86,8 @@ public class Main extends Application {
         window.show();
 
         try {
-            Media media = new Media(Paths.get("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\music\\music.mp3").toUri().toString());
-            //Media media = new Media(Paths.get("music/music.mp3").toUri().toString());
+            //Media media = new Media(Paths.get("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\music\\music.mp3").toUri().toString());
+            Media media = new Media(Paths.get("music/music.mp3").toUri().toString());
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.setVolume(0.2);
@@ -171,8 +171,8 @@ public class Main extends Application {
 
         ComboBox<String> loadUser = new ComboBox<>();
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
-        //File path = new File("Users/");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        File path = new File("Users/");
 
         File[] files = path.listFiles();
 
@@ -211,8 +211,8 @@ public class Main extends Application {
         vBox.getChildren().add(startButton);
         vBox.setAlignment(Pos.CENTER);
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
-        //File path = new File("Level_Files/");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_Files/");
         File[] files = path.listFiles();
 
         assert files != null;
@@ -241,8 +241,8 @@ public class Main extends Application {
 
         Button loadButton = new Button("Load game");
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
-        //File path = new File("Level_files/");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_files/");
         File[] files = path.listFiles();
 
         assert files!=null;
@@ -288,8 +288,8 @@ public class Main extends Application {
 
         VBox menu = new VBox();
 
-        File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
-        //File path = new File("Level_Files/");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
 
@@ -560,8 +560,8 @@ public class Main extends Application {
 
             tf.setOnAction(ae -> {
 
-                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                //File path = new File("Users/" + tf.getText());
+                //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                File path = new File("Users/" + tf.getText());
 
                 path.mkdir();
 
