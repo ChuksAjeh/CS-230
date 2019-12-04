@@ -41,7 +41,7 @@ class Goal extends Cell {
 //
 
     /**
-     * Constructor
+     * Constructs a goal cell.
      */
     Goal() {
         super(SPRITE, true);

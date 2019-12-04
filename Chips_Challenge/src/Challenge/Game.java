@@ -12,14 +12,27 @@ import javafx.scene.image.Image;
  */
 class Game {
 
-    // The size of each cell
+    /**
+     * The cell width.
+     */
     private static final int GRID_CELL_WIDTH = 120;
+    /**
+     * The cell height
+     */
     private static final int GRID_CELL_HEIGHT = 120;
-
+    //Debugger
     Lumberjack jack = new Lumberjack();
+    /**
+     * The save file for this game.
+     */
     private final Save save = new Save();
 
-    void drawGame(Level level, Canvas canvas) {
+    /**
+     *  Draws the game with a given level and canvas.
+     * @param level The game's level
+     * @param canvas The canvas to draw the game.
+     */
+    public void drawGame(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;
@@ -30,7 +43,7 @@ class Game {
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // Does this need a comment? method names should infer their purpose
+        // Calculate the offset for use in rendering
         int[] offset = this.calculateOffSet(level, canvas);
 
         // Render stuff
@@ -47,6 +60,12 @@ class Game {
 
     }
 
+    /**
+     * Calculates the offset for when you draw the game.
+     * @param level The current level.
+     * @param canvas The canvas used for the game.
+     * @return The offset for the x coordinate and y coordinate as a pair represented by a int[].
+     */
     private int[] calculateOffSet(Level level, Canvas canvas) {
 
         // Not 100% sure of this, it may change, please don't try to comment it
@@ -65,6 +84,11 @@ class Game {
 
     }
 
+    /**
+     * Renders the background for the game.
+     * @param gc The graphics context for rendering.
+     * @param canvas The canvas for the game.
+     */
     private void renderBackground(GraphicsContext gc, Canvas canvas) {
 
         Image backing = new Image("images/BACKING.png");
@@ -75,6 +99,12 @@ class Game {
 
     }
 
+    /**
+     * Renders the cell grid.
+     * @param gc The graphics context for rendering.
+     * @param cellGrid The cell grid for the game to be rendered.
+     * @param offset The offset needed to be taken into account.
+     */
     private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid, int[] offset) {
 
         int xOffset = offset[0];
@@ -93,6 +123,12 @@ class Game {
 
     }
 
+    /**
+     * Renders the entities in the game.
+     * @param gc The graphics context for the game.
+     * @param entityGrid The entities to be rendered.
+     * @param offset The offset for the entities.
+     */
     private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid, int[] offset) {
 
         int xOnScreen;
@@ -117,6 +153,12 @@ class Game {
         }
     }
 
+    /**
+     * Auxillary method to help render the enemies
+     * @param gc The graphics context to be used in the game.
+     * @param entity The entity to be rendered.
+     * @param position The position of the enemy.
+     */
     private void renderEntity(GraphicsContext gc, Entity entity, int[] position) {
 
         int x = position[0];
