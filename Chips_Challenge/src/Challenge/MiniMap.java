@@ -4,7 +4,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-class MiniMap {
+/**
+ * @author
+ * @version
+ */
+public class MiniMap {
 
     private static int GRID_CELL_WIDTH ;
     private static int GRID_CELL_HEIGHT;
