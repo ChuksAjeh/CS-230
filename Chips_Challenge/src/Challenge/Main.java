@@ -60,7 +60,7 @@ public class Main extends Application {
     private Game game = new Game();
     private MiniMap miniMap = new MiniMap();
 
-    private final Controller controller = new Controller();
+    public final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
 
     static Stage window;
