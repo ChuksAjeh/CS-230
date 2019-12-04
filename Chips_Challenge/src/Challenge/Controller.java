@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
@@ -34,9 +35,8 @@ class Controller {
      * @param level The level being played
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
-     * @param scenes The scenes to manage with this handler
      */
-    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene[] scenes) {
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, BorderPane[] panes) {
 
         // Get the event code
         KeyCode key = event.getCode();
@@ -59,18 +59,20 @@ class Controller {
 
             if (player.getGameStatus()) {
                 player.setGameStatus();
-                Main.end = System.nanoTime();
-                Main.elapsedTime = Main.end - Main.start;
-                Main.convert = TimeUnit.SECONDS.convert(Main.elapsedTime, TimeUnit.NANOSECONDS);
-                Main.window.setScene(scenes[0]);
+                GUI.end = System.nanoTime();
+                GUI.elapsedTime = GUI.end - GUI.start;
+                GUI.convert = TimeUnit.SECONDS.convert(GUI.elapsedTime, TimeUnit.NANOSECONDS);
+                GUI.scene.setRoot(panes[0]);
+                Main.window.setScene(GUI.scene);
             }
 
             if (level.getPlayer() != null && player.getStatus()) {
                 // Player should be alive
                 game.drawGame(level, canvas);
             } else {
-                Main.level = new Level(level.getLevelName());
-                Main.window.setScene(scenes[1]);
+                GUI.level = new Level(level.getLevelName());
+                GUI.scene.setRoot(panes[0]);
+                Main.window.setScene(GUI.scene);
             }
 
         }
