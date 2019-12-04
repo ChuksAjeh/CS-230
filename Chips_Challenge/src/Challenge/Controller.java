@@ -59,18 +59,18 @@ class Controller {
 
             if (player.getGameStatus()) {
                 player.setGameStatus();
-                Main.end = System.nanoTime();
-                Main.elapsedTime = Main.end - Main.start;
-                Main.convert = TimeUnit.SECONDS.convert(Main.elapsedTime, TimeUnit.NANOSECONDS);
-                Main.window.setScene(scenes[0]);
+                Main.END_TIME = System.nanoTime();
+                Main.ELAPSED_TIME = Main.END_TIME - Main.START_TIME;
+                Main.CONVERTED_TIME = TimeUnit.SECONDS.convert(Main.ELAPSED_TIME, TimeUnit.NANOSECONDS);
+                Main.WINDOW.setScene(scenes[0]);
             }
 
             if (level.getPlayer() != null && player.getStatus()) {
                 // Player should be alive
                 game.drawGame(level, canvas);
             } else {
-                Main.level = new Level(level.getLevelName());
-                Main.window.setScene(scenes[1]);
+                Main.LEVEL = new Level(level.getLevelName());
+                Main.WINDOW.setScene(scenes[1]);
             }
 
         }
@@ -117,7 +117,7 @@ class Controller {
      * @param miniMapCanvas the canvas to render it to
      */
     void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas miniMapCanvas) {
-        mini.drawGame(level, miniMapCanvas);
+        mini.drawMap(level, miniMapCanvas);
         event.consume();
     }
 

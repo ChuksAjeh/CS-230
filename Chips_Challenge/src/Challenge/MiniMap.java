@@ -4,10 +4,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.stream.IntStream;
+
 /**
  * The MiniMap is a mini canvas that will be visible during the game and show
  * the player their surroundings sans entitys
- * @author Ioan Mazurca
+ * @author Ioan Mazurca, George Carpenter
  * @version 2.0
  */
 class MiniMap {
@@ -15,14 +17,14 @@ class MiniMap {
     /**
      * The width of cells in the MiniMap, calculated dynamically
      */
-    private static int GRID_CELL_WIDTH ;
+    private static int MINIMAP_CELL_WIDTH;
 
     /**
      * The height of cells in the MiniMap, calculated dynamically
      */
-    private static int GRID_CELL_HEIGHT;
+    private static int MINIMAP_CELL_HEIGHT;
 
-    void drawGame(Level level, Canvas canvas) {
+    void drawMap(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;
@@ -30,8 +32,8 @@ class MiniMap {
         int xMap = level.getCellGrid().length - 1;
         int yMap = level.getCellGrid()[xMap].length - 1;
 
-        GRID_CELL_WIDTH = (int)(canvas.getWidth() / xMap);
-        GRID_CELL_HEIGHT = (int)(canvas.getHeight() / yMap);
+        MINIMAP_CELL_WIDTH = (int) canvas.getWidth() / xMap;
+        MINIMAP_CELL_HEIGHT = (int) canvas.getHeight() / yMap;
 
         // Get the Graphic Context of the canvas. This is what we draw on.
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -39,92 +41,46 @@ class MiniMap {
         // Clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // Does this need a comment? method names should infer their purpose
-        //int[] offset = this.calculateOffSet(level, canvas);
-
         // Render stuff
-        this.renderBackground(gc, canvas);
-        this.renderCellGrid(gc, level.getCellGrid());
-        this.renderEntityGrid(gc, level.getEntityGrid());
-
-        //save.saveFile(level);
-
-        // Log Stuff - uncomment for spam
-        // jack.logPlayerLoc(player, entityGrid);
-        // jack.logGrid(level.getEntityGrid());
-        // jack.logGrid(level.getCellGrid());
-
-    }
-
-    private void renderBackground(GraphicsContext gc, Canvas canvas) {
-
-        Image backing = new Image("images/BACKING.png");
-        backing = SpriteConverter.resize(backing, (int) canvas.getHeight(), (int) canvas.getWidth());
-        gc.drawImage(backing, 0, 0);
-
-        // gc.drawImage(SpriteConverter.resize(new Image("images/BACKING.png"), (int) canvas.getHeight(), (int) canvas.getWidth()), 0, 0);
+        renderCellGrid(gc, level.getCellGrid());
+        renderPlayer(gc, level.getPlayer());
 
     }
 
     private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid) {
 
+        int xOnScreen;
+        int yOnScreen;
+
         for (int x = 0 ; x < cellGrid.length ; x++ ) {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = SpriteConverter.resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = SpriteConverter.resize(cell.getSprite(), MINIMAP_CELL_HEIGHT, MINIMAP_CELL_WIDTH);
 
-                gc.drawImage(sprite, (x * GRID_CELL_WIDTH), (y * GRID_CELL_HEIGHT) );
+                xOnScreen = x * MINIMAP_CELL_WIDTH;
+                yOnScreen = y * MINIMAP_CELL_HEIGHT;
 
-            }
-        }
-
-    }
-
-    private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid) {
-
-        int xOnScreen;
-        int yOnScreen;
-
-        int[] position;
-
-        for (int x = 0 ; x < entityGrid.length ; x++ ) {
-            for (int y = 0; y < entityGrid[x].length; y++ ) {
-
-                if (null != entityGrid[x][y]) {
-
-                    xOnScreen = x * GRID_CELL_WIDTH;
-                    yOnScreen = y * GRID_CELL_HEIGHT;
-
-                    position = new int[] {xOnScreen, yOnScreen};
-
-                    renderEntity(gc, entityGrid[x][y], position);
-                }
+                gc.drawImage(sprite, xOnScreen, yOnScreen);
 
             }
         }
+
     }
 
-    private void renderEntity(GraphicsContext gc, Entity entity, int[] position) {
+    private void renderPlayer(GraphicsContext gc, Player player) {
 
-        int x = position[0];
-        int y = position[1];
+        Position playerPosition = player.getPosition();
+        Image sprite = player.getSprite();
 
-        Image sprite = entity.getSprite();
+        int xOnScreen = playerPosition.x * MINIMAP_CELL_WIDTH;
+        int yOnScreen = playerPosition.y * MINIMAP_CELL_HEIGHT;
 
-        if (entity.getClass().getSimpleName().equals("Player")) {
+        sprite = SpriteConverter.rotate(sprite, (player.getDirection()));
+        sprite = SpriteConverter.resize(sprite, MINIMAP_CELL_HEIGHT, MINIMAP_CELL_WIDTH);
 
-            sprite = SpriteConverter.rotate(sprite, ((Player) entity).getDirection());
-            sprite = SpriteConverter.resize(sprite, GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        gc.drawImage(sprite, xOnScreen, yOnScreen);
 
-            gc.drawImage(sprite, x, y);
-
-        }/* else if (entity.getClass().getSimpleName().contains("Enemy")) {
-            Enemy enemy = (Enemy) entity;
-            gc.drawImage(SpriteConverter.rotate(sprite, enemy.getDirection()), x, y);
-        } else {
-            gc.drawImage(sprite, x, y);
-        }
-        */
     }
+
 }

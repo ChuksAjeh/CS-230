@@ -47,6 +47,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This done mainy stuff
+ * @author Everyone basically
+ * @version 9001
  */
 public class Main extends Application {
 
@@ -67,39 +69,39 @@ public class Main extends Application {
 
     // Not fat, just a controller
     private final Controller controller = new Controller();
-    private final Lumberjack jack = new Lumberjack();
 
-    private static MediaPlayer mediaPlayer;
-    private static String userName;
+    private static MediaPlayer MEDIA_PLAYER;
+    private static String USER_NAME;
 
-    static Stage window;
-    static Level level;
+    static Stage WINDOW;
+    static Level LEVEL;
 
     // Not electric unfortunately, just used for timing stuff
-    static long start = 0;
-    static long end;
-    static long elapsedTime;
-    static long convert;
+    static long START_TIME = 0;
+    static long END_TIME;
+    static long ELAPSED_TIME;
+    static long CONVERTED_TIME;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage primaryStage){
-        window = primaryStage;
+        WINDOW = primaryStage;
         Scene intro = begin();
 
-        window.setTitle("Jungle Hunt");
-        window.setScene(intro);
-        window.show();
+        WINDOW.setResizable(false);
+        WINDOW.setTitle("Jungle Hunt");
+        WINDOW.setScene(intro);
+        WINDOW.show();
 
         try {
             //Media media = new Media(Paths.get("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\music\\music.mp3").toUri().toString());
             Media media = new Media(Paths.get("music/music.mp3").toUri().toString());
-            mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            mediaPlayer.setVolume(0.2);
-            mediaPlayer.play();
+            MEDIA_PLAYER = new MediaPlayer(media);
+            MEDIA_PLAYER.setCycleCount(MediaPlayer.INDEFINITE);
+            MEDIA_PLAYER.setVolume(0.2);
+            MEDIA_PLAYER.play();
         } catch (Exception e) {
             // e.printStackTrace();
         }
@@ -129,7 +131,6 @@ public class Main extends Application {
 
         return message;
     }
-
 
     private HBox bottomBar(){
 
@@ -165,13 +166,12 @@ public class Main extends Application {
 
         style(title);
 
-        startButton.setOnAction(e -> window.setScene(userSelection()));
+        startButton.setOnAction(e -> WINDOW.setScene(userSelection()));
 
         root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
-
 
     private Scene userSelection() {
 
@@ -196,8 +196,8 @@ public class Main extends Application {
         //Button loadUser = new Button("Load user profiles");
 
         loadUser.setOnAction(e -> {
-            userName = loadUser.getSelectionModel().getSelectedItem();
-            window.setScene(loadGame());
+            USER_NAME = loadUser.getSelectionModel().getSelectedItem();
+            WINDOW.setScene(loadGame());
         });
 
         Button quit = new Button("Quit");
@@ -216,7 +216,6 @@ public class Main extends Application {
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
-
 
     private Scene newGame() {
         BorderPane root = new BorderPane();
@@ -237,7 +236,7 @@ public class Main extends Application {
         startButton.setOnAction(e -> {
             String levelName = files[0].getName();
             levelName = levelName.substring(0, levelName.length() - 4);
-            window.setScene(gaming(levelName));
+            WINDOW.setScene(gaming(levelName));
         });
 
         root.setCenter(vBox);
@@ -267,7 +266,7 @@ public class Main extends Application {
         startButton.setOnAction(e -> {
             String levelName = files[0].getName();
             levelName = levelName.substring(0,levelName.length() - 4);
-            window.setScene(gaming(levelName));
+            WINDOW.setScene(gaming(levelName));
         });
 
 
@@ -277,7 +276,7 @@ public class Main extends Application {
         root.setCenter(vBox);
         root.setBottom(bottomBar());
 
-        loadButton.setOnAction(e -> window.setScene(displayLevel()));
+        loadButton.setOnAction(e -> WINDOW.setScene(displayLevel()));
 
         root.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
 
@@ -320,7 +319,7 @@ public class Main extends Application {
             button.setOnAction(e -> {
                 String levelName = button.getText();
                 levelName = levelName.substring(0, levelName.length() - 4);
-                window.setScene(gaming(levelName));
+                WINDOW.setScene(gaming(levelName));
             });
         }
 
@@ -373,7 +372,6 @@ public class Main extends Application {
         return inv;
     }
 
-
     private AnchorPane pauseMenu(){
         AnchorPane pause = new AnchorPane();
         VBox vBox = new VBox();
@@ -397,7 +395,7 @@ public class Main extends Application {
         /*middleMenu.setCenter(vBox);*/
         vBox.setSpacing(25);
 
-        goBack.setOnAction(e -> window.setScene(userSelection()));
+        goBack.setOnAction(e -> WINDOW.setScene(userSelection()));
 
         exitGame.setOnAction(e -> System.exit(0));
 
@@ -418,7 +416,6 @@ public class Main extends Application {
         return pause;
     }
 
-
     private Scene gameSucceed() {
         BorderPane pane = new BorderPane();
         VBox vBox = new VBox();
@@ -435,9 +432,9 @@ public class Main extends Application {
         vBox.getChildren().addAll(title, selectLevel, returnMenu, quit);
         vBox.setAlignment(Pos.CENTER);
 
-        selectLevel.setOnAction(e -> window.setScene(displayLevel()));
+        selectLevel.setOnAction(e -> WINDOW.setScene(displayLevel()));
 
-        returnMenu.setOnAction(e -> window.setScene(userSelection()));
+        returnMenu.setOnAction(e -> WINDOW.setScene(userSelection()));
 
         quit.setOnAction(e -> System.exit(0));
 
@@ -461,9 +458,9 @@ public class Main extends Application {
 
         Button quit = new Button("Quit");
 
-        restartLevel.setOnAction(e -> window.setScene(gaming(level.getLevelName())));
+        restartLevel.setOnAction(e -> WINDOW.setScene(gaming(LEVEL.getLevelName())));
 
-        returnMenu.setOnAction(e -> window.setScene(userSelection()));
+        returnMenu.setOnAction(e -> WINDOW.setScene(userSelection()));
 
         quit.setOnAction(e -> System.exit(0));
 
@@ -486,10 +483,11 @@ public class Main extends Application {
         title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
         title.setEffect(dropShadow);
     }
+
     private Scene gaming(String name) {
 
         // jack.log(2, "user created " + userName);
-        game = new Game(userName);
+        game = new Game(USER_NAME);
 
         BorderPane root = new BorderPane();
         root.setPrefSize(960,670);
@@ -516,15 +514,15 @@ public class Main extends Application {
 
         drawing.setId("game");
 
-        level = controller.makeLevel(name);
+        LEVEL = controller.makeLevel(name);
 
-        game.drawGame(level, gameCanvas);
+        game.drawGame(LEVEL, gameCanvas);
 
         mini.setCenter(miniMapCanvas);
 
         mini.setStyle("-fx-border-color: #42832d ; -fx-border-width: 2px ");
 
-        miniMap.drawGame(level, miniMapCanvas);
+        miniMap.drawMap(LEVEL, miniMapCanvas);
 
         AnchorPane.setBottomAnchor(mini, 500.0);
         AnchorPane.setLeftAnchor(mini, 750.0);
@@ -546,13 +544,13 @@ public class Main extends Application {
         root.setCenter(stack);
 
 
-        start = System.nanoTime();
+        START_TIME = System.nanoTime();
 
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         play.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-                controller.processKeyEvent(event, level, game, gameCanvas, new Scene[] {gameSucceed(), gameOver()}));
+                controller.processKeyEvent(event, LEVEL, game, gameCanvas, new Scene[] {gameSucceed(), gameOver()}));
         play.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-                controller.processMiniMap(event, level, miniMap, miniMapCanvas));
+                controller.processMiniMap(event, LEVEL, miniMap, miniMapCanvas));
         play.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMenuEvent(event, stack));
 
@@ -587,9 +585,9 @@ public class Main extends Application {
                 //path.mkdir();
 
 
-                userName = tf.getText();
+                USER_NAME = tf.getText();
 
-                window.setScene(newGame());
+                WINDOW.setScene(newGame());
 
             });
         }
