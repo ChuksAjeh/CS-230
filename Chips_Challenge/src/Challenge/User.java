@@ -1,9 +1,12 @@
 package Challenge;
 
+import java.io.File;
+
 class User {
 
     private String userName;
     private int[] scores;
+    private File[] saveFiles;
 
     User() {
 
