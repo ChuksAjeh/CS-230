@@ -10,7 +10,7 @@ class User {
     /**
      * Their name
      */
-    private String userName;
+    private final String userName;
 
     // private ArrayList<Integer> scores; // (or a Score class with Level name and time taken)
     // private File[] saveFiles;
