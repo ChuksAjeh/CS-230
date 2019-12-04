@@ -50,6 +50,7 @@ class Save {
     /**
      * Saves the current Level to a file
      * @param level the level to save
+     * @param user the USer object to save
      */
     void saveFile(Level level, User user) {
 
@@ -62,7 +63,7 @@ class Save {
 
         String fileName = levelName + "_" + "SAVE";
 
-        jack.log(1, user.getUserName());
+        // jack.log(1, user.getUserName());
 
         // Create folder for the current User
         //File dirFile = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName());
@@ -103,7 +104,7 @@ class Save {
 
         } catch (IOException e) {
             // Nothing, because Sam is a dumdum :p
-            jack.log(1, "rtdgyd7grbudhf");
+            jack.log(1, "Oops");
         }
 
     }

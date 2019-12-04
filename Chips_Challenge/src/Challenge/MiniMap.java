@@ -5,12 +5,21 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * @author
- * @version
+ * The MiniMap is a mini canvas that will be visible during the game and show
+ * the player their surroundings sans entitys
+ * @author Ioan Mazurca
+ * @version 2.0
  */
-public class MiniMap {
+class MiniMap {
 
+    /**
+     * The width of cells in the MiniMap, calculated dynamically
+     */
     private static int GRID_CELL_WIDTH ;
+
+    /**
+     * The height of cells in the MiniMap, calculated dynamically
+     */
     private static int GRID_CELL_HEIGHT;
 
     void drawGame(Level level, Canvas canvas) {

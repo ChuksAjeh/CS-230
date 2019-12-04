@@ -50,7 +50,6 @@ class Player extends Entity {
      */
     private boolean finish;
 
-    // TESTING
     // private final Lumberjack jack = new Lumberjack();
 
     static  {
@@ -283,14 +282,6 @@ class Player extends Entity {
     }
 
     /**
-     * Used to remove an item from the players inventory
-     * @param item the item to remove
-     */
-    private void removeItem(Item item) {
-        this.inventory.remove(item);
-    }
-
-    /**
      * Method to 'open' a key door and replace it with ground
      * @param level the level object
      * @param doorColour the colour of door
@@ -387,7 +378,7 @@ class Player extends Entity {
         for (Cell[] row : cellGrid) {
             for (Cell c : row) {
                 if (cellType.equals(c.getClass().getSimpleName())) {
-                    c.setPassable(true);
+                    c.setPassable();
                 }
             }
         }

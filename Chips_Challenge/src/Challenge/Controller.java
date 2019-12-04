@@ -7,6 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,71 +38,39 @@ class Controller {
      */
     void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene[] scenes) {
 
-        // Retrieve Scenes
-        Scene success = scenes[0];
-        Scene die = scenes[1];
+        // Get the event code
+        KeyCode key = event.getCode();
 
-        // Grab the player and current entity grid
-        Entity[][] newGrid = level.getEntityGrid();
-        Player player = level.getPlayer();
+        if (key.isArrowKey()) {
 
-        if (KeyCode.UP == event.getCode()) {
-            // Move to direction 0 (North)
-            newGrid = player.move(0, level);
-        } else if (KeyCode.RIGHT == event.getCode()) {
-            // Move to direction 1 (East)
-            newGrid = player.move(1, level);
-        } else if (KeyCode.DOWN == event.getCode()) {
-            // Move to direction 2 (South)
-            newGrid = player.move(2, level);
-        } else if (KeyCode.LEFT == event.getCode()) {
-            // Move to direction 3 (West)
-            newGrid = player.move(3, level);
-        }
+            // Grab the player, current entity grid and the enemy array
+            Entity[][] newGrid;
+            Player player = level.getPlayer();
 
-        ArrayList<Enemy> enemies = level.getEnemies(newGrid);
+            ArrayList<KeyCode> codes = new ArrayList<>(Arrays.asList(
+                KeyCode.UP, KeyCode.RIGHT, KeyCode.DOWN, KeyCode.LEFT
+            ));
 
-        // Move all the enemies after the player has moved.
-        for (Enemy e : enemies) {
+            newGrid = player.move(codes.indexOf(key), level);
+            newGrid = level.moveEnemys(level, newGrid);
 
-            if (level.getPlayer() != null && player.getStatus()) {
-                // Player isn't dead
-
-                // Update Grids
-                e.setCellGrid(level.getCellGrid());
-                e.setEntityGrid(newGrid);
-
-            }
-
-            newGrid = e.move(level, newGrid);
-
-        }
-
-        // Redraw the level with new positions.
-        if (event.getCode().isArrowKey()) {
-
+            // Update the Level object for drawing
             level.setEntityGrid(newGrid);
 
-            if(player.getGameStatus()) {
+            if (player.getGameStatus()) {
                 player.setGameStatus();
                 Main.end = System.nanoTime();
                 Main.elapsedTime = Main.end - Main.start;
                 Main.convert = TimeUnit.SECONDS.convert(Main.elapsedTime, TimeUnit.NANOSECONDS);
-
-                //System.out.println(Main.convert);
-
-                //game.getUser();
-
-
-                Main.window.setScene(success);
+                Main.window.setScene(scenes[0]);
             }
 
-            if (player.getStatus() && level.getPlayer() != null) {
+            if (level.getPlayer() != null && player.getStatus()) {
                 // Player should be alive
                 game.drawGame(level, canvas);
             } else {
                 Main.level = new Level(level.getLevelName());
-                Main.window.setScene(die);
+                Main.window.setScene(scenes[1]);
             }
 
         }
