@@ -27,6 +27,12 @@ class Game {
      */
     private final Save save = new Save();
 
+    User user;
+
+    public Game(String userName) {
+        this.user = new User(userName);
+    }
+
     /**
      *  Draws the game with a given level and canvas.
      * @param level The game's level
@@ -51,7 +57,8 @@ class Game {
         this.renderCellGrid(gc, level.getCellGrid(), offset);
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
-        save.saveFile(level);
+        jack.log(2,"game" + this.user.getUserName());
+        save.saveFile(level, this.user);
 
         // Log Stuff - uncomment for spam
         // jack.logPlayerLoc(player, entityGrid);
@@ -183,6 +190,10 @@ class Game {
             gc.drawImage(sprite, x, y);
         }
 
+    }
+
+    public User getUser() {
+        return user;
     }
 
 }

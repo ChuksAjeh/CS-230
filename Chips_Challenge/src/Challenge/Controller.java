@@ -87,7 +87,12 @@ class Controller {
                 Main.end = System.nanoTime();
                 Main.elapsedTime = Main.end - Main.start;
                 Main.convert = TimeUnit.SECONDS.convert(Main.elapsedTime, TimeUnit.NANOSECONDS);
-                System.out.println(Main.convert);
+
+                //System.out.println(Main.convert);
+
+                //game.getUser();
+
+
                 Main.window.setScene(success);
             }
 

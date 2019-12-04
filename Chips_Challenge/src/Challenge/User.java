@@ -6,10 +6,10 @@ class User {
 
     private String userName;
     private int[] scores;
-    private File[] saveFiles;
+    //private File[] saveFiles;
 
-    User() {
-
+    User(String userName) {
+        this.userName = userName;
     }
 
     void setUserName(String userName) {

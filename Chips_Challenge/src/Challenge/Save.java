@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * This class is used to save the game state each tick to ensure Player
  * progress is never lost. Games may be loaded from original files or their
  * created save file variants produced by this class
- * @author Samuel Roach, George Carpenter
+ * @author Samuel Roach, George Carpenter, Blake Davies
  * @version 1.0
  */
 class Save {
@@ -51,7 +51,7 @@ class Save {
      * Saves the current Level to a file
      * @param level the level to save
      */
-    void saveFile(Level level) {
+    void saveFile(Level level, User user) {
 
         String directory;
         String levelName = level.getLevelName();
@@ -62,19 +62,23 @@ class Save {
 
         String fileName = levelName + "_" + "SAVE";
 
+        jack.log(1, user.getUserName());
+
         // Create folder for the current User
-        File dirFile = new File("Users/" + "Dave");
+        //File dirFile = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName());
+        File dirFile = new File("Users/" + user.getUserName());
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                jack.log(0,"Directory for " + "DAVE" + " has been created!");
+                jack.log(0,"Directory for " + user.getUserName() + " has been created!");
             } else {
                 jack.log(2,"Failed to create directory!");
             }
         }
 
         // Create directory for new file
-        directory = "Users/" + "Dave" + "/" + fileName + ".txt";
+        //directory = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName() + "/" + fileName + ".txt";
+        directory = "Users/" + user.getUserName() + "/" + fileName + ".txt";
         File file = new File(directory);
 
         try {
@@ -99,6 +103,7 @@ class Save {
 
         } catch (IOException e) {
             // Nothing, because Sam is a dumdum :p
+            jack.log(1, "rtdgyd7grbudhf");
         }
 
     }
