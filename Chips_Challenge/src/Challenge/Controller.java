@@ -7,6 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class is designed to be used to allows the player to be controlled
@@ -83,6 +84,10 @@ class Controller {
 
             if(player.getGameStatus()) {
                 player.setGameStatus();
+                Main.end = System.nanoTime();
+                Main.elapsedTime = Main.end - Main.start;
+                Main.convert = TimeUnit.SECONDS.convert(Main.elapsedTime, TimeUnit.NANOSECONDS);
+                System.out.println(Main.convert);
                 Main.window.setScene(success);
             }
 
@@ -107,16 +112,7 @@ class Controller {
     void processMenuEvent(KeyEvent event, StackPane root) {
 
         if (KeyCode.ESCAPE == event.getCode()) {
-
-             if (changeMenu) {
-                 root.lookup("#pauseMenu").toFront();
-                 root.lookup("#Inventory").toBack();
-                 changeMenu = false;
-             } else {
-                 root.lookup("#game").toFront();
-                 root.lookup("#pauseMenu").toBack();
-                 changeMenu = true;
-             }
+            root.getChildren().get(0).toFront();
 
         } else if (KeyCode.E == event.getCode()) {
 

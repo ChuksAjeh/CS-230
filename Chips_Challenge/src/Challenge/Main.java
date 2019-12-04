@@ -41,6 +41,7 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Main extends Application {
@@ -59,11 +60,15 @@ public class Main extends Application {
     private Game game = new Game();
     private MiniMap miniMap = new MiniMap();
 
-    private final Controller controller = new Controller();
+    public final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
 
     static Stage window;
     static Level level;
+    public static long start = 0;
+    public static long end;
+    public static long elapsedTime;
+    public static long convert;
 
     // Mediaplayer
     private static MediaPlayer mediaPlayer;
@@ -474,6 +479,7 @@ public class Main extends Application {
         drawing.setPrefSize(960,670);
 
         StackPane stack = new StackPane();
+        StackPane maps = new StackPane();
         //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         System.out.println("SUCCESS!");
@@ -497,8 +503,6 @@ public class Main extends Application {
 
         mini.setCenter(miniMapCanvas);
 
-        mini.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
-
         mini.setStyle("-fx-border-color: #42832d ; -fx-border-width: 2px ");
 
         miniMap.drawGame(level, miniMapCanvas);
@@ -508,21 +512,33 @@ public class Main extends Application {
 
         awesome.getChildren().add(mini);
 
-        stack.getChildren().add(inventory(level));
+        awesome.getStyleClass().add(getClass().getResource("layout.css").toExternalForm());
+
+        awesome.setId("miniMap");
+
+        maps.getChildren().add(drawing);
+        maps.getChildren().add(awesome);
+
+
         stack.getChildren().add(pauseMenu());
-        stack.getChildren().add(drawing);
-        stack.getChildren().add(awesome);
+        stack.getChildren().add(maps);
 
         root.setBottom(bottomBar());
         root.setCenter(stack);
 
+
+        start = System.nanoTime();
+
         Scene play = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        play.addEventHandler(KeyEvent.KEY_PRESSED, event ->
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processKeyEvent(event, level, game, gameCanvas, new Scene[] {gameSucceed(), gameOver()}));
-        play.addEventHandler(KeyEvent.KEY_PRESSED, event ->
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMiniMap(event, level, miniMap, miniMapCanvas));
-        play.addEventHandler(KeyEvent.KEY_PRESSED, event ->
+        play.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMenuEvent(event, stack));
+
+
+        System.out.println(drawing.getId());
 
         return play;
 
