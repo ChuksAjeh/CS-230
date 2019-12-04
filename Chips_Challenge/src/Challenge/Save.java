@@ -36,11 +36,6 @@ class Save {
     private FileWriter writer;
 
     /**
-     * Because why not, I'm on a roll
-     */
-    private final Lumberjack jack = new Lumberjack();
-
-    /**
      * Nice constructor
      */
     Save() {
@@ -71,9 +66,9 @@ class Save {
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                jack.log(0,"Directory for " + user.getUserName() + " has been created!");
+                Lumberjack.log(0,"Directory for " + user.getUserName() + " has been created!");
             } else {
-                jack.log(2,"Failed to create directory!");
+                Lumberjack.log(2,"Failed to create directory!");
             }
         }
 
@@ -104,7 +99,7 @@ class Save {
 
         } catch (IOException e) {
             // Nothing, because Sam is a dumdum :p
-            jack.log(1, "Oops");
+            Lumberjack.log(1, "Oops");
         }
 
     }
@@ -462,7 +457,7 @@ class Save {
      * @param object what to write
      */
     private void logWritten(Object object) {
-        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
 
 }

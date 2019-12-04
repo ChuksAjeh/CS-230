@@ -2,6 +2,8 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
+import java.util.stream.IntStream;
+
 /**
  * Enemies are movable hazards designed to end the level upon contact
  * with the player. Each enemy has its own unique way of moving to the player.
@@ -187,9 +189,9 @@ abstract class Enemy extends Entity {
             this.entityGrid[x - 1][y]
         };
 
-        for (int i = 0 ; i < passable.length ; i++ ) {
-            passable[i] = sc[i] instanceof Ground && (se[i] == null || se[i] instanceof Player);
-        }
+        IntStream.range(0, passable.length).forEach(i ->
+            passable[i] = sc[i] instanceof Ground &&
+            (se[i] == null || se[i] instanceof Player));
 
         return passable;
 

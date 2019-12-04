@@ -119,7 +119,7 @@ class Controller {
      * @param miniMapCanvas the canvas to render it to
      */
     void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas miniMapCanvas) {
-        mini.drawGame(level, miniMapCanvas);
+        mini.drawMap(level, miniMapCanvas);
         event.consume();
     }
 
