@@ -7,14 +7,12 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,10 +55,10 @@ public class Main extends Application {
     private Canvas gameCanvas;
     private Canvas miniMapCanvas;
 
-    private Game game = new Game();
+    private Game game;
     private MiniMap miniMap = new MiniMap();
 
-    public final Controller controller = new Controller();
+    private final Controller controller = new Controller();
     private final Lumberjack jack = new Lumberjack();
 
     static Stage window;
@@ -69,6 +67,8 @@ public class Main extends Application {
     public static long end;
     public static long elapsedTime;
     public static long convert;
+
+    static String userName;
 
     // Mediaplayer
     private static MediaPlayer mediaPlayer;
@@ -183,7 +183,10 @@ public class Main extends Application {
         loadUser.setPromptText("Select user profile");
         //Button loadUser = new Button("Load user profiles");
 
-        loadUser.setOnAction(e -> window.setScene(loadGame()));
+        loadUser.setOnAction(e -> {
+            userName = loadUser.getSelectionModel().getSelectedItem();
+            window.setScene(loadGame());
+        });
 
         Button quit = new Button("Quit");
 
@@ -196,6 +199,8 @@ public class Main extends Application {
 
 
         quit.setOnAction(e -> System.exit(0));
+
+        //this.userName = newUser.getName();
 
         return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
@@ -317,22 +322,21 @@ public class Main extends Application {
     private AnchorPane inventory(Level level) {
         HBox test = new HBox();
         AnchorPane inv = new AnchorPane();
-        ArrayList<Item> lame = level.getPlayer().getInventory();
-
-        for(Item item: lame) {
-            test.getChildren().add(new ImageView(item.getSprite()));
-        }
 
         // FOR THE TESTING
-        Image change = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
-        Image change2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
+        Image item1 = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
+        Image item2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
+        Image item3 = new Image("images/ENTITY_KEY.png",75,50,false,false);
+        Image item4 = new Image("images/ENTITY_TOKEN.png",75,50,false,false);
 
         //inventory.setPrefSize(50,50);
 
-        ImageView nr1 = new ImageView(change);
-        ImageView nr2 = new ImageView(change2);
+        ImageView nr1 = new ImageView(item1);
+        ImageView nr2 = new ImageView(item2);
+        ImageView nr3 = new ImageView(item3);
+        ImageView nr4 = new ImageView(item4);
 
-        //test.getChildren().addAll(nr1,nr2);
+        test.getChildren().addAll(nr1,nr2, nr3, nr4);
 
         AnchorPane.setTopAnchor(test, 600.0);
         AnchorPane.setLeftAnchor(test, 200.0);
@@ -344,6 +348,9 @@ public class Main extends Application {
 
         test.setPrefSize(100,200);
         test.setAlignment(Pos.CENTER);
+
+        Separator separator = new Separator();
+        separator.setOrientation(Orientation.VERTICAL);
 
         inv.getChildren().add(test);
 
@@ -365,14 +372,14 @@ public class Main extends Application {
 
         style(title);
 
-        Button save = new Button("Save");
-        save.setPrefSize(200,50);
+        //Button save = new Button("Save");
+        //save.setPrefSize(200,50);
         Button goBack = new Button("Return to main menu");
         goBack.setPrefSize(200,50);
         Button exitGame = new Button("Exit");
         exitGame.setPrefSize(200,50);
 
-        vBox.getChildren().addAll(title, save, goBack, exitGame);
+        vBox.getChildren().addAll(title, goBack, exitGame);
 
         vBox.setAlignment(Pos.CENTER);
         /*middleMenu.setCenter(vBox);*/
@@ -469,8 +476,10 @@ public class Main extends Application {
         title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
         title.setEffect(dropShadow);
     }
-
     private Scene gaming(String name) {
+
+        jack.log(2, "user created " + userName);
+        game = new Game(userName);
 
         BorderPane root = new BorderPane();
         root.setPrefSize(960,670);
@@ -546,6 +555,8 @@ public class Main extends Application {
 
     class EditableButton extends Button {
 
+        String user;
+
         final TextField tf = new TextField();
 
         EditableButton(String text) {
@@ -563,11 +574,19 @@ public class Main extends Application {
                 //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
                 File path = new File("Users/" + tf.getText());
 
-                path.mkdir();
+                //path.mkdir();
+
+
+                userName = tf.getText();
 
                 window.setScene(newGame());
 
             });
+        }
+
+
+        public String getName() {
+            return this.user;
         }
 
     }
