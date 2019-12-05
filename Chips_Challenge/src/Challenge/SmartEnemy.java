@@ -59,18 +59,18 @@ class SmartEnemy extends Enemy {
 
 
         // Find a path using waterfront planning (BFS)
-        BFSVertex[][] path = this.findPathToPlayer(flattenedGrid, player, entityGrid);
-
+        BFSVertex[][] waveFrontGrid = this.findPathToPlayer(flattenedGrid, player, entityGrid);
         // Find the next vertex the enemy should be on.
         int srcX= this.getPosition().x;
         int srcY = this.getPosition().y;
-        System.out.println(" x: " + path[srcX][srcY].getY() + " y: "+path[srcX][srcY].getX());
-        BFSVertex nextNode = this.getFinalNode(path,path[this.getPosition().x][this.getPosition().y]);
+        waveFrontGrid[srcX][srcY] = new BFSVertex(srcX,srcY,0);
+        System.out.println("This pos x =  " + waveFrontGrid[srcX][srcY].getX() + " y =  "+waveFrontGrid[srcX][srcY].getY());
+        BFSVertex nextNode = this.getFinalNode(waveFrontGrid,waveFrontGrid[srcX][srcY],Integer.MAX_VALUE);
 
         System.out.println("Original Position: "+ this.getPosition().x +" "+ this.getPosition().y);
-        int newEnemyY = this.getPosition().x - nextNode.getY();
+        int newEnemyY = this.getPosition().x - nextNode.getX();
         //System.out.println(Arrays.toString(nextNode.toString());
-        int newEnemyX = this.getPosition().y - nextNode.getX();
+        int newEnemyX = this.getPosition().y - nextNode.getY();
         System.out.println("New Position: "+newEnemyX+" "+newEnemyY);
 
         // Using the next location that we know, find the direction the enemy must take.
@@ -87,36 +87,22 @@ class SmartEnemy extends Enemy {
         return random.nextInt(4);
     }
 
-    private BFSVertex getFinalNode(BFSVertex[][] bfsGrid, BFSVertex startnode) {
-        BFSVertex finalNode = startnode;
-        BFSVertex smallestVertex = null;
+    private BFSVertex getFinalNode(BFSVertex[][] bfsGrid, BFSVertex node, int minDist) {
         //make sure this is the starting node and if in the grid and equal to zero return that node
-
-        if (startnode != null) {
-            if (startnode.getDist() == 0) {
-                return finalNode;
-            } else {
-                //get the surrounding nodes and then find the smallest of the lot
-                BFSVertex[] adjacentNodes = getSurroundingNodes(bfsGrid, startnode);
-
-                int min_dis = Integer.MAX_VALUE;
-                //find the smallest distanced vertex from current node
-                for (BFSVertex vertex : adjacentNodes) {
-                    if (vertex != null) {
-                        if (vertex.getDist() < min_dis) {
-                            min_dis = vertex.getDist();
-                            smallestVertex = vertex;
-                        }
-                    }
+        BFSVertex[] adjacentNodes = getSurroundingNodes(bfsGrid, node);
+        for (BFSVertex adjNode : adjacentNodes) {
+            if (adjNode != null) {
+                if (adjNode.getDist() == 0) {
+                    return node;
+                } else if (adjNode.getDist() < minDist) {
+                    minDist = adjNode.getDist();
+                    node = adjNode;
+                    return getFinalNode(bfsGrid, node, minDist);
                 }
 
-                //prevent a nullPoint exception
-//                if (smallestVertex != null) {
-//                    return getFinalNode(bfsGrid, smallestVertex);
-//                }
-            }
-        }
-        return smallestVertex;
+                    }
+                }
+        return node;
         //return finalNode;
     }
 
@@ -171,7 +157,7 @@ class SmartEnemy extends Enemy {
     private BFSVertex[][] findPathToPlayer(int[][] flattenedLevel, Player player, Entity[][] entities) {
 
         Position playerPos = player.getPosition();
-
+        System.out.println("Player position: "+playerPos.x + " " + playerPos.y);
         // Print out useful message 1;
         if (flattenedLevel[this.getPosition().x][this.getPosition().y] != 1 || 1 != flattenedLevel[playerPos.x][playerPos.y]) {
             System.out.println("unable to find shortest path");
@@ -187,7 +173,7 @@ class SmartEnemy extends Enemy {
 
         Queue<BFSVertex> vertices = new LinkedList<>();
         Stack<BFSVertex> pathToReturn = new Stack<>();
-        vertices.add(new BFSVertex(this.getPosition().x, this.getPosition().y, 0));
+        vertices.add(new BFSVertex(player.getPosition().x, player.getPosition().y, 0));
 
         // store the minimum distance:
         int minDist = Integer.MAX_VALUE;
@@ -218,8 +204,9 @@ class SmartEnemy extends Enemy {
 //            System.out.println(" dist:" + dist);
 
             // if destination is found, update minimum distance and stop
-            if (srcX == playerPos.x && srcY == playerPos.y) {
+            if (srcX == this.getPosition().x && srcY == this.getPosition().y) {
                 minDist = dist;
+                System.out.println("Found player");
             }
 
             dist += 1;
@@ -240,7 +227,7 @@ class SmartEnemy extends Enemy {
 
             counter += 1;
 
-        } while (!vertices.isEmpty() && !(srcX == playerPos.x && srcY == playerPos.y));
+        } while (!vertices.isEmpty() && !(srcX == this.getPosition().x && srcY == this.getPosition().y));
 
         // Print useful messasge 2;
 //        System.out.println(srcX == playerPos.x);
@@ -254,8 +241,11 @@ class SmartEnemy extends Enemy {
 //        }
         //System.out.println(pathToReturn.peek().getDist());
         BFSVertex[][] bfsGrid = new BFSVertex[flattenedLevel.length][flattenedLevel[0].length];
-        for(int i =0; i<=pathToReturn.size(); i++){
-            bfsGrid[pathToReturn.peek().getY()][pathToReturn.peek().getX()]=pathToReturn.pop();
+        while(!pathToReturn.empty()){
+            System.out.print(pathToReturn.peek().getX() + " ");
+            System.out.println(pathToReturn.peek().getY());
+            bfsGrid[pathToReturn.peek().getX()][pathToReturn.peek().getY()]=pathToReturn.pop();
+
         }
         for(int i =0; i<flattenedLevel.length; i++){
             for(int j=0; j< flattenedLevel[0].length; j++){
@@ -266,7 +256,6 @@ class SmartEnemy extends Enemy {
             }
         }
         //return pathToReturn;
-        System.out.println(Arrays.deepToString(bfsGrid));
         return bfsGrid;
     }
 

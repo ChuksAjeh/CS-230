@@ -5,10 +5,10 @@
 #      #
 #  #   #
 ########
-LineEnemy,1,4,2,
+SmartEnemy,1,4,0,
 Token,2,1,
 KeyDoor,6,1,WHITE,2,2,
-Player,3,2,3,
+Player,3,3,3,
 Flippers,5,1,
 FireBoots,5,4,
 Teleporter,2,4,4,4,
