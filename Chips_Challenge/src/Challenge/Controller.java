@@ -53,9 +53,9 @@ class Controller {
 
             if (player.getGameStatus()) {
                 player.setGameStatus();
-                GUI.end = System.nanoTime();
-                GUI.elapsedTime = GUI.end - GUI.start;
-                GUI.convert = TimeUnit.SECONDS.convert(GUI.elapsedTime, TimeUnit.NANOSECONDS);
+                GUI.END_TIME = System.nanoTime();
+                GUI.ELAPSED_TIME = GUI.END_TIME - GUI.START_TIME;
+                GUI.CONVERTED_TIME = TimeUnit.SECONDS.convert(GUI.ELAPSED_TIME, TimeUnit.NANOSECONDS);
                 GUI.scene.setRoot(panes[0]);
                 Main.window.setScene(GUI.scene);
             }
@@ -64,7 +64,7 @@ class Controller {
                 // Player should be alive
                 game.drawGame(level, canvas);
             } else {
-                GUI.level = new Level(level.getLevelName());
+                GUI.LEVEL = new Level(level.getLevelName());
                 GUI.scene.setRoot(panes[0]);
                 Main.window.setScene(GUI.scene);
             }
