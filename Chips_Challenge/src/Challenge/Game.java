@@ -4,6 +4,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.io.File;
+
 /**
  * Game is used to render Chips Challenge.
  * We render the entire level with this class.
@@ -13,13 +15,9 @@ import javafx.scene.image.Image;
 class Game {
 
     /**
-     * The cell width.
+     * The cell Size.
      */
-    private static final int GRID_CELL_WIDTH = 120;
-    /**
-     * The cell height
-     */
-    private static final int GRID_CELL_HEIGHT = 120;
+    private static final int GRID_SIZE = 60;
 
     /**
      * The save file for this game.
@@ -97,8 +95,8 @@ class Game {
         Player player = level.getPlayer();
         Position playerPosition = player.getPosition();
 
-        int playerXOffset = playerPosition.x * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
-        int playerYOffset = playerPosition.y * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
+        int playerXOffset = playerPosition.x * GRID_SIZE + (GRID_SIZE / 2);
+        int playerYOffset = playerPosition.y * GRID_SIZE + (GRID_SIZE / 2);
 
         int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
@@ -137,10 +135,10 @@ class Game {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = SpriteConverter.resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = SpriteConverter.resize(cell.getSprite(), GRID_SIZE, GRID_SIZE);
 
-                xOnScreen = x * GRID_CELL_WIDTH - offset.x;
-                yOnScreen = y * GRID_CELL_HEIGHT - offset.y;
+                xOnScreen = x * GRID_SIZE - offset.x;
+                yOnScreen = y * GRID_SIZE - offset.y;
 
                 gc.drawImage(sprite, xOnScreen, yOnScreen);
 
@@ -167,8 +165,8 @@ class Game {
 
                 if (null != entityGrid[x][y]) {
 
-                    xOnScreen = x * GRID_CELL_WIDTH - offset.x;
-                    yOnScreen = y * GRID_CELL_HEIGHT - offset.y;
+                    xOnScreen = x * GRID_SIZE - offset.x;
+                    yOnScreen = y * GRID_SIZE - offset.y;
 
                     position = new Position(xOnScreen, yOnScreen);
 
@@ -187,21 +185,38 @@ class Game {
      */
     private void renderEntity(GraphicsContext gc, Entity entity, Position position) {
 
-        // Resize it
-        Image sprite = SpriteConverter.resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        Image sprite = entity.getSprite();
 
         if (entity instanceof Player) {
-            Player player = (Player) entity;
-            // Rotate it
-            sprite = SpriteConverter.rotate(sprite, player.getDirection());
+
+            sprite = renderPlayer((Player) entity);
+
         } else if (entity instanceof Enemy) {
+
             Enemy enemy = (Enemy) entity;
-            // Rotate it
+
+            sprite = enemy.getSprite();
+
+            sprite = SpriteConverter.resize(sprite, GRID_SIZE, GRID_SIZE);
             sprite = SpriteConverter.rotate(sprite, enemy.getDirection());
         }
 
         gc.drawImage(sprite, position.x, position.y);
 
+    }
+
+    private Image renderPlayer(Player player) {
+
+        int fac = player.getFacing();
+
+        String filePath = "images/ENTITY_PLAYER_";
+        String fileExt = ".png";
+
+        Image sprite = new Image(filePath + fac + fileExt);
+
+        sprite = SpriteConverter.resize(sprite, GRID_SIZE, GRID_SIZE);
+
+        return sprite;
     }
 
 }

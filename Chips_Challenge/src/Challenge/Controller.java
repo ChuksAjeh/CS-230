@@ -7,11 +7,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * This class is designed to be used to allows the player to be controlled
@@ -35,8 +37,6 @@ class Controller {
      * The list of users who have played a level
      */
     private ArrayList<String> leaderboardUsers;
-
-    private Lumberjack jack = new Lumberjack();
 
     /**
      * Takes in certain inputs and outputs player actions.
@@ -133,6 +133,86 @@ class Controller {
     }
 
     /**
+     * The scores for that level, ordered
+     * @param level the level to collect scores for
+     * @return the scores, ordered
+     */
+    private ArrayList<Integer> calculateLeaderboardScores (Level level) {
+
+        ArrayList<Integer> userScores = new ArrayList<>();
+        ArrayList<String> userNames = new ArrayList<>();
+        File path = new File("Users/");
+
+        File[] files = path.listFiles();
+        assert files != null;
+
+        for (File file : files) {
+            File scoresFile = new File(file + "/scores.txt");
+
+            userNames.add(file.getPath().substring(6));
+            userScores.add(returnLevelScore(level, scoresFile));
+        }
+
+        this.leaderboardUsers = userNames;
+        return userScores;
+    }
+
+    /**
+     * Gets level scores
+     * @param level the level to fetch scores for
+     * @param file the file to get them from
+     * @return the scores for that level
+     */
+    private int returnLevelScore (Level level, File file) {
+
+        int levelNo = parseInt(level.getLevelName().substring(6));
+
+        try {
+
+            Scanner fileRead = new Scanner(file);
+
+            IntStream.range(0, (levelNo - 1)).forEach(i ->
+                fileRead.nextLine());
+
+            return parseInt(fileRead.nextLine().split(" - ")[1]);
+
+        } catch (Exception e) {
+
+            Lumberjack.log(1, "return level score" + e);
+            return 0;
+        }
+    }
+
+    /**
+     * My Bubbles!
+     * @param scoresArray the array of scores to sort
+     * @return the sorted array
+     */
+    private ArrayList<Integer> bubbleSort(ArrayList<Integer> scoresArray) {
+
+        int n = scoresArray.size();
+
+        for (int i = 0 ; i < n - 1 ; i ++ ) {
+            for (int j = 0 ; j < n - i - 1 ; j ++ ) {
+
+                if (scoresArray.get(j) > scoresArray.get(j + 1)) {
+                    // swap arr[j+1] and arr[i]
+                    int temp = scoresArray.get(j);
+                    scoresArray.set(j, scoresArray.get(j + 1));
+                    scoresArray.set(j + 1, temp);
+
+                    String tempName = this.leaderboardUsers.get(j);
+                    this.leaderboardUsers.set(j, this.leaderboardUsers.get(j + 1));
+                    this.leaderboardUsers.set(j + 1, tempName);
+                }
+
+            }
+        }
+
+        return scoresArray;
+    }
+
+    /**
      * Processes the Mini map
      * @param event What makes it appear
      * @param level the level to render
@@ -151,57 +231,6 @@ class Controller {
      */
     Level makeLevel(String levelName) {
         return new Level(levelName);
-    }
-
-    private ArrayList<Integer> calculateLeaderboardScores (Level level) {
-        ArrayList<Integer> userScores = new ArrayList<>();
-        ArrayList<String> userNames = new ArrayList<>();
-        File path = new File("Users/");
-
-        File[] files = path.listFiles();
-        for (File file : files) {
-            File scoresFile = new File(file + "/scores.txt");
-
-            userNames.add(file.getPath().substring(6));
-            userScores.add(returnLevelScore(level, scoresFile));
-        }
-
-        this.leaderboardUsers = userNames;
-        return new ArrayList<>();
-    }
-
-    private int returnLevelScore (Level level, File file) {
-        int levelNo = Integer.parseInt(level.getLevelName().substring(6));
-        try {
-            Scanner fileRead = new Scanner(file);
-            for (int i = 0; i < (levelNo - 1); i++) {
-                fileRead.nextLine();
-            }
-            return Integer.parseInt(fileRead.nextLine().split(" - ")[1]);
-        } catch (Exception e) {
-            jack.log(1, "return level score" + e);
-            return 0;
-        }
-    }
-
-    private ArrayList<Integer> bubbleSort(ArrayList<Integer> scoresArray) {
-        int n = scoresArray.size();
-        for (int i = 0; i < n-1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (scoresArray.get(j) > scoresArray.get(j + 1)) {
-                    // swap arr[j+1] and arr[i]
-                    int temp = scoresArray.get(j);
-                    scoresArray.set(j, scoresArray.get(j + 1));
-                    scoresArray.set(j + 1, temp);
-
-                    String tempName = this.leaderboardUsers.get(j);
-                    this.leaderboardUsers.set(j, this.leaderboardUsers.get(j + 1));
-                    this.leaderboardUsers.set(j + 1, tempName);
-                }
-            }
-        }
-
-        return scoresArray;
     }
 
 }

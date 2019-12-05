@@ -17,7 +17,7 @@ class Player extends Entity {
      * The Sprite used for the Player object,
      * it will be rotated based on direction
      */
-    private static final Image SPRITE;
+    private static Image SPRITE;
 
     /**
      * An array list used as the Player Inventory,
@@ -36,6 +36,11 @@ class Player extends Entity {
     private int direction;
 
     /**
+     * The direction the Player is facing;
+     */
+    private int facing;
+
+    /**
      * How many Tokens the Player is currently carrying
      */
     private int tokenCount;
@@ -52,8 +57,8 @@ class Player extends Entity {
 
     // private final Lumberjack jack = new Lumberjack();
 
-    static  {
-        SPRITE = new Image("images/ENTITY_PLAYER.png");
+    static {
+        SPRITE = new Image("images/ENTITY_PLAYER_1.png");
     }
 
     /**
@@ -66,6 +71,7 @@ class Player extends Entity {
         this.position = position;
         this.inventory = new ArrayList<>();
         this.direction = direction;
+        this.facing = 1;
         this.tokenCount = 0;
         this.alive = true;
         this.finish = false;
@@ -92,7 +98,15 @@ class Player extends Entity {
      * @return the Players direction
      */
     int getDirection() {
-        return direction;
+        return this.direction;
+    }
+
+    /**
+     * Gets the direction the Player is facing
+     * @return the direction the Player is Facing
+     */
+    int getFacing() {
+        return this.facing;
     }
 
     /**
@@ -156,10 +170,14 @@ class Player extends Entity {
 
         this.direction = direction;
 
+        if (1 == this.direction || 3 == this.direction) {
+            this.facing = this.direction;
+        }
+
         if (checkValidMove(level, p)) {
             return movePlayerEntity(level, p);
         } else {
-            System.out.println("Hmm");
+            Lumberjack.log(1, "Invalid Player Move");
             return level.getEntityGrid();
         }
 
@@ -183,8 +201,7 @@ class Player extends Entity {
 
     /**
      * Used to move the player object in the Entity grid
-     * @param level the current Level object,
-     *              this contains both the Cell and Entity grids
+     * @param level the current Level object
      * @param next the next Position of the player, possibly
      * @return the updated Entity grid for displaying to the screen
      */
