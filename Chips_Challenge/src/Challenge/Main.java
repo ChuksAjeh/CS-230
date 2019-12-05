@@ -38,7 +38,7 @@ public class Main extends Application {
      * Start the thing!
      * @param primaryStage the stage we get for free!
      */
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
         window = primaryStage;
 
         window.setTitle("Jungle Hunt");

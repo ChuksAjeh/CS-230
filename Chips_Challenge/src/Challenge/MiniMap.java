@@ -22,6 +22,11 @@ class MiniMap {
      */
     private static int MINIMAP_CELL_HEIGHT;
 
+    /**
+     * Used to draw the mini map to the screen
+     * @param level the level object to draw from
+     * @param canvas the canvas to draw too
+     */
     void drawMap(Level level, Canvas canvas) {
 
         // Because it's logical
@@ -45,10 +50,12 @@ class MiniMap {
 
     }
 
+    /**
+     * Used to render the cell grid for the mini map
+     * @param gc the graphics context used to draw
+     * @param cellGrid the cell grid to draw
+     */
     private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid) {
-
-        int xOnScreen;
-        int yOnScreen;
 
         for (int x = 0 ; x < cellGrid.length ; x++ ) {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
@@ -56,8 +63,8 @@ class MiniMap {
                 Cell cell = cellGrid[x][y];
                 Image sprite = SpriteConverter.resize(cell.getSprite(), MINIMAP_CELL_HEIGHT, MINIMAP_CELL_WIDTH);
 
-                xOnScreen = x * MINIMAP_CELL_WIDTH;
-                yOnScreen = y * MINIMAP_CELL_HEIGHT;
+                int xOnScreen = x * MINIMAP_CELL_WIDTH;
+                int yOnScreen = y * MINIMAP_CELL_HEIGHT;
 
                 gc.drawImage(sprite, xOnScreen, yOnScreen);
 
@@ -66,6 +73,11 @@ class MiniMap {
 
     }
 
+    /**
+     * Used to render the player location on the mini map
+     * @param gc the graphics context used to draw
+     * @param player the player object to draw from
+     */
     private void renderPlayer(GraphicsContext gc, Player player) {
 
         Position playerPosition = player.getPosition();

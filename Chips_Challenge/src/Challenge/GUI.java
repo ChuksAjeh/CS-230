@@ -3,9 +3,11 @@ package Challenge;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -26,9 +28,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+
 import javafx.util.Duration;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,11 +50,15 @@ class GUI {
     private static Canvas gameCanvas;
     private static Canvas miniMapCanvas;
 
+    // The game ane mini map we draw for it
     private static Game game;
     private static final MiniMap miniMap = new MiniMap();
 
     // Not fat, just a controller
     private static final Controller controller = new Controller();
+
+    // Sceney!
+    public static final Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     private static String USER_NAME;
 
@@ -61,8 +69,6 @@ class GUI {
     static long END_TIME;
     static long ELAPSED_TIME;
     static long CONVERTED_TIME;
-
-    public static final Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     private static Label messageOfTheDay() {
 
@@ -89,12 +95,12 @@ class GUI {
 
         HBox bottomBar = new HBox();
 
-        bottomBar.setPrefHeight(36);
+        bottomBar.setPrefHeight(WINDOW_HEIGHT - CANVAS_HEIGHT);
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.getChildren().add(messageOfTheDay());
         bottomBar.setStyle("-fx-background-color: #222222");
-        bottomBar.setMinHeight(36);
+        bottomBar.setMinHeight(WINDOW_HEIGHT - CANVAS_HEIGHT);
 
         return bottomBar;
     }
@@ -279,8 +285,6 @@ class GUI {
         menu.setAlignment(Pos.CENTER);
         root.setCenter(menu);
 
-
-
         for (Button button : buttons) {
             button.setOnAction(e -> {
                 String levelName = button.getText();
@@ -289,7 +293,6 @@ class GUI {
                 Main.window.setScene(scene);
             });
         }
-
 
         root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
 
@@ -455,9 +458,7 @@ class GUI {
         return root;
     }
 
-    /* Right now we don't use this method anymore, but I'll leave it for now in case I
-       want to style any other labels
-     */
+    // Right now we don't use this method anymore, but I'll leave it for now in case I want to style any other labels
     private static void style(Label title) {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
@@ -484,8 +485,6 @@ class GUI {
         StackPane maps = new StackPane();
         //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        System.out.println("SUCCESS!");
-
         gameCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         AnchorPane awesome = new AnchorPane();
@@ -494,9 +493,7 @@ class GUI {
         miniMapCanvas = new Canvas(150, 150);
 
         drawing.setCenter(gameCanvas);
-
         drawing.getStyleClass().add(GUI.class.getResource("layout.css").toExternalForm());
-
         drawing.setId("game");
 
         LEVEL = controller.makeLevel(name);
@@ -504,23 +501,18 @@ class GUI {
         game.drawGame(LEVEL, gameCanvas);
 
         mini.setCenter(miniMapCanvas);
-
         mini.setStyle("-fx-border-color: #42832d ; -fx-border-width: 2px ");
-
         miniMap.drawMap(LEVEL, miniMapCanvas);
 
         AnchorPane.setBottomAnchor(mini, 500.0);
         AnchorPane.setLeftAnchor(mini, 750.0);
 
         awesome.getChildren().add(mini);
-
         awesome.getStyleClass().add(GUI.class.getResource("layout.css").toExternalForm());
-
         awesome.setId("miniMap");
 
         maps.getChildren().add(drawing);
         maps.getChildren().add(awesome);
-
 
         stack.getChildren().add(pauseMenu());
         stack.getChildren().add(maps);
@@ -537,7 +529,6 @@ class GUI {
                 controller.processMiniMap(event, LEVEL, miniMap, miniMapCanvas));
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMenuEvent(event, stack));
-
 
         System.out.println(drawing.getId());
 
