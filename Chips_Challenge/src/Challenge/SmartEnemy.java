@@ -2,9 +2,16 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
 
 /**
+ * The Smart Enemy is an enemy that will ruthless track the player and attempt
+ * to kill them at all costs, they are smart enough to walk around obstacles
+ * in their pursuit of the player.
  * @author Chuks Ajeh, Angelo Balistoy
  * @version 1.0
  */
@@ -88,13 +95,12 @@ class SmartEnemy extends Enemy {
     }
 
     private BFSVertex getFinalNode(BFSVertex[][] bfsGrid, BFSVertex startnode) {
-        BFSVertex finalNode = startnode;
         BFSVertex smallestVertex = null;
         //make sure this is the starting node and if in the grid and equal to zero return that node
 
         if (startnode != null) {
             if (startnode.getDist() == 0) {
-                return finalNode;
+                return startnode;
             } else {
                 //get the surrounding nodes and then find the smallest of the lot
                 BFSVertex[] adjacentNodes = getSurroundingNodes(bfsGrid, startnode);

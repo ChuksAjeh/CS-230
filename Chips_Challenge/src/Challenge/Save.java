@@ -51,6 +51,7 @@ class Save {
     /**
      * Saves the current Level to a file
      * @param level the level to save
+     * @param user the USer object to save
      */
     void saveFile(Level level, User user) {
 
@@ -71,9 +72,9 @@ class Save {
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                jack.log(0,"Directory for " + user.getUserName() + " has been created!");
+                Lumberjack.log(0,"Directory for " + user.getUserName() + " has been created!");
             } else {
-                jack.log(2,"Failed to create directory!");
+                Lumberjack.log(2,"Failed to create directory!");
             }
         }
 
@@ -104,7 +105,7 @@ class Save {
 
         } catch (IOException e) {
             // Nothing, because Sam is a dumdum :p
-            jack.log(1, "rtdgyd7grbudhf");
+            Lumberjack.log(1, "Oops");
         }
 
     }
@@ -430,7 +431,7 @@ class Save {
      * @param object what to write
      */
     private void logWritten(Object object) {
-        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
 
     /**

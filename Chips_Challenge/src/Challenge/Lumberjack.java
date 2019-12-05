@@ -7,20 +7,19 @@ package Challenge;
  */
 class Lumberjack {
 
-    /**
+    /*
      * Lumberjacks usually remove trees not construct them
+     *
+     * They're a lumberjack and they're OK
+     * They sleep all night and they work all day
+     * https://www.youtube.com/watch?v=FshU58nI0Ts
      */
-    Lumberjack() {
-        // They're a lumberjack and they're OK
-        // They sleeps all night and they works all day
-        // https://www.youtube.com/watch?v=FshU58nI0Ts
-    }
 
     /**
      * Logs stuff
      * @param message what to log
      */
-    private void log(String message) {
+    private static void log(String message) {
         System.out.println(message);
     }
 
@@ -29,7 +28,7 @@ class Lumberjack {
      * @param priority for not spam
      * @param message what to log
      */
-    void log(int priority, String message) {
+    static void log(int priority, String message) {
 
         if (0 == priority) {
             log("Spam : " + message);
@@ -38,7 +37,7 @@ class Lumberjack {
         } else if (2 == priority) {
             log("Maybe useful : " + message);
         } else {
-            this.log(message);
+            log(message);
         }
 
     }

@@ -6,7 +6,7 @@ package Challenge;
  * @author George Carpenter
  * @version 1.0
  */
-public class Position {
+class Position {
 
     /**
      * X location

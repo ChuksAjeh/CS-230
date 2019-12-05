@@ -64,10 +64,9 @@ abstract class Cell {
 
     /**
      * Changes a cells Passable state
-     * @param newValue if the cell should be passable
      */
-    void setPassable(boolean newValue) {
-        this.passable = newValue;
+    void setPassable() {
+        this.passable = true;
     }
 
     /**

@@ -29,7 +29,7 @@ class KeyDoor extends Door {
      * @param colour the colour of the door
      */
     KeyDoor(String colour) {
-        super(SPRITE, false);
+        super(SPRITE);
         this.colour = setColour(colour);
     }
 

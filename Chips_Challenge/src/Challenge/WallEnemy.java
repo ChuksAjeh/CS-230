@@ -3,6 +3,7 @@ package Challenge;
 import javafx.scene.image.Image;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  * A wall enemy is an enemy whose movement is determined by the walls in the
@@ -63,21 +64,20 @@ class WallEnemy extends Enemy {
     }
 
     /**
-     * Counts the number of possible moves
+     * Counts the number of available moves, a move is available if an Enemy
+     * can actually move in that direction
      * @param moves the array of possible, not necessarily available, moves
      * @return the number of available moves
      */
     private int countMoves(boolean[] moves) {
 
-        int count = 0;
+        int c = 0;
 
-        for (boolean b : moves) {
-            if (b) {
-                count += 1;
-            }
+        for (boolean move : moves) {
+            c = move ? (c + 1) : c;
         }
 
-        return count;
+        return c;
     }
 
     /**
@@ -88,15 +88,9 @@ class WallEnemy extends Enemy {
      */
     private int findMove(boolean[] passable, boolean val) {
 
-        for (int i = 0 ; i < passable.length ; i++ ) {
+        return IntStream.range(0, passable.length).filter(i ->
+            val == passable[i]).findFirst().orElse(0);
 
-            if (val == passable[i]) {
-                return i;
-            }
-
-        }
-
-        return 0;
     }
 
     /**

@@ -1,12 +1,13 @@
 package Challenge;
 
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,11 +17,6 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  */
 class Controller {
-
-    /**
-     * Tracks scene change
-     */
-    private static boolean changeMenu = true;
 
     /**
      * Tracks inventory change
@@ -38,75 +34,48 @@ class Controller {
      * @param level The level being played
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
-     * @param scenes The scenes to manage with this handler
      */
-    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, Scene[] scenes) {
+    void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, BorderPane[] panes) {
 
-        // Retrieve Scenes
-        Scene success = scenes[0];
-        Scene die = scenes[1];
+        // Get the event code
+        KeyCode key = event.getCode();
 
-        // Grab the player and current entity grid
-        Entity[][] newGrid = level.getEntityGrid();
-        Player player = level.getPlayer();
+        if (key.isArrowKey()) {
 
-        if (KeyCode.UP == event.getCode()) {
-            // Move to direction 0 (North)
-            newGrid = player.move(0, level);
-        } else if (KeyCode.RIGHT == event.getCode()) {
-            // Move to direction 1 (East)
-            newGrid = player.move(1, level);
-        } else if (KeyCode.DOWN == event.getCode()) {
-            // Move to direction 2 (South)
-            newGrid = player.move(2, level);
-        } else if (KeyCode.LEFT == event.getCode()) {
-            // Move to direction 3 (West)
-            newGrid = player.move(3, level);
-        }
+            // Grab the player, current entity grid and the enemy array
+            Entity[][] newGrid;
+            Player player = level.getPlayer();
 
-        ArrayList<Enemy> enemies = level.getEnemies(newGrid);
+            ArrayList<KeyCode> codes = new ArrayList<>(Arrays.asList(
+                KeyCode.UP, KeyCode.RIGHT, KeyCode.DOWN, KeyCode.LEFT
+            ));
 
-        // Move all the enemies after the player has moved.
-        for (Enemy e : enemies) {
+            newGrid = player.move(codes.indexOf(key), level);
+            newGrid = level.moveEnemys(level, newGrid);
 
-            if (level.getPlayer() != null && player.getStatus()) {
-                // Player isn't dead
-
-                // Update Grids
-                e.setCellGrid(level.getCellGrid());
-                e.setEntityGrid(newGrid);
-
-            }
-
-            newGrid = e.move(level, newGrid);
-
-        }
-
-        // Redraw the level with new positions.
-        if (event.getCode().isArrowKey()) {
-
+            // Update the Level object for drawing
             level.setEntityGrid(newGrid);
 
-            if(player.getGameStatus()) {
+            if (player.getGameStatus()) {
                 player.setGameStatus();
-                Main.end = System.nanoTime();
-                Main.elapsedTime = Main.end - Main.start;
-                Main.convert = TimeUnit.SECONDS.convert(Main.elapsedTime, TimeUnit.NANOSECONDS);
-
-                //System.out.println(Main.convert);
 
                 game.getUser().addScore(level, (int) Main.convert);
                 this.save.saveProfile(game.getUser());
 
-                Main.window.setScene(success);
+                GUI.end = System.nanoTime();
+                GUI.elapsedTime = GUI.end - GUI.start;
+                GUI.convert = TimeUnit.SECONDS.convert(GUI.elapsedTime, TimeUnit.NANOSECONDS);
+                GUI.scene.setRoot(panes[0]);
+                Main.window.setScene(GUI.scene);
             }
 
-            if (player.getStatus() && level.getPlayer() != null) {
+            if (level.getPlayer() != null && player.getStatus()) {
                 // Player should be alive
                 game.drawGame(level, canvas);
             } else {
-                Main.level = new Level(level.getLevelName());
-                Main.window.setScene(die);
+                GUI.level = new Level(level.getLevelName());
+                GUI.scene.setRoot(panes[0]);
+                Main.window.setScene(GUI.scene);
             }
 
         }
@@ -153,7 +122,7 @@ class Controller {
      * @param miniMapCanvas the canvas to render it to
      */
     void processMiniMap(KeyEvent event, Level level, MiniMap mini, Canvas miniMapCanvas) {
-        mini.drawGame(level, miniMapCanvas);
+        mini.drawMap(level, miniMapCanvas);
         event.consume();
     }
 
