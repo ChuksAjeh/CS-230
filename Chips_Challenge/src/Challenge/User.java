@@ -17,7 +17,7 @@ class User {
     /**
      * The list of the players scores for each level
      */
-    private static ArrayList<Integer> scores = new ArrayList<>();
+    private ArrayList<Integer> scores = new ArrayList<>();
 
     /**
      * Constructor for User class
@@ -48,7 +48,7 @@ class User {
      * @param scores the users scores
      */
     void setScores(ArrayList<Integer> scores) {
-        scores = scores;
+        this.scores = scores;
     }
 
     /**

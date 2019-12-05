@@ -469,7 +469,6 @@ class Save {
         ArrayList<Integer> scoresArray = new ArrayList<>();
         String scoresPath = "Users/" + userName + "/scores.txt";
         File scoresFile = new File(scoresPath);
-        int i =1;
 
         if (!scoresFile.exists()) {
             scoresArray.add(0);
@@ -481,11 +480,14 @@ class Save {
                     String currentLine = reader.nextLine();
                     String[] splitString = currentLine.split(" - ");
                     scoresArray.add(Integer.parseInt(splitString[1]));
+                    //jack.log(1, scoresArray.toString());
                 } while (reader.hasNextLine());
+                return scoresArray;
             } catch (Exception e) {
                 jack.log(1, e.toString());
+                scoresArray.add(0);
+                return scoresArray;
             }
-            return scoresArray;
         }
     }
 

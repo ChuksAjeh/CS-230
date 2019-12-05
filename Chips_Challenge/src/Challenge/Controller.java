@@ -6,6 +6,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
+import java.io.File;
+import java.lang.reflect.Array;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +32,13 @@ class Controller {
     private final Save save = new Save();
 
     /**
+     * The list of users who have played a level
+     */
+    private ArrayList<String> leaderboardUsers;
+
+    private Lumberjack jack = new Lumberjack();
+
+    /**
      * Takes in certain inputs and outputs player actions.
      * @param event The event to be read.
      * @param level The level being played
@@ -40,6 +50,7 @@ class Controller {
 
         // Get the event code
         KeyCode key = event.getCode();
+        ArrayList<Integer> leaderboardScores;
 
         if (key.isArrowKey()) {
 
@@ -68,6 +79,12 @@ class Controller {
 
                 game.getUser().addScore(level, (int) GUI.CONVERTED_TIME);
                 this.save.saveProfile(game.getUser());
+
+                leaderboardScores = calculateLeaderboardScores(level);
+                ArrayList<Integer> sortedScores = bubbleSort(leaderboardScores);
+                //AT THIS POINT SORTEDSCORES 0-2 ARE THE TOP 3 SCORES
+                //AT THIS POINT LEADERBOARDUSERS 0-2 ARE THE USERS WITH THOSE SCORES
+
             }
 
             if (level.getPlayer() != null && player.getStatus()) {
@@ -75,7 +92,7 @@ class Controller {
                 game.drawGame(level, canvas);
             } else {
                 GUI.LEVEL = new Level(level.getLevelName());
-                GUI.scene.setRoot(panes[0]);
+                GUI.scene.setRoot(panes[1]);
                 Main.window.setScene(GUI.scene);
             }
 
@@ -134,6 +151,57 @@ class Controller {
      */
     Level makeLevel(String levelName) {
         return new Level(levelName);
+    }
+
+    private ArrayList<Integer> calculateLeaderboardScores (Level level) {
+        ArrayList<Integer> userScores = new ArrayList<>();
+        ArrayList<String> userNames = new ArrayList<>();
+        File path = new File("Users/");
+
+        File[] files = path.listFiles();
+        for (File file : files) {
+            File scoresFile = new File(file + "/scores.txt");
+
+            userNames.add(file.getPath().substring(6));
+            userScores.add(returnLevelScore(level, scoresFile));
+        }
+
+        this.leaderboardUsers = userNames;
+        return new ArrayList<>();
+    }
+
+    private int returnLevelScore (Level level, File file) {
+        int levelNo = Integer.parseInt(level.getLevelName().substring(6));
+        try {
+            Scanner fileRead = new Scanner(file);
+            for (int i = 0; i < (levelNo - 1); i++) {
+                fileRead.nextLine();
+            }
+            return Integer.parseInt(fileRead.nextLine().split(" - ")[1]);
+        } catch (Exception e) {
+            jack.log(1, "return level score" + e);
+            return 0;
+        }
+    }
+
+    private ArrayList<Integer> bubbleSort(ArrayList<Integer> scoresArray) {
+        int n = scoresArray.size();
+        for (int i = 0; i < n-1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (scoresArray.get(j) > scoresArray.get(j + 1)) {
+                    // swap arr[j+1] and arr[i]
+                    int temp = scoresArray.get(j);
+                    scoresArray.set(j, scoresArray.get(j + 1));
+                    scoresArray.set(j + 1, temp);
+
+                    String tempName = this.leaderboardUsers.get(j);
+                    this.leaderboardUsers.set(j, this.leaderboardUsers.get(j + 1));
+                    this.leaderboardUsers.set(j + 1, tempName);
+                }
+            }
+        }
+
+        return scoresArray;
     }
 
 }
