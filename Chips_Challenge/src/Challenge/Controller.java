@@ -197,13 +197,11 @@ class Controller {
 
                 if (scoresArray.get(j) > scoresArray.get(j + 1)) {
                     // swap arr[j+1] and arr[i]
-                    int temp = scoresArray.get(j);
                     scoresArray.set(j, scoresArray.get(j + 1));
-                    scoresArray.set(j + 1, temp);
+                    scoresArray.set(j + 1, scoresArray.get(j));
 
-                    String tempName = this.leaderboardUsers.get(j);
                     this.leaderboardUsers.set(j, this.leaderboardUsers.get(j + 1));
-                    this.leaderboardUsers.set(j + 1, tempName);
+                    this.leaderboardUsers.set(j + 1, this.leaderboardUsers.get(j));
                 }
 
             }

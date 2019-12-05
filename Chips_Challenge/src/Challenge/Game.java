@@ -4,8 +4,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.io.File;
-
 /**
  * Game is used to render Chips Challenge.
  * We render the entire level with this class.
@@ -197,10 +195,10 @@ class Game {
 
             sprite = enemy.getSprite();
 
-            sprite = SpriteConverter.resize(sprite, GRID_SIZE, GRID_SIZE);
             sprite = SpriteConverter.rotate(sprite, enemy.getDirection());
         }
 
+        sprite = SpriteConverter.resize(sprite, GRID_SIZE, GRID_SIZE);
         gc.drawImage(sprite, position.x, position.y);
 
     }
@@ -213,8 +211,6 @@ class Game {
         String fileExt = ".png";
 
         Image sprite = new Image(filePath + fac + fileExt);
-
-        sprite = SpriteConverter.resize(sprite, GRID_SIZE, GRID_SIZE);
 
         return sprite;
     }
