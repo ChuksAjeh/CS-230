@@ -26,11 +26,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-
 import javafx.util.Duration;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -75,10 +73,10 @@ class GUI {
         message.setTextFill(Color.rgb(200, 200, 200));
 
         Timeline timeline = new Timeline(
-            new KeyFrame(new Duration(30000), e -> {
-                stuff.set(new Ping().getPing());
-                message.textProperty().set(stuff.get());
-            })
+                new KeyFrame(new Duration(30000), e -> {
+                    stuff.set(new Ping().getPing());
+                    message.textProperty().set(stuff.get());
+                })
         );
 
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -107,19 +105,19 @@ class GUI {
         Button startButton = new Button("START");
         startButton.setPrefSize(150,100);
 
-        Label title = new Label("JUNGLE HUNT");
+        //Label title = new Label("JUNGLE HUNT");
 
         root.setCenter(startButton);
         BorderPane.setAlignment(root.getCenter(), Pos.CENTER);
 
-        root.setTop(title);
-        BorderPane.setAlignment(root.getTop(), Pos.TOP_CENTER);
+        //root.setTop(title);
+        //BorderPane.setAlignment(root.getTop(), Pos.TOP_CENTER);
 
-        BorderPane.setMargin(root.getCenter(), new Insets(0,0,150,0));
+        //BorderPane.setMargin(root.getCenter(), new Insets(0,0,150,0));
 
         root.setBottom(bottomBar());
 
-        style(title);
+        //style(title);
 
         root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
 
@@ -347,16 +345,17 @@ class GUI {
 
         vBox.setPrefSize(200,200);
 
-        Label title = new Label("JUNGLE HUNT");
+        //Label title = new Label("JUNGLE HUNT");
 
-        style(title);
+        //style(title);
 
         Button goBack = new Button("Return to main menu");
-        goBack.setPrefSize(200,50);
-        Button exitGame = new Button("Exit");
-        exitGame.setPrefSize(200,50);
 
-        vBox.getChildren().addAll(title, goBack, exitGame);
+        Button exitGame = new Button("Exit");
+
+
+        vBox.getChildren().addAll(goBack, exitGame);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(50,0,0,0));
 
         vBox.setAlignment(Pos.CENTER);
         /*middleMenu.setCenter(vBox);*/
@@ -369,7 +368,6 @@ class GUI {
 
         exitGame.setOnAction(e -> System.exit(0));
 
-        vBox.setStyle("-fx-background-color: linear-gradient(to top, #003300 9%, #006600 100%)");
         VBox.setMargin(exitGame, new Insets(0,0,20,0));
 
         AnchorPane.setBottomAnchor(vBox,180.0);
@@ -457,6 +455,9 @@ class GUI {
         return root;
     }
 
+    /* Right now we don't use this method anymore, but I'll leave it for now in case I
+       want to style any other labels
+     */
     private static void style(Label title) {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
@@ -562,8 +563,8 @@ class GUI {
 
             tf.setOnAction(ae -> {
 
-                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                //File path = new File("Users/" + tf.getText());
+                //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                File path = new File("Users/" + tf.getText());
 
                 //path.mkdir();
 
