@@ -52,15 +52,15 @@ class GUI {
     // Not fat, just a controller
     private static final Controller controller = new Controller();
 
-    private static String userName;
+    private static String USER_NAME;
 
-    static Level level;
+    static Level LEVEL;
 
     // Not electric unfortunately, just used for timing stuff
-    static long start = 0;
-    static long end;
-    static long elapsedTime;
-    static long convert;
+    static long START_TIME = 0;
+    static long END_TIME;
+    static long ELAPSED_TIME;
+    static long CONVERTED_TIME;
 
     public static final Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -153,7 +153,7 @@ class GUI {
         //Button loadUser = new Button("Load user profiles");
 
         loadUser.setOnAction(e -> {
-            userName = loadUser.getSelectionModel().getSelectedItem();
+            USER_NAME = loadUser.getSelectionModel().getSelectedItem();
             scene.setRoot(loadGame());
             Main.window.setScene(scene);
         });
@@ -434,7 +434,7 @@ class GUI {
         Button quit = new Button("Quit");
 
         restartLevel.setOnAction(e -> {
-            scene.setRoot(gaming(level.getLevelName()));
+            scene.setRoot(gaming(LEVEL.getLevelName()));
             Main.window.setScene(scene);
         });
 
@@ -469,7 +469,7 @@ class GUI {
     private static BorderPane gaming(String name) {
 
         // jack.log(2, "user created " + userName);
-        game = new Game(userName);
+        game = new Game(USER_NAME);
 
         BorderPane root = new BorderPane();
         root.setPrefSize(960,670);
@@ -496,15 +496,15 @@ class GUI {
 
         drawing.setId("game");
 
-        level = controller.makeLevel(name);
+        LEVEL = controller.makeLevel(name);
 
-        game.drawGame(level, gameCanvas);
+        game.drawGame(LEVEL, gameCanvas);
 
         mini.setCenter(miniMapCanvas);
 
         mini.setStyle("-fx-border-color: #42832d ; -fx-border-width: 2px ");
 
-        miniMap.drawMap(level, miniMapCanvas);
+        miniMap.drawMap(LEVEL, miniMapCanvas);
 
         AnchorPane.setBottomAnchor(mini, 500.0);
         AnchorPane.setLeftAnchor(mini, 750.0);
@@ -526,12 +526,12 @@ class GUI {
         root.setCenter(stack);
 
 
-        start = System.nanoTime();
+        START_TIME = System.nanoTime();
 
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-                controller.processKeyEvent(event, level, game, gameCanvas, new BorderPane[] {gameSucceed(), gameOver()}));
+                controller.processKeyEvent(event, LEVEL, game, gameCanvas, new BorderPane[] {gameSucceed(), gameOver()}));
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-                controller.processMiniMap(event, level, miniMap, miniMapCanvas));
+                controller.processMiniMap(event, LEVEL, miniMap, miniMapCanvas));
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMenuEvent(event, stack));
 
@@ -566,7 +566,7 @@ class GUI {
                 //path.mkdir();
 
 
-                userName = tf.getText();
+                USER_NAME = tf.getText();
 
 
                 scene.setRoot(newGame());
