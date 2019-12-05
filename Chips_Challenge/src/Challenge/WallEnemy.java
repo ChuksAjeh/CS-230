@@ -1,11 +1,18 @@
 package Challenge;
 
 import javafx.scene.image.Image;
+
 import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
+ * A wall enemy is an enemy whose movement is determined by the walls in the
+ * map, it should always stick to a wall and have it's movement determined by
+ * the walls around it. If for whatever reason it finds itself with no walls
+ * be it through bad level design or entity removal it will move randomly
+ * until it comes into contact with a wall again.
  * @author George Carpenter, Ioan Mazurca, Angelo Balistoy
- * @version 1.0
+ * @version 4.0
  */
 class WallEnemy extends Enemy {
 
@@ -31,17 +38,15 @@ class WallEnemy extends Enemy {
      * Used to return the next direction of the wall enemy
      * @return the next available direction
      */
-    public int nextDirection() {
+    int nextDirection(Level level) {
 
         Random random = new Random();
         boolean[] passable = getCells();
         int numberOfMoves = countMoves(passable);
 
-        if (0 == numberOfMoves) {
-            // Cannot move .. something happens I guess,
-            // probably return 42 and then handle it later
-            return 42; // seems legit
-        } else if (1 == numberOfMoves) {
+        // 0 available moves cannot occur, it is handled in Controller
+
+        if (1 == numberOfMoves) {
             // Only 1 available space
             return findMove(passable, true);
         } else if (2 == numberOfMoves) {
@@ -59,21 +64,33 @@ class WallEnemy extends Enemy {
     }
 
     /**
-     * Counts the number of possible moves
+     * Counts the number of available moves, a move is available if an Enemy
+     * can actually move in that direction
      * @param moves the array of possible, not necessarily available, moves
      * @return the number of available moves
      */
     private int countMoves(boolean[] moves) {
 
-        int count = 0;
+        int c = 0;
 
-        for (boolean b : moves) {
-            if (b) {
-                count += 1;
-            }
+        for (boolean move : moves) {
+            c = move ? (c + 1) : c;
         }
 
-        return count;
+        return c;
+    }
+
+    /**
+     * Used to find the move when there is either only one or three
+     * @param passable the set of possible moves
+     * @param val what to look for
+     * @return the available move
+     */
+    private int findMove(boolean[] passable, boolean val) {
+
+        return IntStream.range(0, passable.length).filter(i ->
+            val == passable[i]).findFirst().orElse(0);
+
     }
 
     /**
@@ -90,27 +107,6 @@ class WallEnemy extends Enemy {
         moves[1] = findMove(passable, true);
 
         return moves;
-
-    }
-
-    /**
-     * Used to find the move when there is either only one or three
-     * @param passable the set of possible moves
-     * @param val what to look for
-     * @return the available move
-     */
-    private int findMove(boolean[] passable, boolean val) {
-
-        for (int i = 0 ; i < passable.length ; i++ ) {
-
-            if (val == passable[i]) {
-                return i;
-            }
-
-        }
-
-        return 0;
-
     }
 
 }

@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * Fire is an obstacle in game that,
+ * if passed without fire boots will cause player death.
  * @author George Carpenter
  * @version 1.0
  */
@@ -18,7 +20,7 @@ class Fire extends Obstacle {
     }
 
     /**
-     * Constructor
+     * Constructs a Fire cell.
      */
     Fire() {
         super(SPRITE, false);

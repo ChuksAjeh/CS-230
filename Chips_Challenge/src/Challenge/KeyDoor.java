@@ -3,35 +3,24 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Door in the game and can be unlocked by a
+ * player carrying the correct Key, when it is replaced by a Ground cell
  * @author George Carpenter
  * @version 1.0
  */
 class KeyDoor extends Door {
 
     /**
-     * The sprite used for this class
-     */
-    private static final Image SPRITE;
-
-    /**
      * The colour of the door
      */
-    private final Colour colour;
-
-    public enum Colour {
-        RED, GREEN, BLUE, WHITE, BLACK
-    }
-
-    static {
-        SPRITE = new Image("images/CELL_KEY_DOOR.png");
-    }
+    private final Key.Colour colour;
 
     /**
      * Constructor
      * @param colour the colour of the door
      */
     KeyDoor(String colour) {
-        super(SPRITE, false);
+        super(new Image("images/CELL_KEY_DOOR_" + colour + ".png"));
         this.colour = setColour(colour);
     }
 
@@ -39,22 +28,25 @@ class KeyDoor extends Door {
      * Gets the colour of the door
      * @return the colour of the door
      */
-    public Colour getColour() {
+    Key.Colour getColour() {
         return this.colour;
     }
 
-    private Colour setColour(String colour) {
+    /**
+     * Sets the colour of the KeyDoor for checking
+     * @param colour the colour to set
+     * @return the colour Enum to set
+     */
+    private Key.Colour setColour(String colour) {
 
         if ("RED".equals(colour)) {
-            return Colour.RED;
+            return Key.Colour.RED;
         } else if ("GREEN".equals(colour)) {
-            return Colour.GREEN;
+            return Key.Colour.GREEN;
         } else if ("BLUE".equals(colour)) {
-            return Colour.BLUE;
-        } else if ("WHITE".equals(colour)) {
-            return Colour.WHITE;
-        } else if ("BLACK".equals(colour)) {
-            return Colour.BLACK;
+            return Key.Colour.BLUE;
+        } else if ("PURPLE".equals(colour)) {
+            return Key.Colour.PURPLE;
         }
 
         return null;

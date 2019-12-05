@@ -6,24 +6,24 @@ package Challenge;
  * @author George Carpenter
  * @version 1.0
  */
-public class Position {
+class Position {
 
     /**
      * X location
      */
-    public final int x;
+    final int x;
 
     /**
      * Y location
      */
-    public final int y;
+    final int y;
 
     /**
      * Constructs a position
      * @param x X location of the Entity
      * @param y Y location of the Entity
      */
-    public Position(int x, int y) {
+    Position(int x, int y) {
         this.x = x;
         this.y = y;
     }

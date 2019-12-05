@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Teleporter Cell, and by extension its pair
+ * whenever a Player walks into one they will appear out of the other.
  * @author George Carpenter
  * @version 1.0
  */
@@ -25,7 +27,7 @@ class Teleporter extends Cell {
     /**
      * Constructor
      */
-    public Teleporter() {
+    Teleporter() {
         super(SPRITE, false);
     }
 
@@ -33,18 +35,10 @@ class Teleporter extends Cell {
      * Secondary constructor
      * @param pair the pair Teleporter for this Teleporter Object
      */
-    public Teleporter(Teleporter pair) {
+    Teleporter(Teleporter pair) {
         super(SPRITE, false);
         this.pair = pair;
         pair.setPair(this);
-    }
-
-    /**
-     * Adds a pair to a Teleporter Object
-     * @param pair the pair Teleporter Object
-     */
-    private void setPair(Teleporter pair) {
-        this.pair = pair;
     }
 
     /**
@@ -53,6 +47,14 @@ class Teleporter extends Cell {
      */
     Teleporter getPair(){
         return pair;
+    }
+
+    /**
+     * Adds a pair to a Teleporter Object
+     * @param pair the pair Teleporter Object
+     */
+    private void setPair(Teleporter pair) {
+        this.pair = pair;
     }
 
 }

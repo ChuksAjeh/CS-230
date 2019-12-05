@@ -3,6 +3,9 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * Fire boots allow the traversal of fire so long as they are in
+ * the players inventory. That is, being an equipment, picking up fire
+ * boots allows fire to be traversed for the rest of the level.
  * @author George Carpenter
  * @version 1.0
  */
@@ -18,7 +21,7 @@ class FireBoots extends Equipment {
     }
 
     /**
-     * Constructor
+     * Constructs a fire boot entity.
      */
     FireBoots() {
         super(SPRITE);

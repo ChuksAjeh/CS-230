@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Token Door which requires a set number of Tokens
+ * to unlock at which point it will be replaced by a Ground Cell.
  * @author George Carpenter
  * @version 1.0
  */
@@ -27,7 +29,7 @@ class TokenDoor extends Door {
      * @param requirement number of tokens required to open the door
      */
     TokenDoor(int requirement) {
-        super(SPRITE, false);
+        super(SPRITE);
         this.requirement = requirement;
     }
 

@@ -1,9 +1,50 @@
 .root {
-    -fx-background-color: #003300;
-    -fx-border-color: rgb(49,89,23);
+    -fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%);
 }
 
 .button {
-    -fx-pref-width: 100;
+    -fx-font-size: 15px;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
+    -fx-pref-width: 200;
     -fx-pref-height: 50;
+    -fx-border-style: solid;
+    -fx-border-width: 5px;
+    -fx-border-color: linear-gradient(to bottom, #3333cc 0%, #669900 100%);
+    -fx-transition-duration : 0.3s;
+    -fx-cursor: pointer;
+}
+
+.button:hover {
+    -fx-background-color: white;
+    -fx-text-fill:linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
+}
+
+.combo-box {
+    -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);;
+    -fx-pref-width: 200;
+    -fx-pref-height: 50;
+    -fx-border-style: solid;
+    -fx-border-width: 5px;
+    -fx-border-color: linear-gradient(to bottom, #3333cc 0%, #669900 100%);
+}
+
+.combo-box:hover {
+    -fx-background-color: white;
+}
+
+#pauseMenu {
+
+}
+
+#Inventory {
+
+}
+
+#game {
+
+}
+
+#miniMap {
+
 }

@@ -2,11 +2,16 @@ package Challenge;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Scanner;
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 /**
- * @author Samuel Roach
+ * This class is used to save the game state each tick to ensure Player
+ * progress is never lost. Games may be loaded from original files or their
+ * created save file variants produced by this class
+ * @author Samuel Roach, George Carpenter, Blake Davies
  * @version 1.0
  */
 class Save {
@@ -32,12 +37,12 @@ class Save {
     private FileWriter writer;
 
     /**
-     * Because why not, I'm on a roll
+     * Object to write logs to trace errors
      */
     private final Lumberjack jack = new Lumberjack();
 
     /**
-     * Nice constructor
+     * Constructor (if needed)
      */
     Save() {
 
@@ -46,8 +51,9 @@ class Save {
     /**
      * Saves the current Level to a file
      * @param level the level to save
+     * @param user the USer object to save
      */
-    void saveFile(Level level) {
+    void saveFile(Level level, User user) {
 
         String directory;
         String levelName = level.getLevelName();
@@ -58,19 +64,23 @@ class Save {
 
         String fileName = levelName + "_" + "SAVE";
 
+        //jack.log(1, user.getUserName());
+
         // Create folder for the current User
-        File dirFile = new File("Users/" + "Dave");
+        //File dirFile = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName());
+        File dirFile = new File("Users/" + user.getUserName());
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                jack.log(1, "Directory for " + "DAVE" + " has been created!");
+                Lumberjack.log(0,"Directory for " + user.getUserName() + " has been created!");
             } else {
-                jack.log(1, "Failed to create directory!");
+                Lumberjack.log(2,"Failed to create directory!");
             }
         }
 
         // Create directory for new file
-        directory = "Users/" + "Dave" + "/" + fileName + ".txt";
+        //directory = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName() + "/" + fileName + ".txt";
+        directory = "Users/" + user.getUserName() + "/" + fileName + ".txt";
         File file = new File(directory);
 
         try {
@@ -89,15 +99,23 @@ class Save {
             writeWalls(size);
             writeEntities(level);
             writeCells();
+            writePlayerInventory(level.getPlayer());
 
             writer.close();
 
         } catch (IOException e) {
-            // Nothing
+            // Nothing, because Sam is a dumdum :p
+            Lumberjack.log(1, "Oops");
         }
 
     }
 
+    /**
+     * Writes the size of the level to the save file,
+     * before passing it to the remaining save functions
+     * @return the size of the Level grids, used elsewhere
+     * @throws IOException because IO is messy
+     */
     private int[] writeSize() throws IOException {
 
         int xSize = this.cellGrid.length;
@@ -108,7 +126,15 @@ class Save {
         return new int[] {xSize, ySize};
     }
 
+    /**
+     * Writes the walls to the save file diagram
+     * @param size the size of the grids
+     * @throws IOException because IO is messy
+     */
     private void writeWalls(int[] size) throws IOException {
+
+        // This is because Gnome is a big dumdum
+        // Buying 1x PivotTable? I think it's called that..
 
         Cell[][] wonkyGrid = new Cell[size[1]][size[0]];
 
@@ -131,61 +157,83 @@ class Save {
 
             }
 
-            this.writer.write('\n');
+            this.writer.write("\n");
         }
     }
 
+    /**
+     * Driver to write Entitys to the save file
+     * @param level the Level Object to save from
+     * @throws IOException because IO is messy
+     */
     private void writeEntities(Level level) throws IOException {
+
         for (Entity[] row : level.getEntityGrid()) {
             for (Entity entity : row) {
-                if (entity instanceof Player) {
-
-                    logWritten(entity);
-
-                    Player player = (Player) entity;
-                    int[] plyLoc = player.getLocation(this.entityGrid);
-
-                    this.writer.write("Player,");
-                    this.writer.write(plyLoc[0] + ",");
-                    this.writer.write(plyLoc[1] + ",");
-                    this.writer.write(player.getDirection() + ",\n");
-
-                } else if (entity instanceof Enemy) {
-
-                    logWritten(entity);
-                    Enemy enemy = (Enemy) entity;
-                    writeEnemy(enemy);
-
-                } else if (entity instanceof Key) {
-
-                    logWritten(entity);
-                    Key key = (Key) entity;
-                    writeKey(key);
-
-                } else if (entity instanceof Item) {
-
-                    logWritten(entity);
-                    Item item = (Item) entity;
-                    writeItem(item);
-
-                } else {
-
-//                    jack.log(1, "Entity of type " + entity.toString() + " hasn't been written. Blame Samuel.");
-
-                }
+                writeEntity(entity);
             }
         }
-    }
-
-    private void writeEnemy(Enemy enemy) throws IOException {
-
-        this.writer.write(enemy.getClass().getSimpleName());
-        this.writer.write(enemy.getPosition().x + ",");
-        this.writer.write(enemy.getPosition().y + ",");
-        this.writer.write(enemy.getDirection() + ",\n");
 
     }
 
+    /**
+     * Writes an Entity to the save file
+     * @param entity the Entity to save
+     * @throws IOException because IO is messy
+     */
+    private void writeEntity(Entity entity) throws IOException {
+
+        if (entity instanceof Player) {
+
+            // logWritten(entity);
+
+            Player player = (Player) entity;
+            Position playerPos = player.getPosition();
+
+            this.writer.write("Player,");
+            this.writer.write(playerPos.x + ",");
+            this.writer.write(playerPos.y + ",");
+            this.writer.write(player.getDirection() + ",\n");
+
+        } else if (entity instanceof Enemy) {
+
+            // logWritten(entity);
+
+            Enemy enemy = (Enemy) entity;
+            Position enemyPos = enemy.getPosition();
+
+            this.writer.write(enemy.getClass().getSimpleName() + ",");
+            this.writer.write(enemyPos.x + ",");
+            this.writer.write(enemyPos.y + ",");
+            this.writer.write(enemy.getDirection() + ",\n");
+
+        } else if (entity instanceof Key) {
+
+            // logWritten(entity);
+
+            Key key = (Key) entity;
+            writeKey(key);
+
+        } else if (entity instanceof Item) {
+
+            // logWritten(entity);
+
+            Item item = (Item) entity;
+            writeItem(item);
+
+        } else {
+
+            // jack.log(1, "Entity of type " + entity.toString() + " hasn't been written. Blame Samuel.");
+
+        }
+
+    }
+
+    /**
+     * Writes Items to the save file
+     * @param i the Item to save
+     * @throws IOException because IO is messy
+     */
     private void writeItem(Item i) throws IOException {
 
         int[] itemPos = level.getLocation(entityGrid, i);
@@ -196,6 +244,11 @@ class Save {
 
     }
 
+    /**
+     * Writes Keys and by extension KeyDoors to the save file
+     * @param key the Key to save
+     * @throws IOException because IO is messy
+     */
     private void writeKey(Key key) throws IOException {
 
         String colour = key.getColour().toString();
@@ -230,38 +283,10 @@ class Save {
 
     }
 
-//
-//  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-//  8                                                   8
-//  8  a---------------a                                8
-//  8  |     Chips     |                                8
-//  8  |   Challenge   |                                8
-//  8  |    Vol. 1     |                               8"
-//  8  "---------------"                               8a
-//  8                                                   8
-//  8                                                   8
-//  8                      ,aaaaa,                      8
-//  8                    ad":::::"ba                    8
-//  8                  ,d::;gPPRg;::b,                  8
-//  8                  d::dP'   `Yb::b                  8
-//  8                  8::8)     (8::8                  8
-//  8                  Y;:Yb     dP:;P  O               8
-//  8                  `Y;:"8ggg8":;P'                  8
-//  8                    "Yaa:::aaP"                    8
-//  8                       """""                       8
-//  8                                                   8
-//  8                       ,d"b,                       8
-//  8                       d:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                  aaa  `bad'  aaa                  8
-//  """""""""""""""""""' `"""""""""' `"""""""""""""""""""
-//
-//  Figure VI - A proper format!
-//
-
+    /**
+     * Driver to save all Cells
+     * @throws IOException because IO is messy
+     */
     private void writeCells() throws IOException {
 
         ArrayList<Teleporter> writtenTP = new ArrayList<>();
@@ -270,7 +295,8 @@ class Save {
             for (Cell cell : row) {
                 if (cell instanceof TokenDoor) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     TokenDoor tokenDoor = (TokenDoor) cell;
                     writeTokenDoor(tokenDoor);
 
@@ -281,20 +307,24 @@ class Save {
 
                 } else if (cell instanceof Obstacle) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     Obstacle obstacle = (Obstacle) cell;
                     writeObstacle(obstacle);
 
                 } else if (cell instanceof Goal) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     Goal goal = (Goal) cell;
                     writeCellPos(goal);
+
                     this.writer.write(",\n");
 
                 } else if (cell instanceof Teleporter) {
 
-                    logWritten(cell);
+                    // logWritten(cell);
+
                     Teleporter teleporter = (Teleporter) cell;
                     writeTeleporter(teleporter, writtenTP);
 
@@ -303,6 +333,11 @@ class Save {
         }
     }
 
+    /**
+     * Writes TokenDoors to the save file
+     * @param tD the TokenDoor to save
+     * @throws IOException because IO is messy
+     */
     private void writeTokenDoor(TokenDoor tD) throws IOException {
 
         writeCellPos(tD);
@@ -311,6 +346,11 @@ class Save {
 
     }
 
+    /**
+     * Writes Obstacles to the save file
+     * @param obstacle the Obstacle to save
+     * @throws IOException because IO is messy
+     */
     private void writeObstacle(Obstacle obstacle) throws IOException {
 
         writeCellPos(obstacle);
@@ -318,6 +358,13 @@ class Save {
 
     }
 
+    /**
+     * Writes Teleporters to the save file
+     * @param teleporter the Teleporter to save
+     * @param writtenTP the list of already written teleporters,
+     *                  used to avoid duplication (not that it matters)
+     * @throws IOException because IO is messy
+     */
     private void writeTeleporter(Teleporter teleporter, ArrayList<Teleporter> writtenTP) throws IOException {
 
         Teleporter pair = teleporter.getPair();
@@ -341,6 +388,11 @@ class Save {
 
     }
 
+    /**
+     * Writes a cell position to the save file
+     * @param cell the Cell to save the position of
+     * @throws IOException because IO is messy
+     */
     private void writeCellPos(Cell cell) throws IOException {
 
         int[] cellCoords = this.level.getLocation(this.cellGrid, cell);
@@ -351,7 +403,90 @@ class Save {
 
     }
 
-    private void logWritten(Object object) {
-//        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+    /**
+     * Writes the Player's Inventory to the save file
+     * @param player the Player Object
+     * @throws IOException because IO is messy
+     */
+    private void writePlayerInventory(Player player) throws IOException {
+
+        writer.write("Inventory,");
+
+        for (Item item : player.getInventory()) {
+
+            writer.write(item.getClass().getSimpleName() + ",");
+
+            if (item instanceof Key) {
+                writer.write(((Key) item).getColour().toString() + ",");
+            } else if (item instanceof Token) {
+                writer.write(player.getTokenCount() + ",");
+            }
+
+        }
+
     }
+
+    /**
+     * Writes a Log to the terminal when a thing is written to file.
+     * @param object what to write
+     */
+    private void logWritten(Object object) {
+        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+    }
+
+    /**
+     * Saves the user profile of the current user playing
+     * @param user The user currently playing
+     */
+    void saveProfile(User user){
+        String directory = "Users/" + user.getUserName() + "/scores.txt";
+        File file = new File(directory);
+
+        //jack.log(1, "Scores size" + user.getScores().size());
+        try {
+            // Write Content
+            writer = new FileWriter(file);
+            for (int i = 1; i <= (user.getScores().size()); i++) {
+                //jack.log(1, "Score " + user.getScores().get(i-1));
+                this.writer.write("Level_" + (i) + " - " + user.getScores().get(i-1));
+                this.writer.write("\n");
+            }
+            for (int i = (user.getScores().size() + 1); i <= 11; i++) {
+                this.writer.write("Level_" + i + " - 0\n");
+            }
+            writer.close();
+        } catch (IOException e){
+            Lumberjack.log(1,"SAVE" + e.toString());
+        }
+    }
+
+    /**
+     * Loads a users scores from a file
+     * @param userName the user to load from
+     * @return an array list of the users scores
+     */
+    ArrayList<Integer> loadPlayerScores(String userName){
+
+        ArrayList<Integer> scoresArray = new ArrayList<>();
+        String scoresPath = "Users/" + userName + "/scores.txt";
+        File scoresFile = new File(scoresPath);
+
+        if (!scoresFile.exists()) {
+            scoresArray.add(0);
+            return scoresArray;
+        } else {
+            try {
+                Scanner reader = new Scanner(scoresFile);
+                do {
+                    String currentLine = reader.nextLine();
+                    String[] splitString = currentLine.split(" - ");
+                    scoresArray.add(Integer.parseInt(splitString[1]));
+                } while (reader.hasNextLine());
+            } catch (Exception e) {
+                Lumberjack.log(1, e.toString());
+            }
+            return scoresArray;
+        }
+    }
+
 }

@@ -2,9 +2,16 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
 
 /**
+ * The Smart Enemy is an enemy that will ruthless track the player and attempt
+ * to kill them at all costs, they are smart enough to walk around obstacles
+ * in their pursuit of the player.
  * @author Chuks Ajeh, Angelo Balistoy
  * @version 1.0
  */
@@ -30,7 +37,16 @@ class SmartEnemy extends Enemy {
         super(SPRITE, position, direction);
     }
 
-    // Do we have to use level's grids or can we use the enemies' own entity and cell grid.
+    /**
+     * Gets the next direction of the Smart Enemy.
+     * @param level The level being used.
+     * @return An int from 0-3 representing NESW.
+     */
+    int nextDirection(Level level){
+        // using wavefront:
+        Player player = level.getPlayer();
+        return this.nextDirection(level, player);
+    }
 
     /**
      * Gets the next direction based on the player's location and impassable objects.
@@ -38,7 +54,9 @@ class SmartEnemy extends Enemy {
      * @param player The player in the level
      * @return An int from 0-3 representing NESW.
      */
-    public int nextDirection(Level level, Player player) {
+    private int nextDirection(Level level, Player player) {
+
+        Random random = new Random();
 
         // Grab cell and entity grid to flatten
         Cell[][] cellGrid = level.getCellGrid();
@@ -46,15 +64,21 @@ class SmartEnemy extends Enemy {
 
         int[][] flattenedGrid = SmartEnemy.flatten(entityGrid, cellGrid);
 
+
         // Find a path using waterfront planning (BFS)
-        Stack<BFSVertex> path = this.findPathToPlayer(flattenedGrid, player, entityGrid);
+        BFSVertex[][] path = this.findPathToPlayer(flattenedGrid, player, entityGrid);
 
         // Find the next vertex the enemy should be on.
-        int[] nextNode = SmartEnemy.getNextNodeInPath(path);
+        int srcX= this.getPosition().x;
+        int srcY = this.getPosition().y;
+        System.out.println(" x: " + path[srcX][srcY].getY() + " y: "+path[srcX][srcY].getX());
+        BFSVertex nextNode = this.getFinalNode(path,path[this.getPosition().x][this.getPosition().y]);
 
-        int newEnemyX = this.getPosition().x - nextNode[0];
-        System.out.println(Arrays.toString(nextNode));
-        int newEnemyY = this.getPosition().y - nextNode[1];
+        System.out.println("Original Position: "+ this.getPosition().x +" "+ this.getPosition().y);
+        int newEnemyY = this.getPosition().x - nextNode.getY();
+        //System.out.println(Arrays.toString(nextNode.toString());
+        int newEnemyX = this.getPosition().y - nextNode.getX();
+        System.out.println("New Position: "+newEnemyX+" "+newEnemyY);
 
         // Using the next location that we know, find the direction the enemy must take.
         final int[] row = {0,1,0,-1};
@@ -62,11 +86,69 @@ class SmartEnemy extends Enemy {
 
         for(int i = 0; i < 4; i++) {
             if (newEnemyX == row[i] && newEnemyY == col[i]) {
+                this.setDirection(i);
                 return i;
             }
         }
 
-        return 0;
+        return random.nextInt(4);
+    }
+
+    private BFSVertex getFinalNode(BFSVertex[][] bfsGrid, BFSVertex startnode) {
+        BFSVertex smallestVertex = null;
+        //make sure this is the starting node and if in the grid and equal to zero return that node
+
+        if (startnode != null) {
+            if (startnode.getDist() == 0) {
+                return startnode;
+            } else {
+                //get the surrounding nodes and then find the smallest of the lot
+                BFSVertex[] adjacentNodes = getSurroundingNodes(bfsGrid, startnode);
+
+                int min_dis = Integer.MAX_VALUE;
+                //find the smallest distanced vertex from current node
+                for (BFSVertex vertex : adjacentNodes) {
+                    if (vertex != null) {
+                        if (vertex.getDist() < min_dis) {
+                            min_dis = vertex.getDist();
+                            smallestVertex = vertex;
+                        }
+                    }
+                }
+
+                //prevent a nullPoint exception
+//                if (smallestVertex != null) {
+//                    return getFinalNode(bfsGrid, smallestVertex);
+//                }
+            }
+        }
+        return smallestVertex;
+        //return finalNode;
+    }
+
+    private BFSVertex[] getSurroundingNodes(BFSVertex[][] BFSgrid , BFSVertex node){
+        // we assume the node passed is not null:
+        BFSVertex[] adjNodes = new BFSVertex[4];
+        BFSVertex up    = BFSgrid[node.getY()-1][node.getX()];
+        BFSVertex left  = BFSgrid[node.getY()][node.getX()-1];
+        BFSVertex down  = BFSgrid[node.getY()+1][node.getX()];
+        BFSVertex right = BFSgrid[node.getY()][node.getX()+1];
+
+        // as long as the vertex isn't null then add it to the list of available adjacent nodes
+        if(up != null){
+            adjNodes[0] =up;
+        }
+        if(down != null){
+            adjNodes[1] =down;
+        }
+        if(left != null){
+            adjNodes[2] =left;
+        }
+        if(right != null){
+            adjNodes[3] =right;
+        }
+
+        return adjNodes;
     }
 
     /**
@@ -92,7 +174,7 @@ class SmartEnemy extends Enemy {
      * @param entities The entities within the level.
      * @return The path to the player.
      */
-    private Stack<BFSVertex> findPathToPlayer(int[][] flattenedLevel, Player player, Entity[][] entities) {
+    private BFSVertex[][] findPathToPlayer(int[][] flattenedLevel, Player player, Entity[][] entities) {
 
         Position playerPos = player.getPosition();
 
@@ -101,8 +183,8 @@ class SmartEnemy extends Enemy {
             System.out.println("unable to find shortest path");
         }
 
-        final int[] row ={-1,0,0,1};
-        final int[] col ={0,-1,1,0};
+        final int[] row = {-1,0,0,1};
+        final int[] col = {0,-1,1,0};
 
         boolean[][] visited = new boolean[flattenedLevel.length][flattenedLevel[0].length];
 
@@ -148,7 +230,7 @@ class SmartEnemy extends Enemy {
 
             dist += 1;
 
-            for(int i = 0 ; i < 4 ; i++ ) {
+            for (int i = 0 ; i < 4 ; i++ ) {
                 // check for all 4 possible movements from current cell and enqueue it
                 if (isValid(flattenedLevel, visited, srcX + row[i],srcY + col[i])) {
 
@@ -176,8 +258,22 @@ class SmartEnemy extends Enemy {
 //        } else {
 //            System.out.println(Arrays.deepToString(flattenedLevel));
 //        }
-
-        return pathToReturn;
+        //System.out.println(pathToReturn.peek().getDist());
+        BFSVertex[][] bfsGrid = new BFSVertex[flattenedLevel.length][flattenedLevel[0].length];
+        for(int i =0; i<=pathToReturn.size(); i++){
+            bfsGrid[pathToReturn.peek().getY()][pathToReturn.peek().getX()]=pathToReturn.pop();
+        }
+        for(int i =0; i<flattenedLevel.length; i++){
+            for(int j=0; j< flattenedLevel[0].length; j++){
+                //if the coordinates of the node and the coordinates of the bfs grid are equal then place in grid cell
+                if(bfsGrid[i][j] == null == true){
+                    bfsGrid[i][j] = null;
+                }
+            }
+        }
+        //return pathToReturn;
+        System.out.println(Arrays.deepToString(bfsGrid));
+        return bfsGrid;
     }
 
     /**
@@ -188,7 +284,7 @@ class SmartEnemy extends Enemy {
      * @param col The column (y) coordinate
      * @return if the move is valid
      */
-    private static boolean isValid (int[][] flattenedLevel, boolean[][] visited, int row, int col){
+    private static boolean isValid (int[][] flattenedLevel, boolean[][] visited, int row, int col) {
 
         final int ROW = flattenedLevel.length - 1;
         final int COL = flattenedLevel[0].length - 1;
@@ -209,10 +305,11 @@ class SmartEnemy extends Enemy {
 
         int[][] level = new int[height][width];
 
-        for (int i = 0 ; i < height ; i++)  {
+        for (int i = 0 ; i < height ; i++ ) {
             for (int j = 0 ; j < width ; j++ ) {
 
-                if (entityGrid[i][j] instanceof Enemy || !cellGrid[i][j].isPassable() || cellGrid[i][j] instanceof Obstacle) {
+                if (entityGrid[i][j] != null && cellGrid[i][j] instanceof Ground) {
+                // if (entityGrid[i][j] instanceof Enemy || !cellGrid[i][j].isPassable() || cellGrid[i][j] instanceof Obstacle) {
                     level[i][j] = 1;
                 }
 

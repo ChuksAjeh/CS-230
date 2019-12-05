@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a Wall Object in the game, it is never passable
+ * by either the Player or Enemies.
  * @author George Carpenter
  * @version 1.0
  */

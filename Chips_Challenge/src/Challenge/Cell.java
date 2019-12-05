@@ -3,11 +3,11 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
- * This is a cell class representing an abstract cell in the game. Not meant to be instantiated, it is used to allow all
- * cells to be able to set and get its type and also indicate whether it is a passable cell or not.
- * @author ..
+ * This is a cell class representing an abstract cell in the game.
+ * Not meant to be instantiated, it is used to allow all cells to be able
+ * to set and get its type and also indicate whether it is a passable cell or not.
+ * @author George Carpenter and Angelo Balistoy
  * @version 1.0
- *
  */
 abstract class Cell {
 
@@ -21,6 +21,29 @@ abstract class Cell {
      */
     private final Image SPRITE;
 
+//
+//             ___
+//         _(((,|    What's DNA??
+//        /  _-\\
+//       / C o\o \    it's called deoxyribonucleic acid you dingus!
+//     _/_    __\ \     __ __     __ __     __ __     __
+//    /   \ \___/  )   /--X--\   /--X--\   /--X--\   /--
+//    |    |\_|\  /   /--/ \--\ /--/ \--\ /--/ \--\ /--/
+//    |    |#  #|/          \__X__/   \__X__/   \__X__/
+//    (   /     |
+//     |  |#  # |
+//     |  |    #|
+//     |  | #___n_,_
+//  ,-/   7-' .     `\
+//  `-\...\-_   -  o /
+//     |#  # `---U--'
+//     `-v-^-'\/
+//       \  |_|_
+//       (______)
+//
+//  Figure VII - Not a Cell because I couldn't find one
+//
+
     /**
      * Constructs a cell object.
      * @param sprite the sprite used to represent this Cell
@@ -32,27 +55,26 @@ abstract class Cell {
     }
 
     /**
-     * Changes a cells Passable state
-     * @param newValue if the cell should be passable
+     * Gets the sprite the object is using.
+     * @return The sprite being used to render the file.
      */
-    public void setPassable(boolean newValue) {
-        this.passable = newValue;
+    Image getSprite() {
+        return SPRITE;
+    }
+
+    /**
+     * Changes a cells Passable state
+     */
+    void setPassable() {
+        this.passable = true;
     }
 
     /**
      * Checks if the object is passable.
      * @return The object's passable state.
      */
-    public boolean isPassable() {
+    boolean isPassable() {
         return this.passable;
-    }
-
-    /**
-     * Gets the sprite the object is using.
-     * @return The sprite being used to render the file.
-     */
-    public Image getSprite() {
-        return SPRITE;
     }
 
 }

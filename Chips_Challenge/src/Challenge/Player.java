@@ -1,30 +1,44 @@
 package Challenge;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
 /**
+ * This class represents the Player object which will be controlled by the
+ * User, it is able to collect move around the game ane interact with both
+ * Items and Cells within the level.
  * @author George Carpenter
  * @version 1.0
  */
 class Player extends Entity {
 
     /**
-     * The Sprite used for the Player object, it will be rotated based on direction
+     * The Sprite used for the Player object,
+     * it will be rotated based on direction
      */
-    private static final Image SPRITE;
+    private static Image SPRITE;
 
     /**
-     * An array list used as the Player Inventory, items will be added and removed during gameplay
+     * An array list used as the Player Inventory,
+     * items will be added and removed during game play
      */
     private ArrayList<Item> inventory;
+
+    /**
+     * The Players Position Object
+     */
+    private Position position;
 
     /**
      * The direction we should be displaying the player spite in
      */
     private int direction;
+
+    /**
+     * The direction the Player is facing;
+     */
+    private int facing;
 
     /**
      * How many Tokens the Player is currently carrying
@@ -36,13 +50,15 @@ class Player extends Entity {
      */
     private boolean alive;
 
-    private Position position;
+    /**
+     * Tracks if the game is finished
+     */
+    private boolean finish;
 
-    // TESTING
-    private final Lumberjack jack = new Lumberjack();
+    // private final Lumberjack jack = new Lumberjack();
 
-    static  {
-        SPRITE = new Image("images/ENTITY_PLAYER.png");
+    static {
+        SPRITE = new Image("images/ENTITY_PLAYER_1.png");
     }
 
     /**
@@ -50,128 +66,86 @@ class Player extends Entity {
      * @param position the position of the Player
      * @param direction the direction the player is facing
      */
-    public Player(Position position, int direction) {
+    Player(Position position, int direction) {
         super(SPRITE);
         this.position = position;
         this.inventory = new ArrayList<>();
         this.direction = direction;
+        this.facing = 1;
         this.tokenCount = 0;
         this.alive = true;
+        this.finish = false;
     }
 
     /**
-     * Used to move the player object in the Entity grid
-     * @param locations the current and potential new X and Y location of the player
-     * @param level the current Level object, this contains both the Cell and Entity grids
-     * @return the updated Entity grid for displaying to the screen
+     * Gets the Player inventory, for printing to screen
+     * @return the player inventory
      */
-    private Entity[][] movePlayerEntity(int[] locations, Level level) {
+    ArrayList<Item> getInventory() {
+        return inventory;
+    }
 
-        Cell[][] cellGrid = level.getCellGrid();
-        Entity[][] entityGrid = level.getEntityGrid();
+    /**
+     * Gets the Player's Position
+     * @return the Player's Position object
+     */
+    Position getPosition() {
+        return this.position;
+    }
 
-        //Debug
-//        for (Entity[] entities : entityGrid) {
-//            for (Entity entity : entities) {
-//                if (entity instanceof SmartEnemy) {
-//                    SmartEnemy enemy = (SmartEnemy) entity;
-//                    jack.log(1, Integer.toString(enemy.nextDirection(level, this)));
-//                }
-//            }
-//        }
+    /**
+     * Used to track the current direction
+     * @return the Players direction
+     */
+    int getDirection() {
+        return this.direction;
+    }
 
-        int x = locations[0];
-        int y = locations[1];
-        int newX = locations[2];
-        int newY = locations[3];
+    /**
+     * Gets the direction the Player is facing
+     * @return the direction the Player is Facing
+     */
+    int getFacing() {
+        return this.facing;
+    }
 
-        int width = entityGrid.length - 1;
-        int height = entityGrid[0].length - 1;
+    /**
+     * USed to store how many tokens the player has
+     * @return the number of tokens held
+     */
+    int getTokenCount() {
+        return this.tokenCount;
+    }
 
-        if (newX < 0 || newY < 0 || newX > width || newY > height) {
-            // jack.log(1, "Player out of bounds");
-            return entityGrid;
-        } else {
+    /**
+     * Holds the Players alive status
+     * @return true if they are alive
+     */
+    boolean getStatus() {
+        return this.alive;
+    }
 
-            Cell cell = cellGrid[newX][newY];
-            Entity entity = entityGrid[newX][newY];
+    /**
+     * Used to track if the game is complete
+     * @return true if complete
+     */
+    boolean getGameStatus() {
+        return this.finish;
+    }
 
-            if (null != entity) {
+    /**
+     * Used to set the Player Token count
+     * @param count the count to set it at
+     */
+    void setTokenCount(int count) {
+        this.tokenCount = count;
+    }
 
-                if (entity instanceof Item) {
-
-                    this.addItem((Item) entityGrid[newX][newY], level);
-
-                    // jack.log("FOUND ITEM");
-                    // jack.log(this.inventory.toString());
-
-                } else if (entity.getClass().getSimpleName().contains("Enemy")) {
-
-                    jack.log(1, "Kill me");
-
-                    killPlayer();
-                    return entityGrid;
-
-                }
-
-            } else if (cell instanceof KeyDoor) {
-
-                KeyDoor.Colour doorColour = (((KeyDoor) cell).getColour());
-
-                // jack.log(1, "Walking into a KeyDoor");
-
-                if (null != findKey(doorColour)) {
-                    openKeyDoor(level, doorColour, newX, newY);
-                } else {
-                    return entityGrid;
-                }
-
-            } else if (cell instanceof TokenDoor) {
-
-                TokenDoor currentDoor = (TokenDoor) cell;
-
-                // jack.log(1, "Walking into a TokenDoor - Requirement: " + currentDoor.getRequirement());
-                // jack.log(1, "Current Tokens " + this.tokenCount);
-
-                if (this.tokenCount >= currentDoor.getRequirement()) {
-                    openTokenDoor(level, currentDoor, newX, newY);
-                } else {
-                    return entityGrid;
-                }
-
-            } else if (cell instanceof Teleporter) {
-
-                Teleporter pair = ((Teleporter) cell).getPair();
-
-                // jack.log(1, "Walking into a Teleporter. ");
-
-                int[] pairLocation = level.getLocation(cellGrid, pair);
-
-                newX = pairLocation[0];
-                newY = pairLocation[1];
-
-            } else if (!cell.isPassable()) {
-
-                // jack.log(1, "Oof, you walked into a wall");
-
-                return entityGrid;
-
-            }
-
-            // Move player entity
-
-            // Remove the player from the grid
-            entityGrid[x][y] = null;
-
-            // Add the player at new location
-            entityGrid[newX][newY] = this;
-
-            // Update the Players Position
-            this.position = new Position(newX, newY);
-
-            return entityGrid;
-        }
-
+    /**
+     * Resets the game status
+     */
+    void setGameStatus() {
+        this.finish = false;
     }
 
     /**
@@ -180,76 +154,169 @@ class Player extends Entity {
      * @param level the Level object in which they are moving
      * @return the updated Entity grid for displaying to the screen
      */
-    public Entity[][] move(int direction, Level level) {
+    Entity[][] move(int direction, Level level) {
 
-        Entity[][] entityGrid = level.getEntityGrid();
-
-        int[] currentLoc = this.getLocation(entityGrid);
-
-        int x = currentLoc[0];
-        int y = currentLoc[1];
-
-        int[] locations = new int[] {x, y, x, y};
+        Position p = this.position;
 
         if (0 == direction) {
-            locations = new int[] {x, y, x, y-1};
+            p = new Position(p.x, p.y - 1);
         } else if (1 == direction) {
-            locations = new int[] {x, y, x+1, y};
+            p = new Position(p.x + 1, p.y);
         } else if (2 == direction) {
-            locations = new int[] {x, y, x, y+1};
+            p = new Position(p.x, p.y + 1);
         } else if (3 == direction) {
-            locations = new int[] {x, y, x-1, y};
+            p = new Position(p.x - 1, p.y);
         }
 
         this.direction = direction;
 
-        return movePlayerEntity(locations, level);
-    }
-
-    /**
-     * Used to find the Players current location in the Entity grid
-     * @param entityGrid the Entity grid to search
-     * @return the X and Y index of the Player object
-     */
-    public int[] getLocation(Entity[][] entityGrid) {
-
-        for (int x = 0 ; x < entityGrid.length ; x++ ) {
-            for (int y = 0 ; y < entityGrid[x].length ; y++ ) {
-
-                Entity entity = entityGrid[x][y];
-
-                if (entity instanceof Player) {
-                    // Player is found
-                    return new int[] {x, y};
-                }
-
-            }
+        if (1 == this.direction || 3 == this.direction) {
+            this.facing = this.direction;
         }
 
-        return new int[] {0,0};
+        if (checkValidMove(level, p)) {
+            return movePlayerEntity(level, p);
+        } else {
+            Lumberjack.log(1, "Invalid Player Move");
+            return level.getEntityGrid();
+        }
+
     }
 
     /**
-     * Used to track the current direction
-     * @return the Players direction
+     * Used to check if a Player Move is valid before carrying it out
+     * @param level the level Object the Player is moving in
+     * @param p the position they wish to move to
+     * @return whether or not it is a valid move
      */
-    public int getDirection() {
-        return direction;
+    private boolean checkValidMove(Level level, Position p) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+
+        int width = cellGrid.length - 1;
+        int height = cellGrid[0].length - 1;
+
+        return p.x >= 0 && p.y >= 0 && p.x <= width && p.y <= height;
     }
+
+    /**
+     * Used to move the player object in the Entity grid
+     * @param level the current Level object
+     * @param next the next Position of the player, possibly
+     * @return the updated Entity grid for displaying to the screen
+     */
+    private Entity[][] movePlayerEntity(Level level, Position next) {
+
+        Cell[][] cellGrid = level.getCellGrid();
+        Entity[][] entityGrid = level.getEntityGrid();
+
+        Cell cell = cellGrid[next.x][next.y];
+        Entity entity = entityGrid[next.x][next.y];
+
+        if (null != entity) {
+
+            if (entity instanceof Item) {
+                this.addItem(level, (Item) entityGrid[next.x][next.y]);
+                // jack.log("FOUND ITEM + this.inventory.toString());
+            } else if (entity.getClass().getSimpleName().contains("Enemy")) {
+                killPlayer();
+                return entityGrid;
+            }
+
+        } else if (cell instanceof KeyDoor) {
+
+            if (null != findKey(((KeyDoor) cell).getColour())) {
+                openKeyDoor(level, ((KeyDoor) cell).getColour(), next.x, next.y);
+            } else {
+                return entityGrid;
+            }
+
+        } else if (cell instanceof TokenDoor) {
+
+            if (this.tokenCount >= ((TokenDoor) cell).getRequirement()) {
+                openTokenDoor(level, (TokenDoor) cell, next.x, next.y);
+            } else {
+                return entityGrid;
+            }
+
+        } else if (cell instanceof Teleporter) {
+
+            Teleporter pair = ((Teleporter) cell).getPair();
+
+            int[] pairLocation = level.getLocation(cellGrid, pair);
+            next = new Position(pairLocation[0], pairLocation[1]);
+
+        } else if (cell instanceof Goal) {
+            this.finish = true;
+        } else if (!cell.isPassable()) {
+
+            String cellName = cell.getClass().getSimpleName();
+
+            if ("Water".equals(cellName) || "Fire".equals(cellName)) {
+                killPlayer();
+            }
+
+            return entityGrid;
+        }
+
+        // Remove the player from the grid
+        entityGrid[this.position.x][this.position.y] = null;
+
+        // Add the player at new location
+        entityGrid[next.x][next.y] = this;
+
+        // Update the Players Position
+        this.position = new Position(next.x, next.y);
+
+        return entityGrid;
+    }
+
+//
+//                      _______
+//             ..-'`       ````---.
+//           .'          ___ .'````.'SS'.
+//          /        ..-SS####'.  /SSHH##'.
+//         |       .'SSSHHHH##|/#/#HH#H####'.
+//        /      .'SSHHHHH####/||#/: \SHH#####\
+//       /      /SSHHHHH#####/!||;`___|SSHH###\
+//    -..__    /SSSHHH######.         \SSSHH###\
+//    `.'-.''--._SHHH#####.'           '.SH####/
+//      '. ``'-  '/SH####`/_             `|H##/
+//      | '.     /SSHH###|`'==.       .=='/\H|
+//      |   `'-.|SHHHH##/\__\/        /\//|~|/
+//      |    |S#|/HHH##/             |``  |
+//      |    \H' |H#.'`              \    |
+//      |        ''`|               -     /
+//      |          /H\          .----    /
+//      |         |H#/'.           `    /
+//      |          \| | '..            /
+//      |            /|    ''..______.'
+//       \          //\__    _..-. |
+//        \         ||   ````     \ |_
+//         \    _.-|               \| |_
+//         _\_.-'   `'''''-.        |   `--.
+//     ''``    \            `''-;    \ /
+//              \      .-'|     ````.' -
+//              |    .'  `--'''''-.. |/
+//              |  .'               \|
+//              |.'
+//
+//    Figure IIX? I think - A Player!
+//
 
     /**
      * Used to add items to the Players inventory
      * This Method can also update some cells to passable
-     * @param item the item to add to the players inventory
      * @param level the Level object, if it needs updating as a result
+     * @param item the item to add to the players inventory
      */
-    private void addItem(Item item, Level level) {
+    void addItem(Level level, Item item) {
 
         if (item instanceof Token) {
 
             this.tokenCount += 1;
 
-            jack.log(1, "Current tokens: " + tokenCount);
+            // jack.log(1, "Current tokens: " + tokenCount);
 
             if (checkTokenInInv()) {
                 return;
@@ -271,11 +338,11 @@ class Player extends Entity {
      * @param newX the X location of the door
      * @param newY the Y location of the door
      */
-    private void openKeyDoor(Level level, KeyDoor.Colour doorColour, int newX, int newY) {
+    private void openKeyDoor(Level level, Key.Colour doorColour, int newX, int newY) {
 
         Cell[][] cellGrid = level.getCellGrid();
 
-        jack.log(1, "Player has the correct key");
+        // jack.log(1, "Player has the correct key");
 
         this.inventory.remove(findKey(doorColour));
 
@@ -283,6 +350,30 @@ class Player extends Entity {
 
         level.setCellGrid(cellGrid);
 
+    }
+
+    /**
+     * Method to find a key of a set colour
+     * @param colour the colour to search for
+     * @return the key, if present
+     */
+    private Item findKey(Key.Colour colour) {
+
+        for (Item item : this.inventory) {
+            if (item instanceof Key) {
+
+                Key currentKey = (Key) item;
+
+                // System.out.println(currentKey.getColour().toString());
+
+                if (colour.toString().equals(currentKey.getColour().toString())) {
+                    return item;
+                }
+
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -296,61 +387,14 @@ class Player extends Entity {
 
         Cell[][] cellGrid = level.getCellGrid();
 
-        jack.log(1,"Opening token door");
+        // jack.log(1,"Opening token door");
 
         cellGrid[newX][newY] = new Ground();
 
         level.setCellGrid(cellGrid);
 
-        this.removeTokens(door.getRequirement());
+        // this.removeTokens(door.getRequirement());
 
-    }
-
-    /**
-     * Method to set cells as passable on item pickup
-     * @param level the level object
-     * @param item the item collected, this dictates what is made passable
-     */
-    private void setCellsPassable(Level level, Item item) {
-
-        Cell[][] cellGrid = level.getCellGrid();
-
-        String cellType = item instanceof FireBoots ? "Fire" : "Water";
-
-        for (Cell[] row : cellGrid) {
-            for (Cell c : row) {
-                if (cellType.equals(c.getClass().getSimpleName())) {
-                    c.setPassable(true);
-                }
-            }
-        }
-
-        jack.log(1, cellType + " set to passable");
-
-    }
-
-    /**
-     * Method to find a key of a set colour
-     * @param colour the colour to search for
-     * @return the key, if present
-     */
-    private Item findKey(KeyDoor.Colour colour) {
-
-        for (Item item : this.inventory) {
-            if (item instanceof Key) {
-
-                Key currentKey = (Key) item;
-
-                System.out.println(currentKey.getColour().toString());
-
-                if (colour.toString().equals(currentKey.getColour().toString())) {
-                    return item;
-                }
-
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -371,57 +415,26 @@ class Player extends Entity {
     }
 
     /**
-     * Checks if a Player has enough tokens
-     * @param amount the amount of tokens
+     * Method to set cells as passable on item pickup
+     * @param level the level object
+     * @param item the item collected, this dictates what is made passable
      */
-    private void removeTokens(int amount) {
-        if (checkTokenInInv()) {
+    private void setCellsPassable(Level level, Item item) {
 
-            jack.log(1, "Can remove tokens");
-            int newTokenCount = this.tokenCount - amount;
+        Cell[][] cellGrid = level.getCellGrid();
 
-            if (newTokenCount < 0) {
-                jack.log(1, "Don't have enough tokens");
-            } else if (0 == newTokenCount) {
-                this.tokenCount = newTokenCount;
-                removeTokenFromInv();
-            } else {
-                this.tokenCount = newTokenCount;
-            }
+        String cellType = item instanceof FireBoots ? "Fire" : "Water";
 
-        } else {
-            jack.log(1, "Can't remove tokens!");
-        }
-    }
-
-    /**
-     * Removes tokens
-     */
-    private void removeTokenFromInv(){
-        Item currentItem = null;
-        for (Item item : this.inventory) {
-            if (item instanceof Token) {
-                currentItem = item;
+        for (Cell[] row : cellGrid) {
+            for (Cell c : row) {
+                if (cellType.equals(c.getClass().getSimpleName())) {
+                    c.setPassable();
+                }
             }
         }
 
-        removeItem(currentItem);
-    }
+        // jack.log(1, cellType + " set to passable");
 
-    /**
-     * Used to remove an item from the players inventory
-     * @param item the item to remove
-     */
-    private void removeItem(Item item) {
-        this.inventory.remove(item);
-    }
-
-    /**
-     * Holds the Players alive status
-     * @return true if they are alive
-     */
-    public boolean getStatus() {
-        return this.alive;
     }
 
     /**
@@ -429,10 +442,6 @@ class Player extends Entity {
      */
     private void killPlayer() {
         this.alive = false;
-    }
-
-    public Position getPosition() {
-        return this.position;
     }
 
 }

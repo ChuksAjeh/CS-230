@@ -7,23 +7,18 @@ package Challenge;
  */
 class Lumberjack {
 
-    /**
-     * Lumberjacks usually remove trees not construct them
+    /*
+     * They're a lumberjack and they're OK
+     * They sleep all night and they work all day
+     * https://www.youtube.com/watch?v=FshU58nI0Ts
      */
-    Lumberjack() {
-        // They're a lumberjack and they're OK
-        // They sleeps all night and they works all day
-        // https://www.youtube.com/watch?v=FshU58nI0Ts
-    }
 
     /**
      * Logs stuff
      * @param message what to log
      */
-    void log(String message) {
-
-        System.out.println("Spam : " + message);
-
+    private static void log(String message) {
+        System.out.println(message);
     }
 
     /**
@@ -31,12 +26,16 @@ class Lumberjack {
      * @param priority for not spam
      * @param message what to log
      */
-    void log(int priority, String message) {
+    static void log(int priority, String message) {
 
-        if (priority == 1) {
-            System.out.println("Useful : " + message);
+        if (0 == priority) {
+            log("Spam : " + message);
+        } else if (1 == priority) {
+            log("Not Spam : " + message);
+        } else if (2 == priority) {
+            log("Maybe useful : " + message);
         } else {
-            this.log(message);
+            log(message);
         }
 
     }
@@ -46,7 +45,7 @@ class Lumberjack {
      * @param grid the grid to log
      * @param <T> Cell or Entity
      */
-    public <T> void logGrid(T[][] grid) {
+    <T> void logGrid(T[][] grid) {
 
         System.out.println("===== START GRID =====");
 
@@ -68,12 +67,13 @@ class Lumberjack {
      * @param player the Player object to track
      * @param entityGrid the grid to find them in
      */
-    public void logPlayerLoc(Player player, Entity[][] entityGrid) {
+    void logPlayerLoc(Player player, Entity[][] entityGrid) {
 
-        int[] playerLoc = player.getLocation(entityGrid);
+        Position playerPosition = player.getPosition();
+
         int direction = player.getDirection();
 
-        log(1, "Player Loc + Dir -> " + playerLoc[0] + " " + playerLoc[1] + " " + direction);
+        log(2, "Player Loc + Dir -> " + playerPosition.x + " " + playerPosition.y + " " + direction);
 
     }
 

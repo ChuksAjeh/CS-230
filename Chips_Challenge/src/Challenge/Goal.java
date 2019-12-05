@@ -3,6 +3,8 @@ package Challenge;
 import javafx.scene.image.Image;
 
 /**
+ * This class represents a goal cell in the game, the objective is for the
+ * player to reach it, doing so will complete that level.
  * @author George Carpenter
  * @version 1.0
  */
@@ -39,7 +41,7 @@ class Goal extends Cell {
 //
 
     /**
-     * Constructor
+     * Constructs a goal cell.
      */
     Goal() {
         super(SPRITE, true);

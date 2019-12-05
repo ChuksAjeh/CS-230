@@ -2,8 +2,10 @@ package Challenge;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.stream.IntStream;
 
 /**
  * Class used to Ping a web server and return a Message Of The Day to be
@@ -22,10 +24,10 @@ class Ping {
         try {
             return pingAPI();
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            return "Oops, Liam killed the API!";
+            // Assuming Liam doesn't kill the API this won't happen :p
         }
-
-        return null;
 
     }
 
@@ -66,15 +68,12 @@ class Ping {
 
         StringBuilder out = new StringBuilder();
 
-        for (int i = 0 ; i < inputArray.length ; i++) {
-
-            if (0 == i % 2) {
-                out.append(shiftUp(inputArray[i]));
-            } else {
-                out.append(shiftDown(inputArray[i]));
-            }
-
-        }
+        IntStream.range(0, inputArray.length).forEach(i -> {
+            char c = 0 == i % 2 ?
+                shiftUp(inputArray[i]) :
+                shiftDown(inputArray[i]);
+            out.append(c);
+        });
 
         String messageURL = "http://cswebcat.swan.ac.uk/message?solution=";
         return makeConnection(messageURL + out);
