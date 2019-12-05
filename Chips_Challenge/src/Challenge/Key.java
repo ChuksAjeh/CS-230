@@ -11,11 +11,6 @@ import javafx.scene.image.Image;
 class Key extends Item {
 
     /**
-     * The sprite used for this class
-     */
-    private static final Image SPRITE;
-
-    /**
      * The colour of the key
      */
     private final Colour colour;
@@ -24,11 +19,7 @@ class Key extends Item {
      * This is used for the colour of the Key
      */
     enum Colour {
-        RED, GREEN, BLUE, WHITE, BLACK
-    }
-
-    static {
-        SPRITE = new Image("images/ENTITY_KEY.png");
+        RED, GREEN, BLUE, PURPLE
     }
 
 //
@@ -46,7 +37,7 @@ class Key extends Item {
      * @param colour the colour of the key
      */
     Key(String colour) {
-        super(SPRITE);
+        super(new Image("images/ENTITY_KEY_" + colour + ".png"));
         this.colour = setColour(colour);
     }
 
@@ -72,9 +63,7 @@ class Key extends Item {
         } else if ("BLUE".equals(colour)) {
             return Colour.BLUE;
         } else if ("WHITE".equals(colour)) {
-            return Colour.WHITE;
-        } else if ("BLACK".equals(colour)) {
-            return Colour.BLACK;
+            return Colour.PURPLE;
         }
 
         return null;
