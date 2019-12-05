@@ -13,26 +13,45 @@ import javafx.scene.image.Image;
 class Game {
 
     /**
-     * The cell width.
+     * The cell Size.
      */
-    private static final int GRID_CELL_WIDTH = 120;
-    /**
-     * The cell height
-     */
-    private static final int GRID_CELL_HEIGHT = 120;
-    //Debugger
-    Lumberjack jack = new Lumberjack();
+    private static final int GRID_SIZE = 60;
+
     /**
      * The save file for this game.
      */
     private final Save save = new Save();
 
     /**
+     * The current user for this game
+     */
+    private User user;
+
+    //private Lumberjack jack = new Lumberjack();
+    /**
+     * Constructs a Game
+     * @param userName the name of the user playing
+     */
+    Game(String userName) {
+        this.user = new User(userName);
+        user.setScores(save.loadPlayerScores(userName));
+        //jack.log(1, user.getScores().toString());
+    }
+
+    /**
+     * Gets the user name, for saving
+     * @return their name
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
      *  Draws the game with a given level and canvas.
      * @param level The game's level
      * @param canvas The canvas to draw the game.
      */
-    public void drawGame(Level level, Canvas canvas) {
+    void drawGame(Level level, Canvas canvas) {
 
         // Because it's logical
         assert null != level;
@@ -44,19 +63,20 @@ class Game {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         // Calculate the offset for use in rendering
-        int[] offset = this.calculateOffSet(level, canvas);
+        Position offset = this.calculateOffSet(level, canvas);
 
         // Render stuff
         this.renderBackground(gc, canvas);
         this.renderCellGrid(gc, level.getCellGrid(), offset);
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
-        save.saveFile(level);
+        // Lumberjack.log(2,"game" + this.user.getUserName());
+        save.saveFile(level, this.user);
 
         // Log Stuff - uncomment for spam
-        // jack.logPlayerLoc(player, entityGrid);
-        // jack.logGrid(level.getEntityGrid());
-        // jack.logGrid(level.getCellGrid());
+        // Lumberjack.logPlayerLoc(player, entityGrid);
+        // Lumberjack.logGrid(level.getEntityGrid());
+        // Lumberjack.logGrid(level.getCellGrid());
 
     }
 
@@ -66,21 +86,20 @@ class Game {
      * @param canvas The canvas used for the game.
      * @return The offset for the x coordinate and y coordinate as a pair represented by a int[].
      */
-    private int[] calculateOffSet(Level level, Canvas canvas) {
+    private Position calculateOffSet(Level level, Canvas canvas) {
 
         // Not 100% sure of this, it may change, please don't try to comment it
 
         Player player = level.getPlayer();
         Position playerPosition = player.getPosition();
 
-        int playerXOffset = playerPosition.x * GRID_CELL_WIDTH + (GRID_CELL_WIDTH / 2);
-        int playerYOffset = playerPosition.y * GRID_CELL_HEIGHT + (GRID_CELL_HEIGHT / 2);
+        int playerXOffset = playerPosition.x * GRID_SIZE + (GRID_SIZE / 2);
+        int playerYOffset = playerPosition.y * GRID_SIZE + (GRID_SIZE / 2);
 
         int levelXOffset = playerXOffset - (int) canvas.getWidth() / 2;
         int levelYOffset = playerYOffset - (int) canvas.getHeight() / 2;
 
-//        return new int[] {0, 0};
-        return new int[] {levelXOffset, levelYOffset};
+        return new Position(levelXOffset, levelYOffset);
 
     }
 
@@ -105,18 +124,21 @@ class Game {
      * @param cellGrid The cell grid for the game to be rendered.
      * @param offset The offset needed to be taken into account.
      */
-    private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid, int[] offset) {
+    private void renderCellGrid(GraphicsContext gc, Cell[][] cellGrid, Position offset) {
 
-        int xOffset = offset[0];
-        int yOffset = offset[1];
+        int xOnScreen;
+        int yOnScreen;
 
         for (int x = 0 ; x < cellGrid.length ; x++ ) {
             for (int y = 0 ; y < cellGrid[x].length ; y++ ) {
 
                 Cell cell = cellGrid[x][y];
-                Image sprite = SpriteConverter.resize(cell.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+                Image sprite = SpriteConverter.resize(cell.getSprite(), GRID_SIZE, GRID_SIZE);
 
-                gc.drawImage(sprite, (x * GRID_CELL_WIDTH) - xOffset, (y * GRID_CELL_HEIGHT) - yOffset);
+                xOnScreen = x * GRID_SIZE - offset.x;
+                yOnScreen = y * GRID_SIZE - offset.y;
+
+                gc.drawImage(sprite, xOnScreen, yOnScreen);
 
             }
         }
@@ -129,22 +151,22 @@ class Game {
      * @param entityGrid The entities to be rendered.
      * @param offset The offset for the entities.
      */
-    private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid, int[] offset) {
+    private void renderEntityGrid(GraphicsContext gc, Entity[][] entityGrid, Position offset) {
 
         int xOnScreen;
         int yOnScreen;
 
-        int[] position;
+        Position position;
 
         for (int x = 0 ; x < entityGrid.length ; x++ ) {
             for (int y = 0; y < entityGrid[x].length; y++ ) {
 
                 if (null != entityGrid[x][y]) {
 
-                    xOnScreen = x * GRID_CELL_WIDTH;
-                    yOnScreen = y * GRID_CELL_HEIGHT;
+                    xOnScreen = x * GRID_SIZE - offset.x;
+                    yOnScreen = y * GRID_SIZE - offset.y;
 
-                    position = new int[] {xOnScreen - offset[0], yOnScreen - offset[1]};
+                    position = new Position(xOnScreen, yOnScreen);
 
                     renderEntity(gc, entityGrid[x][y], position);
                 }
@@ -154,35 +176,43 @@ class Game {
     }
 
     /**
-     * Auxillary method to help render the enemies
+     * Auxiliary method to help render the entitys
      * @param gc The graphics context to be used in the game.
      * @param entity The entity to be rendered.
      * @param position The position of the enemy.
      */
-    private void renderEntity(GraphicsContext gc, Entity entity, int[] position) {
+    private void renderEntity(GraphicsContext gc, Entity entity, Position position) {
 
-        int x = position[0];
-        int y = position[1];
+        Image sprite = entity.getSprite();
 
-        Image sprite = SpriteConverter.resize(entity.getSprite(), GRID_CELL_HEIGHT, GRID_CELL_WIDTH);
+        if (entity instanceof Player) {
 
-        if (entity.getClass().getSimpleName().equals("Player")) {
+            sprite = renderPlayer((Player) entity);
 
-//            if (((Player) entity).getDirection() == 3) {
-//                gc.drawImage(sprite, x + GRID_CELL_WIDTH, y, 0 - GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
-//            } else {
-//                gc.drawImage(sprite, x, y);
-//            }
+        } else if (entity instanceof Enemy) {
 
-            gc.drawImage(SpriteConverter.rotate(sprite, ((Player) entity).getDirection()), x, y);
-
-        } else if (entity.getClass().getSimpleName().contains("Enemy")) {
             Enemy enemy = (Enemy) entity;
-            gc.drawImage(SpriteConverter.rotate(sprite, enemy.getDirection()), x, y);
-        } else {
-            gc.drawImage(sprite, x, y);
+
+            sprite = enemy.getSprite();
+
+            sprite = SpriteConverter.rotate(sprite, enemy.getDirection());
         }
 
+        sprite = SpriteConverter.resize(sprite, GRID_SIZE, GRID_SIZE);
+        gc.drawImage(sprite, position.x, position.y);
+
+    }
+
+    private Image renderPlayer(Player player) {
+
+        int fac = player.getFacing();
+
+        String filePath = "images/ENTITY_PLAYER_";
+        String fileExt = ".png";
+
+        Image sprite = new Image(filePath + fac + fileExt);
+
+        return sprite;
     }
 
 }

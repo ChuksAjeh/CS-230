@@ -1,15 +1,25 @@
 .root {
-    -fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%);
+    -fx-background-image: url('/images/BACKGROUND.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 960 720;
 }
 
 .button {
-    -fx-font-size: 16px;
-    -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);;
+    -fx-font-size: 15px;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
     -fx-pref-width: 200;
     -fx-pref-height: 50;
     -fx-border-style: solid;
     -fx-border-width: 5px;
     -fx-border-color: linear-gradient(to bottom, #3333cc 0%, #669900 100%);
+    -fx-transition-duration : 0.3s;
+    -fx-cursor: pointer;
+}
+
+.button:hover {
+    -fx-background-color: white;
+    -fx-text-fill:linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
 }
 
 .combo-box {
@@ -21,8 +31,15 @@
     -fx-border-color: linear-gradient(to bottom, #3333cc 0%, #669900 100%);
 }
 
-#pauseMenu {
+.combo-box:hover {
+    -fx-background-color: white;
+}
 
+#pauseMenu {
+    -fx-background-image: url('/images/BACKGROUND.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 350 350;
+    -fx-background-position: center center;
 }
 
 #Inventory {
@@ -34,6 +51,5 @@
 }
 
 #miniMap {
-    -fx-border-width: 15px;
-    -fx-border-color: red;
+
 }

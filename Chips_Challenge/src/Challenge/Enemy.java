@@ -2,6 +2,8 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
+import java.util.stream.IntStream;
+
 /**
  * Enemies are movable hazards designed to end the level upon contact
  * with the player. Each enemy has its own unique way of moving to the player.
@@ -79,7 +81,7 @@ abstract class Enemy extends Entity {
      * Sets the cell grid for the enemy.
      * @param cellGrid The cell grid to be used.
      */
-    void setCellGrid(Cell[][] cellGrid) {
+    private void setCellGrid(Cell[][] cellGrid) {
         this.cellGrid = cellGrid;
     }
 
@@ -87,7 +89,7 @@ abstract class Enemy extends Entity {
      * Sets the entity grid for the enemy.
      * @param entityGrid The cell grid to be used.
      */
-    void setEntityGrid(Entity[][] entityGrid) {
+    private void setEntityGrid(Entity[][] entityGrid) {
         this.entityGrid = entityGrid;
     }
 
@@ -187,12 +189,22 @@ abstract class Enemy extends Entity {
             this.entityGrid[x - 1][y]
         };
 
-        for (int i = 0 ; i < passable.length ; i++ ) {
-            passable[i] = sc[i] instanceof Ground && (se[i] == null || se[i] instanceof Player);
-        }
+        IntStream.range(0, passable.length).forEach(i ->
+            passable[i] = sc[i] instanceof Ground &&
+            (se[i] == null || se[i] instanceof Player));
 
         return passable;
 
+    }
+
+    /**
+     * Used to update both grids at once
+     * @param cellGrid the new Cell grid
+     * @param entityGrid the nes Entity grid
+     */
+    void updateGrids(Cell[][] cellGrid, Entity[][] entityGrid) {
+        setCellGrid(cellGrid);
+        setEntityGrid(entityGrid);
     }
 
 }

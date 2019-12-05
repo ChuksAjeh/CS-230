@@ -17,7 +17,7 @@ class Player extends Entity {
      * The Sprite used for the Player object,
      * it will be rotated based on direction
      */
-    private static final Image SPRITE;
+    private static Image SPRITE;
 
     /**
      * An array list used as the Player Inventory,
@@ -36,6 +36,11 @@ class Player extends Entity {
     private int direction;
 
     /**
+     * The direction the Player is facing;
+     */
+    private int facing;
+
+    /**
      * How many Tokens the Player is currently carrying
      */
     private int tokenCount;
@@ -50,11 +55,10 @@ class Player extends Entity {
      */
     private boolean finish;
 
-    // TESTING
     // private final Lumberjack jack = new Lumberjack();
 
-    static  {
-        SPRITE = new Image("images/ENTITY_PLAYER.png");
+    static {
+        SPRITE = new Image("images/ENTITY_PLAYER_1.png");
     }
 
     /**
@@ -67,6 +71,7 @@ class Player extends Entity {
         this.position = position;
         this.inventory = new ArrayList<>();
         this.direction = direction;
+        this.facing = 1;
         this.tokenCount = 0;
         this.alive = true;
         this.finish = false;
@@ -93,7 +98,15 @@ class Player extends Entity {
      * @return the Players direction
      */
     int getDirection() {
-        return direction;
+        return this.direction;
+    }
+
+    /**
+     * Gets the direction the Player is facing
+     * @return the direction the Player is Facing
+     */
+    int getFacing() {
+        return this.facing;
     }
 
     /**
@@ -157,10 +170,14 @@ class Player extends Entity {
 
         this.direction = direction;
 
+        if (1 == this.direction || 3 == this.direction) {
+            this.facing = this.direction;
+        }
+
         if (checkValidMove(level, p)) {
             return movePlayerEntity(level, p);
         } else {
-            System.out.println("Hmm");
+            Lumberjack.log(1, "Invalid Player Move");
             return level.getEntityGrid();
         }
 
@@ -184,8 +201,7 @@ class Player extends Entity {
 
     /**
      * Used to move the player object in the Entity grid
-     * @param level the current Level object,
-     *              this contains both the Cell and Entity grids
+     * @param level the current Level object
      * @param next the next Position of the player, possibly
      * @return the updated Entity grid for displaying to the screen
      */
@@ -255,6 +271,39 @@ class Player extends Entity {
         return entityGrid;
     }
 
+//
+//                      _______
+//             ..-'`       ````---.
+//           .'          ___ .'````.'SS'.
+//          /        ..-SS####'.  /SSHH##'.
+//         |       .'SSSHHHH##|/#/#HH#H####'.
+//        /      .'SSHHHHH####/||#/: \SHH#####\
+//       /      /SSHHHHH#####/!||;`___|SSHH###\
+//    -..__    /SSSHHH######.         \SSSHH###\
+//    `.'-.''--._SHHH#####.'           '.SH####/
+//      '. ``'-  '/SH####`/_             `|H##/
+//      | '.     /SSHH###|`'==.       .=='/\H|
+//      |   `'-.|SHHHH##/\__\/        /\//|~|/
+//      |    |S#|/HHH##/             |``  |
+//      |    \H' |H#.'`              \    |
+//      |        ''`|               -     /
+//      |          /H\          .----    /
+//      |         |H#/'.           `    /
+//      |          \| | '..            /
+//      |            /|    ''..______.'
+//       \          //\__    _..-. |
+//        \         ||   ````     \ |_
+//         \    _.-|               \| |_
+//         _\_.-'   `'''''-.        |   `--.
+//     ''``    \            `''-;    \ /
+//              \      .-'|     ````.' -
+//              |    .'  `--'''''-.. |/
+//              |  .'               \|
+//              |.'
+//
+//    Figure IIX? I think - A Player!
+//
+
     /**
      * Used to add items to the Players inventory
      * This Method can also update some cells to passable
@@ -280,14 +329,6 @@ class Player extends Entity {
         }
 
         inventory.add(item);
-    }
-
-    /**
-     * Used to remove an item from the players inventory
-     * @param item the item to remove
-     */
-    private void removeItem(Item item) {
-        this.inventory.remove(item);
     }
 
     /**
@@ -387,7 +428,7 @@ class Player extends Entity {
         for (Cell[] row : cellGrid) {
             for (Cell c : row) {
                 if (cellType.equals(c.getClass().getSimpleName())) {
-                    c.setPassable(true);
+                    c.setPassable();
                 }
             }
         }

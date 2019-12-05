@@ -29,7 +29,7 @@ class TokenDoor extends Door {
      * @param requirement number of tokens required to open the door
      */
     TokenDoor(int requirement) {
-        super(SPRITE, false);
+        super(SPRITE);
         this.requirement = requirement;
     }
 

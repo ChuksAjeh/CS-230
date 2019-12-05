@@ -100,8 +100,8 @@ class SmartEnemy extends Enemy {
                     return getFinalNode(bfsGrid, node, minDist);
                 }
 
-                    }
-                }
+            }
+        }
         return node;
         //return finalNode;
     }
@@ -292,7 +292,7 @@ class SmartEnemy extends Enemy {
             for (int j = 0 ; j < width ; j++ ) {
 
                 if (entityGrid[i][j] != null && cellGrid[i][j] instanceof Ground) {
-                // if (entityGrid[i][j] instanceof Enemy || !cellGrid[i][j].isPassable() || cellGrid[i][j] instanceof Obstacle) {
+                    // if (entityGrid[i][j] instanceof Enemy || !cellGrid[i][j].isPassable() || cellGrid[i][j] instanceof Obstacle) {
                     level[i][j] = 1;
                 }
 

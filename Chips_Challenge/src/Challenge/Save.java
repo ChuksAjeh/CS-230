@@ -2,6 +2,7 @@ package Challenge;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Scanner;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * This class is used to save the game state each tick to ensure Player
  * progress is never lost. Games may be loaded from original files or their
  * created save file variants produced by this class
- * @author Samuel Roach, George Carpenter
+ * @author Samuel Roach, George Carpenter, Blake Davies
  * @version 1.0
  */
 class Save {
@@ -36,12 +37,12 @@ class Save {
     private FileWriter writer;
 
     /**
-     * Because why not, I'm on a roll
+     * Object to write logs to trace errors
      */
     private final Lumberjack jack = new Lumberjack();
 
     /**
-     * Nice constructor
+     * Constructor (if needed)
      */
     Save() {
 
@@ -50,8 +51,9 @@ class Save {
     /**
      * Saves the current Level to a file
      * @param level the level to save
+     * @param user the USer object to save
      */
-    void saveFile(Level level) {
+    void saveFile(Level level, User user) {
 
         String directory;
         String levelName = level.getLevelName();
@@ -62,19 +64,23 @@ class Save {
 
         String fileName = levelName + "_" + "SAVE";
 
+        //jack.log(1, user.getUserName());
+
         // Create folder for the current User
-        File dirFile = new File("Users/" + "Dave");
+        //File dirFile = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName());
+        File dirFile = new File("Users/" + user.getUserName());
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                jack.log(0,"Directory for " + "DAVE" + " has been created!");
+                Lumberjack.log(0,"Directory for " + user.getUserName() + " has been created!");
             } else {
-                jack.log(2,"Failed to create directory!");
+                Lumberjack.log(2,"Failed to create directory!");
             }
         }
 
         // Create directory for new file
-        directory = "Users/" + "Dave" + "/" + fileName + ".txt";
+        //directory = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName() + "/" + fileName + ".txt";
+        directory = "Users/" + user.getUserName() + "/" + fileName + ".txt";
         File file = new File(directory);
 
         try {
@@ -99,41 +105,10 @@ class Save {
 
         } catch (IOException e) {
             // Nothing, because Sam is a dumdum :p
+            Lumberjack.log(1, "Oops");
         }
 
     }
-
-//
-//  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-//  8                                                   8
-//  8  a---------------a                                8
-//  8  |     Chips     |                                8
-//  8  |   Challenge   |                                8
-//  8  |    Vol 1.0    |                               8"
-//  8  "---------------"                               8a
-//  8                                                   8
-//  8                                                   8
-//  8                      ,aaaaa,                      8
-//  8                    ad":::::"ba                    8
-//  8                  ,d::;gPPRg;::b,                  8
-//  8                  d::dP'   `Yb::b                  8
-//  8                  8::8)     (8::8                  8
-//  8                  Y;:Yb     dP:;P  O               8
-//  8                  `Y;:"8ggg8":;P'                  8
-//  8                    "Yaa:::aaP"                    8
-//  8                       """""                       8
-//  8                                                   8
-//  8                       ,d"b,                       8
-//  8                       d:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                  aaa  `bad'  aaa                  8
-//  """""""""""""""""""' `"""""""""' `"""""""""""""""""""
-//
-//  Figure VI - A proper format!
-//
 
     /**
      * Writes the size of the level to the save file,
@@ -456,7 +431,62 @@ class Save {
      * @param object what to write
      */
     private void logWritten(Object object) {
-        jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+    }
+
+    /**
+     * Saves the user profile of the current user playing
+     * @param user The user currently playing
+     */
+    void saveProfile(User user){
+        String directory = "Users/" + user.getUserName() + "/scores.txt";
+        File file = new File(directory);
+
+        //jack.log(1, "Scores size" + user.getScores().size());
+        try {
+            // Write Content
+            writer = new FileWriter(file);
+            for (int i = 1; i <= (user.getScores().size()); i++) {
+                //jack.log(1, "Score " + user.getScores().get(i-1));
+                this.writer.write("Level_" + (i) + " - " + user.getScores().get(i-1));
+                this.writer.write("\n");
+            }
+            for (int i = (user.getScores().size() + 1); i <= 11; i++) {
+                this.writer.write("Level_" + i + " - 0\n");
+            }
+            writer.close();
+        } catch (IOException e){
+            Lumberjack.log(1,"SAVE" + e.toString());
+        }
+    }
+
+    /**
+     * Loads a users scores from a file
+     * @param userName the user to load from
+     * @return an array list of the users scores
+     */
+    ArrayList<Integer> loadPlayerScores(String userName){
+
+        ArrayList<Integer> scoresArray = new ArrayList<>();
+        String scoresPath = "Users/" + userName + "/scores.txt";
+        File scoresFile = new File(scoresPath);
+
+        if (!scoresFile.exists()) {
+            scoresArray.add(0);
+            return scoresArray;
+        } else {
+            try {
+                Scanner reader = new Scanner(scoresFile);
+                do {
+                    String currentLine = reader.nextLine();
+                    String[] splitString = currentLine.split(" - ");
+                    scoresArray.add(Integer.parseInt(splitString[1]));
+                } while (reader.hasNextLine());
+            } catch (Exception e) {
+                Lumberjack.log(1, e.toString());
+            }
+            return scoresArray;
+        }
     }
 
 }
