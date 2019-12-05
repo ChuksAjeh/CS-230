@@ -6,6 +6,6 @@
 #          #
 #     #    #
 ############
-Player,3,3,3,
+Player,4,3,1,
 Goal,3,3,
 Inventory,
