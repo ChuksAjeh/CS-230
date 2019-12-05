@@ -39,6 +39,7 @@ class Level {
      * The list of Enemies in the Level, can be empty
      */
     private final ArrayList<Enemy> enemies;
+    //private Lumberjack jack = new Lumberjack();
 
     /**
      * Constructs a Level from a given file name
@@ -48,6 +49,7 @@ class Level {
 
         this.levelName = levelName;
         this.enemies = new ArrayList<>();
+        //jack.log(1, this.levelName);
 
         try {
             buildLevel(levelName);

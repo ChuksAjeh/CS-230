@@ -31,6 +31,7 @@ class Game {
      */
     private User user;
 
+    //private Lumberjack jack = new Lumberjack();
     /**
      * Constructs a Game
      * @param userName the name of the user playing
@@ -38,6 +39,7 @@ class Game {
     Game(String userName) {
         this.user = new User(userName);
         user.setScores(save.loadPlayerScores(userName));
+        //jack.log(1, user.getScores().toString());
     }
 
     /**
