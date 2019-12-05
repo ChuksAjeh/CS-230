@@ -65,7 +65,7 @@ class Save {
             if (dirFile.mkdir()) {
                 jack.log(1, "Directory for " + "DAVE" + " has been created!");
             } else {
-                jack.log(1,"Failed to create directory!");
+                jack.log(1, "Failed to create directory!");
             }
         }
 
@@ -234,9 +234,9 @@ class Save {
 //  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 //  8                                                   8
 //  8  a---------------a                                8
-//  8  |               |                                8
-//  8  |               |                                8
-//  8  |               |                               8"
+//  8  |     Chips     |                                8
+//  8  |   Challenge   |                                8
+//  8  |    Vol. 1     |                               8"
 //  8  "---------------"                               8a
 //  8                                                   8
 //  8                                                   8
