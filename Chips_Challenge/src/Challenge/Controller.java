@@ -24,6 +24,11 @@ class Controller {
     private static boolean changeInventory = true;
 
     /**
+     * Saves the players scores after a level is completed
+     */
+    private final Save save = new Save();
+
+    /**
      * Takes in certain inputs and outputs player actions.
      * @param event The event to be read.
      * @param level The level being played
@@ -53,6 +58,10 @@ class Controller {
 
             if (player.getGameStatus()) {
                 player.setGameStatus();
+
+                game.getUser().addScore(level, (int) Main.convert);
+                this.save.saveProfile(game.getUser());
+
                 GUI.end = System.nanoTime();
                 GUI.elapsedTime = GUI.end - GUI.start;
                 GUI.convert = TimeUnit.SECONDS.convert(GUI.elapsedTime, TimeUnit.NANOSECONDS);
