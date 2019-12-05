@@ -34,6 +34,7 @@ class Controller {
      * @param level The level being played
      * @param game The game to be altered and re-rendered.
      * @param canvas The canvas for rendering the game.
+     * @param panes The panes that can be changed between as a result
      */
     void processKeyEvent(KeyEvent event, Level level, Game game, Canvas canvas, BorderPane[] panes) {
 
