@@ -8,8 +8,6 @@ package Challenge;
 class Lumberjack {
 
     /*
-     * Lumberjacks usually remove trees not construct them
-     *
      * They're a lumberjack and they're OK
      * They sleep all night and they work all day
      * https://www.youtube.com/watch?v=FshU58nI0Ts

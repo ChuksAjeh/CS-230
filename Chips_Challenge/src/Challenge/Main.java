@@ -16,13 +16,28 @@ import java.nio.file.Paths;
  */
 public class Main extends Application {
 
+    /**
+     * Plays music!
+     */
     private static MediaPlayer MEDIA_PLAYER;
+
+    /**
+     * Winedos 9 when?
+     */
     static Stage window;
 
+    /**
+     * Mainy!
+     * @param args Stuff parsed in
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Start the thing!
+     * @param primaryStage the stage we get for free!
+     */
     public void start(Stage primaryStage){
         window = primaryStage;
 
