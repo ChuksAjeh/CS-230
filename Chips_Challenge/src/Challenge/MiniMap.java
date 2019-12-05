@@ -69,12 +69,17 @@ class MiniMap {
     private void renderPlayer(GraphicsContext gc, Player player) {
 
         Position playerPosition = player.getPosition();
-        Image sprite = player.getSprite();
+
+        int fac = player.getFacing();
+
+        String filePath = "images/ENTITY_PLAYER_";
+        String fileExt = ".png";
+
+        Image sprite = new Image(filePath + fac + fileExt);
 
         int xOnScreen = playerPosition.x * MINIMAP_CELL_WIDTH;
         int yOnScreen = playerPosition.y * MINIMAP_CELL_HEIGHT;
 
-        sprite = SpriteConverter.rotate(sprite, (player.getDirection()));
         sprite = SpriteConverter.resize(sprite, MINIMAP_CELL_HEIGHT, MINIMAP_CELL_WIDTH);
 
         gc.drawImage(sprite, xOnScreen, yOnScreen);
