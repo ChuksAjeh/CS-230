@@ -33,6 +33,8 @@ import javafx.stage.Stage;
 
 import javafx.util.Duration;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 import java.io.File;
@@ -478,7 +480,7 @@ public class Main extends Application {
     }
     private Scene gaming(String name) {
 
-        jack.log(2, "user created " + userName);
+        //jack.log(2, "user created " + userName);
         game = new Game(userName);
 
         BorderPane root = new BorderPane();
@@ -573,9 +575,6 @@ public class Main extends Application {
 
                 //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
                 File path = new File("Users/" + tf.getText());
-
-                //path.mkdir();
-
 
                 userName = tf.getText();
 

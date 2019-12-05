@@ -27,10 +27,14 @@ class Game {
      */
     private final Save save = new Save();
 
+    /**
+     * The current user for this game
+     */
     User user;
 
     public Game(String userName) {
         this.user = new User(userName);
+        user.setScores(save.loadPlayerScores(userName));
     }
 
     /**
@@ -57,7 +61,7 @@ class Game {
         this.renderCellGrid(gc, level.getCellGrid(), offset);
         this.renderEntityGrid(gc, level.getEntityGrid(), offset);
 
-        jack.log(2,"game" + this.user.getUserName());
+        //jack.log(2,"game" + this.user.getUserName());
         save.saveFile(level, this.user);
 
         // Log Stuff - uncomment for spam

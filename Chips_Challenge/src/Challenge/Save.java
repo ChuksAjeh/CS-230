@@ -2,6 +2,7 @@ package Challenge;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Scanner;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -36,12 +37,12 @@ class Save {
     private FileWriter writer;
 
     /**
-     * Because why not, I'm on a roll
+     * Object to write logs to trace errors
      */
     private final Lumberjack jack = new Lumberjack();
 
     /**
-     * Nice constructor
+     * Constructor (if needed)
      */
     Save() {
 
@@ -62,7 +63,7 @@ class Save {
 
         String fileName = levelName + "_" + "SAVE";
 
-        jack.log(1, user.getUserName());
+        //jack.log(1, user.getUserName());
 
         // Create folder for the current User
         //File dirFile = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName());
@@ -107,38 +108,6 @@ class Save {
         }
 
     }
-
-//
-//  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-//  8                                                   8
-//  8  a---------------a                                8
-//  8  |     Chips     |                                8
-//  8  |   Challenge   |                                8
-//  8  |    Vol 1.0    |                               8"
-//  8  "---------------"                               8a
-//  8                                                   8
-//  8                                                   8
-//  8                      ,aaaaa,                      8
-//  8                    ad":::::"ba                    8
-//  8                  ,d::;gPPRg;::b,                  8
-//  8                  d::dP'   `Yb::b                  8
-//  8                  8::8)     (8::8                  8
-//  8                  Y;:Yb     dP:;P  O               8
-//  8                  `Y;:"8ggg8":;P'                  8
-//  8                    "Yaa:::aaP"                    8
-//  8                       """""                       8
-//  8                                                   8
-//  8                       ,d"b,                       8
-//  8                       d:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                       8:::8                       8
-//  8                  aaa  `bad'  aaa                  8
-//  """""""""""""""""""' `"""""""""' `"""""""""""""""""""
-//
-//  Figure VI - A proper format!
-//
 
     /**
      * Writes the size of the level to the save file,
@@ -462,6 +431,61 @@ class Save {
      */
     private void logWritten(Object object) {
         jack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+    }
+
+    /**
+     * Saves the user profile of the current user playing
+     * @param user The user currently playing
+     */
+    void saveProfile(User user){
+        String directory = "Users/" + user.getUserName() + "/scores.txt";
+        File file = new File(directory);
+
+        //jack.log(1, "Scores size" + user.getScores().size());
+        try {
+            // Write Content
+            writer = new FileWriter(file);
+            for (int i = 1; i <= (user.getScores().size()); i++) {
+                //jack.log(1, "Score " + user.getScores().get(i-1));
+                this.writer.write("Level_" + (i) + " - " + user.getScores().get(i-1));
+                this.writer.write("\n");
+            }
+            for (int i = (user.getScores().size() + 1); i <= 11; i++) {
+                this.writer.write("Level_" + i + " - 0\n");
+            }
+            writer.close();
+        } catch (IOException e){
+            jack.log(1,"SAVE" + e.toString());
+        }
+    }
+
+    /**
+     * Loads a users scores from a file
+     * @param userName the user to load from
+     * @return an arraylist of the users scores
+     */
+    ArrayList<Integer> loadPlayerScores(String userName){
+        ArrayList<Integer> scoresArray = new ArrayList<>();
+        String scoresPath = "Users/" + userName + "/scores.txt";
+        File scoresFile = new File(scoresPath);
+        int i =1;
+
+        if (!scoresFile.exists()) {
+            scoresArray.add(0);
+            return scoresArray;
+        } else {
+            try {
+                Scanner reader = new Scanner(scoresFile);
+                do {
+                    String currentLine = reader.nextLine();
+                    String[] splitString = currentLine.split(" - ");
+                    scoresArray.add(Integer.parseInt(splitString[1]));
+                } while (reader.hasNextLine());
+            } catch (Exception e) {
+                jack.log(1, e.toString());
+            }
+            return scoresArray;
+        }
     }
 
 }

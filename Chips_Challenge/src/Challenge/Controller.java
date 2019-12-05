@@ -28,6 +28,11 @@ class Controller {
     private static boolean changeInventory = true;
 
     /**
+     * Saves the players scores after a level is completed
+     */
+    private final Save save = new Save();
+
+    /**
      * Takes in certain inputs and outputs player actions.
      * @param event The event to be read.
      * @param level The level being played
@@ -90,8 +95,8 @@ class Controller {
 
                 //System.out.println(Main.convert);
 
-                //game.getUser();
-
+                game.getUser().addScore(level, (int) Main.convert);
+                this.save.saveProfile(game.getUser());
 
                 Main.window.setScene(success);
             }
