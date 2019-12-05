@@ -27,9 +27,9 @@ class Game {
     private final Save save = new Save();
 
     /**
-     * The User currently playing
+     * The current user for this game
      */
-    private final User user;
+    private User user;
 
     /**
      * Constructs a Game
@@ -37,6 +37,7 @@ class Game {
      */
     Game(String userName) {
         this.user = new User(userName);
+        user.setScores(save.loadPlayerScores(userName));
     }
 
     /**
