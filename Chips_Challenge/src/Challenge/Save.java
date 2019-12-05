@@ -456,16 +456,17 @@ class Save {
             }
             writer.close();
         } catch (IOException e){
-            jack.log(1,"SAVE" + e.toString());
+            Lumberjack.log(1,"SAVE" + e.toString());
         }
     }
 
     /**
      * Loads a users scores from a file
      * @param userName the user to load from
-     * @return an arraylist of the users scores
+     * @return an array list of the users scores
      */
     ArrayList<Integer> loadPlayerScores(String userName){
+
         ArrayList<Integer> scoresArray = new ArrayList<>();
         String scoresPath = "Users/" + userName + "/scores.txt";
         File scoresFile = new File(scoresPath);
@@ -480,14 +481,11 @@ class Save {
                     String currentLine = reader.nextLine();
                     String[] splitString = currentLine.split(" - ");
                     scoresArray.add(Integer.parseInt(splitString[1]));
-                    //jack.log(1, scoresArray.toString());
                 } while (reader.hasNextLine());
-                return scoresArray;
             } catch (Exception e) {
-                jack.log(1, e.toString());
-                scoresArray.add(0);
-                return scoresArray;
+                Lumberjack.log(1, e.toString());
             }
+            return scoresArray;
         }
     }
 
