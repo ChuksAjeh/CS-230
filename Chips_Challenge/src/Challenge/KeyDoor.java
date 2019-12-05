@@ -11,25 +11,16 @@ import javafx.scene.image.Image;
 class KeyDoor extends Door {
 
     /**
-     * The sprite used for this class
-     */
-    private static final Image SPRITE;
-
-    /**
      * The colour of the door
      */
     private final Key.Colour colour;
-
-    static {
-        SPRITE = new Image("images/CELL_KEY_DOOR.png");
-    }
 
     /**
      * Constructor
      * @param colour the colour of the door
      */
     KeyDoor(String colour) {
-        super(SPRITE);
+        super(new Image("images/CELL_KEY_DOOR_" + colour + ".png"));
         this.colour = setColour(colour);
     }
 
@@ -54,10 +45,8 @@ class KeyDoor extends Door {
             return Key.Colour.GREEN;
         } else if ("BLUE".equals(colour)) {
             return Key.Colour.BLUE;
-        } else if ("WHITE".equals(colour)) {
-            return Key.Colour.WHITE;
-        } else if ("BLACK".equals(colour)) {
-            return Key.Colour.BLACK;
+        } else if ("PURPLE".equals(colour)) {
+            return Key.Colour.PURPLE;
         }
 
         return null;

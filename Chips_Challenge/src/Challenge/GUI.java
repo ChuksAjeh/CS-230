@@ -306,7 +306,7 @@ class GUI {
         // FOR THE TESTING
         Image item1 = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
         Image item2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
-        Image item3 = new Image("images/ENTITY_KEY.png",75,50,false,false);
+        Image item3 = new Image("images/ENTITY_KEY_RED.png",75,50,false,false);
         Image item4 = new Image("images/ENTITY_TOKEN.png",75,50,false,false);
 
         //inventory.setPrefSize(50,50);
