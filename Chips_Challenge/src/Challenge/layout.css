@@ -1,5 +1,7 @@
 .root {
-    -fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%);
+    -fx-background-image: url('/images/BACKGROUND.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 960 720;
 }
 
 .button {
@@ -34,7 +36,10 @@
 }
 
 #pauseMenu {
-
+    -fx-background-image: url('/images/BACKGROUND.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 350 350;
+    -fx-background-position: center center;
 }
 
 #Inventory {
