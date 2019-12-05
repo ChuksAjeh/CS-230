@@ -24,6 +24,11 @@ class Controller {
     private static boolean changeInventory = true;
 
     /**
+     * Saves the players scores after a level is completed
+     */
+    private final Save save = new Save();
+
+    /**
      * Takes in certain inputs and outputs player actions.
      * @param event The event to be read.
      * @param level The level being played
@@ -53,9 +58,13 @@ class Controller {
 
             if (player.getGameStatus()) {
                 player.setGameStatus();
-                GUI.END_TIME = System.nanoTime();
-                GUI.ELAPSED_TIME = GUI.END_TIME - GUI.START_TIME;
-                GUI.CONVERTED_TIME = TimeUnit.SECONDS.convert(GUI.ELAPSED_TIME, TimeUnit.NANOSECONDS);
+
+                game.getUser().addScore(level, (int) Main.convert);
+                this.save.saveProfile(game.getUser());
+
+                GUI.end = System.nanoTime();
+                GUI.elapsedTime = GUI.end - GUI.start;
+                GUI.convert = TimeUnit.SECONDS.convert(GUI.elapsedTime, TimeUnit.NANOSECONDS);
                 GUI.scene.setRoot(panes[0]);
                 Main.window.setScene(GUI.scene);
             }
@@ -64,7 +73,7 @@ class Controller {
                 // Player should be alive
                 game.drawGame(level, canvas);
             } else {
-                GUI.LEVEL = new Level(level.getLevelName());
+                GUI.level = new Level(level.getLevelName());
                 GUI.scene.setRoot(panes[0]);
                 Main.window.setScene(GUI.scene);
             }
