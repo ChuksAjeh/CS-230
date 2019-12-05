@@ -58,14 +58,15 @@ class Controller {
 
             if (player.getGameStatus()) {
                 player.setGameStatus();
-                game.getUser().addScore(level, (int) Main.convert);
-                this.save.saveProfile(game.getUser());
 
                 GUI.END_TIME = System.nanoTime();
                 GUI.ELAPSED_TIME = GUI.END_TIME - GUI.START_TIME;
                 GUI.CONVERTED_TIME = TimeUnit.SECONDS.convert(GUI.ELAPSED_TIME, TimeUnit.NANOSECONDS);
                 GUI.scene.setRoot(panes[0]);
                 Main.window.setScene(GUI.scene);
+
+                game.getUser().addScore(level, (int) GUI.CONVERTED_TIME);
+                this.save.saveProfile(game.getUser());
             }
 
             if (level.getPlayer() != null && player.getStatus()) {
