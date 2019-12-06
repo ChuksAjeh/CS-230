@@ -65,7 +65,7 @@ class DumbEnemy extends Enemy {
         if (playerPos.x == enemyPos.x || playerPos.y == enemyPos.y) {
             // Shared co-ordinate
             if (playerPos.x == enemyPos.x) {
-                return playerPos.y > enemyPos.y ? north : south;
+                return playerPos.y > enemyPos.y ? south : north;
             } else {
                 return playerPos.x > enemyPos.x ? east : west;
             }
