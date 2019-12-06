@@ -2,15 +2,19 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
 
 /**
+ * A Smart Enemy is able to calculate the best path to the player ane take
+ * appropriate moves in order to chase the player around the map, they can
+ * backtrack if no path to the player is not available.
  * @author Chuks Ajeh, Angelo Balistoy
- * @version 1.0
+ * @version 3.0
  */
 class SmartEnemy extends Enemy {
-
-    private Lumberjack jack = new Lumberjack();
 
     /**
      * The sprite used to represent the smart enemy.
@@ -92,12 +96,12 @@ class SmartEnemy extends Enemy {
     }
 
     /**
-     * Gets the next cell/node the SmartEnemy must take on the shortest path to the player. Returns null if no path
-     * was found from the player to the enmy.
+     * Gets the next cell/node the SmartEnemy must take on the shortest path to the player.
+     * Returns null if no path was found from the player to the enemy.
      * @param bfsGrid The filled BFSgrid.
      * @param enemyBFSNode The Enemy BFSNode.
      * @param enemyDist The enemy's distance from the player.
-     * @return
+     * @return the next Node in the path
      */
     private BFSVertex getNextNode(BFSVertex[][] bfsGrid, BFSVertex enemyBFSNode, int enemyDist) {
         //make sure this is the starting node (Enemy Node)
@@ -129,17 +133,14 @@ class SmartEnemy extends Enemy {
         BFSVertex right = node.getX()+1 < BFSgrid.length ? BFSgrid[node.getX() + 1][node.getY()] : null;
 
         // as long as the vertex isn't null then add it to the list of available adjacent nodes
-        if(up != null){
-            adjNodes[0] =up;
-        }
-        if(down != null){
-            adjNodes[1] =down;
-        }
-        if(left != null){
-            adjNodes[2] =left;
-        }
-        if(right != null){
-            adjNodes[3] =right;
+        if (null != up) {
+            adjNodes[0] = up;
+        } else if (null != down) {
+            adjNodes[1] = down;
+        } else if (null != left) {
+            adjNodes[2] = left;
+        } else if (null != right) {
+            adjNodes[3] = right;
         }
 
         return adjNodes;
@@ -185,11 +186,12 @@ class SmartEnemy extends Enemy {
         Stack<BFSVertex> pathToReturn = new Stack<>();
         vertices.add(new BFSVertex(playerPos.x, playerPos.y, 0));
 
-
         int srcX;
         int srcY;
         int dist;
+
         boolean enemyNotFound;
+
         do {
 
             // pop front not from queue and process it
@@ -260,6 +262,7 @@ class SmartEnemy extends Enemy {
      */
     private static int[][] flatten(Entity[][]entityGrid, Cell[][] cellGrid) {
         // HOW? HOW IS THIS STILL WORKING HEIGHT AND WIDTH ARE FLIPPED? -Angelo 06/12/19
+        // I be dumdum - Gnome
         int height = entityGrid.length;
         int width = entityGrid[0].length;
 
