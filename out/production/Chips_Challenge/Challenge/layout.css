@@ -1,12 +1,33 @@
 .root {
-    -fx-background-color: linear-gradient(to bottom, #00cc00 0%, #003300 100%);
+    -fx-background-image: url('/images/BACKGROUND.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 960 720;
+}
+
+.label {
+
+}
+
+.label1 {
+    -fx-font-size: 30px;
+    -fx-text-fill: red;
+}
+
+#label2 {
+    -fx-font-size: 30px;
+    -fx-text-fill: red;
+}
+
+#back {
+    -fx-spacing: 30;
 }
 
 .button {
-    -fx-font-size: 15px;
+    -fx-font-size: 20px;
+    -fx-font-family: Chalkduster;
     -fx-text-fill: white;
     -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
-    -fx-pref-width: 200;
+    -fx-pref-width: 280;
     -fx-pref-height: 50;
     -fx-border-style: solid;
     -fx-border-width: 5px;
@@ -20,9 +41,17 @@
     -fx-text-fill:linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
 }
 
-.combo-box {
-    -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);;
+.button1 {
     -fx-pref-width: 200;
+    -fx-pref-height: 30;
+    -fx-font-size: 15px;
+}
+
+.combo-box {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);;
+    -fx-pref-width: 280;
     -fx-pref-height: 50;
     -fx-border-style: solid;
     -fx-border-width: 5px;
@@ -34,7 +63,10 @@
 }
 
 #pauseMenu {
-
+    -fx-background-image: url('/images/BACKGROUND.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 350 350;
+    -fx-background-position: center center;
 }
 
 #Inventory {
