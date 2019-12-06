@@ -2,9 +2,9 @@ package Challenge;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Scanner;
 import java.io.IOException;
 
+import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
@@ -427,14 +427,6 @@ class Save {
     }
 
     /**
-     * Writes a Log to the terminal when a thing is written to file.
-     * @param object what to write
-     */
-    private void logWritten(Object object) {
-        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
-    }
-
-    /**
      * Saves the user profile of the current user playing
      * @param user The user currently playing
      */
@@ -446,12 +438,12 @@ class Save {
         try {
             // Write Content
             writer = new FileWriter(file);
-            for (int i = 1; i <= (user.getScores().size()); i++) {
+            for (int i = 1 ; i <= (user.getScores().size()) ; i++ ) {
                 //jack.log(1, "Score " + user.getScores().get(i-1));
                 this.writer.write("Level_" + (i) + " - " + user.getScores().get(i-1));
                 this.writer.write("\n");
             }
-            for (int i = (user.getScores().size() + 1); i <= 11; i++) {
+            for (int i = (user.getScores().size() + 1) ; i <= 11 ; i++ ) {
                 this.writer.write("Level_" + i + " - 0\n");
             }
             writer.close();
@@ -487,6 +479,14 @@ class Save {
             }
             return scoresArray;
         }
+    }
+
+    /**
+     * Writes a Log to the terminal when a thing is written to file.
+     * @param object what to write
+     */
+    private void logWritten(Object object) {
+        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
 
 }

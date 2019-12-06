@@ -37,39 +37,100 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * The GUI Class is entirely self explanatory
+ */
 class GUI {
 
+    /**
+     * Window width
+     */
     private static final int WINDOW_WIDTH = 960;
+
+    /**
+     * Window height
+     */
     private static final int WINDOW_HEIGHT = 720;
 
-    // The dimensions of the canvas
+    /**
+     * Canvas width
+     */
     private static final int CANVAS_WIDTH = 960;
+
+    /**
+     * Canvas height
+     */
     private static final int CANVAS_HEIGHT = 684;
 
-    // The two canvases we use in the game
+    /**
+     * The canvas used for the game
+     */
     private static Canvas gameCanvas;
+
+    /**
+     * The canvas used for the mini map
+     */
     private static Canvas miniMapCanvas;
 
-    // The game ane mini map we draw for it
+    /**
+     * The game object
+     */
     private static Game game;
+
+    /**
+     * The mini map object
+     */
     private static final MiniMap miniMap = new MiniMap();
 
-    // Not fat, just a controller
+    /**
+     * Controller for the entire program
+     */
     private static final Controller controller = new Controller();
 
-    // Sceney!
-    public static final Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
-
+    /**
+     * The current user name
+     */
     private static String USER_NAME;
 
+    /**
+     * The stylesheet for the entire program
+     */
+    private static String STYLESHEET = "layout.css";
+
+    /**
+     * The level object
+     */
     static Level LEVEL;
 
-    // Not electric unfortunately, just used for timing stuff
+    /**
+     * The start time for a level
+     */
     static long START_TIME = 0;
+
+    /**
+     * The finish time for a level
+     */
     static long END_TIME;
+
+    /**
+     * The elapsed time for a level
+     */
     static long ELAPSED_TIME;
+
+    /**
+     * The time used in the leaderboards
+     */
     static long CONVERTED_TIME;
 
+    /**
+     * The start method, this will initialise the program
+     */
+    public static final Scene scene = new Scene(begin(), WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    /**
+     * Used to display the message of the day, at all times
+     * @return the message label
+     */
     private static Label messageOfTheDay() {
 
         Label message = new Label();
@@ -91,51 +152,196 @@ class GUI {
         return message;
     }
 
+    /**
+     * Used to build the lower bar for the GUI
+     * @return the lower bar
+     */
     private static HBox bottomBar(){
 
         HBox bottomBar = new HBox();
 
-        bottomBar.setPrefHeight(WINDOW_HEIGHT - CANVAS_HEIGHT);
+        bottomBar.setPrefHeight(36);
         bottomBar.setPadding(new Insets(10, 10, 10, 10));
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.getChildren().add(messageOfTheDay());
         bottomBar.setStyle("-fx-background-color: #222222");
-        bottomBar.setMinHeight(WINDOW_HEIGHT - CANVAS_HEIGHT);
+        bottomBar.setMinHeight(36);
 
         return bottomBar;
     }
 
+    /**
+     * Used to display the start screen
+     * @return the start screen
+     */
     private static BorderPane begin() {
         BorderPane root = new BorderPane();
 
         Button startButton = new Button("START");
-        startButton.setPrefSize(150,100);
+        Button leaderboard = new Button("LEADERBOARD");
+        Button quit = new Button("Quit");
 
-        //Label title = new Label("JUNGLE HUNT");
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(startButton, leaderboard, quit);
 
-        root.setCenter(startButton);
-        BorderPane.setAlignment(root.getCenter(), Pos.CENTER);
-
-        //root.setTop(title);
-        //BorderPane.setAlignment(root.getTop(), Pos.TOP_CENTER);
-
-        //BorderPane.setMargin(root.getCenter(), new Insets(0,0,150,0));
+        root.setCenter(vBox);
+        vBox.setAlignment(Pos.CENTER);
+        //BorderPane.setAlignment(root.getCenter(), Pos.CENTER);
 
         root.setBottom(bottomBar());
-
-        //style(title);
-
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
         startButton.setOnAction(e -> {
             scene.setRoot(userSelection());
             Main.window.setScene(scene);
         });
 
+        leaderboard.setOnAction(e -> {
+            scene.setRoot(levelLeaderboard());
+            Main.window.setScene(scene);
+        });
+
+        quit.setOnAction(e -> System.exit(0));
+
         return root;
     }
 
+    /**
+     * Used to make buttons for the GUI
+     * @param files the files to make buttons for
+     * @param menu the Menu to display them on
+     * @return the ArrayList of button objects
+     */
+    private static ArrayList<Button> makeButtons(File[] files, VBox menu) {
 
+        ArrayList<Button> buttons = new ArrayList<>();
+        String remove;
+
+
+        for (int i = 0 ; i < files.length ; i++ ) {
+            remove = files[i].getName();
+            remove = remove.substring(0, remove.length()-4);
+            buttons.add(new Button(remove));
+            buttons.get(i).getStyleClass().add("button1");
+            menu.getChildren().add(buttons.get(i));
+
+        }
+
+        menu.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        return buttons;
+
+    }
+
+    /**
+     * Used to display the a Level Leaderboard
+     * @return the Leaderboard display for that Level
+     */
+    private static BorderPane levelLeaderboard() {
+
+        BorderPane root = new BorderPane();
+        VBox menu = new VBox();
+
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\");
+        File path = new File("Level_Files/");
+
+        File[] files = path.listFiles();
+
+        ArrayList<Button> buttons = makeButtons(Objects.requireNonNull(files), menu);
+
+        root.setBottom(bottomBar());
+        menu.setAlignment(Pos.CENTER);
+        root.setCenter(menu);
+        root.setMargin(menu, new Insets(100,0,0,0));
+
+
+        for (Button button : buttons) {
+            button.setOnAction(e -> {
+                String levelName = button.getText();
+                scene.setRoot(leaderboard(levelName));
+                Main.window.setScene(scene);
+            });
+        }
+
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+
+        return root;
+    }
+
+    /**
+     * Used to display the Main Leaderboard for all Levels
+     * @param name The name of the Levels to atribute
+     * @return the leaderboard display
+     */
+    private static BorderPane leaderboard(String name) {
+
+        BorderPane root = new BorderPane();
+        VBox vBox = new VBox();
+        Label title;
+        String user;
+
+        Button back = new Button("Back");
+
+        AnchorPane.setRightAnchor(back, 20.0);
+        AnchorPane.setBottomAnchor(back,20.0);
+        AnchorPane bottomRight = new AnchorPane();
+        bottomRight.getChildren().add(back);
+
+        LEVEL = controller.makeLevel(name);
+        controller.update(LEVEL);
+
+        boolean ok = true;
+        int l = 0;
+
+        {
+            int i = 0 ;
+            while (i < controller.getLeaderboardScores().size() && ok) {
+                if (controller.getLeaderboardScores().get(i) != 0) {
+
+                    user = (i + 1) + ")" + controller.getLeaderboardUsers().get(i) +
+                            " - " + controller.getLeaderboardScores().get(i);
+                    title = new Label(user);
+                    title.getStyleClass().add("label1");
+                    vBox.getChildren().add(title);
+
+                    l++;
+                }
+
+                if(l == 3) {
+                    ok = false;
+                }
+                i++;
+            }
+        }
+
+        if (ok) {
+
+            for (int i = l ; i < 3 ; i ++ ) {
+                user = (i + 1) + ")" + controller.getLeaderboardUsers().get(0) + " - 0";
+                title = new Label(user);
+                title.getStyleClass().add("label1");
+                vBox.getChildren().add(title);
+            }
+
+        }
+
+        root.setBottom(bottomBar());
+        vBox.setAlignment(Pos.CENTER_LEFT);
+        root.setCenter(vBox);
+        //root.setRight(bottomRight);
+
+        back.setOnAction(e -> {
+            scene.setRoot(begin());
+            Main.window.setScene(scene);
+        });
+
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        return root;
+    }
+
+    /**
+     * Used to display the user selection GUI
+     * @return the User selection screen
+     */
     private static BorderPane userSelection() {
 
         BorderPane root = new BorderPane();
@@ -146,12 +352,13 @@ class GUI {
 
         ComboBox<String> loadUser = new ComboBox<>();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
         File path = new File("Users/");
 
         File[] files = path.listFiles();
 
-        for (File file : Objects.requireNonNull(files)) {
+        assert files != null;
+        for (File file : files) {
             loadUser.getItems().add(file.getName());
         }
 
@@ -164,24 +371,36 @@ class GUI {
             Main.window.setScene(scene);
         });
 
+        Button back = new Button("Back");
+
+        back.setOnAction(e -> {
+            scene.setRoot(begin());
+            Main.window.setScene(scene);
+        });
+
         Button quit = new Button("Quit");
 
-        menu.getChildren().addAll(newUser, loadUser, quit);
+        menu.getChildren().addAll(newUser, loadUser, back, quit);
         menu.setAlignment(Pos.CENTER);
 
         root.setCenter(menu);
         root.setBottom(bottomBar());
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
-
-        quit.setOnAction(e -> System.exit(0));
+        quit.setOnAction(e -> {
+                System.out.println("Adios Amigo!");
+                System.exit(0);
+        });
 
         //this.userName = newUser.getName();
 
         return root;
     }
 
-
+    /**
+     * Used to start a new game
+     * @return the new Game GUI
+     */
     private static BorderPane newGame() {
         BorderPane root = new BorderPane();
 
@@ -192,7 +411,7 @@ class GUI {
         vBox.getChildren().add(startButton);
         vBox.setAlignment(Pos.CENTER);
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
         File[] files = path.listFiles();
 
@@ -200,7 +419,7 @@ class GUI {
 
         startButton.setOnAction(e -> {
             String levelName = files[0].getName();
-            levelName = levelName.substring(0, levelName.length() - 4);
+            levelName = levelName.substring(0, levelName.length()-4);
             scene.setRoot(gaming(levelName));
             Main.window.setScene(scene);
         });
@@ -208,22 +427,24 @@ class GUI {
         root.setCenter(vBox);
         root.setBottom(bottomBar());
 
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
         return root;
     }
 
+    /**
+     * Used to load a game from a file
+     * @return the level to display
+     */
     private static BorderPane loadGame() {
         BorderPane root = new BorderPane();
 
         VBox vBox = new VBox();
 
-
         Button startButton = new Button("New game");
-
         Button loadButton = new Button("Load game");
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_files/");
         File[] files = path.listFiles();
 
@@ -236,7 +457,6 @@ class GUI {
             Main.window.setScene(scene);
         });
 
-
         vBox.getChildren().addAll(startButton,loadButton);
         vBox.setAlignment(Pos.CENTER);
 
@@ -248,33 +468,22 @@ class GUI {
             Main.window.setScene(scene);
         });
 
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
         return root;
     }
 
-    private static ArrayList<Button> makeButtons(File[] files, VBox menu) {
-
-        ArrayList<Button> buttons = new ArrayList<>();
-
-        for (int i = 0 ; i < files.length ; i++ ) {
-
-            buttons.add(new Button(files[i].getName()));
-            menu.getChildren().add(buttons.get(i));
-
-        }
-
-        return buttons;
-
-    }
-
+    /**
+     * Used to display a level to the GUI
+     * @return the level, displayed
+     */
     private static BorderPane displayLevel() {
 
         BorderPane root = new BorderPane();
 
         VBox menu = new VBox();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
@@ -288,17 +497,22 @@ class GUI {
         for (Button button : buttons) {
             button.setOnAction(e -> {
                 String levelName = button.getText();
-                levelName = levelName.substring(0, levelName.length() - 4);
                 scene.setRoot(gaming(levelName));
                 Main.window.setScene(scene);
             });
         }
 
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
         return root;
     }
 
+    /**
+     * Used to display the Players inventory
+     * @param level the current level
+     * @return the displayed inventory
+     */
     private AnchorPane inventory(Level level) {
         HBox test = new HBox();
         AnchorPane inv = new AnchorPane();
@@ -306,7 +520,7 @@ class GUI {
         // FOR THE TESTING
         Image item1 = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
         Image item2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
-        Image item3 = new Image("images/ENTITY_KEY_RED.png",75,50,false,false);
+        Image item3 = new Image("images/ENTITY_KEY.png",75,50,false,false);
         Image item4 = new Image("images/ENTITY_TOKEN.png",75,50,false,false);
 
         //inventory.setPrefSize(50,50);
@@ -333,35 +547,31 @@ class GUI {
         separator.setOrientation(Orientation.VERTICAL);
 
         inv.getChildren().add(test);
-
-        inv.getStylesheets().add(getClass().getResource("layout.css").toExternalForm());
-
+        inv.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
         inv.setId("Inventory");
 
         return inv;
     }
 
-
+    /**
+     * Used to display the Pause Menu
+     * @return the Pause menu
+     */
     private static AnchorPane pauseMenu(){
         AnchorPane pause = new AnchorPane();
         VBox vBox = new VBox();
-
         vBox.setPrefSize(200,200);
 
         //Label title = new Label("JUNGLE HUNT");
-
         //style(title);
 
         Button goBack = new Button("Return to main menu");
-
         Button exitGame = new Button("Exit");
-
 
         vBox.getChildren().addAll(goBack, exitGame);
         vBox.setMargin(vBox.getChildren().get(0), new Insets(50,0,0,0));
-
         vBox.setAlignment(Pos.CENTER);
-        /*middleMenu.setCenter(vBox);*/
+        // middleMenu.setCenter(vBox);
         vBox.setSpacing(25);
 
         goBack.setOnAction(e -> {
@@ -379,15 +589,16 @@ class GUI {
         AnchorPane.setRightAnchor(vBox,250.0);
 
         pause.getChildren().add(vBox);
-
-        pause.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
-
+        pause.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
         pause.setId("pauseMenu");
 
         return pause;
     }
 
-
+    /**
+     * Used to display the Level Finished Menu
+     * @return the Level finished Menu
+     */
     private static BorderPane gameSucceed() {
         BorderPane root = new BorderPane();
         VBox vBox = new VBox();
@@ -396,9 +607,7 @@ class GUI {
         style(title);
 
         Button selectLevel = new Button("SELECT LEVELS");
-
         Button returnMenu = new Button("USER SELECTION");
-
         Button quit = new Button("Quit");
 
         vBox.getChildren().addAll(title, selectLevel, returnMenu, quit);
@@ -418,11 +627,15 @@ class GUI {
 
         root.setCenter(vBox);
         root.setBottom(bottomBar());
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
         return root;
     }
 
+    /**
+     * Used to display the Game Over Menu
+     * @return the "you ded" Menu
+     */
     private static BorderPane gameOver() {
         BorderPane root = new BorderPane();
         VBox vBox = new VBox();
@@ -431,9 +644,7 @@ class GUI {
         style(title);
 
         Button restartLevel = new Button("RESTART LEVEL");
-
         Button returnMenu = new Button("USER SELECTION");
-
         Button quit = new Button("Quit");
 
         restartLevel.setOnAction(e -> {
@@ -453,23 +664,32 @@ class GUI {
 
         root.setCenter(vBox);
         root.setBottom(bottomBar());
-        root.getStylesheets().add(GUI.class.getResource("layout.css").toExternalForm());
+        root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
 
         return root;
     }
 
-    // Right now we don't use this method anymore, but I'll leave it for now in case I want to style any other labels
+    /**
+     * Used to display the title screen
+     * @param title the title screen GUI
+     */
     private static void style(Label title) {
+
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(3.0);
         dropShadow.setOffsetY(3.0);
         dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+
         title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
         title.setEffect(dropShadow);
     }
 
-
+    /**
+     * Used to display the game
+     * @param name the name of the level to display
+     * @return the displayed game
+     */
     private static BorderPane gaming(String name) {
 
         // jack.log(2, "user created " + userName);
@@ -483,7 +703,9 @@ class GUI {
 
         StackPane stack = new StackPane();
         StackPane maps = new StackPane();
-        //stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        // stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        // System.out.println("SUCCESS!");
 
         gameCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -493,7 +715,7 @@ class GUI {
         miniMapCanvas = new Canvas(150, 150);
 
         drawing.setCenter(gameCanvas);
-        drawing.getStyleClass().add(GUI.class.getResource("layout.css").toExternalForm());
+        drawing.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
         drawing.setId("game");
 
         LEVEL = controller.makeLevel(name);
@@ -508,18 +730,15 @@ class GUI {
         AnchorPane.setLeftAnchor(mini, 750.0);
 
         awesome.getChildren().add(mini);
-        awesome.getStyleClass().add(GUI.class.getResource("layout.css").toExternalForm());
+        awesome.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
         awesome.setId("miniMap");
 
         maps.getChildren().add(drawing);
         maps.getChildren().add(awesome);
-
         stack.getChildren().add(pauseMenu());
         stack.getChildren().add(maps);
-
         root.setBottom(bottomBar());
         root.setCenter(stack);
-
 
         START_TIME = System.nanoTime();
 
@@ -530,12 +749,18 @@ class GUI {
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMenuEvent(event, stack));
 
+
         System.out.println(drawing.getId());
 
         return root;
 
     }
 
+    /**
+     * A class used to extend Button which allows them to be edited
+     * @author Ioan Mazurca
+     * @version 2.0
+     */
     static class EditableButton extends Button {
 
         String user;
@@ -559,9 +784,7 @@ class GUI {
 
                 //path.mkdir();
 
-
                 USER_NAME = tf.getText();
-
 
                 scene.setRoot(newGame());
                 Main.window.setScene(scene);
