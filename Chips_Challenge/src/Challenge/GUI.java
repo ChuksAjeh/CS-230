@@ -212,7 +212,7 @@ class GUI {
      * @param menu the Menu to display them on
      * @return the ArrayList of button objects
      */
-    private static ArrayList<Button> makeButtons(File[] files, VBox menu) {
+    private static ArrayList<Button> makeLevelButtons(File[] files, VBox finishedLevels, VBox incompletedLevels) {
 
         ArrayList<Button> buttons = new ArrayList<>();
         String remove;
@@ -228,14 +228,73 @@ class GUI {
             buttons.set(index - 1, new Button(remove));
 
         }
-        for (int i = 0 ; i < files.length ; i++) {
+        ArrayList<Integer> scores = Save.loadPlayerScores(USER_NAME);
+        boolean ok = true;
+        for (int i = 0 ; i < files.length; i++) {
             buttons.get(i).getStyleClass().add("button1");
-            menu.getChildren().add(buttons.get(i));
+            if(scores.get(i)!=0) {
+                finishedLevels.getChildren().add(buttons.get(i));
+            } else {
+                if(ok) {
+                    incompletedLevels.getChildren().add(buttons.get(i));
+                    ok=false;
+                }
+                else {
+                    buttons.get(i).setDisable(true);
+                    incompletedLevels.getChildren().add(buttons.get(i));
+                }
+            }
         }
 
-        menu.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        finishedLevels.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        incompletedLevels.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
         return buttons;
 
+    }
+
+    private static ArrayList<Button> makeLeaderboardButtons(File[] files, VBox vBox) {
+        ArrayList<Button> buttons = new ArrayList<>();
+        String remove;
+        // DO NOT ADD A NEW LEVEL WHOSE NUMBER IS NOT CONSECUTIVE I.E. IF THERE ARE 20 LEVELS DO NOT ADD A LEVEL
+        // CALLED LEVEL_24. CALL IT LEVEL 21. DUE TO BUCKET SORT.
+        for(int i = 0 ; i < files.length ; i++ ) {
+            buttons.add(null);
+        }
+        for (File file : files) {
+            remove = file.getName();
+            remove = remove.substring(0, remove.length() - 4);
+            int index = Integer.parseInt(remove.substring(6));
+            buttons.set(index - 1, new Button(remove));
+
+        }
+
+        for (int i = 0 ; i < files.length; i++) {
+            buttons.get(i).getStyleClass().add("button1");
+            vBox.getChildren().add(buttons.get(i));
+        }
+
+        vBox.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        return buttons;
+    }
+
+    private static ArrayList<Button> makeSaveButtons(File[] files, VBox vBox) {
+        ArrayList<Button> buttons = new ArrayList<>();
+        String remove;
+        // DO NOT ADD A NEW LEVEL WHOSE NUMBER IS NOT CONSECUTIVE I.E. IF THERE ARE 20 LEVELS DO NOT ADD A LEVEL
+        // CALLED LEVEL_24. CALL IT LEVEL 21. DUE TO BUCKET SORT.
+
+        for (File file : files) {
+            remove = file.getName();
+            remove = remove.substring(0, remove.length() - 4);
+            buttons.add(new Button(remove));
+        }
+
+        for (int i = 0 ; i < files.length-1; i++) {
+            vBox.getChildren().add(buttons.get(i));
+        }
+
+        vBox.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        return buttons;
     }
 
     /**
@@ -252,7 +311,7 @@ class GUI {
 
         File[] files = path.listFiles();
 
-        ArrayList<Button> buttons = makeButtons(Objects.requireNonNull(files), menu);
+        ArrayList<Button> buttons = makeLeaderboardButtons(Objects.requireNonNull(files), menu);
 
         root.setBottom(bottomBar());
         menu.setAlignment(Pos.CENTER);
@@ -333,7 +392,7 @@ class GUI {
         root.setBottom(bottomBar());
         vBox.setAlignment(Pos.CENTER_LEFT);
         root.setCenter(vBox);
-        //root.setRight(bottomRight);
+        root.setRight(bottomRight);
 
         back.setOnAction(e -> {
             scene.setRoot(begin());
@@ -358,7 +417,7 @@ class GUI {
 
         ComboBox<String> loadUser = new ComboBox<>();
 
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
         File path = new File("Users/");
 
         File[] files = path.listFiles();
@@ -417,7 +476,7 @@ class GUI {
         vBox.getChildren().add(startButton);
         vBox.setAlignment(Pos.CENTER);
 
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
         File[] files = path.listFiles();
 
@@ -450,7 +509,7 @@ class GUI {
         Button startButton = new Button("New game");
         Button loadButton = new Button("Load game");
 
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_files/");
         File[] files = path.listFiles();
 
@@ -487,18 +546,54 @@ class GUI {
 
         BorderPane root = new BorderPane();
 
-        VBox menu = new VBox();
+        VBox finishedLevels = new VBox();
+        VBox savedLevels = new VBox();
+        VBox incompletedLevels = new VBox();
 
-        // File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
+        Label levels = new Label("COMPLETED LEVELS");
+        levels.getStyleClass().add("label1");
+
+        Label saved = new Label("SAVED LEVELS");
+        saved.getStyleClass().add("label1");
+        saved.setAlignment(Pos.CENTER);
+
+
+        Label next = new Label("NEXT LEVELS");
+        next.getStyleClass().add("label1");
+
+        finishedLevels.getChildren().add(levels);
+        savedLevels.getChildren().add(saved);
+        incompletedLevels.getChildren().add(next);
+
+
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
+
+        //File savePath = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + USER_NAME + "\\");
+        File savePath = new File("Users/" + USER_NAME + "/");
+
+        File[] saveFiles = savePath.listFiles();
+
+        ArrayList<Button> buttons1 = makeSaveButtons(Objects.requireNonNull(saveFiles), savedLevels);
+
 
         File[] files = path.listFiles();
 
-        ArrayList<Button> buttons = makeButtons(Objects.requireNonNull(files), menu);
+        ArrayList<Button> buttons = makeLevelButtons(Objects.requireNonNull(files), finishedLevels, incompletedLevels);
+
+        finishedLevels.setMargin(finishedLevels.getChildren().get(0), new Insets(0,0,40,0));
+        savedLevels.setMargin(savedLevels.getChildren().get(0), new Insets(0,0,0,40));
+
 
         root.setBottom(bottomBar());
-        menu.setAlignment(Pos.CENTER);
-        root.setCenter(menu);
+        finishedLevels.setAlignment(Pos.CENTER);
+        incompletedLevels.setAlignment(Pos.CENTER);
+        root.setLeft(finishedLevels);
+        root.setCenter(savedLevels);
+        root.setRight(incompletedLevels);
+        root.setMargin(finishedLevels, new Insets(100,0,150,50));
+        root.setMargin(incompletedLevels, new Insets(60,40,0,0));
+        root.setMargin(savedLevels, new Insets(180,0,0,0));
 
         for (Button button : buttons) {
             button.setOnAction(e -> {
@@ -519,15 +614,18 @@ class GUI {
      * @param level the current level
      * @return the displayed inventory
      */
-    private AnchorPane inventory(Level level) {
+    private static AnchorPane inventory(Level level) {
         HBox test = new HBox();
         AnchorPane inv = new AnchorPane();
 
         // FOR THE TESTING
         Image item1 = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
         Image item2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
-        Image item3 = new Image("images/ENTITY_KEY.png",75,50,false,false);
-        Image item4 = new Image("images/ENTITY_TOKEN.png",75,50,false,false);
+        Image item3 = new Image("images/ENTITY_KEY_BLUE.png",75,50,false,false);
+        Image item4 = new Image("images/ENTITY_KEY_GREEN.png",75,50,false,false);
+        Image item5 = new Image("images/ENTITY_KEY_PURPLE.png",75,50,false,false);
+        Image item6 = new Image("images/ENTITY_KEY_RED.png",75,50,false,false);
+        Image item7 = new Image("images/ENTITY_TOKEN.png",75,50,false,false);
 
         //inventory.setPrefSize(50,50);
 
@@ -535,8 +633,12 @@ class GUI {
         ImageView nr2 = new ImageView(item2);
         ImageView nr3 = new ImageView(item3);
         ImageView nr4 = new ImageView(item4);
+        ImageView nr5 = new ImageView(item5);
+        ImageView nr6 = new ImageView(item6);
+        ImageView nr7 = new ImageView(item7);
 
-        test.getChildren().addAll(nr1,nr2, nr3, nr4);
+
+        test.getChildren().addAll(nr1,nr2, nr3, nr4, nr5, nr6, nr7);
 
         AnchorPane.setTopAnchor(test, 600.0);
         AnchorPane.setLeftAnchor(test, 200.0);
@@ -553,7 +655,7 @@ class GUI {
         separator.setOrientation(Orientation.VERTICAL);
 
         inv.getChildren().add(test);
-        inv.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
+        inv.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
         inv.setId("Inventory");
 
         return inv;
@@ -737,10 +839,13 @@ class GUI {
 
         awesome.getChildren().add(mini);
         awesome.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
-        awesome.setId("miniMap");
 
         maps.getChildren().add(drawing);
         maps.getChildren().add(awesome);
+
+        maps.setId("maps");
+
+        stack.getChildren().add(inventory(LEVEL));
         stack.getChildren().add(pauseMenu());
         stack.getChildren().add(maps);
         root.setBottom(bottomBar());
@@ -785,8 +890,8 @@ class GUI {
 
             tf.setOnAction(ae -> {
 
-                //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
-                File path = new File("Users/" + tf.getText());
+                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
+                //File path = new File("Users/" + tf.getText());
 
                 //path.mkdir();
 

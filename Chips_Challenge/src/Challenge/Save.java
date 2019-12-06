@@ -72,9 +72,9 @@ class Save {
 
         if (!dirFile.exists()) {
             if (dirFile.mkdir()) {
-                Lumberjack.log(0,"Directory for " + user.getUserName() + " has been created!");
+                //Lumberjack.log(0,"Directory for " + user.getUserName() + " has been created!");
             } else {
-                Lumberjack.log(2,"Failed to create directory!");
+                //Lumberjack.log(2,"Failed to create directory!");
             }
         }
 
@@ -105,7 +105,7 @@ class Save {
 
         } catch (IOException e) {
             // Nothing, because Sam is a dumdum :p
-            Lumberjack.log(1, "Oops");
+            //Lumberjack.log(1, "Oops");
         }
 
     }
@@ -431,6 +431,7 @@ class Save {
      * @param user The user currently playing
      */
     void saveProfile(User user){
+        //String directory = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName() + "/scores.txt";
         String directory = "Users/" + user.getUserName() + "/scores.txt";
         File file = new File(directory);
 
@@ -448,7 +449,7 @@ class Save {
             }
             writer.close();
         } catch (IOException e){
-            Lumberjack.log(1,"SAVE" + e.toString());
+            //Lumberjack.log(1,"SAVE" + e.toString());
         }
     }
 
@@ -457,9 +458,10 @@ class Save {
      * @param userName the user to load from
      * @return an array list of the users scores
      */
-    ArrayList<Integer> loadPlayerScores(String userName){
+    public static ArrayList<Integer> loadPlayerScores(String userName){
 
         ArrayList<Integer> scoresArray = new ArrayList<>();
+        //String scoresPath = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + userName + "/scores.txt";
         String scoresPath = "Users/" + userName + "/scores.txt";
         File scoresFile = new File(scoresPath);
 
@@ -475,7 +477,7 @@ class Save {
                     scoresArray.add(Integer.parseInt(splitString[1]));
                 } while (reader.hasNextLine());
             } catch (Exception e) {
-                Lumberjack.log(1, e.toString());
+                //Lumberjack.log(1, e.toString());
             }
             return scoresArray;
         }
@@ -486,7 +488,7 @@ class Save {
      * @param object what to write
      */
     private void logWritten(Object object) {
-        Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
+        //Lumberjack.log(1, "Writing a " + object.getClass().getSimpleName() + " to the save file");
     }
 
 }

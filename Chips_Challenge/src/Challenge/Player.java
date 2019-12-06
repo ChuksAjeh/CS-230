@@ -177,7 +177,7 @@ class Player extends Entity {
         if (checkValidMove(level, p)) {
             return movePlayerEntity(level, p);
         } else {
-            Lumberjack.log(1, "Invalid Player Move");
+            //Lumberjack.log(1, "Invalid Player Move");
             return level.getEntityGrid();
         }
 
