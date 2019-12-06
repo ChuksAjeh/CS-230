@@ -36,7 +36,10 @@ class Controller {
     /**
      * The list of users who have played a level
      */
-    private ArrayList<String> leaderboardUsers;
+    private static ArrayList<String> leaderboardUsers;
+
+    private static ArrayList<Integer> leaderboardScores;
+
 
     /**
      * Takes in certain inputs and outputs player actions.
@@ -50,7 +53,6 @@ class Controller {
 
         // Get the event code
         KeyCode key = event.getCode();
-        ArrayList<Integer> leaderboardScores;
 
         if (key.isArrowKey()) {
 
@@ -59,7 +61,7 @@ class Controller {
             Player player = level.getPlayer();
 
             ArrayList<KeyCode> codes = new ArrayList<>(Arrays.asList(
-                KeyCode.UP, KeyCode.RIGHT, KeyCode.DOWN, KeyCode.LEFT
+                    KeyCode.UP, KeyCode.RIGHT, KeyCode.DOWN, KeyCode.LEFT
             ));
 
             newGrid = player.move(codes.indexOf(key), level);
@@ -77,14 +79,12 @@ class Controller {
                 GUI.scene.setRoot(panes[0]);
                 Main.window.setScene(GUI.scene);
 
+                System.out.println(GUI.CONVERTED_TIME);
+
                 game.getUser().addScore(level, (int) GUI.CONVERTED_TIME);
                 this.save.saveProfile(game.getUser());
 
-                leaderboardScores = calculateLeaderboardScores(level);
-                ArrayList<Integer> sortedScores = bubbleSort(leaderboardScores);
-                //AT THIS POINT SORTEDSCORES 0-2 ARE THE TOP 3 SCORES
-                //AT THIS POINT LEADERBOARDUSERS 0-2 ARE THE USERS WITH THOSE SCORES
-
+                update(level);
             }
 
             if (level.getPlayer() != null && player.getStatus()) {
@@ -113,16 +113,16 @@ class Controller {
 
         } else if (KeyCode.E == event.getCode()) {
 
-             // Open the inventory, eventually
-             // root.lookup("#Inventory").toBack();
+            // Open the inventory, eventually
+            // root.lookup("#Inventory").toBack();
 
-             // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
-             // root.getChildren().set(0, main.INVENTORY(level));
+            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
+            // root.getChildren().set(0, main.INVENTORY(level));
 
             if (changeInventory) {
-                 root.lookup("#Inventory").toFront();
-                 root.lookup("#pauseMenu").toBack();
-                 changeInventory = false;
+                root.lookup("#Inventory").toFront();
+                root.lookup("#pauseMenu").toBack();
+                changeInventory = false;
             } else {
                 root.lookup("#game").toFront();
                 root.lookup("#Inventory").toBack();
@@ -137,24 +137,28 @@ class Controller {
      * @param level the level to collect scores for
      * @return the scores, ordered
      */
-    private ArrayList<Integer> calculateLeaderboardScores (Level level) {
+    private static void calculateLeaderboardScores (Level level) {
 
         ArrayList<Integer> userScores = new ArrayList<>();
         ArrayList<String> userNames = new ArrayList<>();
+        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\");
         File path = new File("Users/");
+        String test ;
+
 
         File[] files = path.listFiles();
         assert files != null;
 
         for (File file : files) {
             File scoresFile = new File(file + "/scores.txt");
+            test = file.getPath()+50;
 
             userNames.add(file.getPath().substring(6));
             userScores.add(returnLevelScore(level, scoresFile));
         }
 
-        this.leaderboardUsers = userNames;
-        return userScores;
+        leaderboardUsers = userNames;
+        leaderboardScores = userScores;
     }
 
     /**
@@ -163,7 +167,7 @@ class Controller {
      * @param file the file to get them from
      * @return the scores for that level
      */
-    private int returnLevelScore (Level level, File file) {
+    private static int returnLevelScore (Level level, File file) {
 
         int levelNo = parseInt(level.getLevelName().substring(6));
 
@@ -172,42 +176,45 @@ class Controller {
             Scanner fileRead = new Scanner(file);
 
             IntStream.range(0, (levelNo - 1)).forEach(i ->
-                fileRead.nextLine());
+                    fileRead.nextLine());
 
             return parseInt(fileRead.nextLine().split(" - ")[1]);
 
         } catch (Exception e) {
 
-            Lumberjack.log(1, "return level score" + e);
+            //Lumberjack.log(1, "return level score" + e);
             return 0;
         }
     }
 
     /**
      * My Bubbles!
-     * @param scoresArray the array of scores to sort
+     * the array of scores to sort
      * @return the sorted array
      */
-    private ArrayList<Integer> bubbleSort(ArrayList<Integer> scoresArray) {
+    private void bubbleSort() {
 
-        int n = scoresArray.size();
+        int n = leaderboardScores.size();
+        int intChange;
+        String stringChange;
+
 
         for (int i = 0 ; i < n - 1 ; i ++ ) {
             for (int j = 0 ; j < n - i - 1 ; j ++ ) {
 
-                if (scoresArray.get(j) > scoresArray.get(j + 1)) {
+                if (leaderboardScores.get(j) > leaderboardScores.get(j + 1)) {
                     // swap arr[j+1] and arr[i]
-                    scoresArray.set(j, scoresArray.get(j + 1));
-                    scoresArray.set(j + 1, scoresArray.get(j));
+                    intChange=leaderboardScores.get(j);
+                    leaderboardScores.set(j, leaderboardScores.get(j + 1));
+                    leaderboardScores.set(j + 1, intChange);
 
-                    this.leaderboardUsers.set(j, this.leaderboardUsers.get(j + 1));
-                    this.leaderboardUsers.set(j + 1, this.leaderboardUsers.get(j));
+                    stringChange=leaderboardUsers.get(j);
+                    leaderboardUsers.set(j, leaderboardUsers.get(j + 1));
+                    leaderboardUsers.set(j + 1, stringChange);
                 }
 
             }
         }
-
-        return scoresArray;
     }
 
     /**
@@ -229,6 +236,20 @@ class Controller {
      */
     Level makeLevel(String levelName) {
         return new Level(levelName);
+    }
+
+
+    public void update(Level level) {
+        calculateLeaderboardScores(level);
+        bubbleSort();
+    }
+
+    public ArrayList<String> getLeaderboardUsers() {
+        return leaderboardUsers;
+    }
+
+    public ArrayList<Integer> getLeaderboardScores() {
+        return leaderboardScores;
     }
 
 }
