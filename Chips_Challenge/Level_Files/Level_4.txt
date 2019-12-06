@@ -17,7 +17,7 @@
 #################
 Player,9,3,0,
 Goal,14,3,
-KeyDoor,12,3,White,3,3,
+KeyDoor,12,3,Purple,3,3,
 LineEnemy,7,9,1,
 FireBoots,9,12,
 Fire,6,1,
