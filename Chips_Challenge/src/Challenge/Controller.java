@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,23 +136,20 @@ class Controller {
     /**
      * The scores for that level, ordered
      * @param level the level to collect scores for
-     * @return the scores, ordered
      */
     private static void calculateLeaderboardScores (Level level) {
 
         ArrayList<Integer> userScores = new ArrayList<>();
         ArrayList<String> userNames = new ArrayList<>();
+
         //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\");
         File path = new File("Users/");
-        String test ;
-
 
         File[] files = path.listFiles();
         assert files != null;
 
         for (File file : files) {
             File scoresFile = new File(file + "/scores.txt");
-            test = file.getPath()+50;
 
             userNames.add(file.getPath().substring(6));
             userScores.add(returnLevelScore(level, scoresFile));
@@ -190,7 +188,6 @@ class Controller {
     /**
      * My Bubbles!
      * the array of scores to sort
-     * @return the sorted array
      */
     private void bubbleSort() {
 
@@ -198,17 +195,16 @@ class Controller {
         int intChange;
         String stringChange;
 
-
         for (int i = 0 ; i < n - 1 ; i ++ ) {
             for (int j = 0 ; j < n - i - 1 ; j ++ ) {
 
                 if (leaderboardScores.get(j) > leaderboardScores.get(j + 1)) {
                     // swap arr[j+1] and arr[i]
-                    intChange=leaderboardScores.get(j);
+                    intChange = leaderboardScores.get(j);
                     leaderboardScores.set(j, leaderboardScores.get(j + 1));
                     leaderboardScores.set(j + 1, intChange);
 
-                    stringChange=leaderboardUsers.get(j);
+                    stringChange = leaderboardUsers.get(j);
                     leaderboardUsers.set(j, leaderboardUsers.get(j + 1));
                     leaderboardUsers.set(j + 1, stringChange);
                 }
@@ -238,18 +234,28 @@ class Controller {
         return new Level(levelName);
     }
 
-
-    public void update(Level level) {
+    /**
+     * Used to update High Scores
+     * @param level the Level to update them for
+     */
+    void update(Level level) {
         calculateLeaderboardScores(level);
         bubbleSort();
     }
 
-    public ArrayList<String> getLeaderboardUsers() {
+    /**
+     * Gets the User names for the High Scores
+     * @return the array of names
+     */
+    ArrayList<String> getLeaderboardUsers() {
         return leaderboardUsers;
     }
 
-    public ArrayList<Integer> getLeaderboardScores() {
+    /**
+     * Gets the User Scores for the High Scores
+     * @return the array of scores
+     */
+    ArrayList<Integer> getLeaderboardScores() {
         return leaderboardScores;
     }
-
 }

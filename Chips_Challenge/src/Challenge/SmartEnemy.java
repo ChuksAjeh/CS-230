@@ -2,7 +2,10 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
 
 /**
  * @author Chuks Ajeh, Angelo Balistoy

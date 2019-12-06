@@ -14,7 +14,6 @@ abstract class Door extends Obstacle {
     /**
      * Constructor
      * @param sprite the sprite used for the cell of this type
-     *
      */
     Door(Image sprite) {
         super(sprite, false);

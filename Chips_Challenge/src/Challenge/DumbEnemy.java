@@ -97,8 +97,8 @@ class DumbEnemy extends Enemy {
         return playerPos.x == enemyPos.x || playerPos.y == enemyPos.y ?
             playerPos.x == enemyPos.x ?
                 playerPos.y > enemyPos.y ?
-                    north :
                     south :
+                    north :
                 playerPos.x > enemyPos.x ?
                     east :
                     west :
@@ -120,7 +120,7 @@ class DumbEnemy extends Enemy {
 
     And on one line :D
 
-    return playerPos.x == enemyPos.x || playerPos.y == enemyPos.y ? playerPos.x == enemyPos.x ? playerPos.y > enemyPos.y ? north : south : playerPos.x > enemyPos.x ? east : west : playerPos.x > enemyPos.x ? playerPos.y > enemyPos.y ? random.nextBoolean() ? south : east : random.nextBoolean() ? north : east : playerPos.y > enemyPos.y ? random.nextBoolean() ? south : west : random.nextBoolean() ? north : west;
+    return playerPos.x == enemyPos.x || playerPos.y == enemyPos.y ? playerPos.x == enemyPos.x ? playerPos.y > enemyPos.y ? south : north : playerPos.x > enemyPos.x ? east : west : playerPos.x > enemyPos.x ? playerPos.y > enemyPos.y ? random.nextBoolean() ? south : east : random.nextBoolean() ? north : east : playerPos.y > enemyPos.y ? random.nextBoolean() ? south : west : random.nextBoolean() ? north : west;
 
      */
 

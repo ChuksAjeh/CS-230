@@ -27,7 +27,6 @@ class Game {
      */
     private User user;
 
-    //private Lumberjack jack = new Lumberjack();
     /**
      * Constructs a Game
      * @param userName the name of the user playing
