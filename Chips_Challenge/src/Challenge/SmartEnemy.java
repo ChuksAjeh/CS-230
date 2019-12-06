@@ -2,10 +2,7 @@ package Challenge;
 
 import javafx.scene.image.Image;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author Chuks Ajeh, Angelo Balistoy
@@ -57,7 +54,7 @@ class SmartEnemy extends Enemy {
         // Grab cell and entity grid to flatten
         Cell[][] cellGrid = level.getCellGrid();
         Entity[][] entityGrid = level.getEntityGrid();
-        // Get a flattened grid combining entity and levels, then converting impassable and passable to 0s and 1s 
+        // Get a flattened grid combining entity and levels, then converting impassable and passable to 0s and 1s
         // respectively
         int[][] flattenedGrid = SmartEnemy.flatten(entityGrid, cellGrid);
 
@@ -111,8 +108,8 @@ class SmartEnemy extends Enemy {
                     return adjNode;
                 }
 
-                }
             }
+        }
 
         return enemyBFSNode;
     }
@@ -231,7 +228,7 @@ class SmartEnemy extends Enemy {
             bfsGrid[pathToReturn.peek().getX()][pathToReturn.peek().getY()]=pathToReturn.pop();
 
         }
-        
+
         return bfsGrid;
     }
 
@@ -251,7 +248,7 @@ class SmartEnemy extends Enemy {
                 (col >= 0) && (col < MAX_COLUMN_BOUNDARY);
         final boolean CAN_VISIT = !visited[row][col];
         final boolean IS_ENEMY_TRAVERSABLE = flattenedLevel[row][col] == 0;
-        
+
         return (NOT_OUT_OF_BOUNDS && CAN_VISIT && IS_ENEMY_TRAVERSABLE);
     }
 
