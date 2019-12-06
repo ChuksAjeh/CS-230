@@ -1,5 +1,5 @@
-Level_1 - 2
-Level_2 - 2
+Level_1 - 0
+Level_2 - 0
 Level_3 - 0
 Level_4 - 0
 Level_5 - 0

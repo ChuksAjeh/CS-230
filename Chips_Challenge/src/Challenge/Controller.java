@@ -29,6 +29,8 @@ class Controller {
      */
     private static boolean changeInventory = true;
 
+    private static boolean changePauseMenu = true;
+
     /**
      * Saves the players scores after a level is completed
      */
@@ -110,7 +112,13 @@ class Controller {
     void processMenuEvent(KeyEvent event, StackPane root) {
 
         if (KeyCode.ESCAPE == event.getCode()) {
-            root.getChildren().get(0).toFront();
+            if(changePauseMenu) {
+                root.lookup("#pauseMenu").toFront();
+                changePauseMenu = false;
+            } else {
+                root.lookup("#maps").toFront();
+                changePauseMenu = true;
+            }
 
         } else if (KeyCode.E == event.getCode()) {
 
@@ -122,11 +130,9 @@ class Controller {
 
             if (changeInventory) {
                 root.lookup("#Inventory").toFront();
-                root.lookup("#pauseMenu").toBack();
                 changeInventory = false;
             } else {
-                root.lookup("#game").toFront();
-                root.lookup("#Inventory").toBack();
+                root.lookup("#maps").toFront();
                 changeInventory = true;
             }
 

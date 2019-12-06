@@ -60,7 +60,7 @@ class User {
 
         int levelNo = Integer.parseInt(level.getLevelName().substring(6));
 
-        Lumberjack.log(2,"USER " + score);
+        //Lumberjack.log(2,"USER " + score);
 
         if ((getScores().get(levelNo-1) > score) || (0 == getScores().get(levelNo-1))) {
             scores.set((levelNo - 1), score);
