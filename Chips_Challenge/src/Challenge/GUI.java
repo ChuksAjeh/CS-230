@@ -216,15 +216,21 @@ class GUI {
 
         ArrayList<Button> buttons = new ArrayList<>();
         String remove;
+        // DO NOT ADD A NEW LEVEL WHOSE NUMBER IS NOT CONSECUTIVE I.E. IF THERE ARE 20 LEVELS DO NOT ADD A LEVEL
+        // CALLED LEVEL_24. CALL IT LEVEL 21. DUE TO BUCKET SORT.
+        for(int i = 0 ; i < files.length ; i++ ) {
+            buttons.add(null);
+        }
+        for (File file : files) {
+            remove = file.getName();
+            remove = remove.substring(0, remove.length() - 4);
+            int index = Integer.parseInt(remove.substring(6));
+            buttons.set(index - 1, new Button(remove));
 
-
-        for (int i = 0 ; i < files.length ; i++ ) {
-            remove = files[i].getName();
-            remove = remove.substring(0, remove.length()-4);
-            buttons.add(new Button(remove));
+        }
+        for (int i = 0 ; i < files.length ; i++) {
             buttons.get(i).getStyleClass().add("button1");
             menu.getChildren().add(buttons.get(i));
-
         }
 
         menu.getStyleClass().add(GUI.class.getResource(STYLESHEET).toExternalForm());
