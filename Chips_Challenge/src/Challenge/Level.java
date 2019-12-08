@@ -120,8 +120,12 @@ class Level {
      */
     private void buildLevel(String level) throws FileNotFoundException {
 
-        //Scanner reader = new Scanner(new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\" + level + ".txt"));
-        Scanner reader = new Scanner(new File("Level_Files/" + level + ".txt"));
+        Scanner reader;
+        if(level.contains("SAVE")) {
+            reader = new Scanner(new File("Users/" + GUI.USER_NAME + "/" + level + ".txt"));
+        } else {
+            reader = new Scanner(new File("Level_Files/" + level + ".txt"));
+        }
         reader.useDelimiter(",");
 
         buildBasicGrids(reader);
@@ -308,17 +312,21 @@ class Level {
     private void readInventory(StringTokenizer tokenizer) {
 
         Player player = this.getPlayer();
-        String item = tokenizer.nextToken();
 
-        if ("FLIPPERS".equals(item)) {
-            player.addItem(this, new Flippers());
-        } else if ("FIREBOOTS".equals(item)) {
-            player.addItem(this, new FireBoots());
-        } else if ("KEY".equals(item)) {
-            player.addItem(this, new Key(tokenizer.nextToken()));
-        } else if ("TOKEN".equals(item)) {
-            player.addItem(this, new Token());
-            player.setTokenCount(Integer.parseInt(tokenizer.nextToken()));
+        if(tokenizer.hasMoreTokens()==true) {
+
+            String item = tokenizer.nextToken();
+
+            if ("FLIPPERS".equals(item)) {
+                player.addItem(this, new Flippers());
+            } else if ("FIREBOOTS".equals(item)) {
+                player.addItem(this, new FireBoots());
+            } else if ("KEY".equals(item)) {
+                player.addItem(this, new Key(tokenizer.nextToken()));
+            } else if ("TOKEN".equals(item)) {
+                player.addItem(this, new Token());
+                player.setTokenCount(Integer.parseInt(tokenizer.nextToken()));
+            }
         }
 
     }

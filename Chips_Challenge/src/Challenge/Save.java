@@ -67,7 +67,6 @@ class Save {
         //jack.log(1, user.getUserName());
 
         // Create folder for the current User
-        //File dirFile = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName());
         File dirFile = new File("Users/" + user.getUserName());
 
         if (!dirFile.exists()) {
@@ -79,7 +78,6 @@ class Save {
         }
 
         // Create directory for new file
-        //directory = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName() + "/" + fileName + ".txt";
         directory = "Users/" + user.getUserName() + "/" + fileName + ".txt";
         File file = new File(directory);
 
@@ -431,7 +429,6 @@ class Save {
      * @param user The user currently playing
      */
     void saveProfile(User user){
-        //String directory = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + user.getUserName() + "/scores.txt";
         String directory = "Users/" + user.getUserName() + "/scores.txt";
         File file = new File(directory);
 
@@ -461,7 +458,6 @@ class Save {
     public static ArrayList<Integer> loadPlayerScores(String userName){
 
         ArrayList<Integer> scoresArray = new ArrayList<>();
-        //String scoresPath = "D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + userName + "/scores.txt";
         String scoresPath = "Users/" + userName + "/scores.txt";
         File scoresFile = new File(scoresPath);
 

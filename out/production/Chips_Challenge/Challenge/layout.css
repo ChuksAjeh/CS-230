@@ -4,13 +4,16 @@
     -fx-background-size: 960 720;
 }
 
+.separator {
+
+}
+
 .label {
 
 }
 
 .label1 {
     -fx-font-size: 30px;
-    -fx-text-fill: red;
 }
 
 #label2 {
@@ -24,7 +27,7 @@
 
 .button {
     -fx-font-size: 20px;
-    -fx-font-family: Chalkduster;
+    -fx-font-family: Chalkduster, fantasy;
     -fx-text-fill: white;
     -fx-background-color: linear-gradient(to bottom, #3333cc 0%, #00ccff 100%);
     -fx-pref-width: 280;
@@ -67,6 +70,13 @@
     -fx-background-repeat: stretch;
     -fx-background-size: 350 350;
     -fx-background-position: center center;
+}
+
+#miniInventory {
+    -fx-background-color: linear-gradient(to top left, #663300 0%, #336600 100%);;
+    -fx-border-color: white;
+    -fx-border-width: 7px;
+
 }
 
 #Inventory {

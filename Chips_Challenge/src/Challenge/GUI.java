@@ -19,11 +19,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -72,6 +68,16 @@ class GUI {
      */
     private static Canvas miniMapCanvas;
 
+    private static HBox menuInventory;
+
+    private static AnchorPane displayInventory;
+
+
+    /**
+     * The StackPane used to make the transition between the menu, inventory and the game
+     */
+    private static StackPane stack;
+
     /**
      * The game object
      */
@@ -90,7 +96,7 @@ class GUI {
     /**
      * The current user name
      */
-    private static String USER_NAME;
+    public static String USER_NAME;
 
     /**
      * The stylesheet for the entire program
@@ -186,7 +192,6 @@ class GUI {
 
         root.setCenter(vBox);
         vBox.setAlignment(Pos.CENTER);
-        //BorderPane.setAlignment(root.getCenter(), Pos.CENTER);
 
         root.setBottom(bottomBar());
         root.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
@@ -280,8 +285,6 @@ class GUI {
     private static ArrayList<Button> makeSaveButtons(File[] files, VBox vBox) {
         ArrayList<Button> buttons = new ArrayList<>();
         String remove;
-        // DO NOT ADD A NEW LEVEL WHOSE NUMBER IS NOT CONSECUTIVE I.E. IF THERE ARE 20 LEVELS DO NOT ADD A LEVEL
-        // CALLED LEVEL_24. CALL IT LEVEL 21. DUE TO BUCKET SORT.
 
         for (File file : files) {
             remove = file.getName();
@@ -290,6 +293,7 @@ class GUI {
         }
 
         for (int i = 0 ; i < files.length-1; i++) {
+            buttons.get(i).getStyleClass().add("button1");
             vBox.getChildren().add(buttons.get(i));
         }
 
@@ -306,7 +310,6 @@ class GUI {
         BorderPane root = new BorderPane();
         VBox menu = new VBox();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files\\");
         File path = new File("Level_Files/");
 
         File[] files = path.listFiles();
@@ -362,10 +365,10 @@ class GUI {
             while (i < controller.getLeaderboardScores().size() && ok) {
                 if (controller.getLeaderboardScores().get(i) != 0) {
 
-                    user = (i + 1) + ")" + controller.getLeaderboardUsers().get(i) +
+                    user = (l + 1) + ")" + controller.getLeaderboardUsers().get(i) +
                             " - " + controller.getLeaderboardScores().get(i);
                     title = new Label(user);
-                    title.getStyleClass().add("label1");
+                    style(title);
                     vBox.getChildren().add(title);
 
                     l++;
@@ -381,10 +384,12 @@ class GUI {
         if (ok) {
 
             for (int i = l ; i < 3 ; i ++ ) {
-                user = (i + 1) + ")" + controller.getLeaderboardUsers().get(0) + " - 0";
+                user = (l + 1) + ")" + controller.getLeaderboardUsers().get(0) + " - 0";
                 title = new Label(user);
-                title.getStyleClass().add("label1");
+                style(title);
                 vBox.getChildren().add(title);
+
+                l++;
             }
 
         }
@@ -417,7 +422,6 @@ class GUI {
 
         ComboBox<String> loadUser = new ComboBox<>();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users");
         File path = new File("Users/");
 
         File[] files = path.listFiles();
@@ -428,7 +432,6 @@ class GUI {
         }
 
         loadUser.setPromptText("Select user profile");
-        //Button loadUser = new Button("Load user profiles");
 
         loadUser.setOnAction(e -> {
             USER_NAME = loadUser.getSelectionModel().getSelectedItem();
@@ -457,8 +460,6 @@ class GUI {
                 System.exit(0);
         });
 
-        //this.userName = newUser.getName();
-
         return root;
     }
 
@@ -476,7 +477,6 @@ class GUI {
         vBox.getChildren().add(startButton);
         vBox.setAlignment(Pos.CENTER);
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
         File[] files = path.listFiles();
 
@@ -509,7 +509,6 @@ class GUI {
         Button startButton = new Button("New game");
         Button loadButton = new Button("Load game");
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_files/");
         File[] files = path.listFiles();
 
@@ -546,54 +545,59 @@ class GUI {
 
         BorderPane root = new BorderPane();
 
+        HBox container = new HBox();
+
         VBox finishedLevels = new VBox();
         VBox savedLevels = new VBox();
         VBox incompletedLevels = new VBox();
 
         Label levels = new Label("COMPLETED LEVELS");
-        levels.getStyleClass().add("label1");
+        style(levels);
 
         Label saved = new Label("SAVED LEVELS");
-        saved.getStyleClass().add("label1");
-        saved.setAlignment(Pos.CENTER);
-
+        style(saved);
 
         Label next = new Label("NEXT LEVELS");
-        next.getStyleClass().add("label1");
+        style(next);
+
 
         finishedLevels.getChildren().add(levels);
         savedLevels.getChildren().add(saved);
         incompletedLevels.getChildren().add(next);
 
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Level_Files");
         File path = new File("Level_Files/");
-
-        //File savePath = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\" + USER_NAME + "\\");
         File savePath = new File("Users/" + USER_NAME + "/");
 
         File[] saveFiles = savePath.listFiles();
 
         ArrayList<Button> buttons1 = makeSaveButtons(Objects.requireNonNull(saveFiles), savedLevels);
 
-
         File[] files = path.listFiles();
 
         ArrayList<Button> buttons = makeLevelButtons(Objects.requireNonNull(files), finishedLevels, incompletedLevels);
 
-        finishedLevels.setMargin(finishedLevels.getChildren().get(0), new Insets(0,0,40,0));
-        savedLevels.setMargin(savedLevels.getChildren().get(0), new Insets(0,0,0,40));
 
+        finishedLevels.setMargin(finishedLevels.getChildren().get(0), new Insets(0,0,0,-40));
+        incompletedLevels.setMargin(incompletedLevels.getChildren().get(0), new Insets(0,0,0,10));
 
         root.setBottom(bottomBar());
-        finishedLevels.setAlignment(Pos.CENTER);
-        incompletedLevels.setAlignment(Pos.CENTER);
-        root.setLeft(finishedLevels);
-        root.setCenter(savedLevels);
-        root.setRight(incompletedLevels);
-        root.setMargin(finishedLevels, new Insets(100,0,150,50));
-        root.setMargin(incompletedLevels, new Insets(60,40,0,0));
-        root.setMargin(savedLevels, new Insets(180,0,0,0));
+
+        container.getChildren().addAll(finishedLevels, savedLevels, incompletedLevels);
+        container.setMargin(container.getChildren().get(0), new Insets(0,0,0,70));
+        container.setMargin(container.getChildren().get(1), new Insets(0,0,0,60));
+        container.setMargin(container.getChildren().get(2), new Insets(0,0,0,120));
+
+        root.setCenter(container);
+        root.setMargin(container, new Insets(150,0,0,0));
+
+        for (Button button : buttons1) {
+            button.setOnAction(e -> {
+                String levelName = button.getText();
+                scene.setRoot(gaming(levelName));
+                Main.window.setScene(scene);
+            });
+        }
 
         for (Button button : buttons) {
             button.setOnAction(e -> {
@@ -609,56 +613,44 @@ class GUI {
         return root;
     }
 
+    public static void updateInventory(Level level) {
+        ArrayList<Item> playerInventory = level.getPlayer().getInventory();
+
+        menuInventory = new HBox();
+
+
+        for (Item item : playerInventory) {
+            menuInventory.getChildren().add(new ImageView(SpriteConverter.resize(item.getSprite(), 50, 50)));
+            menuInventory.getChildren().add(new Separator(Orientation.VERTICAL));
+        }
+
+        menuInventory.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+    }
+
     /**
      * Used to display the Players inventory
      * @param level the current level
      * @return the displayed inventory
      */
-    private static AnchorPane inventory(Level level) {
-        HBox test = new HBox();
-        AnchorPane inv = new AnchorPane();
+    public static AnchorPane inventory(Level level) {
+        displayInventory = new AnchorPane();
 
-        // FOR THE TESTING
-        Image item1 = new Image("images/ENTITY_FIRE_BOOTS.png",75,50,false,false);
-        Image item2 = new Image("images/ENTITY_FLIPPERS.png",75,50,false,false);
-        Image item3 = new Image("images/ENTITY_KEY_BLUE.png",75,50,false,false);
-        Image item4 = new Image("images/ENTITY_KEY_GREEN.png",75,50,false,false);
-        Image item5 = new Image("images/ENTITY_KEY_PURPLE.png",75,50,false,false);
-        Image item6 = new Image("images/ENTITY_KEY_RED.png",75,50,false,false);
-        Image item7 = new Image("images/ENTITY_TOKEN.png",75,50,false,false);
+        updateInventory(level);
 
-        //inventory.setPrefSize(50,50);
+        AnchorPane.setTopAnchor(menuInventory, 600.0);
+        AnchorPane.setLeftAnchor(menuInventory, 200.0);
+        AnchorPane.setRightAnchor(menuInventory, 200.0);
+        AnchorPane.setBottomAnchor(menuInventory,20.0);
 
-        ImageView nr1 = new ImageView(item1);
-        ImageView nr2 = new ImageView(item2);
-        ImageView nr3 = new ImageView(item3);
-        ImageView nr4 = new ImageView(item4);
-        ImageView nr5 = new ImageView(item5);
-        ImageView nr6 = new ImageView(item6);
-        ImageView nr7 = new ImageView(item7);
+        menuInventory.setId("miniInventory");
 
+        menuInventory.setAlignment(Pos.CENTER_LEFT);
 
-        test.getChildren().addAll(nr1,nr2, nr3, nr4, nr5, nr6, nr7);
+        displayInventory.getChildren().add(menuInventory);
+        displayInventory.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
+        displayInventory.setId("Inventory");
 
-        AnchorPane.setTopAnchor(test, 600.0);
-        AnchorPane.setLeftAnchor(test, 200.0);
-        AnchorPane.setRightAnchor(test, 200.0);
-        AnchorPane.setBottomAnchor(test,20.0);
-
-        //inventory.setPrefSize(100,100);
-        test.setStyle("-fx-background-color: #33ccff");
-
-        test.setPrefSize(100,200);
-        test.setAlignment(Pos.CENTER);
-
-        Separator separator = new Separator();
-        separator.setOrientation(Orientation.VERTICAL);
-
-        inv.getChildren().add(test);
-        inv.getStylesheets().add(GUI.class.getResource(STYLESHEET).toExternalForm());
-        inv.setId("Inventory");
-
-        return inv;
+        return displayInventory;
     }
 
     /**
@@ -670,8 +662,6 @@ class GUI {
         VBox vBox = new VBox();
         vBox.setPrefSize(200,200);
 
-        //Label title = new Label("JUNGLE HUNT");
-        //style(title);
 
         Button goBack = new Button("Return to main menu");
         Button exitGame = new Button("Exit");
@@ -679,7 +669,6 @@ class GUI {
         vBox.getChildren().addAll(goBack, exitGame);
         vBox.setMargin(vBox.getChildren().get(0), new Insets(50,0,0,0));
         vBox.setAlignment(Pos.CENTER);
-        // middleMenu.setCenter(vBox);
         vBox.setSpacing(25);
 
         goBack.setOnAction(e -> {
@@ -789,7 +778,7 @@ class GUI {
         dropShadow.setOffsetY(3.0);
         dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 
-        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,40));
+        title.setFont(Font.font(null, FontWeight.BOLD, FontPosture.ITALIC,30));
         title.setEffect(dropShadow);
     }
 
@@ -809,11 +798,8 @@ class GUI {
         BorderPane drawing = new BorderPane();
         drawing.setPrefSize(960,670);
 
-        StackPane stack = new StackPane();
+        stack = new StackPane();
         StackPane maps = new StackPane();
-        // stack.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        // System.out.println("SUCCESS!");
 
         gameCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -858,7 +844,7 @@ class GUI {
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
                 controller.processMiniMap(event, LEVEL, miniMap, miniMapCanvas));
         root.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-                controller.processMenuEvent(event, stack));
+                controller.processMenuEvent(event, stack, LEVEL));
 
 
         System.out.println(drawing.getId());
@@ -890,9 +876,7 @@ class GUI {
 
             tf.setOnAction(ae -> {
 
-                File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\"+tf.getText());
                 //File path = new File("Users/" + tf.getText());
-
                 //path.mkdir();
 
                 USER_NAME = tf.getText();
