@@ -109,7 +109,7 @@ class Controller {
      * @param event the events to respond to
      * @param root the stackPane to replace / remove
      */
-    void processMenuEvent(KeyEvent event, StackPane root) {
+    void processMenuEvent(KeyEvent event, StackPane root, Level level) {
 
         if (KeyCode.ESCAPE == event.getCode()) {
             if(changePauseMenu) {
@@ -122,13 +122,9 @@ class Controller {
 
         } else if (KeyCode.E == event.getCode()) {
 
-            // Open the inventory, eventually
-            // root.lookup("#Inventory").toBack();
-
-            // THIS LINE SHOULD UPDATE THE INVENTORY DYNAMICALLY
-            // root.getChildren().set(0, main.INVENTORY(level));
-
             if (changeInventory) {
+                root.lookup("#Inventory").toBack();
+                root.getChildren().set(0, GUI.inventory(level));
                 root.lookup("#Inventory").toFront();
                 changeInventory = false;
             } else {
@@ -148,7 +144,6 @@ class Controller {
         ArrayList<Integer> userScores = new ArrayList<>();
         ArrayList<String> userNames = new ArrayList<>();
 
-        //File path = new File("D:\\IdeaProjects\\CS-230\\Chips_Challenge\\Users\\");
         File path = new File("Users/");
 
         File[] files = path.listFiles();

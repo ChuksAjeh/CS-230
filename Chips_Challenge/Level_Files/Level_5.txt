@@ -20,9 +20,9 @@
 #######################
 Player,13,10,0,
 Goal,2,2,
-KeyDoor,11,2,Green,13,16,
-KeyDoor,13,6,Red,11,10,
-KeyDoor,13,14,Red,19,10,
+KeyDoor,11,2,GREEN,13,16,
+KeyDoor,13,6,RED,11,10,
+KeyDoor,13,14,RED,19,10,
 Flippers,15,10,
 Water,17,9,
 Water,17,10,

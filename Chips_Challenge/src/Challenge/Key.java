@@ -62,7 +62,7 @@ class Key extends Item {
             return Colour.GREEN;
         } else if ("BLUE".equals(colour)) {
             return Colour.BLUE;
-        } else if ("WHITE".equals(colour)) {
+        } else if ("PURPLE".equals(colour)) {
             return Colour.PURPLE;
         }
 

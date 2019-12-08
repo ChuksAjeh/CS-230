@@ -6,7 +6,7 @@
 #          #
 #          #
 ############
-Player,4,3,3,
-LineEnemy,6,4,2,
+LineEnemy,6,5,0,
+Player,9,3,0,
 Goal,3,3,
 Inventory,

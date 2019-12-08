@@ -1,7 +1,7 @@
 Level_1 - 3
 Level_2 - 4
-Level_3 - 0
-Level_4 - 0
+Level_3 - 12
+Level_4 - 24
 Level_5 - 0
 Level_6 - 0
 Level_7 - 0
